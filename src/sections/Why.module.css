@@ -4,10 +4,31 @@
 }
 
 .layout {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
   gap: clamp(40px, 6vw, 96px);
   align-items: start;
+}
+
+.hairlineTrack {
+  position: absolute;
+  left: -14px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: var(--r-full);
+  background: var(--border);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hairlineFill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(to bottom, var(--accent) 0%, #7b61ff 60%, #c084fc 100%);
+  transform-origin: top;
 }
 
 .head {
@@ -57,6 +78,10 @@
   overflow: hidden;
 }
 
+.cellWrap {
+  height: 100%;
+}
+
 .cell {
   background: var(--surface);
   padding: clamp(28px, 3vw, 36px);
@@ -66,6 +91,7 @@
   transition: background 280ms var(--ease);
   position: relative;
   min-height: 200px;
+  height: 100%;
 }
 
 .cell:hover {
