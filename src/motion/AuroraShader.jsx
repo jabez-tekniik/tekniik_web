@@ -43,7 +43,9 @@ export default function AuroraShader({ className = '' }) {
     let renderer, program, mesh, gl, raf = 0, disposed = false
     const mouse = [0.5, 0.5]
     const host = hostRef.current
-    let visible = true
+    let intersecting = true
+    let docVisible = true
+    let localCleanup = null
 
     const start = async () => {
       const { Renderer, Program, Mesh, Triangle } = await import('ogl')
@@ -80,15 +82,15 @@ export default function AuroraShader({ className = '' }) {
       }
       window.addEventListener('pointermove', onMouse)
 
-      const io = new IntersectionObserver(([en]) => { visible = en.isIntersecting }, { threshold: 0 })
+      const io = new IntersectionObserver(([en]) => { intersecting = en.isIntersecting }, { threshold: 0 })
       io.observe(host)
-      const onVis = () => { visible = document.visibilityState === 'visible' && visible }
+      const onVis = () => { docVisible = document.visibilityState === 'visible' }
       document.addEventListener('visibilitychange', onVis)
 
       let last = 0
       const loop = (time) => {
         raf = requestAnimationFrame(loop)
-        if (!visible || document.hidden) return
+        if (!intersecting || !docVisible) return
         if (time - last < 16) return
         last = time
         program.uniforms.uTime.value = time * 0.001
@@ -97,7 +99,7 @@ export default function AuroraShader({ className = '' }) {
       raf = requestAnimationFrame(loop)
       requestAnimationFrame(() => setReady(true))
 
-      AuroraShader._cleanup = () => {
+      localCleanup = () => {
         window.removeEventListener('resize', resize)
         window.removeEventListener('pointermove', onMouse)
         document.removeEventListener('visibilitychange', onVis)
@@ -115,7 +117,8 @@ export default function AuroraShader({ className = '' }) {
       if (window.cancelIdleCallback) window.cancelIdleCallback(idle)
       else clearTimeout(idle)
       cancelAnimationFrame(raf)
-      if (AuroraShader._cleanup) AuroraShader._cleanup()
+      if (localCleanup) localCleanup()
+      gl?.getExtension('WEBGL_lose_context')?.loseContext()
       const c = canvasRef.current
       if (c && c.parentNode) c.parentNode.removeChild(c)
     }
