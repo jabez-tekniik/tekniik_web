@@ -1,4 +1,4 @@
-import Reveal from '../components/Reveal.jsx'
+import { KineticText, Reveal } from '../motion/index.js'
 import { TESTIMONIAL } from '../data/content.js'
 import styles from './Testimonial.module.css'
 
@@ -18,20 +18,28 @@ export default function Testimonial() {
               opacity="0.1"
             />
           </svg>
-          <blockquote className={styles.quote}>{TESTIMONIAL.text}</blockquote>
-          <div className={styles.attribution}>
-            <span className={styles.avatar} aria-hidden="true">
-              {TESTIMONIAL.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .slice(0, 2)}
-            </span>
-            <div className={styles.attrText}>
-              <strong>{TESTIMONIAL.name}</strong>
-              <span>{TESTIMONIAL.role}</span>
+          <KineticText
+            text={TESTIMONIAL.text}
+            as="blockquote"
+            by="word"
+            stagger={0.04}
+            className={styles.quote}
+          />
+          <Reveal delay={0.3}>
+            <div className={styles.attribution}>
+              <span className={styles.avatar} aria-hidden="true">
+                {TESTIMONIAL.name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .slice(0, 2)}
+              </span>
+              <div className={styles.attrText}>
+                <strong>{TESTIMONIAL.name}</strong>
+                <span>{TESTIMONIAL.role}</span>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </Reveal>
       </div>
     </section>
