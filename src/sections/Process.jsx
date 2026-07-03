@@ -1,11 +1,41 @@
-import Reveal from '../components/Reveal.jsx'
+import { useRef } from 'react'
+import { m, useTransform } from 'framer-motion'
+import { Reveal, useScrollProgress } from '../motion/index.js'
 import Eyebrow from '../components/Eyebrow.jsx'
-import useReveal from '../hooks/useReveal.js'
+import useReducedMotion from '../hooks/useReducedMotion.js'
 import { PROCESS } from '../data/content.js'
 import styles from './Process.module.css'
 
+/* One node on the rail. Its inner dot scales in and its halo fades in as the
+   scroll-linked fill passes this node's offset. useTransform is called ONCE
+   here (never inside the parent .map) so hooks stay out of loops. */
+function Node({ progress, index, total, reduced }) {
+  const dotScale = useTransform(
+    progress,
+    [index / total, index / total + 0.15],
+    [0, 1],
+  )
+
+  return (
+    <span className={styles.dot} aria-hidden="true">
+      <m.span
+        className={styles.dotHalo}
+        style={{ opacity: reduced ? 1 : dotScale }}
+      />
+      <m.span
+        className={styles.dotInner}
+        style={{ scale: reduced ? 1 : dotScale }}
+      />
+    </span>
+  )
+}
+
 export default function Process() {
-  const [trackRef, active] = useReveal({ threshold: 0.18, rootMargin: '0px 0px -15% 0px' })
+  const stepsRef = useRef(null)
+  const reduced = useReducedMotion()
+  // Hooks run unconditionally; only the style VALUES below are gated for reduced motion.
+  const progress = useScrollProgress(stepsRef, ['start 80%', 'end 60%'])
+  const total = PROCESS.steps.length
 
   return (
     <section className={`section ${styles.section}`}>
@@ -16,27 +46,32 @@ export default function Process() {
           <p className={styles.sub}>{PROCESS.sub}</p>
         </Reveal>
 
-        <div
-          ref={trackRef}
-          className={`${styles.steps} ${active ? styles.active : ''}`}
-        >
+        <div ref={stepsRef} className={styles.steps}>
           <div className={styles.track} aria-hidden="true">
             <span className={styles.trackLine} />
-            <span className={styles.trackFill} />
+            {/* Desktop horizontal fill (scaleX); hidden ≤640px via CSS. */}
+            <m.span
+              className={styles.trackFill}
+              style={{ scaleX: reduced ? 1 : progress }}
+            />
+            {/* Mobile vertical fill (scaleY); shown only ≤640px via CSS. */}
+            <m.span
+              className={styles.trackFillV}
+              style={{ scaleY: reduced ? 1 : progress }}
+            />
           </div>
 
           <ol className={styles.list}>
             {PROCESS.steps.map((step, i) => (
-              <li
-                key={step.n}
-                className={styles.item}
-                style={{ '--i': i }}
-              >
-                <span className={styles.dot} aria-hidden="true">
-                  <span className={styles.dotInner} />
-                </span>
+              <li key={step.n} className={styles.item}>
+                <Node
+                  progress={progress}
+                  index={i}
+                  total={total}
+                  reduced={reduced}
+                />
 
-                <article className={styles.card}>
+                <Reveal as="article" delay={i * 0.08} className={styles.card}>
                   <header className={styles.cardHead}>
                     <span className={styles.phase}>PHASE {step.n}</span>
                     <span className={styles.index} aria-hidden="true">
@@ -47,7 +82,7 @@ export default function Process() {
                   <h3 className={styles.title}>{step.title}</h3>
                   <span className={styles.duration}>{step.duration}</span>
                   <p className={styles.desc}>{step.desc}</p>
-                </article>
+                </Reveal>
               </li>
             ))}
           </ol>

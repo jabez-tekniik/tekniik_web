@@ -73,6 +73,9 @@
   background: var(--border);
 }
 
+/* Two fills bound to scroll progress — one per axis. Inline motion styles
+   cannot be media-queried, so CSS `display` picks which axis shows per
+   breakpoint. Desktop = horizontal (scaleX); mobile ≤640px = vertical (scaleY). */
 .trackFill {
   position: absolute;
   inset: 0;
@@ -84,11 +87,20 @@
   );
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 1400ms var(--ease) 200ms;
 }
 
-.steps.active .trackFill {
-  transform: scaleX(1);
+.trackFillV {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: linear-gradient(
+    to bottom,
+    var(--accent) 0%,
+    #7b61ff 60%,
+    #c084fc 100%
+  );
+  transform: scaleY(0);
+  transform-origin: center top;
 }
 
 /* —— List grid —— */
@@ -101,7 +113,6 @@
 }
 
 .item {
-  --i: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,11 +131,17 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  transition:
-    border-color 380ms var(--ease),
-    box-shadow 380ms var(--ease),
-    transform 380ms var(--ease);
-  transition-delay: calc(var(--i) * 160ms + 220ms);
+}
+
+/* "Lit" ring + halo overlay — fades in (opacity) as the fill passes the node.
+   Overlays the grey base border so the node reads as active. */
+.dotHalo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 0 4px rgba(91, 91, 255, 0.12);
+  pointer-events: none;
 }
 
 .dotInner {
@@ -132,18 +149,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  transform: scale(0);
-  transition: transform 380ms var(--ease);
-  transition-delay: calc(var(--i) * 160ms + 320ms);
-}
-
-.steps.active .dot {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(91, 91, 255, 0.12);
-}
-
-.steps.active .dotInner {
-  transform: scale(1);
+  position: relative;
 }
 
 /* —— Card —— */
@@ -159,23 +165,10 @@
   flex-direction: column;
   gap: 10px;
   position: relative;
-  opacity: 0;
-  transform: translateY(14px);
+  /* Fade + rise is driven by the motion <Reveal> wrapper (see Process.jsx). */
   transition:
-    opacity 600ms var(--ease),
-    transform 600ms var(--ease),
     border-color 280ms var(--ease),
     box-shadow 280ms var(--ease);
-  transition-delay:
-    calc(var(--i) * 120ms + 360ms),
-    calc(var(--i) * 120ms + 360ms),
-    0ms,
-    0ms;
-}
-
-.steps.active .card {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .card:hover {
@@ -292,14 +285,13 @@
     height: auto;
   }
 
+  /* Swap axes: hide the horizontal fill, show the vertical one. */
   .trackFill {
-    transform: scaleY(0);
-    transform-origin: top center;
-    transition: transform 1400ms var(--ease) 200ms;
+    display: none;
   }
 
-  .steps.active .trackFill {
-    transform: scaleY(1);
+  .trackFillV {
+    display: block;
   }
 
   .item {
@@ -323,32 +315,6 @@
   }
 }
 
-/* ============================================================
-   Reduced motion — no transforms, instant visible
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  .trackFill,
-  .dot,
-  .dotInner,
-  .card {
-    transition: none !important;
-  }
-  .trackFill {
-    transform: scaleX(1);
-  }
-  .dot {
-    border-color: var(--accent);
-  }
-  .dotInner {
-    transform: scale(1);
-  }
-  .card {
-    opacity: 1;
-    transform: none;
-  }
-  @media (max-width: 640px) {
-    .trackFill {
-      transform: scaleY(1);
-    }
-  }
-}
+/* Reduced motion is handled in Process.jsx: fills bind scaleX/scaleY to 1 and
+   nodes bind scale/opacity to 1 (fully active, no scroll linkage) via the
+   `reduced ? 1 : motionValue` ternary — matching the Tilt/Why precedent. */
