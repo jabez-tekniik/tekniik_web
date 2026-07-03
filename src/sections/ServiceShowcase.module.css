@@ -17,10 +17,7 @@
   isolation: isolate;
   text-decoration: none;
   color: #fff;
-  transform: translateY(0);
-  transition:
-    transform 200ms var(--ease-out),
-    box-shadow 200ms var(--ease-out);
+  transition: box-shadow 200ms var(--ease-out);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.55) inset,
     0 0 0 1px rgba(91, 91, 255, 0.10),
@@ -29,17 +26,15 @@
   background: #11132a;
 }
 
+/* Lift/scale is now owned by the Tilt primitive (transform, JS-driven) so the
+   card only owns the shadow/glow response to hover — avoids two competing
+   transform authors on nested elements. */
 .card:hover {
-  transform: translateY(-6px);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.55) inset,
     0 0 0 1px rgba(91, 91, 255, 0.22),
     0 36px 80px -28px rgba(91, 91, 255, 0.42),
     0 14px 40px -18px rgba(10, 15, 28, 0.14);
-}
-
-.card:hover .img {
-  transform: scale(1.05);
 }
 
 .card:focus-visible {
@@ -64,6 +59,15 @@
   grid-row: 3;
 }
 
+/* Reveal (fade/rise on scroll-in) and Tilt (pointer rotate/scale) each apply
+   their own transform, so both need to fill the card exactly to keep the
+   absolutely-positioned imgWrap/chipSlot/body children anchored correctly. */
+.revealInner,
+.tilt {
+  position: absolute;
+  inset: 0;
+}
+
 .imgWrap {
   position: absolute;
   inset: 0;
@@ -78,7 +82,6 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 480ms var(--ease-out);
   will-change: transform;
 }
 
@@ -246,14 +249,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .img {
+  .card {
     transition: none;
-  }
-  .card:hover {
-    transform: none;
-  }
-  .card:hover .img {
-    transform: none;
   }
 }

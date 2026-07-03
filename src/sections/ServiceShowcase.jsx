@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
-import Reveal from '../components/Reveal.jsx'
+import { m, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { Tilt, Reveal } from '../motion/index.js'
+import useReducedMotion from '../hooks/useReducedMotion.js'
 import styles from './ServiceShowcase.module.css'
 
 const CARDS = [
@@ -81,25 +83,55 @@ function ArrowChip() {
   )
 }
 
-export default function ServiceShowcase() {
+function Card({ card, index }) {
+  const reduced = useReducedMotion()
+
+  // Local pointer-driven parallax for the image (±5%), independent of Tilt's
+  // own internal pointer tracking. Guarded explicitly: MotionConfig's global
+  // reducedMotion="user" only suppresses declarative animations, not these
+  // imperative motion values, so the handlers are simply never attached when
+  // reduced motion is requested and the image stays put.
+  const px = useMotionValue(0)
+  const py = useMotionValue(0)
+  const sx = useSpring(px, { stiffness: 150, damping: 20 })
+  const sy = useSpring(py, { stiffness: 150, damping: 20 })
+  const imgX = useTransform(sx, [-0.5, 0.5], ['-5%', '5%'])
+  const imgY = useTransform(sy, [-0.5, 0.5], ['-5%', '5%'])
+
+  function handlePointerMove(e) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    px.set((e.clientX - rect.left) / rect.width - 0.5)
+    py.set((e.clientY - rect.top) / rect.height - 0.5)
+  }
+
+  function handlePointerLeave() {
+    px.set(0)
+    py.set(0)
+  }
+
   return (
-    <Reveal className={styles.bento} stagger>
-      {CARDS.map((card, i) => (
-        <Link
-          key={card.key}
-          to={card.href}
-          className={`${styles.card} ${styles[card.span]}`}
-          style={{ '--i': i }}
-          aria-label={`${card.title} — ${card.tagline}`}
-        >
+    <Link
+      to={card.href}
+      className={`${styles.card} ${styles[card.span]}`}
+      aria-label={`${card.title} — ${card.tagline}`}
+    >
+      <Reveal
+        delay={index * 0.08}
+        className={styles.revealInner}
+        onPointerMove={reduced ? undefined : handlePointerMove}
+        onPointerLeave={reduced ? undefined : handlePointerLeave}
+      >
+        <Tilt max={6} scale={1.03} className={styles.tilt}>
           <span className={styles.imgWrap} aria-hidden="true">
-            <img
+            <m.img
               src={card.img}
               alt=""
               loading="lazy"
               width="1280"
               height="960"
               className={styles.img}
+              style={reduced ? undefined : { x: imgX, y: imgY }}
+              whileHover={{ scale: 1.05 }}
             />
             <span className={styles.scrim} />
           </span>
@@ -118,8 +150,18 @@ export default function ServiceShowcase() {
             <span className={styles.title}>{card.title}</span>
             <span className={styles.tagline}>{card.tagline}</span>
           </span>
-        </Link>
+        </Tilt>
+      </Reveal>
+    </Link>
+  )
+}
+
+export default function ServiceShowcase() {
+  return (
+    <div className={styles.bento}>
+      {CARDS.map((card, i) => (
+        <Card key={card.key} card={card} index={i} />
       ))}
-    </Reveal>
+    </div>
   )
 }
