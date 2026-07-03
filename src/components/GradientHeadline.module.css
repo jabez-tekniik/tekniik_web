@@ -38,9 +38,7 @@
 
 .inner {
   display: inline-block;
-  transform: translateY(110%);
-  opacity: 0;
-  animation: rise 720ms var(--ease) calc(var(--i) * 70ms + 140ms) forwards;
+  will-change: transform;
 }
 
 .ink .inner {
@@ -49,19 +47,4 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-}
-
-@keyframes rise {
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .inner {
-    animation: none;
-    transform: none;
-    opacity: 1;
-  }
 }

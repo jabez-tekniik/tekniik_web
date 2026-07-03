@@ -1,9 +1,10 @@
+import { m } from 'framer-motion'
 import Button from './Button.jsx'
 import HeroBadge from './HeroBadge.jsx'
 import GradientHeadline from './GradientHeadline.jsx'
 import TrustStrip from './TrustStrip.jsx'
 import ServiceShowcase from '../sections/ServiceShowcase.jsx'
-import { Reveal } from '../motion/index.js'
+import { AuroraShader, Reveal, useMagnetic } from '../motion/index.js'
 import { HERO } from '../data/content.js'
 import styles from './Hero.module.css'
 
@@ -12,14 +13,12 @@ export default function Hero() {
   const splitAt = HERO.headline[0].length + 1
   const plainPrefix = headlineFull.slice(0, splitAt)
   const gradientSuffix = headlineFull.slice(splitAt)
+  const { ref: magneticRef, style: magneticStyle, onMouseMove: magneticMove, onMouseLeave: magneticLeave } =
+    useMagnetic({ strength: 0.35 })
 
   return (
     <section className={styles.hero}>
-      <div className={styles.aurora} aria-hidden="true">
-        <span className={`${styles.bloom} ${styles.bloomA}`} />
-        <span className={`${styles.bloom} ${styles.bloomB}`} />
-        <span className={`${styles.bloom} ${styles.bloomC}`} />
-      </div>
+      <AuroraShader className={styles.aurora} />
 
       <div className={styles.ribbon} aria-hidden="true" />
 
@@ -33,17 +32,25 @@ export default function Hero() {
         <Reveal as="p" delay={0.1} className={styles.sub}>{HERO.sub}</Reveal>
 
         <div className={styles.actions}>
-          <Button to={HERO.primaryCta.to} variant="primary" arrow>
-            {HERO.primaryCta.label}
-          </Button>
+          <m.span
+            ref={magneticRef}
+            style={magneticStyle}
+            onMouseMove={magneticMove}
+            onMouseLeave={magneticLeave}
+            className={styles.magnetic}
+          >
+            <Button to={HERO.primaryCta.to} variant="primary" arrow>
+              {HERO.primaryCta.label}
+            </Button>
+          </m.span>
           <Button to={HERO.ghostCta.to} variant="ghost" arrow>
             {HERO.ghostCta.label}
           </Button>
         </div>
 
-        <div className={styles.trustWrap}>
+        <Reveal delay={0.2} className={styles.trustWrap}>
           <TrustStrip rating="4.9" count="50+ projects" region="UK · Remote" />
-        </div>
+        </Reveal>
 
         <ServiceShowcase />
       </div>

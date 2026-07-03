@@ -5,62 +5,11 @@
   isolation: isolate;
 }
 
-/* Aurora atmosphere — three soft gradient blooms placed for asymmetric depth */
+/* Aurora atmosphere — WebGL shader with a static gradient fallback */
 .aurora {
   position: absolute;
-  inset: -10% -5%;
-  pointer-events: none;
+  inset: 0;
   z-index: 0;
-}
-
-.bloom {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.42;
-  will-change: transform;
-}
-
-.bloom {
-  opacity: 0.20;
-}
-
-.bloomA {
-  width: 560px;
-  height: 560px;
-  background: rgba(91, 91, 255, 0.40);
-  top: -180px;
-  left: -160px;
-}
-
-.bloomB {
-  width: 480px;
-  height: 480px;
-  background: rgba(190, 140, 255, 0.32);
-  top: -120px;
-  right: -140px;
-  opacity: 0.18;
-}
-
-.bloomC {
-  width: 440px;
-  height: 440px;
-  background: rgba(255, 138, 182, 0.26);
-  bottom: -14%;
-  left: 40%;
-  opacity: 0.16;
-}
-
-@media (min-width: 1280px) {
-  .bloom {
-    opacity: 0.14;
-  }
-  .bloomB {
-    opacity: 0.12;
-  }
-  .bloomC {
-    opacity: 0.10;
-  }
 }
 
 /* Slow-rotating conic ribbon — sits behind the bento centerpiece, very subtle */
@@ -128,9 +77,6 @@
   line-height: 1.7;
   max-width: 580px;
   margin: 28px auto 36px;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: rise 540ms var(--ease) 460ms forwards;
 }
 
 .actions {
@@ -144,12 +90,15 @@
   animation: rise 540ms var(--ease) 600ms forwards;
 }
 
+/* Wraps the primary CTA so useMagnetic's spring transform can be applied
+   without disturbing Button's own markup/classes. */
+.magnetic {
+  display: inline-flex;
+}
+
 .trustWrap {
   display: flex;
   justify-content: center;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: rise 540ms var(--ease) 740ms forwards;
 }
 
 @keyframes rise {
@@ -161,9 +110,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .badgeWrap,
-  .sub,
-  .actions,
-  .trustWrap {
+  .actions {
     animation: none;
     opacity: 1;
     transform: none;
