@@ -1,0 +1,79 @@
+:root {
+  /* —— color —— */
+  --bg: #f7f8fa;
+  --bg-2: #fbfcfd;
+  --surface: #ffffff;
+  --ink: #0a0f1c;
+  --ink-2: #1f2937;
+  --body: #3b4252;
+  --muted: #6b7280;
+  --muted-2: #9ca3af;
+  --border: rgba(10, 15, 28, 0.08);
+  --border-soft: rgba(10, 15, 28, 0.04);
+  --border-strong: rgba(10, 15, 28, 0.14);
+
+  --accent: #5b5bff;
+  --accent-deep: #4338ca;
+  --accent-soft: rgba(91, 91, 255, 0.08);
+  --accent-tint: rgba(91, 91, 255, 0.04);
+  --accent-ring: rgba(91, 91, 255, 0.32);
+
+  --success: #10b981;
+  --danger: #ef4444;
+
+  /* light syntax palette for terminal */
+  --code-bg: #fbfbfd;
+  --code-keyword: #6d28d9;
+  --code-string: #0d9488;
+  --code-variable: #1e40af;
+  --code-punct: #6b7280;
+  --code-comment: #9ca3af;
+  --code-text: #1f2937;
+
+  /* —— type —— */
+  --f-display: 'Sora', system-ui, sans-serif;
+  --f-body: 'DM Sans', system-ui, sans-serif;
+  --f-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* —— motion —— */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --d-fast: 160ms;
+  --d-base: 240ms;
+  --d-slow: 360ms;
+
+  /* —— layout —— */
+  --max: 1320px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --section: clamp(80px, 10vw, 140px);
+
+  /* —— radii —— */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-2xl: 28px;
+  --r-full: 9999px;
+
+  /* —— elevation (used sparingly, hover only) —— */
+  --shadow-card-hover: 0 12px 40px rgba(10, 15, 28, 0.06),
+    0 2px 6px rgba(10, 15, 28, 0.04);
+  --shadow-glass: 0 24px 60px rgba(10, 15, 28, 0.08),
+    0 0 0 1px rgba(10, 15, 28, 0.04);
+
+  /* —— focus —— */
+  --focus-ring: 0 0 0 3px var(--accent-ring);
+
+  /* —— z —— */
+  --z-nav: 100;
+  --z-overlay: 1000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-fast: 0ms;
+    --d-base: 0ms;
+    --d-slow: 0ms;
+  }
+}

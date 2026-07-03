@@ -1,0 +1,225 @@
+.section {
+  border-top: 1px solid var(--border);
+}
+
+.heroFrame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  background: var(--bg-2);
+  margin-bottom: clamp(48px, 6vw, 80px);
+  box-shadow:
+    0 0 0 1px rgba(10, 15, 28, 0.02),
+    0 24px 60px -28px rgba(91, 91, 255, 0.18),
+    0 8px 28px -16px rgba(10, 15, 28, 0.08);
+}
+
+.heroFrame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.heroFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 64px;
+}
+
+.statCell {
+  background: var(--surface);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statValue {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.body {
+  max-width: 880px;
+  margin-inline: auto;
+}
+
+.h2 {
+  margin-block: 64px 18px;
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  letter-spacing: -0.035em;
+}
+
+.h2:first-of-type {
+  margin-top: 0;
+}
+
+.headRule {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+  border-radius: 2px;
+  margin-bottom: 22px;
+}
+
+.para {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--body);
+  margin-bottom: 16px;
+}
+
+.subHead {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-block: 32px 14px;
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9375rem;
+  color: var(--body);
+  line-height: 1.6;
+}
+
+.bulletDot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 9px;
+}
+
+.flowGrid {
+  display: grid;
+  gap: 14px;
+  margin-block: 24px 48px;
+}
+
+.flowGrid[data-cols='3'] {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.flowGrid[data-cols='4'] {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.flowCard {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px 22px;
+  transition: border-color 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.flowCard:hover {
+  border-color: rgba(91, 91, 255, 0.24);
+  transform: translateY(-2px);
+}
+
+.flowNum {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.flowTitle {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.flowDesc {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.quote {
+  border-left: 2px solid var(--accent);
+  padding: 14px 0 14px 22px;
+  margin-bottom: 16px;
+  font-style: italic;
+  color: var(--body);
+  font-size: 0.9375rem;
+}
+
+.quote span {
+  display: block;
+  font-style: normal;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 32px 8px;
+}
+
+@media (max-width: 880px) {
+  .statsGrid,
+  .flowGrid[data-cols='3'],
+  .flowGrid[data-cols='4'] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid,
+  .flowGrid[data-cols='3'],
+  .flowGrid[data-cols='4'] {
+    grid-template-columns: 1fr;
+  }
+}

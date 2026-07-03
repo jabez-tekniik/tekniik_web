@@ -1,0 +1,161 @@
+/* ============================================================
+   FinalCta — light section with gradient blooms only in corners.
+   Center stays clean so the button reads. Cursor-following
+   spotlight subtly brightens whatever the user is hovering.
+   ============================================================ */
+
+.section {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding-block: clamp(72px, 8vw, 110px);
+  background: var(--bg);
+  color: var(--ink);
+  isolation: isolate;
+}
+
+/* —— Four corner blooms —— */
+.corner {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.cornerTL {
+  width: clamp(280px, 32vw, 460px);
+  aspect-ratio: 1 / 1;
+  background: rgba(91, 91, 255, 0.42);
+  top: -42%;
+  left: -8%;
+  animation: cornerDriftA 22s ease-in-out infinite;
+}
+
+.cornerTR {
+  width: clamp(240px, 28vw, 400px);
+  aspect-ratio: 1 / 1;
+  background: rgba(244, 114, 182, 0.36);
+  top: -38%;
+  right: -6%;
+  animation: cornerDriftB 26s ease-in-out infinite;
+}
+
+.cornerBL {
+  width: clamp(260px, 30vw, 420px);
+  aspect-ratio: 1 / 1;
+  background: rgba(192, 132, 252, 0.34);
+  bottom: -42%;
+  left: -6%;
+  animation: cornerDriftC 28s ease-in-out infinite;
+}
+
+.cornerBR {
+  width: clamp(280px, 32vw, 460px);
+  aspect-ratio: 1 / 1;
+  background: rgba(91, 91, 255, 0.40);
+  bottom: -40%;
+  right: -8%;
+  animation: cornerDriftD 30s ease-in-out infinite;
+}
+
+@keyframes cornerDriftA {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(18px, 14px); }
+}
+@keyframes cornerDriftB {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 16px); }
+}
+@keyframes cornerDriftC {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(16px, -18px); }
+}
+@keyframes cornerDriftD {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-18px, -14px); }
+}
+
+/* —— Cursor-following soft indigo spotlight —— */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgba(91, 91, 255, 0.12),
+    rgba(91, 91, 255, 0.04) 30%,
+    transparent 60%
+  );
+  transition: background 220ms ease-out;
+}
+
+/* —— Foreground —— */
+.wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.heading {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  margin-bottom: 18px;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  background: linear-gradient(120deg, var(--ink) 0%, #4338ca 55%, #b06bd9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.sub {
+  font-size: 1rem;
+  color: var(--body);
+  margin-bottom: 32px;
+  max-width: 480px;
+  margin-inline: auto;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.email {
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.email a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+  transition: color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.email a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* —— Reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  .corner {
+    animation: none;
+  }
+  .spotlight {
+    transition: none;
+  }
+}

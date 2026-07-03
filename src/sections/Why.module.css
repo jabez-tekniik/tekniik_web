@@ -1,0 +1,118 @@
+.section {
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+
+.head {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+}
+
+.heading {
+  margin-block: 22px 18px;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+.headDecor {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headDecorLine {
+  height: 1px;
+  width: 60px;
+  background: var(--accent);
+}
+
+.headDecorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+
+.cell {
+  background: var(--surface);
+  padding: clamp(28px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 280ms var(--ease);
+  position: relative;
+  min-height: 200px;
+}
+
+.cell:hover {
+  background: #fafbff;
+}
+
+.cellTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cellNum {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: var(--muted-2);
+}
+
+.cellIcon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+}
+
+.cellTitle {
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+
+.cellDesc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+@media (max-width: 880px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .head {
+    position: static;
+  }
+}
+
+@media (max-width: 540px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

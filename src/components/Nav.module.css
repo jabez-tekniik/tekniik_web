@@ -1,0 +1,230 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  transition:
+    background 280ms var(--ease),
+    border-color 280ms var(--ease),
+    box-shadow 280ms var(--ease),
+    backdrop-filter 280ms var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.nav.scrolled {
+  background: rgba(247, 248, 250, 0.78);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom-color: var(--border);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  padding: 6px 4px;
+}
+
+.logoMark {
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.logoText {
+  font-feature-settings: 'ss01';
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--border);
+  padding: 4px;
+  border-radius: 999px;
+}
+
+.nav.scrolled .links {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.link {
+  font-family: var(--f-display);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--body);
+  padding: 7px 14px;
+  border-radius: 999px;
+  letter-spacing: -0.005em;
+  transition:
+    color 200ms var(--ease),
+    background 200ms var(--ease);
+  position: relative;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+.link.active {
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(10, 15, 28, 0.04),
+    0 0 0 1px var(--border);
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ctaBtn {
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  min-height: 38px;
+}
+
+.hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.hamburger:hover {
+  background: var(--surface);
+}
+
+.mobile {
+  display: none;
+  position: fixed;
+  inset: 68px 0 0 0;
+  background: var(--bg);
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% 0,
+    rgba(91, 91, 255, 0.05),
+    transparent
+  );
+  z-index: 99;
+  flex-direction: column;
+  padding: 24px var(--gutter) 32px;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--ease);
+}
+
+.mobile.mobileOpen {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  animation: mobileIn 280ms var(--ease) both;
+}
+
+@keyframes mobileIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.mobileLink {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-family: var(--f-display);
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-soft);
+  min-height: 56px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 320ms var(--ease),
+    transform 320ms var(--ease);
+}
+
+.mobile.mobileOpen .mobileLink {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobileLink.mobileActive {
+  color: var(--accent);
+}
+
+.mobileNum {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-2);
+  letter-spacing: 0.16em;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.mobileFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: auto;
+  padding-top: 28px;
+}
+
+.mobileEmail {
+  font-family: var(--f-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+
+@media (max-width: 880px) {
+  .links,
+  .cta {
+    display: none;
+  }
+  .hamburger {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,74 @@
+.section {
+  border-top: 1px solid var(--border);
+}
+
+.wrap {
+  max-width: 880px;
+  margin-inline: auto;
+  text-align: center;
+  position: relative;
+}
+
+.quoteMark {
+  position: absolute;
+  width: 80px;
+  height: 60px;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.quote {
+  font-family: var(--f-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.45;
+  color: var(--ink);
+  margin-bottom: 36px;
+  position: relative;
+}
+
+.attribution {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+}
+
+.attrText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+.attrText strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.attrText span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}

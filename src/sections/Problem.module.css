@@ -1,0 +1,145 @@
+.section {
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+
+.body {
+  max-width: 540px;
+}
+
+.heading {
+  margin-block: 22px 24px;
+}
+
+.para {
+  font-size: 1rem;
+  color: var(--body);
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+
+.visual {
+  position: relative;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 12px 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 24px 26px;
+  position: relative;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+
+.before {
+  align-self: flex-start;
+  width: clamp(260px, 80%, 360px);
+  transform: rotate(-1.2deg);
+}
+
+.after {
+  align-self: flex-end;
+  width: clamp(260px, 80%, 380px);
+  transform: rotate(1deg);
+  background: linear-gradient(180deg, var(--surface), #fafbff);
+  border-color: rgba(91, 91, 255, 0.18);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 24px 60px -28px rgba(91, 91, 255, 0.4),
+    0 4px 14px -8px rgba(91, 91, 255, 0.2);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.cardLabel {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.badgeBad,
+.badgeGood {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badgeBad {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.badgeGood {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.cardBody {
+  font-size: 0.875rem;
+  color: var(--body);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.cardLines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lineBad,
+.lineGood {
+  height: 4px;
+  border-radius: 999px;
+  display: block;
+}
+
+.lineBad {
+  background: linear-gradient(90deg, #fecaca, transparent);
+}
+
+.lineGood {
+  background: linear-gradient(90deg, var(--accent), rgba(91, 91, 255, 0.2));
+}
+
+@media (max-width: 880px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .visual {
+    min-height: auto;
+  }
+  .before,
+  .after {
+    width: 100%;
+    transform: none;
+  }
+}

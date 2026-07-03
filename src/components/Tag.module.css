@@ -1,0 +1,27 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  border: 1px solid rgba(91, 91, 255, 0.16);
+  border-radius: 999px;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--muted);
+  background: rgba(10, 15, 28, 0.04);
+  border-color: var(--border);
+}
+
+.outline {
+  color: var(--ink-2);
+  background: transparent;
+  border-color: var(--border-strong);
+}

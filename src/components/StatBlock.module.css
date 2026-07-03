@@ -1,0 +1,36 @@
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.value {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.875rem, 3.6vw, 2.875rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.center {
+  text-align: center;
+  align-items: center;
+}

@@ -1,0 +1,58 @@
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
+  will-change: opacity, transform;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+ * Stagger uses a keyframe animation (not transitions) for entry so the
+ * `transition` and `transition-delay` properties stay free for the child's
+ * own hover transitions. Otherwise the 700ms duration + per-child delays
+ * (up to 560ms) would override hover transitions, making cards feel laggy.
+ */
+.stagger > * {
+  opacity: 0;
+}
+
+.stagger.visible > * {
+  opacity: 1;
+  animation: revealStagger 700ms var(--ease) backwards;
+}
+
+.stagger.visible > *:nth-child(1) { animation-delay: 0ms; }
+.stagger.visible > *:nth-child(2) { animation-delay: 80ms; }
+.stagger.visible > *:nth-child(3) { animation-delay: 160ms; }
+.stagger.visible > *:nth-child(4) { animation-delay: 240ms; }
+.stagger.visible > *:nth-child(5) { animation-delay: 320ms; }
+.stagger.visible > *:nth-child(6) { animation-delay: 400ms; }
+.stagger.visible > *:nth-child(7) { animation-delay: 480ms; }
+.stagger.visible > *:nth-child(8) { animation-delay: 560ms; }
+
+@keyframes revealStagger {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
