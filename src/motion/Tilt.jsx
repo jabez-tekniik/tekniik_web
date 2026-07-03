@@ -1,8 +1,10 @@
 import { useRef } from 'react'
 import { m, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import useReducedMotion from '../hooks/useReducedMotion.js'
 
 export default function Tilt({ children, max = 8, scale = 1.02, className = '', ...rest }) {
   const ref = useRef(null)
+  const reduced = useReducedMotion()
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
   const sx = useSpring(px, { stiffness: 150, damping: 18 })
@@ -26,10 +28,10 @@ export default function Tilt({ children, max = 8, scale = 1.02, className = '', 
     <m.div
       ref={ref}
       className={className}
-      onPointerMove={onMove}
-      onPointerLeave={onLeave}
-      whileHover={{ scale }}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      onPointerMove={reduced ? undefined : onMove}
+      onPointerLeave={reduced ? undefined : onLeave}
+      whileHover={reduced ? undefined : { scale }}
+      style={reduced ? undefined : { rotateX, rotateY, transformPerspective: 800 }}
       {...rest}
     >
       {children}
