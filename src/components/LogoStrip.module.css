@@ -44,6 +44,9 @@
 }
 
 .value {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
   font-family: var(--f-display);
   font-weight: 700;
   font-size: 15px;
@@ -56,6 +59,38 @@
   color: transparent;
 }
 
+.value::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.85) 50%, transparent 80%);
+  transform: translateX(-120%);
+  opacity: 0;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.revealed .value::after {
+  animation: chipShimmer 1200ms ease-out 700ms 1 both;
+}
+
+@keyframes chipShimmer {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
 .label {
   font-family: var(--f-body);
   font-size: 13px;
@@ -65,5 +100,11 @@
 @media (max-width: 520px) {
   .chip {
     padding: 8px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealed .value::after {
+    animation: none;
   }
 }
