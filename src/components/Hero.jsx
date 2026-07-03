@@ -3,6 +3,7 @@ import HeroBadge from './HeroBadge.jsx'
 import GradientHeadline from './GradientHeadline.jsx'
 import TrustStrip from './TrustStrip.jsx'
 import ServiceShowcase from '../sections/ServiceShowcase.jsx'
+import { Reveal } from '../motion/index.js'
 import { HERO } from '../data/content.js'
 import styles from './Hero.module.css'
 
@@ -29,7 +30,7 @@ export default function Hero() {
 
         <GradientHeadline plainPrefix={plainPrefix} gradientSuffix={gradientSuffix} />
 
-        <p className={styles.sub}>{HERO.sub}</p>
+        <Reveal as="p" delay={0.1} className={styles.sub}>{HERO.sub}</Reveal>
 
         <div className={styles.actions}>
           <Button to={HERO.primaryCta.to} variant="primary" arrow>
