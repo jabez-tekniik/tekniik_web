@@ -1,4 +1,4 @@
-import Reveal from '../components/Reveal.jsx'
+import { Reveal } from '../motion/index.js'
 import Eyebrow from '../components/Eyebrow.jsx'
 import { IconClose, IconCheck } from '../components/Icon.jsx'
 import { PROBLEM } from '../data/content.js'
@@ -9,16 +9,22 @@ export default function Problem() {
     <section className={`section ${styles.section}`}>
       <div className="container">
         <div className={styles.grid}>
-          <Reveal className={styles.body}>
-            <Eyebrow tone="muted">{PROBLEM.eyebrow}</Eyebrow>
-            <h2 className={styles.heading}>{PROBLEM.heading}</h2>
+          <div className={styles.body}>
+            <Reveal as="div" delay={0 * 0.08}>
+              <Eyebrow tone="muted">{PROBLEM.eyebrow}</Eyebrow>
+            </Reveal>
+            <Reveal as="h2" delay={1 * 0.08} className={styles.heading}>
+              {PROBLEM.heading}
+            </Reveal>
             {PROBLEM.paragraphs.map((p, i) => (
-              <p key={i} className={styles.para}>{p}</p>
+              <Reveal key={i} as="p" delay={(i + 2) * 0.08} className={styles.para}>
+                {p}
+              </Reveal>
             ))}
-          </Reveal>
+          </div>
 
           <div className={styles.visual}>
-            <Reveal delay={120}>
+            <Reveal delay={0.12}>
               <div className={`${styles.card} ${styles.before}`}>
                 <div className={styles.cardHead}>
                   <span className={styles.cardLabel}>// {PROBLEM.beforeCard.label}</span>
@@ -35,7 +41,7 @@ export default function Problem() {
               </div>
             </Reveal>
 
-            <Reveal delay={260}>
+            <Reveal delay={0.26}>
               <div className={`${styles.card} ${styles.after}`}>
                 <div className={styles.cardHead}>
                   <span className={styles.cardLabel}>// {PROBLEM.afterCard.label}</span>
