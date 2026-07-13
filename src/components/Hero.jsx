@@ -1,4 +1,5 @@
 import Button from './Button.jsx'
+import HeroCircuit from './HeroCircuit.jsx'
 import {
   useInViewOnce,
   useMagneticInk,
@@ -123,20 +124,40 @@ export default function Hero() {
 
       let cancelled = false
       let timer = 0
+      let raf = 0
       let typed = -1
 
-      // park the caret against a character's edge (right edge once typed,
-      // left edge of the first character before typing starts)
-      const placeCaret = (ch, side = 'right') => {
-        if (!caret || !headline || !ch) return
+      // measure every char rect ONCE (per layout) so the type loop never
+      // forces sync layout — reading rects mid-type is what causes jank
+      let spots = []
+      const measure = () => {
         const base = headline.getBoundingClientRect()
-        const r = ch.getBoundingClientRect()
-        // short bar seated low in the line box — clears the previous
-        // line's descenders above and the trace below
-        const x = (side === 'right' ? r.right : r.left) - base.left + r.height * 0.07
-        const y = r.top - base.top + r.height * 0.36
-        caret.style.height = `${r.height * 0.46}px`
-        caret.style.transform = `translate3d(${x}px, ${y}px, 0)`
+        spots = chars.map((ch) => {
+          const r = ch.getBoundingClientRect()
+          return {
+            // short bar seated low in the line box — clears the previous
+            // line's descenders above and the trace below
+            xr: r.right - base.left + r.height * 0.07,
+            xl: r.left - base.left + r.height * 0.07,
+            y: r.top - base.top + r.height * 0.36,
+            h: r.height * 0.46,
+          }
+        })
+      }
+
+      const placeCaret = (i, side = 'right') => {
+        const s = spots[i]
+        if (!caret || !s) return
+        caret.style.height = `${s.h}px`
+        caret.style.transform = `translate3d(${side === 'right' ? s.xr : s.xl}px, ${s.y}px, 0)`
+      }
+
+      // precomputed reveal timeline (ms from type start) per char
+      const times = []
+      let acc = 0
+      for (let i = 0; i < chars.length; i += 1) {
+        acc += TYPE_BASE + TYPE_JITTER[i % TYPE_JITTER.length] + (boundaries.has(i) ? WORD_PAUSE : 0)
+        times.push(acc)
       }
 
       const finish = () => {
@@ -154,26 +175,31 @@ export default function Hero() {
         )
       }
 
-      const typeNext = () => {
-        if (cancelled) return
-        typed += 1
-        if (typed >= chars.length) {
-          finish()
-          return
+      // rAF-driven reveal — frame-locked, so the rhythm never stutters the
+      // way chained setTimeouts do under timer clamping
+      const runType = () => {
+        const t0 = performance.now()
+        const tick = (now) => {
+          if (cancelled) return
+          const el = now - t0
+          while (typed + 1 < chars.length && el >= times[typed + 1]) {
+            typed += 1
+            chars[typed].style.visibility = 'visible'
+          }
+          if (typed >= 0) placeCaret(typed)
+          if (typed >= chars.length - 1) {
+            finish()
+            return
+          }
+          raf = requestAnimationFrame(tick)
         }
-        const ch = chars[typed]
-        ch.style.visibility = 'visible'
-        placeCaret(ch)
-        const delay =
-          TYPE_BASE +
-          TYPE_JITTER[typed % TYPE_JITTER.length] +
-          (boundaries.has(typed + 1) ? WORD_PAUSE : 0)
-        timer = setTimeout(typeNext, delay)
+        raf = requestAnimationFrame(tick)
       }
 
       const onResize = () => {
-        if (typed < 0) placeCaret(chars[0], 'left')
-        else placeCaret(chars[Math.min(typed, chars.length - 1)])
+        measure()
+        if (typed < 0) placeCaret(0, 'left')
+        else placeCaret(Math.min(typed, chars.length - 1))
       }
       window.addEventListener('resize', onResize, { passive: true })
 
@@ -189,13 +215,14 @@ export default function Hero() {
           // wait for Satoshi so caret metrics don't shift mid-type
           const start = () => {
             if (cancelled) return
-            placeCaret(chars[0], 'left')
+            measure()
+            placeCaret(0, 'left')
             caret.style.opacity = '1'
             caret.classList.add(styles.caretBlink)
             timer = setTimeout(() => {
               if (cancelled) return
               caret.classList.remove(styles.caretBlink)
-              typeNext()
+              runType()
             }, START_PAUSE)
           }
           if (document.fonts?.ready) document.fonts.ready.then(start)
@@ -204,6 +231,7 @@ export default function Hero() {
         cleanup() {
           cancelled = true
           clearTimeout(timer)
+          cancelAnimationFrame(raf)
           window.removeEventListener('resize', onResize)
         },
       }
@@ -215,6 +243,7 @@ export default function Hero() {
     <section className={styles.hero} ref={rootRef}>
       <div className={styles.blueprint} aria-hidden="true" />
       <Watermark />
+      <HeroCircuit />
 
       <div className={`container ${styles.inner}`}>
         {/* Meta bar — eyebrow left, trust right, under a hairline */}
