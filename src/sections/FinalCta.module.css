@@ -4,11 +4,46 @@
 
 .section {
   position: relative;
-  padding-block: clamp(88px, 12vw, 170px);
+  padding-block: clamp(64px, 8vw, 112px);
   background: var(--band);
   color: var(--on-band);
   overflow: hidden;
   isolation: isolate;
+}
+
+/* —— background bloom: one soft teal radial that slowly breathes.
+   Pure CSS, transform/opacity only, no extra DOM. —— */
+.section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: clamp(420px, 55vw, 900px);
+  aspect-ratio: 1;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(114, 204, 214, 0.13),
+    rgba(114, 204, 214, 0.07) 30%,
+    rgba(114, 204, 214, 0.03) 50%,
+    rgba(114, 204, 214, 0.01) 65%,
+    transparent 78%
+  );
+  animation: bloomBreathe 14s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes bloomBreathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: translate3d(-4%, 6%, 0) scale(1.12);
+    opacity: 1;
+  }
 }
 
 /* —— chevron watermark —— */
@@ -161,5 +196,8 @@
 @media (prefers-reduced-motion: reduce) {
   .emailText::after {
     transition: none;
+  }
+  .section::before {
+    animation: none;
   }
 }

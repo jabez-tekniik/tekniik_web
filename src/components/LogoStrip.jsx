@@ -1,11 +1,12 @@
 import Reveal from './Reveal.jsx'
+import { StarredText } from './Icon.jsx'
 import useCounter from '../hooks/useCounter.js'
 import styles from './LogoStrip.module.css'
 
 // Only genuine numeric proof points belong here — values that begin with a
-// digit. The numeric part gets an on-scroll count-up; any trailing glyph
-// (+, %, ★) is preserved verbatim. Non-numeric brand words (Senior, AI-native,
-// Long-term) are intentionally excluded from this section.
+// digit. The numeric part gets an on-scroll count-up; any trailing glyph is
+// preserved (★ renders as the rounded IconStar). Non-numeric brand words
+// (Senior, AI-native, Long-term) are intentionally excluded from this section.
 const NUMERIC_VALUE = /^(\d+(?:\.\d+)?)(.*)$/
 
 function StatValue({ match }) {
@@ -18,7 +19,9 @@ function StatValue({ match }) {
   return (
     <span ref={counterRef} className={styles.value}>
       {count.toFixed(decimals)}
-      <span className={styles.valueGlyph}>{match[2]}</span>
+      <span className={styles.valueGlyph}>
+        <StarredText text={match[2]} />
+      </span>
     </span>
   )
 }

@@ -18,7 +18,9 @@ export default function WordRise({
       const words = el.querySelectorAll('[data-w]')
       return {
         init() {
-          utils.set(words, { translateY: '110%' })
+          /* 125% (not 110%): the clip boxes carry 0.15em of descender padding,
+             so a shallower offset would leave a sliver of the word visible */
+          utils.set(words, { translateY: '125%' })
         },
         play() {
           createTimeline().add(
@@ -39,7 +41,18 @@ export default function WordRise({
         <Fragment key={i}>
           <span
             aria-hidden="true"
-            style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}
+            style={{
+              display: 'inline-block',
+              overflow: 'hidden',
+              verticalAlign: 'bottom',
+              /* clip-box breathing room, pulled back with negative margins so
+                 spacing is visually unchanged:
+                 - below: at tight line-heights the 1em box cuts y/p/g tails
+                 - sides: negative letter-spacing makes the advance width
+                   narrower than the last glyph's ink, shaving its edge */
+              padding: '0 0.1em 0.15em',
+              margin: '0 -0.1em -0.15em',
+            }}
           >
             <span data-w="" style={{ display: 'inline-block', willChange: 'transform' }}>
               {unit}

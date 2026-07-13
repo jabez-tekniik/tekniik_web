@@ -2,10 +2,79 @@
 
 ## Open
 
+### HeroCircuit SVG traces overflow the viewport at 320px (low, pre-existing)
+At a 320px viewport, `document.scrollWidth > clientWidth` — the culprits are the
+decorative `HeroCircuit.jsx` SVG traces/electrons (elements ~300–500px wide
+extending past the right edge), not page content. Surfaced during the star-icon
+QA sweep (2026-07-14); unrelated to that change. No overflow at 414px+. Fix
+candidates: `overflow-x: clip` on the hero, or size/mask the circuit layer to
+the viewport at small widths.
+
+### Footer legal links are placeholders (medium)
+The footer `// Legal` column (Privacy Policy, Terms of Service, GDPR Cookie
+Policy — `FOOTER.cols` in `src/data/content.js`) points at `#` because the
+actual legal pages don't exist yet. Needs real `/privacy`, `/terms`,
+`/cookie-policy` routes with reviewed legal copy, then update the `to` values.
+`Footer.jsx` already renders route links (`/...`) as `<Link>` and anything else
+as a plain `<a>`, so swapping in real routes is a data-only change.
+
+### `/img/services/*.webp` no longer used on the homepage (low)
+The 2026-07-14 vignette revamp replaced the ServiceShowcase image stage with
+coded animated scenes (`src/sections/ServiceVignettes.jsx`), so the homepage no
+longer loads the four service webp images. They ARE still used by
+`pages/Services.jsx` rows — keep the files. If the Services page ever gets its
+own vignettes, the images and their `svc-*` entries in
+`scripts/generateTekniikImages.js` can be deleted.
+
 ### `ogl` + `AuroraShader` are now dead weight on the homepage
 The 2026-07-07 "Bold Editorial" revamp removed the aurora wash — `AuroraShader` (OGL WebGL) is no longer imported by any route (Hero + FinalCta dropped it). It's still exported from `src/motion/index.js` and the `ogl` dependency is still installed, so it ships in the bundle graph as an unused lazy chunk. Follow-up: either delete `src/motion/AuroraShader.*` + drop `ogl` from `package.json`, or repurpose the shader for a future dark toggle. Left in place for now (self-contained, harmless) to keep the revamp scoped to layout/design.
 
 ## Resolved
+
+### Sharp ★ text glyph replaced with rounded IconStar everywhere on the homepage (2026-07-14)
+User: the ★ star (Hero trust line, `4.9★` Numbers stat, `4.8★ app store` proof
+ticker) had sharp points. The `★` characters in `content.js` copy are now
+rendered via `StarredText` (Icon.jsx), which splits the string and swaps each
+`★` for `IconStar` — a filled star with a heavy round-joined stroke that blunts
+the points, sized in em so it tracks the surrounding font. Copy in `content.js`
+untouched. Two gotchas: `reset.css` blockifies all `svg` (star dropped onto its
+own line) — fixed with `display:inline-block` on the icon; and the Numbers-band
+glyph now sizes at `0.58em` of the digits (plus `white-space: nowrap` on
+`.value`) so it reads as a rating badge and can't wrap. Verified: build + lint
+clean, screenshots at 320/414/768/1280, 0 console errors.
+
+### Process section revamp: "Chapters" timeline → "Phase horizon" band + dot wave (2026-07-14)
+User: the "How we work" section "looks bad" — entirely revamped. Now a
+full-bleed brand-navy band with a three.js animated dot-wave background
+(`DottedSurface.jsx` + lazy `DottedSurfaceScene.jsx`, adapted from 21st.dev
+"dotted-surface"; recreated in Tekniik idiom instead of its TSX/Tailwind/
+next-themes original). Phases sit on a descending staircase; a teal fill races
+across each phase's top hairline in sequence with scroll. `three` added as a
+dependency but ships as an IO+idle-gated lazy chunk, so the main bundle is
+unchanged; scene pauses offscreen and disposes on unmount; reduced motion gets
+a static CSS dot texture. Verified: build+lint clean, 0 console errors, no
+h-scroll at 320/375/768/1024/1280/1600, both ink modes, reduced-motion pass.
+
+
+### ServiceShowcase stage: static images → coded animated vignettes (2026-07-14)
+The sticky stage crossfaded 4 static webp renders; user asked for animated,
+highly interactive scenes instead. Built `ServiceVignettes.jsx` + module CSS:
+one coded scene per capability (Websites = self-assembling site + cursor that
+clicks the CTA; Web Apps = live dashboard with breathing bars + self-drawing
+trend line; Mobile = phone scrolling screens synced to its tab bar + dropping
+notification; AI = pipeline with flowing packets into a thinking core and three
+outcome chips). All color from theme tokens so BOTH ink modes adapt (images
+couldn't); pure CSS keyframes/transitions gated on the active class (idle
+scenes cost nothing); pointer parallax via `useStageParallax` (rAF lerp writing
+`--px/--py`, depth layers); stage is a size container so scenes scale via
+cqw/cqh at every viewport; touch devices auto-cycle scenes (IO-gated interval);
+reduced motion renders complete static compositions. Two bugs caught in the
+Playwright sweep: percentage padding on absolutely-positioned nodes resolves
+against the containing block (stage), not the element — crushed the AI doc
+node's content to 0 width (fixed with cqw clamps); and the stage index badge
+had a hardcoded dark scrim unreadable on the light theme (now tokens).
+Verified: lint + build clean, 0 console errors, no h-scroll at 320/375/768/1280,
+both themes, reduced-motion pass.
 
 ### Round-2 homepage refinements (2026-07-07) — font, hero, images, stats, band rhythm
 Five user-requested fixes on the Bold Editorial homepage: (1) **Font** — `--f-mono` swapped from IBM Plex Mono to `'Inter'` (the mono read as off-brand "code"); dropped the IBM Plex Mono `<link>` from `index.html`. (2) **Hero redesign** — the old text-left / cards-right split ("too normal") replaced with a full-width **oversized poster headline** (`clamp(3.4rem,12vw,10rem)`) + a hand-drawn indigo **marker** SVG that draws under "right." + a **full-bleed infinite proof-ticker** marquee of the `TERMINAL_FRAMES` outcomes (pauses on hover, edge-masked, reduced-motion static). Cascade removed. (3) **ServiceShowcase images** — the 4 service images were dark cinematic renders full of garbled fake UI text and clashed with the light theme; regenerated as light indigo-restrained ABSTRACT forms (rewrote the `ABSTRACT` style + the 4 `svc-*` prompts in `scripts/generateTekniikImages.js`, 4:3) and wired into the cards (featured = full-width horizontal split, others = image-topped 3-up). (4) **Numbers** — `LogoStrip` now filters to numeric-leading values only (`50+`, `98%`, `4.9★`); the 3 non-numeric brand words dropped; bold 3-up. (5) **Band rhythm** — Testimonial was a near-black band directly above the near-black FinalCta; Testimonial re-themed **light** so FinalCta is the single dark crescendo. Verified: build + lint clean, 0 console errors (only the pre-existing benign `useScroll` warning), no horizontal scroll at 320/375/1440. `content.js` copy untouched.

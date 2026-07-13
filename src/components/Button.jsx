@@ -3,6 +3,7 @@ import styles from './Button.module.css'
 
 const variants = {
   primary: styles.primary,
+  inverse: styles.inverse,
   ghost: styles.ghost,
   text: styles.text,
 }

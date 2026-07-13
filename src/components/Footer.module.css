@@ -25,7 +25,7 @@
   margin-inline: auto;
   padding-inline: var(--gutter);
   display: grid;
-  grid-template-columns: 2fr repeat(3, 1fr);
+  grid-template-columns: 1.6fr 0.9fr 0.9fr 1.4fr;
   gap: 48px;
   margin-bottom: 48px;
 }
@@ -151,10 +151,13 @@
   flex-direction: column;
   gap: 4px;
   font-style: normal;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--body);
-  line-height: 1.6;
-  margin-bottom: 14px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  padding-left: 14px;
+  border-left: 2px solid var(--accent);
+  animation: regionIn 360ms var(--ease-out) backwards;
 }
 
 .colHead {
@@ -183,15 +186,65 @@
 }
 
 .region {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   font-size: 0.875rem;
   color: var(--body);
   margin-bottom: 6px;
+  animation: regionIn 360ms var(--ease-out) backwards;
 }
 
-.dot {
-  color: var(--success);
-  font-size: 0.6em;
-  vertical-align: middle;
+.flag {
+  display: inline-flex;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border);
+  line-height: 0;
+  animation: flagIn 420ms var(--ease-out) 60ms backwards;
+}
+
+.flag svg {
+  display: block;
+}
+
+.country {
+  font-family: var(--f-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+@keyframes regionIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes flagIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .region,
+  .flag,
+  .address {
+    animation: none;
+  }
 }
 
 .bottom {
@@ -210,18 +263,8 @@
   letter-spacing: 0.02em;
 }
 
-.legal {
-  display: flex;
-  gap: 20px;
-}
-
-.legal a {
+.made {
   color: var(--muted);
-  transition: color 200ms var(--ease);
-}
-
-.legal a:hover {
-  color: var(--ink);
 }
 
 @media (max-width: 900px) {

@@ -14,7 +14,7 @@ export const HERO = {
   sub: 'We design and build websites, web apps, mobile apps, and AI-powered systems for businesses that need technology they can actually rely on.',
   primaryCta: { label: 'Get a Quote', to: '/contact' },
   ghostCta: { label: 'See how we work', to: '/about' },
-  trust: '4.9★ · 50+ PROJECTS · UK',
+  trust: '4.9★ · 50+ PROJECTS · UK · INDIA',
 }
 
 export const TERMINAL_FRAMES = [
@@ -196,11 +196,33 @@ export const PORTFOLIO = {
   ],
 }
 
-export const TESTIMONIAL = {
-  text: 'Tekniik was completely different. They actually listened, kept us in the loop the whole way, and delivered exactly what they promised. For the first time we have a system that just works.',
-  name: 'James Crawford',
-  role: 'Managing Director, Crawford Property Group',
-}
+export const TESTIMONIALS = [
+  {
+    text: 'Tekniik was completely different. They actually listened, kept us in the loop the whole way, and delivered exactly what they promised. For the first time we have a system that just works.',
+    name: 'James Crawford',
+    role: 'Managing Director, Crawford Property Group',
+  },
+  {
+    text: 'They took the time to understand how care actually works before writing a single line of code. The platform now runs our entire operation, and the team is still with us today.',
+    name: 'Marieke van Dijk',
+    role: 'Operations Director, CareGrid',
+  },
+  {
+    text: 'From the first call it felt like they were part of our team. Bookings that used to take phone calls now happen in seconds, and our salons noticed the difference immediately.',
+    name: 'Camille Laurent',
+    role: 'Founder, GlowBook',
+  },
+  {
+    text: 'Fast, precise, and no surprises. They shipped exactly what was scoped, in the week they said they would. Quote requests have more than doubled since the site went live.',
+    name: 'Stefan Bauer',
+    role: 'Managing Director, ScreenFix',
+  },
+  {
+    text: 'We are craftsmen, not technologists, and they respected that. They translated what we do into a website that finally sells it properly. Enquiries have never been stronger.',
+    name: 'Rui Almeida',
+    role: 'Owner, StoneCraft',
+  },
+]
 
 export const OFFICE = {
   label: 'Chennai Office',
@@ -516,11 +538,11 @@ export const FOOTER = {
   careersEmail: 'hr@tekniik.ai',
   whatsapp: '+918148984627',
   whatsappLabel: 'WhatsApp · +91 81489 84627',
-  region: 'United Kingdom · India',
   offices: [
     {
       key: 'chennai',
       label: 'Chennai',
+      country: 'India',
       lines: [
         'WeWork Block 10, DLF Cybercity',
         '124, Mount Poonamallee Rd',
@@ -531,6 +553,7 @@ export const FOOTER = {
     {
       key: 'uk',
       label: 'London',
+      country: 'United Kingdom',
       lines: [
         '71-75 Shelton Street',
         'Covent Garden',
@@ -550,18 +573,14 @@ export const FOOTER = {
       ],
     },
     {
-      label: 'Services',
+      label: 'Legal',
       links: [
-        { label: 'Websites', to: '/services' },
-        { label: 'Web Applications', to: '/services' },
-        { label: 'Mobile Apps', to: '/services' },
-        { label: 'AI & Automation', to: '/services' },
+        { label: 'Privacy Policy', to: '#' },
+        { label: 'Terms of Service', to: '#' },
+        { label: 'GDPR Cookie Policy', to: '#' },
       ],
     },
   ],
-  legal: [
-    { label: 'Privacy', to: '#' },
-    { label: 'Terms', to: '#' },
-  ],
   copyright: '© 2026 Tekniik. All rights reserved.',
+  madeWith: 'Made with love and code by Tekniik Team',
 }

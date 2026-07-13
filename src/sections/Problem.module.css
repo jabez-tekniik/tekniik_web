@@ -67,11 +67,23 @@
 }
 
 /* —— comparison ledger —— */
+/* Entrance fade lives here (not <Reveal>) so the same in-view trigger
+   (`.play`) also conducts the bar choreography below. */
 .ledger {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--hairline);
   border-bottom: 1px solid var(--hairline);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 700ms var(--ease) 80ms,
+    transform 700ms var(--ease) 80ms;
+}
+
+.ledger.play {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .half {
@@ -154,19 +166,72 @@
   color: var(--text);
 }
 
-/* —— schematic bars —— */
-.lines {
+/* —— audit rows ——
+   Label + verdict + meaningful fill level per row, so the bars read as an
+   audit ledger rather than a skeleton loader. The motion is the message:
+   the agency side fills in a stuttering crawl that stalls twice and dies
+   dim; the Tekniik side sweeps in fast, glow growing with the fill, then
+   one light sheen passes over — finished while the other side is still
+   limping. Each verdict stamps in as its own bar lands. Fires once via
+   `.play`. */
+.audit {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 22px;
+}
+
+.auditMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.auditLabel {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.valueBad,
+.valueGood {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.valueBad {
+  color: var(--danger);
+}
+
+.valueGood {
+  color: var(--accent);
+}
+
+.track {
+  display: block;
+  height: 4px;
+  background: rgba(10, 11, 16, 0.07);
+}
+
+.after .track {
+  background: var(--accent-soft);
 }
 
 .lineBad,
 .lineGood {
   display: block;
-  height: 5px;
+  height: 100%;
 }
 
 .lineBad {
@@ -175,11 +240,113 @@
     rgba(248, 113, 113, 0.32) 0 4px,
     transparent 4px 9px
   );
+  /* clip-path (not scaleX) so the hatch texture doesn't stretch while
+     filling — composited in modern engines, one-shot, tiny element */
+  clip-path: inset(0 100% 0 0);
+  opacity: 0.72;
 }
 
 .lineGood {
+  position: relative;
+  overflow: hidden;
   background: var(--accent);
   box-shadow: 0 0 14px var(--accent-shadow);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.lineGood::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  transform: translateX(-130%);
+}
+
+.play .lineBad {
+  animation: barStall 1600ms linear calc(250ms + var(--i) * 280ms) forwards;
+}
+
+.play .lineGood {
+  animation: barSweep 650ms var(--ease-out) calc(600ms + var(--i) * 120ms)
+    forwards;
+}
+
+.play .lineGood::after {
+  animation: barSheen 700ms cubic-bezier(0.65, 0, 0.35, 1)
+    calc(1550ms + var(--i) * 120ms) forwards;
+}
+
+/* verdicts stamp in as their bar lands (bad bars die at ~1850ms + stagger,
+   good bars land at ~1250ms + stagger) */
+.play .valueBad {
+  animation: valueIn 400ms var(--ease-out) calc(1750ms + var(--i) * 280ms)
+    forwards;
+}
+
+.play .valueGood {
+  animation: valueIn 400ms var(--ease-out) calc(1200ms + var(--i) * 120ms)
+    forwards;
+}
+
+@keyframes valueIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes barStall {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 1;
+    animation-timing-function: var(--ease-out);
+  }
+  30% {
+    clip-path: inset(0 42% 0 0);
+    animation-timing-function: linear;
+  }
+  44% {
+    clip-path: inset(0 40% 0 0);
+    animation-timing-function: var(--ease-out);
+  }
+  62% {
+    clip-path: inset(0 18% 0 0);
+    animation-timing-function: linear;
+  }
+  78% {
+    clip-path: inset(0 16% 0 0);
+    opacity: 1;
+    animation-timing-function: var(--ease);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0.72;
+  }
+}
+
+@keyframes barSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes barSheen {
+  from {
+    transform: translateX(-130%);
+  }
+  to {
+    transform: translateX(330%);
+  }
 }
 
 /* —— responsive —— */
@@ -190,5 +357,30 @@
   .half + .half {
     border-left: none;
     border-top: 1px solid var(--hairline);
+  }
+}
+
+/* —— reduced motion: everything renders complete + static —— */
+@media (prefers-reduced-motion: reduce) {
+  .ledger {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lineBad,
+  .lineGood {
+    animation: none !important;
+    clip-path: none;
+    transform: none;
+    opacity: 1;
+  }
+  .valueBad,
+  .valueGood {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  .lineGood::after {
+    display: none;
   }
 }

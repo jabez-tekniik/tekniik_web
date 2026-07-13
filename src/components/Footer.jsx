@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FOOTER } from '../data/content.js'
-import { IconMail, IconWhatsApp } from './Icon.jsx'
+import { IconMail, IconWhatsApp, IconFlagIndia, IconFlagUK } from './Icon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import styles from './Footer.module.css'
+
+const FLAGS = { chennai: IconFlagIndia, uk: IconFlagUK }
 
 export default function Footer() {
   const [officeKey, setOfficeKey] = useState(FOOTER.offices[0].key)
   const office = FOOTER.offices.find((o) => o.key === officeKey) ?? FOOTER.offices[0]
+  const Flag = FLAGS[office.key]
 
   return (
     <footer className={styles.footer}>
@@ -51,7 +54,11 @@ export default function Footer() {
             <ul className={styles.colLinks}>
               {col.links.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.to}>{l.label}</Link>
+                  {l.to.startsWith('/') ? (
+                    <Link to={l.to}>{l.label}</Link>
+                  ) : (
+                    <a href={l.to}>{l.label}</a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -59,6 +66,7 @@ export default function Footer() {
         ))}
 
         <div>
+          <div className={styles.colHead}>// Location</div>
           <div className={styles.officeTabs} role="tablist" aria-label="Office locations">
             {FOOTER.offices.map((o) => (
               <button
@@ -73,25 +81,24 @@ export default function Footer() {
               </button>
             ))}
           </div>
-          <address className={styles.address}>
+          <address className={styles.address} key={`addr-${office.key}`}>
             {office.lines.map((line) => (
               <span key={line}>{line}</span>
             ))}
           </address>
-          <p className={styles.region}>
-            <span className={styles.dot}>●</span> {FOOTER.region}
+          <p className={styles.region} key={`region-${office.key}`}>
+            {Flag && (
+              <span className={styles.flag} aria-hidden="true">
+                <Flag />
+              </span>
+            )}
+            <span className={styles.country}>{office.country}</span>
           </p>
         </div>
       </div>
       <div className={styles.bottom}>
         <span>{FOOTER.copyright}</span>
-        <div className={styles.legal}>
-          {FOOTER.legal.map((l) => (
-            <a key={l.label} href={l.to}>
-              {l.label}
-            </a>
-          ))}
-        </div>
+        <span className={styles.made}>{FOOTER.madeWith}</span>
       </div>
     </footer>
   )

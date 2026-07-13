@@ -1,17 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import { CAPABILITIES } from '../data/content.js'
+import { WebScene, AppScene, MobileScene, AiScene } from './ServiceVignettes.jsx'
+import useStageParallax from '../hooks/useStageParallax.js'
 import styles from './ServiceShowcase.module.css'
 
-// key → ink abstract visual (dark navy/teal, regenerated via
-// scripts/generateTekniikImages.js so there is no garbled fake UI/text).
-const SERVICE_IMG = {
-  web: '/img/services/websites.webp',
-  app: '/img/services/apps.webp',
-  mobile: '/img/services/mobile.webp',
-  ai: '/img/services/ai.webp',
-}
+const VIGNETTES = { web: WebScene, app: AppScene, mobile: MobileScene, ai: AiScene }
 
 function ArrowGlyph() {
   return (
@@ -28,11 +23,37 @@ function ArrowGlyph() {
 }
 
 /* "Capability index" — an interactive ledger. The rows on the left drive a
-   sticky image stage on the right: hover/focus a capability and its ink
-   visual crossfades in. No card grid — structure comes from hairlines. */
+   sticky vignette stage on the right: hover/focus a capability and its coded,
+   animated scene crossfades in (see ServiceVignettes.jsx). The stage also
+   parallaxes toward the pointer; on touch devices it auto-cycles instead. */
 export default function ServiceShowcase() {
   const [active, setActive] = useState(0)
   const items = CAPABILITIES.items
+  const stageRef = useStageParallax()
+
+  /* touch devices have no hover to drive the ledger — cycle the scenes
+     while the stage is on screen (skipped under reduced motion) */
+  useEffect(() => {
+    if (!window.matchMedia('(hover: none), (pointer: coarse)').matches) return undefined
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    const el = stageRef.current
+    if (!el) return undefined
+    let id
+    const io = new IntersectionObserver(
+      (entries) => {
+        clearInterval(id)
+        if (entries.some((e) => e.isIntersecting)) {
+          id = setInterval(() => setActive((a) => (a + 1) % CAPABILITIES.items.length), 4800)
+        }
+      },
+      { threshold: 0.35 },
+    )
+    io.observe(el)
+    return () => {
+      clearInterval(id)
+      io.disconnect()
+    }
+  }, [stageRef])
 
   return (
     <section className={`section ${styles.section}`}>
@@ -77,21 +98,13 @@ export default function ServiceShowcase() {
             ))}
           </div>
 
-          {/* image stage — sticky on desktop, leading on mobile */}
+          {/* vignette stage — sticky on desktop, leading on mobile */}
           <Reveal className={styles.stageWrap} delay={120}>
-            <div className={styles.stage} aria-hidden="true">
-              {items.map((item, i) => (
-                <img
-                  key={item.key}
-                  src={SERVICE_IMG[item.key]}
-                  alt=""
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  width="1600"
-                  height="1200"
-                  className={`${styles.stageImg} ${i === active ? styles.stageImgActive : ''}`}
-                />
-              ))}
+            <div ref={stageRef} className={styles.stage} aria-hidden="true">
+              {items.map((item, i) => {
+                const Scene = VIGNETTES[item.key]
+                return <Scene key={item.key} active={i === active} />
+              })}
               <span className={styles.stageIndex}>
                 {String(active + 1).padStart(2, '0')}
                 <span className={styles.stageIndexTotal}> / {String(items.length).padStart(2, '0')}</span>

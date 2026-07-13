@@ -1,5 +1,6 @@
 import Button from './Button.jsx'
 import HeroCircuit from './HeroCircuit.jsx'
+import { StarredText } from './Icon.jsx'
 import {
   useInViewOnce,
   useMagneticInk,
@@ -100,7 +101,9 @@ function TickerGroup() {
       {TERMINAL_FRAMES.map((frame) => (
         <div key={frame.type} className={styles.tickerItem}>
           <span className={styles.tickerLabel}>{FRAME_LABEL[frame.type]}</span>
-          <span className={styles.tickerValue}>{frame.result}</span>
+          <span className={styles.tickerValue}>
+            <StarredText text={frame.result} />
+          </span>
           <span className={styles.tickerDot} aria-hidden="true" />
         </div>
       ))}
@@ -178,6 +181,10 @@ export default function Hero() {
 
       const finish = () => {
         caret.classList.add(styles.caretBlink)
+        // ghost-word gradient fill only fades in once every char is typed —
+        // the clipped background paints from glyph geometry, so it would
+        // otherwise show through chars that are still opacity:0
+        headline.classList.add(styles.headlineDone)
         const tl = createTimeline()
         if (traceEl) {
           const drawables = svg.createDrawable(traceEl.querySelectorAll('path, rect'))
@@ -268,7 +275,9 @@ export default function Hero() {
             <span className={styles.node} aria-hidden="true" />
             {HERO.eyebrow}
           </span>
-          <span className={styles.trust}>{HERO.trust}</span>
+          <span className={styles.trust}>
+            <StarredText text={HERO.trust} />
+          </span>
         </div>
 
         {/* Oversized flush-left poster statement — typed in on load */}

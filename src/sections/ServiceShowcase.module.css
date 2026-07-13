@@ -160,34 +160,54 @@
   top: calc(68px + 24px);
 }
 
+/* frameless: scenes float directly on the page canvas, filling the column */
 .stage {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-2xl);
-  background: var(--bg-raise);
+  isolation: isolate;
+  /* size container: vignettes scale via cqw/cqh at every viewport */
+  container-type: size;
 }
 
-.stageImg {
+/* blueprint grid, faded at the edges */
+.stage::before {
+  content: '';
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.045);
-  transition:
-    opacity 520ms var(--ease),
-    transform 900ms var(--ease-out);
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(130% 130% at 50% 42%, #000 52%, transparent 100%);
+  mask-image: radial-gradient(130% 130% at 50% 42%, #000 52%, transparent 100%);
 }
 
-.stageImgActive {
-  opacity: 1;
-  transform: scale(1);
+/* slow-breathing accent bloom behind the scenes */
+.stage::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 6%;
+  top: 10%;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-bloom), transparent 72%);
+  opacity: 0.3;
+  filter: blur(28px);
+  animation: bloomDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes bloomDrift {
+  to {
+    transform: translate(42%, 24%) scale(1.18);
+  }
 }
 
 .stageIndex {
+  z-index: 2;
   position: absolute;
   right: 16px;
   bottom: 12px;
@@ -196,12 +216,11 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--text);
-  background: rgba(10, 14, 26, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--bg-raise);
   padding: 6px 10px;
   border-radius: var(--r-md);
   border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .stageIndexTotal {
@@ -236,8 +255,10 @@
   .rowNum,
   .rowTitle,
   .rowDesc,
-  .rowArrow,
-  .stageImg {
+  .rowArrow {
     transition: none;
+  }
+  .stage::after {
+    animation: none;
   }
 }

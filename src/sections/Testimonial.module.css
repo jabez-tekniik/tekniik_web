@@ -35,12 +35,33 @@
   user-select: none;
 }
 
+.railFoot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .attr {
   display: flex;
   flex-direction: column;
   gap: 6px;
   padding-top: 18px;
   border-top: 1px solid var(--hairline);
+  transition:
+    opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: attrIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+
+@keyframes attrIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .name {
@@ -58,6 +79,79 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-faint);
+}
+
+/* —— rotation nav: thin editorial bars, 44px hit areas —— */
+.nav {
+  display: flex;
+  margin: -12px 0 -16px -9px;
+}
+
+.navBtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 21px 9px;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.navBar {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--hairline);
+  transition: background-color 0.25s ease;
+}
+
+.navBtn:hover .navBar {
+  background: var(--text-faint);
+}
+
+.navActive .navBar {
+  background: var(--accent);
+}
+
+/* —— quote stack: sizers lock height to the tallest quote —— */
+.quoteStack {
+  display: grid;
+}
+
+.quoteStack > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.live {
+  transition:
+    opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.leaving {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+/* fade-in for rotated-in quotes (WordRise only runs on first scroll-in) */
+.quoteIn {
+  animation: quoteIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes quoteIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* —— quote —— */
@@ -90,9 +184,27 @@
     font-size: 4.4rem;
     transform: translateY(0.3em);
   }
+  .railFoot {
+    align-items: flex-end;
+  }
   .attr {
     border-top: none;
     padding-top: 0;
     text-align: right;
+  }
+  .nav {
+    margin: -8px -9px -16px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attr,
+  .quoteIn {
+    animation: none;
+    transition: none;
+  }
+  .live,
+  .navBar {
+    transition: none;
   }
 }

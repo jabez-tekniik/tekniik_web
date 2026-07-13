@@ -1,5 +1,7 @@
 /* Inline SVG icon set — outlines only, 1.6px stroke for cohesion. */
 
+import { Fragment } from 'react'
+
 const base = {
   width: 24,
   height: 24,
@@ -244,6 +246,76 @@ export function IconSparkle(props) {
   return (
     <svg {...base} {...props}>
       <path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4z" />
+    </svg>
+  )
+}
+
+export function IconStar(props) {
+  // Filled rating star; heavy round-joined stroke blunts the points.
+  return (
+    <svg
+      width="0.9em"
+      height="0.9em"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth={3}
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M12 3.8l2.5 5.1 5.6.8-4 4 .9 5.6-5-2.7-5 2.7.9-5.6-4-4 5.6-.8L12 3.8z" />
+    </svg>
+  )
+}
+
+/* Renders copy containing the ★ character with each ★ swapped for IconStar,
+   sized/aligned to the surrounding text via em units. */
+export function StarredText({ text }) {
+  const parts = String(text).split('★')
+  return parts.map((part, i) => (
+    <Fragment key={i}>
+      {part}
+      {i < parts.length - 1 && (
+        <IconStar
+          // display overrides the global `svg { display: block }` reset so the
+          // star sits inline with the surrounding text
+          style={{
+            display: 'inline-block',
+            verticalAlign: '-0.08em',
+            marginInline: '0.1em 0.14em',
+          }}
+        />
+      )}
+    </Fragment>
+  ))
+}
+
+/* Flag marks — fill-based (exception to the outline set), 3:2 ratio.
+   National colors are fixed by the flags themselves, so hex here is exempt
+   from the no-hardcoded-hex rule (same class as the WhatsApp green). */
+const flagBase = { width: 21, height: 14, viewBox: '0 0 30 20', fill: 'none' }
+
+export function IconFlagIndia(props) {
+  return (
+    <svg {...flagBase} {...props}>
+      <rect width="30" height="20" fill="#ffffff" />
+      <rect width="30" height="6.7" fill="#ff9933" />
+      <rect y="13.3" width="30" height="6.7" fill="#138808" />
+      <circle cx="15" cy="10" r="2.4" stroke="#000080" strokeWidth="0.9" />
+      <circle cx="15" cy="10" r="0.7" fill="#000080" />
+    </svg>
+  )
+}
+
+export function IconFlagUK(props) {
+  return (
+    <svg {...flagBase} {...props}>
+      <rect width="30" height="20" fill="#012169" />
+      <path d="M0 0l30 20M30 0L0 20" stroke="#ffffff" strokeWidth="4" />
+      <path d="M0 0l30 20M30 0L0 20" stroke="#c8102e" strokeWidth="1.8" />
+      <path d="M15 0v20M0 10h30" stroke="#ffffff" strokeWidth="6.6" />
+      <path d="M15 0v20M0 10h30" stroke="#c8102e" strokeWidth="4" />
     </svg>
   )
 }

@@ -70,7 +70,7 @@ export default function FinalCta({
 
           <div className={styles.actions}>
             <span ref={magneticRef} className={styles.magnetic}>
-              <Button to={ctaTo} variant="primary" arrow>
+              <Button to={ctaTo} variant="inverse" arrow>
                 {ctaLabel}
               </Button>
             </span>

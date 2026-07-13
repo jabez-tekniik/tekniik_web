@@ -66,10 +66,13 @@
   letter-spacing: -0.02em;
   color: var(--text);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .valueGlyph {
   color: var(--accent);
+  /* IconStar sizes off this em — smaller than the digits, like a rating badge */
+  font-size: 0.58em;
 }
 
 .label {

@@ -173,10 +173,45 @@
   white-space: nowrap;
 }
 
-/* outlined ghost word — typographic contrast against the solid words */
+/* ghost word — no stroke, filled with a drifting brand gradient clipped
+   to the glyphs (accent-deep ↔ accent with a lighter accent highlight
+   band so the motion actually reads). A clipped background paints from
+   glyph geometry even through chars still at opacity:0, so NO gradient
+   may exist while the typewriter runs — chars type in as solid accent,
+   and only on .headlineDone does the gradient attach while the text
+   color fades to transparent (700ms crossfade into the drift). Periodic
+   90deg gradient + exactly one tile of travel = seamless endless drift.
+   (background-position repaints rather than composites — deliberate
+   exception to the transform/opacity rule, scoped to one short word.) */
 .ghostWord {
+  --ghost-grad: linear-gradient(
+    90deg,
+    var(--accent-deep),
+    var(--accent) 30%,
+    color-mix(in srgb, var(--accent) 60%, white) 50%,
+    var(--accent) 70%,
+    var(--accent-deep)
+  );
+  color: var(--accent);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: color 700ms ease-out;
+}
+
+.headlineDone .ghostWord {
   color: transparent;
-  -webkit-text-stroke: 0.022em var(--text);
+  background-image: var(--ghost-grad);
+  animation: ghostFlow 4s linear infinite;
+}
+
+@keyframes ghostFlow {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
 }
 
 .line {
@@ -225,8 +260,11 @@
   transition: transform 70ms linear, height 70ms linear;
 }
 
+/* 5 blinks after typing completes, then the caret stays gone (keyframes
+   end at opacity:0 + forwards). The pre-type pause reuses this class but
+   removes it after ~650ms, so the cap never shows there. */
 .caretBlink {
-  animation: caretBlink 1.15s steps(2, jump-none) infinite;
+  animation: caretBlink 1.15s steps(2, jump-none) 5 forwards;
 }
 
 @keyframes caretBlink {
@@ -349,6 +387,14 @@
   white-space: nowrap;
 }
 
+/* the reset makes svg display:block, which snaps StarredText's inline
+   star onto its own line — restore inline flow and size it to the type */
+.tickerValue svg {
+  display: inline;
+  width: 0.92em;
+  height: 0.92em;
+}
+
 .tickerDot {
   width: 6px;
   height: 6px;
@@ -411,6 +457,14 @@
     transition: none;
   }
   .tickerTrack {
+    animation: none;
+  }
+  /* static complete state: gradient filled, no drift (the typewriter
+     no-ops under reduced motion, so .headlineDone is never added) */
+  .ghostWord {
+    color: transparent;
+    background-image: var(--ghost-grad);
+    transition: none;
     animation: none;
   }
   /* SMIL keeps ticking regardless of the media query — hide the movers */
