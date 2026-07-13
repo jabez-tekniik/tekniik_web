@@ -1,4 +1,5 @@
-import { KineticText, Reveal } from '../motion/index.js'
+import Reveal from '../components/Reveal.jsx'
+import WordRise from '../motion/ink/WordRise.jsx'
 import { TESTIMONIAL } from '../data/content.js'
 import styles from './Testimonial.module.css'
 
@@ -17,14 +18,13 @@ export default function Testimonial() {
           <span className={styles.quoteMark} aria-hidden="true">
             &ldquo;
           </span>
-          <KineticText
+          <WordRise
             text={TESTIMONIAL.text}
             as="blockquote"
-            by="word"
-            stagger={0.045}
+            staggerMs={45}
             className={styles.quote}
           />
-          <Reveal delay={0.5} className={styles.attrWrap}>
+          <Reveal delay={500} className={styles.attrWrap}>
             <span className={styles.attribution}>
               <span className={styles.avatar} aria-hidden="true">
                 {initials}

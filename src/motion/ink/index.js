@@ -102,3 +102,52 @@ export function setRiseHidden(targets) {
 export function riseIn({ duration = 800, delay = stagger(80) } = {}) {
   return { translateY: '0%', duration, delay, ease: EASE_OUT }
 }
+
+/**
+ * Scroll-linked progress (0→1) for a section: p=0 when the element's top
+ * hits `startVh` of the viewport, p=1 when its bottom hits `endVh`.
+ * The callback receives (progress, element) on rAF — apply transforms
+ * directly to DOM nodes (no React state). Reduced motion → called once with 1.
+ */
+export function useScrollProgressInk(callback, { startVh = 0.8, endVh = 0.6 } = {}) {
+  const ref = useRef(null)
+  const cbRef = useRef(callback)
+  const reduced = useReducedMotion()
+
+  useEffect(() => {
+    cbRef.current = callback
+  })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return undefined
+    if (reduced) {
+      cbRef.current(1, el)
+      return undefined
+    }
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const r = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const denom = (startVh - endVh) * vh + r.height
+      const p = Math.min(1, Math.max(0, (startVh * vh - r.top) / (denom || 1)))
+      cbRef.current(p, el)
+    }
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(update)
+      }
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [reduced, startVh, endVh])
+
+  return ref
+}

@@ -141,6 +141,8 @@
   border: 2px solid var(--accent);
   background: var(--accent-soft);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms var(--ease-out);
 }
 
 .dotInner {
@@ -150,6 +152,8 @@
   background: var(--accent);
   position: relative;
   z-index: 1;
+  transform: scale(0);
+  transition: transform 320ms var(--ease-out);
 }
 
 /* —— Card — sharp solid —— */
@@ -299,6 +303,26 @@
 
 @media (prefers-reduced-motion: reduce) {
   .card {
+    transition: none;
+  }
+}
+
+/* node ignition — toggled by the scroll-linked rail (Process.jsx) */
+.dot.lit .dotHalo {
+  opacity: 1;
+}
+
+.dot.lit .dotInner {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dotHalo {
+    opacity: 1;
+    transition: none;
+  }
+  .dotInner {
+    transform: scale(1);
     transition: none;
   }
 }

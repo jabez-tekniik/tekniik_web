@@ -1,4 +1,4 @@
-import { Reveal } from '../motion/index.js'
+import Reveal from '../components/Reveal.jsx'
 import { WHY_TEKNIIK } from '../data/content.js'
 import styles from './Why.module.css'
 
@@ -17,7 +17,7 @@ export default function Why() {
 
         <div className={styles.grid}>
           {WHY_TEKNIIK.items.map((item, i) => (
-            <Reveal key={item.key} delay={i * 0.07} className={styles.cell}>
+            <Reveal key={item.key} delay={i * 70} className={styles.cell}>
               <span className={styles.cellNum}>0{i + 1}</span>
               <div className={styles.cellBody}>
                 <h3 className={styles.cellTitle}>{item.title}</h3>

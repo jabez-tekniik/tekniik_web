@@ -1,40 +1,24 @@
 import { useRef } from 'react'
-import { m, useTransform } from 'framer-motion'
-import { Reveal, useScrollProgress } from '../motion/index.js'
-import useReducedMotion from '../hooks/useReducedMotion.js'
+import Reveal from '../components/Reveal.jsx'
+import { useScrollProgressInk } from '../motion/ink/index.js'
 import { PROCESS } from '../data/content.js'
 import styles from './Process.module.css'
 
-/* One node on the rail. Its inner dot scales in and its halo fades in as the
-   scroll-linked fill passes this node's offset. useTransform is called ONCE
-   here (never inside the parent .map) so hooks stay out of loops. */
-function Node({ progress, index, total, reduced }) {
-  const dotScale = useTransform(
-    progress,
-    [index / total, index / total + 0.15],
-    [0, 1],
-  )
-
-  return (
-    <span className={styles.dot} aria-hidden="true">
-      <m.span
-        className={styles.dotHalo}
-        style={{ opacity: reduced ? 1 : dotScale }}
-      />
-      <m.span
-        className={styles.dotInner}
-        style={{ scale: reduced ? 1 : dotScale }}
-      />
-    </span>
-  )
-}
-
 export default function Process() {
-  const stepsRef = useRef(null)
-  const reduced = useReducedMotion()
-  // Hooks run unconditionally; only the style VALUES below are gated for reduced motion.
-  const progress = useScrollProgress(stepsRef, ['start 80%', 'end 60%'])
+  const fillRef = useRef(null)
+  const fillVRef = useRef(null)
   const total = PROCESS.steps.length
+
+  /* Scroll-linked rail: the teal fill draws with scroll and each node
+     ignites (CSS class transition) as the fill passes it. DOM writes only —
+     no React state on the scroll path. Reduced motion → filled + lit. */
+  const stepsRef = useScrollProgressInk((p, steps) => {
+    if (fillRef.current) fillRef.current.style.transform = `scaleX(${p})`
+    if (fillVRef.current) fillVRef.current.style.transform = `scaleY(${p})`
+    steps.querySelectorAll('[data-dot]').forEach((dot, i) => {
+      dot.classList.toggle(styles.lit, p >= i / total + 0.06)
+    })
+  })
 
   return (
     <section className={`section ${styles.section}`}>
@@ -52,28 +36,20 @@ export default function Process() {
           <div className={styles.track} aria-hidden="true">
             <span className={styles.trackLine} />
             {/* Desktop horizontal fill (scaleX); hidden ≤640px via CSS. */}
-            <m.span
-              className={styles.trackFill}
-              style={{ scaleX: reduced ? 1 : progress }}
-            />
+            <span ref={fillRef} className={styles.trackFill} />
             {/* Mobile vertical fill (scaleY); shown only ≤640px via CSS. */}
-            <m.span
-              className={styles.trackFillV}
-              style={{ scaleY: reduced ? 1 : progress }}
-            />
+            <span ref={fillVRef} className={styles.trackFillV} />
           </div>
 
           <ol className={styles.list}>
             {PROCESS.steps.map((step, i) => (
               <li key={step.n} className={styles.item}>
-                <Node
-                  progress={progress}
-                  index={i}
-                  total={total}
-                  reduced={reduced}
-                />
+                <span className={styles.dot} data-dot="" aria-hidden="true">
+                  <span className={styles.dotHalo} />
+                  <span className={styles.dotInner} />
+                </span>
 
-                <Reveal as="article" delay={i * 0.08} className={styles.card}>
+                <Reveal as="article" delay={i * 80} className={styles.card}>
                   <header className={styles.cardHead}>
                     <span className={styles.phase}>PHASE {step.n}</span>
                     <span className={styles.index} aria-hidden="true">

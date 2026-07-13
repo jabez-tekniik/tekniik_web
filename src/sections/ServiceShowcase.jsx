@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Reveal } from '../motion/index.js'
+import Reveal from '../components/Reveal.jsx'
 import { CAPABILITIES } from '../data/content.js'
 import styles from './ServiceShowcase.module.css'
 
@@ -31,7 +31,7 @@ function Card({ item, index }) {
   const cls = [styles.card, item.featured ? styles.featured : styles.standard].join(' ')
 
   return (
-    <Reveal delay={index * 0.07} className={wrapCls}>
+    <Reveal delay={index * 70} className={wrapCls}>
       <Link to="/services" className={cls} aria-label={`${item.title} — ${item.desc}`}>
         <span className={styles.media}>
           <img

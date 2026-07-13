@@ -1,6 +1,7 @@
-import { m } from 'framer-motion'
 import Button from '../components/Button.jsx'
-import { KineticText, Reveal, useMagnetic } from '../motion/index.js'
+import Reveal from '../components/Reveal.jsx'
+import WordRise from '../motion/ink/WordRise.jsx'
+import { useMagneticInk } from '../motion/ink/index.js'
 import styles from './FinalCta.module.css'
 
 export default function FinalCta({
@@ -12,8 +13,7 @@ export default function FinalCta({
   email,
 }) {
   const lines = Array.isArray(heading) ? heading : [heading]
-  const { ref: magneticRef, style: magneticStyle, onMouseMove: magneticMove, onMouseLeave: magneticLeave } =
-    useMagnetic({ strength: 0.35 })
+  const magneticRef = useMagneticInk(0.3)
 
   return (
     <section className={styles.section}>
@@ -23,12 +23,11 @@ export default function FinalCta({
         <div className={styles.wrap}>
           <h2 className={styles.heading}>
             {lines.map((line, i) => (
-              <KineticText
+              <WordRise
                 key={i}
                 text={line}
                 as="span"
-                by="word"
-                stagger={0.06}
+                staggerMs={60}
                 className={
                   i === lines.length - 1
                     ? `${styles.line} ${styles.lineAccent}`
@@ -39,27 +38,21 @@ export default function FinalCta({
           </h2>
 
           {sub && (
-            <Reveal as="p" delay={0.15} className={styles.sub}>
+            <Reveal as="p" delay={150} className={styles.sub}>
               {sub}
             </Reveal>
           )}
 
-          <Reveal delay={0.25} className={styles.actions}>
-            <m.span
-              ref={magneticRef}
-              style={magneticStyle}
-              onMouseMove={magneticMove}
-              onMouseLeave={magneticLeave}
-              className={styles.magnetic}
-            >
+          <Reveal delay={250} className={styles.actions}>
+            <span ref={magneticRef} className={styles.magnetic}>
               <Button to={ctaTo} variant="primary" arrow>
                 {ctaLabel}
               </Button>
-            </m.span>
+            </span>
           </Reveal>
 
           {email && (
-            <Reveal as="p" delay={0.35} className={styles.email}>
+            <Reveal as="p" delay={350} className={styles.email}>
               {emailNote && <span className={styles.emailNote}>{emailNote} </span>}
               <a className={styles.emailLink} href={`mailto:${email}`}>
                 <span className={styles.emailText}>{email}</span>

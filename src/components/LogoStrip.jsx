@@ -1,4 +1,4 @@
-import { Reveal } from '../motion/index.js'
+import Reveal from '../components/Reveal.jsx'
 import useCounter from '../hooks/useCounter.js'
 import styles from './LogoStrip.module.css'
 
@@ -25,7 +25,7 @@ function StatValue({ match }) {
 
 function Stat({ item, index }) {
   return (
-    <Reveal as="li" className={styles.cell} delay={index * 0.06} y={18}>
+    <Reveal as="li" className={styles.cell} delay={index * 60}>
       <span className={styles.num}>{String(index + 1).padStart(2, '0')}</span>
       <StatValue match={item.match} />
       <span className={styles.label}>{item.label}</span>
@@ -42,7 +42,7 @@ export default function LogoStrip({ items = [], eyebrow = 'THE NUMBERS' }) {
   return (
     <section className={styles.section} aria-label="Selected proof points">
       <div className="container">
-        <Reveal className={styles.head} y={0}>
+        <Reveal className={styles.head}>
           <span className={styles.index}>03</span>
           <span className={styles.eyebrow}>{eyebrow}</span>
         </Reveal>
