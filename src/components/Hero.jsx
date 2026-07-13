@@ -1,5 +1,4 @@
 import Button from './Button.jsx'
-import HeroParticles from './HeroParticles.jsx'
 import {
   useInViewOnce,
   useMagneticInk,
@@ -132,10 +131,11 @@ export default function Hero() {
         if (!caret || !headline || !ch) return
         const base = headline.getBoundingClientRect()
         const r = ch.getBoundingClientRect()
-        // generous gap + short bar so it clears descender glyphs (g, y)
+        // short bar seated low in the line box — clears the previous
+        // line's descenders above and the trace below
         const x = (side === 'right' ? r.right : r.left) - base.left + r.height * 0.07
-        const y = r.top - base.top + r.height * 0.24
-        caret.style.height = `${r.height * 0.55}px`
+        const y = r.top - base.top + r.height * 0.36
+        caret.style.height = `${r.height * 0.46}px`
         caret.style.transform = `translate3d(${x}px, ${y}px, 0)`
       }
 
@@ -215,7 +215,6 @@ export default function Hero() {
     <section className={styles.hero} ref={rootRef}>
       <div className={styles.blueprint} aria-hidden="true" />
       <Watermark />
-      <HeroParticles />
 
       <div className={`container ${styles.inner}`}>
         {/* Meta bar — eyebrow left, trust right, under a hairline */}
