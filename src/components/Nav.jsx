@@ -3,28 +3,14 @@ import { NavLink, Link } from 'react-router-dom'
 import useScrolled from '../hooks/useScrolled.js'
 import Button from './Button.jsx'
 import { IconMenu, IconClose } from './Icon.jsx'
+import BrandLogo from './BrandLogo.jsx'
 import { NAV_LINKS } from '../data/content.js'
 import styles from './Nav.module.css'
 
 function Logo() {
   return (
     <Link to="/" className={styles.logo} aria-label="Tekniik — home">
-      <svg
-        viewBox="0 0 28 28"
-        width="22"
-        height="22"
-        aria-hidden="true"
-        className={styles.logoMark}
-      >
-        <rect x="0" y="0" width="28" height="28" rx="6" fill="var(--accent)" />
-        <path
-          d="M7 9.6h14M14 9.6V20"
-          stroke="#fff"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-        />
-      </svg>
-      <span className={styles.logoText}>tekniik</span>
+      <BrandLogo size={24} />
     </Link>
   )
 }

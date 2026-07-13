@@ -1,0 +1,33 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1;
+}
+
+.mark {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Navy chevron: brand navy on light routes, white on the ink homepage. */
+.inkPath {
+  fill: var(--logo-ink, #202e5d);
+}
+
+:global(html[data-theme='ink']) .inkPath {
+  fill: #ffffff;
+}
+
+/* Teal chevron is constant brand teal in every theme. */
+.tealPath {
+  fill: #72ccd6;
+}
+
+.word {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 1.22rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}

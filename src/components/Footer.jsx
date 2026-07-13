@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FOOTER } from '../data/content.js'
 import { IconMail, IconWhatsApp } from './Icon.jsx'
+import BrandLogo from './BrandLogo.jsx'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -10,16 +11,7 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <div className={styles.logoRow}>
-            <svg viewBox="0 0 28 28" className={styles.logoMark} aria-hidden="true">
-              <rect x="0" y="0" width="28" height="28" rx="6" fill="var(--accent)" />
-              <path
-                d="M7 9.6h14M14 9.6V20"
-                stroke="#fff"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className={styles.logoText}>tekniik</span>
+            <BrandLogo size={24} />
           </div>
           <p className={styles.tag}>{FOOTER.tag}</p>
           <ul className={styles.contacts}>

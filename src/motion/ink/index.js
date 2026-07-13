@@ -50,7 +50,6 @@ export function useInViewOnce(setup, { threshold = 0.2, margin = '0px 0px -10% 0
       io.disconnect()
       if (cleanup) cleanup()
       utils.remove(el.querySelectorAll('*'))
-      utils.cleanInlineStyles?.(el.querySelectorAll('*'))
     }
     // setup is intentionally captured once — sections pass stable closures.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,7 +87,6 @@ export function useMagneticInk(strength = 0.22) {
       el.removeEventListener('pointermove', onMove)
       el.removeEventListener('pointerleave', onLeave)
       utils.remove(el)
-      utils.cleanInlineStyles?.(el)
     }
   }, [strength])
 
