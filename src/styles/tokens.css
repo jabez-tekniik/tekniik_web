@@ -31,9 +31,12 @@
   --code-text: #1f2937;
 
   /* —— type —— */
-  --f-display: 'Sora', system-ui, sans-serif;
-  --f-body: 'DM Sans', system-ui, sans-serif;
-  --f-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --f-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  /* "mono" label slot — now plain Inter (the code-like mono read as off-brand).
+     Kept as a distinct token so the tiny uppercase-tracked labels can be tuned
+     independently of body/display without touching every call site. */
+  --f-mono: 'Inter', system-ui, sans-serif;
 
   /* —— motion —— */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -48,13 +51,24 @@
   --gutter: clamp(20px, 5vw, 56px);
   --section: clamp(80px, 10vw, 140px);
 
-  /* —— radii —— */
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-  --r-2xl: 28px;
+  /* —— radii (sharpened for the bold-editorial revamp) —— */
+  --r-sm: 3px;
+  --r-md: 4px;
+  --r-lg: 6px;
+  --r-xl: 8px;
+  --r-2xl: 12px;
   --r-full: 9999px;
+
+  /* —— inverted band (high-contrast near-black moments, theme-agnostic) —— */
+  --band: #0a0b10;
+  --band-2: #101219;
+  --band-raise: #15171f;
+  --on-band: #f4f5f8;
+  --on-band-dim: #a7adba;
+  --on-band-faint: #6b7180;
+  --band-hairline: rgba(255, 255, 255, 0.1);
+  --band-hairline-strong: rgba(255, 255, 255, 0.16);
+  --accent-on-band: #8b8bff; /* lighter indigo for legibility on near-black */
 
   /* —— elevation (used sparingly, hover only) —— */
   --shadow-card-hover: 0 12px 40px rgba(10, 15, 28, 0.06),

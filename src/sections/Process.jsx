@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { m, useTransform } from 'framer-motion'
 import { Reveal, useScrollProgress } from '../motion/index.js'
-import Eyebrow from '../components/Eyebrow.jsx'
 import useReducedMotion from '../hooks/useReducedMotion.js'
 import { PROCESS } from '../data/content.js'
 import styles from './Process.module.css'
@@ -41,7 +40,10 @@ export default function Process() {
     <section className={`section ${styles.section}`}>
       <div className="container">
         <Reveal className={styles.head}>
-          <Eyebrow>{PROCESS.eyebrow}</Eyebrow>
+          <div className={styles.meta}>
+            <span className={styles.index}>06</span>
+            <span className={styles.eyebrow}>{PROCESS.eyebrow}</span>
+          </div>
           <h2 className={styles.heading}>{PROCESS.heading}</h2>
           <p className={styles.sub}>{PROCESS.sub}</p>
         </Reveal>

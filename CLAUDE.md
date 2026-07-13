@@ -1,13 +1,24 @@
 # Tekniik — Architecture
 
-Production Vite + React SPA. Light-themed, indigo-accent, mono-heavy. Source of truth for copy: `references/tekniik-prototype-v4.html` (content only, design discarded). Source of truth for design: `references/tekniik-redesign-claude-code-prompt.md`.
+Production Vite + React SPA. **The homepage (`/`) is a "Bold Editorial" light theme** — clean white canvas, near-black ink, restrained indigo accent, oversized Inter Tight type, sharp cards, and a few inverted near-black bands for high-contrast drama. All other routes use the base light theme. Source of truth for copy: `references/tekniik-prototype-v4.html` (content only, design discarded) → mirrored verbatim in `src/data/content.js`. The homepage revamp is documented in `tasks/todo.md` (2026-07-07 "Bold Editorial" total revamp). The earlier "Signal" aurora specs under `docs/superpowers/specs/` are SUPERSEDED.
 
 ## Stack
 - Vite 8 + React 19 (with `react-compiler`)
 - `react-router-dom` (BrowserRouter, in-app SPA navigation)
-- Vanilla CSS Modules per component — no Tailwind, no animation library, no UI kit
+- Vanilla CSS Modules per component — no Tailwind, no UI kit
+- **Motion layer** (`src/motion/`): `framer-motion` via `LazyMotion strict` + `m` only (never `motion`, `domAnimation` bundle), `lenis` smooth scroll. Primitives: `KineticText`, `Reveal`, `Tilt`, `useMagnetic`, `useScrollProgress`, `SmoothScroll`, `LazyMotionProvider` (sets `MotionConfig reducedMotion="user"`). Barrel: `src/motion/index.js`. `AuroraShader` (OGL WebGL) is retained in the barrel but **no longer used on the homepage** (the Bold Editorial revamp dropped the aurora wash); `ogl` is now effectively dead weight — see ISSUES.md.
 - All SVG icons inline (`src/components/Icon.jsx`)
-- Google Fonts: Sora (display), DM Sans (body), JetBrains Mono (mono/code labels)
+- Google Fonts: **Inter Tight** (display/headlines, heavy 800–900) + **Inter** (body) — `--f-display` / `--f-body` tokens in `tokens.css`. `--f-mono` is ALSO Inter now (the old IBM Plex Mono read as off-brand "code" per user); the token is kept as a distinct slot so the tiny uppercase-tracked labels/index numbers can be tuned independently, but it points at `'Inter'`.
+
+## Homepage "Bold Editorial" theme (light)
+The homepage `/` is a bold, left-locked editorial redesign; other routes use the base light theme. The look is driven by the design tokens + a scoped `data-theme="light"`:
+- **Scoping:** `App.jsx` sets `data-theme="light"` on `<html>` via `useLayoutEffect` (pre-paint, no FOUC) when `location.pathname === '/'`, and removes it elsewhere. `theme-light.css` (`:root[data-theme='light']`) overrides the base semantic tokens for the homepage. `theme-dark.css` still exists for a possible future dark toggle but is NOT part of this design.
+- **Palette (restrained indigo, high contrast):** clean white canvas (`--bg:#ffffff`), faint band `--bg-2:#f4f5f8`, solid white cards (`--surface`, no glass), near-black ink (`--ink:#0a0b10`), crisper hairlines (`rgba(10,11,16,.12)`). Single-hue indigo: `--accent:#5b5bff`; the old violet/magenta aurora stops (`--accent-2`/`--accent-3`) are aliased back to indigo and `--grad-aurora` is a mono indigo→deep-indigo gradient. There is **no page-wide dot/aurora wash** (removed from `global.css`).
+- **Inverted band tokens (theme-agnostic, in `tokens.css`):** `--band:#0a0b10`, `--band-2`, `--band-raise`, `--on-band`/`--on-band-dim`/`--on-band-faint`, `--band-hairline`, `--accent-on-band:#8b8bff` (lighter indigo for legibility on near-black). Used by the featured Capabilities card, Portfolio featured/hover-invert rows, and FinalCta (Testimonial is now light).
+- **Sharp radii:** `--r-sm:3 / --r-md:4 / --r-lg:6 / --r-xl:8 / --r-2xl:12`. Buttons use `--r-lg`.
+- **Editorial devices (recurring):** each major section header is `NN | EYEBROW` (mono index in `--accent` + mono uppercase eyebrow behind a hairline) above an oversized Inter Tight heading. Section index numbers run 02–07 (Hero has the meta bar instead). The Hero is an oversized poster + full-bleed proof-ticker marquee (no cascade); inverted bands (featured Capabilities card, Portfolio, FinalCta) as the contrast rhythm.
+- **Nav:** the base light Nav (floating pill) reads over the white hero; it also sits over the inverted Testimonial/FinalCta bands as a light glass bar when scrolled — fine.
+- Never hardcode hex outside `tokens.css` / `theme-light.css` (small rgba overlays excepted).
 
 ## Layout
 ```
@@ -17,7 +28,7 @@ src/
   styles/
     tokens.css                 design tokens (color, type, spacing, motion)
     reset.css                  reset + base type
-    global.css                 body, dot grid, route fade, skip link
+    global.css                 body, route fade, skip link (dot wash removed)
   hooks/
     useReveal.js               IntersectionObserver fade+rise
     useCounter.js              RAF count-up with easing
@@ -35,30 +46,44 @@ src/
 - One CSS module per component file. Class names locally scoped.
 - Tokens come from `styles/tokens.css`. Don't hardcode hex outside tokens (exceptions: traffic-light dots, code syntax colors).
 - Single accent (`--accent: #5B5BFF`). No second accent. No gold. No warm cream.
-- `prefers-reduced-motion` honored everywhere: tokens collapse animation durations to `0ms`, `Reveal` falls through, `Cursor` does not mount, hero animations bypass.
+- `prefers-reduced-motion` honored everywhere: tokens collapse animation durations to `0ms`, `Reveal`/`KineticText` fall through (MotionConfig `reducedMotion="user"`), scroll-linked values gate via `reduced ? 1 : value`, per-module `@media (prefers-reduced-motion: reduce)` kills hover transitions.
 - All animations are GPU-friendly (`transform` / `opacity` only). Never animate `width/height/top/left/padding/margin`.
 - Touch targets ≥ 44×44px. `min-height: 44px` on buttons, hamburger 44×44, mobile nav links min-height 56px.
 - Focus rings: custom indigo ring via `--focus-ring`. Never `outline: none` without a visible alternative.
 - Semantic HTML: `<header>` for nav, `<main>` for main content, `<section>` per logical section, `<article>` for portfolio cards, `<footer>`.
 - Skip-link at top of `App` for keyboard users.
 
-## Hero — "Aurora Bento Showcase"
-`src/components/Hero.jsx` composes a centered, gradient-driven hero followed inline by `ServiceShowcase`. No split layout, no terminal mockup. Layers (back→front): aurora atmosphere (3 soft radial blooms — indigo/violet/pink), a slow conic-gradient ribbon behind the bento, then foreground content. Foreground: `HeroBadge` (gradient pill) → `GradientHeadline` (Sora 800, "built right." filled with deep indigo→violet→pink ink, word-by-word vertical-mask reveal) → sub copy → CTA row → `TrustStrip` (3 gradient avatars + 5 indigo-gradient stars + rating + region pin) → `ServiceShowcase` bento. Conic ribbon hidden ≤720px.
+> The homepage sections below are the "Bold Editorial" redesign (2026-07-07). `Home.jsx` order: `Hero → ServiceShowcase → LogoStrip → Problem → Why → Process → Portfolio → Testimonial → FinalCta`. Each renders the same verbatim `content.js` copy — only form changed. Non-home routes are unaffected.
 
-## ServiceShowcase bento
-`src/sections/ServiceShowcase.jsx` is the visual centerpiece beneath the headline. Asymmetric 2-col / 3-row grid on desktop: Websites spans col1 rows 1–2 (tall flagship), Web Apps and Mobile Apps stack on col2, AI & Automation spans the full bottom row. Row heights: `minmax(220px, 1fr) minmax(220px, 1fr) minmax(360px, 1.3fr)` — the AI row is intentionally taller than the upper two so the wide card reads as a co-equal flagship rather than a footer. Each card is a `<Link>` to `/services` with a **full-bleed cinematic webp** (`object-fit: cover`, no padding) from `public/img/services/`, a two-stop scrim (radial vignette + bottom dark gradient) for body legibility, indigo glow shadow + 1px gradient hairline highlight, and a different top-right chip per card (Flagship pill on Websites, sparkle glyph on AI, arrow chip otherwise). Both `.tall` and `.wide` get the larger title size (`clamp(1.5rem, 2.2vw, 1.875rem)`). Reveals via `useReveal` with stagger; hover lifts 6px and scales the image to 1.05 (transform only). On `<960px` the grid collapses to a clean 2×2; on `<600px` it stacks to a single column with `aspect-ratio: 4/3` per card. Reduced motion disables all hover transforms.
+## Hero — "Poster + proof ticker"
+`src/components/Hero.jsx` is a full-width editorial **poster** on the clean white canvas (no AuroraShader, no dot grid, no side cascade — the old split read as "too normal"). Top **meta bar**: `HERO.eyebrow` left + `HERO.trust` right across a hairline (stacks ≤480px). Below it, an **oversized flush-left headline** built from `HERO.headline` words — `Technology` / `built ` + `right.` (final word `--accent`) at `clamp(3.4rem,12vw,10rem)`, line-height 0.86. A **hand-drawn indigo marker** (`<Marker/>` inline SVG) draws in under "right." via a CSS `stroke-dashoffset` keyframe (instant under reduced-motion). A `.lower` flex row holds the sub copy (left) + CTA cluster (magnetic filled `Button` via `useMagnetic` + ghost, right; stacks ≤760px). At the very bottom, a **full-bleed infinite proof ticker** (`.ticker`, outside `.container`, `aria-hidden`): `TERMINAL_FRAMES` rendered twice back-to-back as a `.tickerTrack` marquee (`translateX 0→-50%`, `34s linear`, pauses on hover, edge-faded via `mask-image`), each item = mono label (`Websites`…) + big Inter Tight `result` value + indigo dot separator. Reduced-motion → marquee + marker both static. `ServiceShowcase` is its OWN section rendered by `Home.jsx`.
 
-## LogoStrip
-`src/components/LogoStrip.jsx` replaces the old `Marquee`. A static thin section beneath the hero rendering the `MARQUEE` data items as soft pill chips with gradient-filled values (`50+`, `98%`, `4.9★`, etc.) and body-grey labels. Hairline border, subtle hover lift. No animation, no scrolling — replaces the print-style ticker with a calm trust strip that reads as a designed section rather than a stat scroller.
+## ServiceShowcase — "Capabilities" (`02`)
+`src/sections/ServiceShowcase.jsx` renders `CAPABILITIES` as **image-forward** cards in a 3-col `grid`. The featured "Websites" card spans the full width (`grid-column: 1/-1`) as a horizontal split — text left, image right — **inverted** (`--band` near-black, `--on-band` text, `--accent-on-band` number). The other three (`app`/`mobile`/`ai`) form the 3-up below, each a vertical card: 4:3 image on top, then a mono `NN` index + `↗` (translates on hover) + Inter Tight title + desc. Images are `SERVICE_IMG[key]` → `/img/services/{websites,apps,mobile,ai}.webp`, regenerated as **light indigo-restrained ABSTRACT** forms (no devices/UI/text — the old cinematic dark-pink renders had garbled fake UI and clashed with the light theme). Image `object-fit:cover`, scales 1.04 on hover. Each card is a `<Link to="/services">`. Featured collapses to a stacked card (text, then 16:10 image) ≤900px; the 3-up → 1-col ≤640px. To regen: `node scripts/generateTekniikImages.js --id svc-<key>` (Imagen 4 Ultra, needs `GEMINI_API_KEY`).
 
-## Portfolio
-Typography-only directory of 8 projects in `src/sections/Portfolio.jsx`. Each card renders project number, tags, title, description, tech stack row (`// stack`), and result line. The first item (`featured: true`) gets a subtle indigo gradient surface to differentiate. No images on cards — premium feel comes from typography, hairlines, and whitespace. Stack values per project live alongside the rest of the content in `src/data/content.js`.
+## LogoStrip — "The Numbers" (`03`)
+`src/components/LogoStrip.jsx` renders the `MARQUEE` stats as a light band (`--bg-2`, top/bottom hairlines) under an `03 | THE NUMBERS` editorial head. It **filters to numeric-leading values only** (`50+`, `98%`, `4.9★`) — the three non-numeric brand words (`Senior`, `AI-native`, `Long-term`) are intentionally excluded (user: "add only numbers"). Three readouts in a 3-col grid, each a cell with a **2px near-black top border**, a mono `NN` index (`--accent`), an oversized Inter Tight `value` (`clamp(2.8rem,6vw,5rem)`), and a mono `--text-faint` `label`. Values count up on scroll via `src/hooks/useCounter.js` (IO+rAF, reduced-motion → target immediately). Grid 3→1-col (≤560px, cells separated by hairlines). Copy in `content.js` is untouched; only the displayed subset changed.
 
-## Process — "Phase Track"
-`src/sections/Process.jsx` is the HOW WE WORK section, rebuilt as a horizontal **process track** (replacing the editorial-chapters stack the client rejected). Heading area unchanged ("Four chapters. One outcome.", left-aligned, max-width 640px). Below it: a 4-column grid where each column contains a small node (14px circle, white surface with indigo border + 6px indigo inner dot) sitting on a 1px hairline rail that spans the full width of the row at the node's mid-line. Beneath each node is a compact card with a mono `PHASE 0X` label + faint `0X / 04` index in its header, Sora-700 title (clamp 1.25–1.5rem), an indigo-soft duration pill, and the body copy. The rail is two layered children: `.trackLine` (static `var(--border)` hairline) and `.trackFill` (indigo→violet→pink gradient) that animates `transform: scaleX(0→1)` over 1400ms when the steps wrapper enters the viewport. Nodes scale-in their inner dot and gain an indigo box-shadow halo with `--i`-staggered delays; cards fade+rise with their own stagger. Activation is a single `useReveal()` on the `.steps` wrapper that toggles `.steps.active`. Tablet (≤960px) collapses to a 2×2 grid and hides the rail (the connector would visually break across rows); mobile (≤640px) flips the rail to a vertical 1px line on the left at `--rail-x: 7px`, switches each item to a 2-col `[rail | card]` layout, and `.trackFill` animates `scaleY(0→1)` instead. `prefers-reduced-motion` short-circuits all transforms and shows the active state immediately. Durations and copy live on each step in `PROCESS.steps` in `src/data/content.js`.
+## Problem — bold split (`04`)
+`src/sections/Problem.jsx` is a 2-col grid: LEFT = a **sticky** head (`04 | THE PROBLEM` + oversized heading + `PROBLEM.paragraphs`). RIGHT = two offset cards from `PROBLEM.beforeCard`/`afterCard` — "before" is muted (`--bg-2`, hatched `.lineBad`, danger badge, offset right) and "after" is indigo-accented (`--accent` border + soft shadow, solid `.lineGood` bars, success badge, offset left). A `useScrollProgress` crossfade fades the before panel back / brings the after panel forward (opacity + y; reduced-motion gated). Collapses to 1-col ≤900px (head un-sticks, offsets reset).
 
-## No custom cursor
-The site uses the system default cursor everywhere. There is no `Cursor` component, no `useMagnetic` hook, and no `cursor: none` rule. (Previously bundled — removed because the user preferred the native cursor.)
+## Why — bold four-up (`05`)
+`src/sections/Why.jsx` — `05 | WHY TEKNIIK` head + oversized heading + sub, then `WHY_TEKNIIK.items` as a 4-col row. Each cell has a **2px near-black top border**, a large ghosted Inter Tight index (`01`–`04`, → `--accent` on hover), title, desc; the cell lifts on hover (CSS transform, reduced-motion gated). 4→2 col (≤900px) → 1-col (≤560px). No scroll hooks (simplified from the old aurora spine).
+
+## Process — "Phase Track" (`06`)
+`src/sections/Process.jsx` keeps the scroll-linked rail mechanic (`useScrollProgress` on `.steps`; `.trackFill` scaleX / mobile `.trackFillV` scaleY; per-`Node` `useTransform` ignition; `reduced ? 1 : value` gating). Re-themed sharp/light: the head is `06 | HOW WE WORK` + oversized heading; the rail track is a 2px `--hairline`, the fill is solid `--accent` (indigo, no rainbow), each node is an unlit `--border-strong` ring that ignites to accent as the fill passes. Cards are sharp solid (`--surface`, `--r-lg`) with mono `PHASE 0X` (accent) + `0X/04` index, an accent duration pill, big Inter Tight title, dim body; hover lifts. Desktop 4-col, tablet 2×2 rail-hidden (≤960px), mobile vertical rail (≤640px). Reduced motion → rail filled + nodes lit.
+
+## Portfolio — "Work index" (`07`)
+`src/sections/Portfolio.jsx` renders the 8 `PORTFOLIO` projects as an editorial LIST under a `07 | OUR WORK` head. Each row (`Row` subcomponent so pointer hooks stay out of `.map`): huge Inter Tight index `01`–`08`, title, mono tag chips, `result` line. **Hover inverts the whole row to a near-black card** (`--band` bg, `--on-band` text, `--accent-on-band` index, indigo underline draws under the title); the index also parallaxes toward the cursor (reduced-motion gated). CareGrid (`tcc`, `featured`) is a **permanent inverted block** with its `desc` shown. Tag chips get a `.tags span` override so they stay legible on the inverted bg. Routed rows (`looqz`, `autoscreen`) are `<Link>`s with "View case study →"; others are `<article>`. Reflows 3→index-span+aside (≤900px)→1-col (≤560px).
+
+## Testimonial — "Quiet moment" (LIGHT)
+`src/sections/Testimonial.jsx` is a **light** section (`--bg-2`, top hairline, faint indigo radial) — kept light ON PURPOSE so it does not merge with the near-black `FinalCta` band directly below it (they were two adjacent dark bands before). `TESTIMONIAL.text` reveals word-by-word via `KineticText` (oversized near-black Inter Tight, `--ink`) under an `--accent` quote glyph; the name/role attribution chip (indigo avatar, `--surface` fill, soft shadow, hairline) rises in after via `Reveal delay`. FinalCta remains the single dark crescendo, so the page rhythm is …light → light Testimonial → dark FinalCta.
+
+## FinalCta — "Crescendo" (inverted)
+`src/sections/FinalCta.jsx` (props from `Home.jsx`) is a full-bleed **inverted** closing stage (`--band`) with one breathing indigo `.bloom` radial (transform/opacity `bloomBreathe`; no AuroraShader). Both `heading` lines render as `KineticText` (per-word rise; final line `--accent-on-band`); a magnetic primary `Button` (`useMagnetic`) and a mono `mailto:` link with a `scaleX` underline-draw close it.
+
+## Cursor / magnetism
+The site uses the system default cursor (no `Cursor` component, no `cursor: none`). `useMagnetic` (`src/motion/`) IS used — it applies subtle pointer pull to the primary CTAs on Hero and FinalCta (reduced-motion gated inside the hook).
 
 ## Generated imagery
 All under `public/img/`, generated via **Imagen 4 Ultra** (`imagen-4.0-ultra-generate-001`) on the Google Generative Language API, using the `GEMINI_API_KEY` env var. All sources are **square 1:1** so they crop cleanly into both the bento and the page-hero square frames.
@@ -123,4 +148,4 @@ Screenshots land in `tasks/shots/` and should be deleted after review.
 
 ## Things deliberately omitted (vs. brief)
 - No Famili Cloud case study route — brief lists only Looqz and AutoScreen as case studies.
-- No animation library, no CSS framework — vanilla as required.
+- No CSS framework — vanilla CSS Modules. (An earlier note here said "no animation library"; that is no longer true — the `src/motion/` layer uses framer-motion + Lenis + OGL, see Stack.)

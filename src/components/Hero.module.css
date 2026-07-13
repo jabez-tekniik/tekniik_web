@@ -1,137 +1,237 @@
 .hero {
   position: relative;
-  padding-block: clamp(110px, 14vw, 160px) clamp(40px, 5vw, 64px);
+  padding-block: clamp(116px, 16vh, 196px) 0;
   overflow: hidden;
-  isolation: isolate;
-}
-
-/* Aurora atmosphere — WebGL shader with a static gradient fallback */
-.aurora {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-/* Slow-rotating conic ribbon — sits behind the bento centerpiece, very subtle */
-.ribbon {
-  position: absolute;
-  width: 900px;
-  height: 900px;
-  left: 50%;
-  bottom: 8%;
-  transform: translateX(-50%);
-  background: conic-gradient(
-    from 90deg at 50% 50%,
-    rgba(91, 91, 255, 0) 0deg,
-    rgba(91, 91, 255, 0.18) 60deg,
-    rgba(190, 140, 255, 0.12) 140deg,
-    rgba(255, 138, 182, 0.16) 220deg,
-    rgba(91, 91, 255, 0) 360deg
-  );
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.55;
-  pointer-events: none;
-  z-index: 0;
-  animation: spin 60s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: translateX(-50%) rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ribbon {
-    animation: none;
-  }
-}
-
-@media (max-width: 720px) {
-  .ribbon {
-    display: none;
-  }
 }
 
 .inner {
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  z-index: 1;
 }
 
-.badgeWrap {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: rise 480ms var(--ease) 60ms forwards;
-  margin-bottom: 28px;
+/* —— meta bar —— */
+.metaBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(44px, 6vw, 80px);
+}
+
+.eyebrow,
+.trust {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.node {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.trust {
+  color: var(--text-dim);
+}
+
+/* —— oversized poster headline —— */
+.headline {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(3.4rem, 12vw, 10rem);
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  color: var(--ink);
+}
+
+.line {
+  display: block;
+}
+
+.accent {
+  position: relative;
+  display: inline-block;
+  color: var(--accent);
+}
+
+/* hand-drawn marker underline */
+.marker {
+  position: absolute;
+  left: 0;
+  bottom: -0.14em;
+  width: 100%;
+  height: 0.2em;
+  overflow: visible;
+  color: var(--accent);
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  animation: markerDraw 850ms cubic-bezier(0.65, 0, 0.35, 1) forwards 450ms;
+}
+
+@keyframes markerDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* —— lower row: supporting line + actions —— */
+.lower {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: clamp(34px, 5vw, 60px);
 }
 
 .sub {
-  font-family: var(--f-body);
-  font-size: clamp(1rem, 1.2vw, 1.0625rem);
-  color: var(--body);
-  line-height: 1.7;
-  max-width: 580px;
-  margin: 28px auto 36px;
+  flex: 1 1 380px;
+  max-width: 48ch;
+  font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--text-dim);
 }
 
 .actions {
+  flex: 0 0 auto;
   display: flex;
-  gap: 14px;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 36px;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: rise 540ms var(--ease) 600ms forwards;
+  align-items: center;
+  gap: 14px;
 }
 
-/* Wraps the primary CTA so useMagnetic's spring transform can be applied
-   without disturbing Button's own markup/classes. */
 .magnetic {
   display: inline-flex;
+  will-change: transform;
 }
 
-.trustWrap {
+/* ============================================================
+   Full-bleed infinite proof ticker
+   ============================================================ */
+.ticker {
+  position: relative;
+  margin-top: clamp(60px, 9vw, 116px);
+  padding-block: clamp(20px, 2.4vw, 34px);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.tickerTrack {
   display: flex;
-  justify-content: center;
+  width: max-content;
+  animation: tickerScroll 34s linear infinite;
+  will-change: transform;
 }
 
-@keyframes rise {
+.ticker:hover .tickerTrack {
+  animation-play-state: paused;
+}
+
+@keyframes tickerScroll {
   to {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateX(-50%);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .badgeWrap,
-  .actions {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+.tickerGroup {
+  display: flex;
+  align-items: center;
 }
 
-@media (max-width: 560px) {
+.tickerItem {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(12px, 1.4vw, 20px);
+  padding-inline: clamp(18px, 2vw, 34px) 0;
+}
+
+.tickerLabel {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.tickerValue {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.tickerDot {
+  align-self: center;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: clamp(18px, 2vw, 34px);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 760px) {
+  .lower {
+    align-items: flex-start;
+  }
   .actions {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .metaBar {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 10px;
   }
-  .actions > * {
-    width: 100%;
-    justify-content: center;
+  .headline {
+    line-height: 0.9;
   }
-  .magnetic {
-    width: 100%;
+}
+
+/* ============================================================
+   Reduced motion — no marquee, no marker draw
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .marker {
+    stroke-dashoffset: 0;
+    animation: none;
   }
-  .magnetic > a,
-  .magnetic > button {
-    width: 100%;
+  .tickerTrack {
+    animation: none;
   }
 }

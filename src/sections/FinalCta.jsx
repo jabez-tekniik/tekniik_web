@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
-import Reveal from '../components/Reveal.jsx'
+import { m } from 'framer-motion'
 import Button from '../components/Button.jsx'
-import useReducedMotion from '../hooks/useReducedMotion.js'
+import { KineticText, Reveal, useMagnetic } from '../motion/index.js'
 import styles from './FinalCta.module.css'
 
 export default function FinalCta({
@@ -12,73 +11,62 @@ export default function FinalCta({
   emailNote,
   email,
 }) {
-  const ref = useRef(null)
-  const reduced = useReducedMotion()
-
-  useEffect(() => {
-    if (reduced) return
-    const el = ref.current
-    if (!el) return
-    let raf = 0
-    let pending = null
-    const onMove = (e) => {
-      pending = e
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        const r = el.getBoundingClientRect()
-        const x = ((pending.clientX - r.left) / r.width) * 100
-        const y = ((pending.clientY - r.top) / r.height) * 100
-        el.style.setProperty('--mx', `${x}%`)
-        el.style.setProperty('--my', `${y}%`)
-      })
-    }
-    const onLeave = () => {
-      el.style.setProperty('--mx', '50%')
-      el.style.setProperty('--my', '50%')
-    }
-    el.addEventListener('mousemove', onMove)
-    el.addEventListener('mouseleave', onLeave)
-    return () => {
-      cancelAnimationFrame(raf)
-      el.removeEventListener('mousemove', onMove)
-      el.removeEventListener('mouseleave', onLeave)
-    }
-  }, [reduced])
+  const lines = Array.isArray(heading) ? heading : [heading]
+  const { ref: magneticRef, style: magneticStyle, onMouseMove: magneticMove, onMouseLeave: magneticLeave } =
+    useMagnetic({ strength: 0.35 })
 
   return (
-    <section ref={ref} className={styles.section}>
-      <span className={`${styles.corner} ${styles.cornerTL}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerTR}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBL}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBR}`} aria-hidden="true" />
-      <div className={styles.spotlight} aria-hidden="true" />
+    <section className={styles.section}>
+      <div className={styles.bloom} aria-hidden="true" />
 
-      <div className="container">
-        <Reveal className={styles.wrap}>
+      <div className={`container ${styles.inner}`}>
+        <div className={styles.wrap}>
           <h2 className={styles.heading}>
-            {Array.isArray(heading)
-              ? heading.map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < heading.length - 1 && <br />}
-                  </span>
-                ))
-              : heading}
+            {lines.map((line, i) => (
+              <KineticText
+                key={i}
+                text={line}
+                as="span"
+                by="word"
+                stagger={0.06}
+                className={
+                  i === lines.length - 1
+                    ? `${styles.line} ${styles.lineAccent}`
+                    : styles.line
+                }
+              />
+            ))}
           </h2>
-          {sub && <p className={styles.sub}>{sub}</p>}
-          <div className={styles.actions}>
-            <Button to={ctaTo} variant="primary" arrow>
-              {ctaLabel}
-            </Button>
-          </div>
-          {email && (
-            <p className={styles.email}>
-              {emailNote && <span>{emailNote} </span>}
-              <a href={`mailto:${email}`}>{email}</a>
-            </p>
+
+          {sub && (
+            <Reveal as="p" delay={0.15} className={styles.sub}>
+              {sub}
+            </Reveal>
           )}
-        </Reveal>
+
+          <Reveal delay={0.25} className={styles.actions}>
+            <m.span
+              ref={magneticRef}
+              style={magneticStyle}
+              onMouseMove={magneticMove}
+              onMouseLeave={magneticLeave}
+              className={styles.magnetic}
+            >
+              <Button to={ctaTo} variant="primary" arrow>
+                {ctaLabel}
+              </Button>
+            </m.span>
+          </Reveal>
+
+          {email && (
+            <Reveal as="p" delay={0.35} className={styles.email}>
+              {emailNote && <span className={styles.emailNote}>{emailNote} </span>}
+              <a className={styles.emailLink} href={`mailto:${email}`}>
+                <span className={styles.emailText}>{email}</span>
+              </a>
+            </Reveal>
+          )}
+        </div>
       </div>
     </section>
   )

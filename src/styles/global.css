@@ -1,19 +1,6 @@
-/* Background dot grid — fixed, decorative, non-interactive */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    rgba(10, 15, 28, 0.05) 1px,
-    transparent 0
-  );
-  background-size: 24px 24px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 60%, transparent);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 60%, transparent);
-}
+/* Clean canvas — the bold-editorial revamp drops the all-over dot wash.
+   Background texture, where wanted, is applied per-section (crisp hairline
+   grids / inverted bands), never as a page-wide haze. */
 
 #root {
   position: relative;

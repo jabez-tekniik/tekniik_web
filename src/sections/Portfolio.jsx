@@ -1,36 +1,61 @@
 import { Link } from 'react-router-dom'
 import { m, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Reveal } from '../motion/index.js'
-import Eyebrow from '../components/Eyebrow.jsx'
 import Tag from '../components/Tag.jsx'
 import { IconArrow } from '../components/Icon.jsx'
 import { PORTFOLIO } from '../data/content.js'
 import useReducedMotion from '../hooks/useReducedMotion.js'
 import styles from './Portfolio.module.css'
 
-function Card({ item, index }) {
+/* One editorial row. Pointer hooks are called ONCE per Row instance (never
+   inside the parent .map) so hooks stay out of loops — mirrors the Node
+   pattern in Process.jsx. The big index parallaxes toward the cursor; all
+   motion values are gated behind `reduced` so nothing moves under
+   prefers-reduced-motion. Hover glow + underline draw are pure CSS. */
+function Row({ item, index }) {
   const interactive = !!item.route
-  const className = `${styles.card} ${item.featured ? styles.featured : ''} ${interactive ? styles.interactive : ''}`
-
   const reduced = useReducedMotion()
-  const pointerY = useMotionValue(0.5)
-  const springY = useSpring(pointerY, { stiffness: 150, damping: 20 })
-  const idxY = useTransform(springY, [0, 1], [-6, 6])
 
-  const handlePointerMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    pointerY.set((e.clientY - rect.top) / rect.height)
+  const px = useMotionValue(0.5)
+  const py = useMotionValue(0.5)
+  const sx = useSpring(px, { stiffness: 150, damping: 22 })
+  const sy = useSpring(py, { stiffness: 150, damping: 22 })
+  const idxX = useTransform(sx, [0, 1], [-9, 9])
+  const idxY = useTransform(sy, [0, 1], [-7, 7])
+
+  const handleMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    px.set((e.clientX - r.left) / r.width)
+    py.set((e.clientY - r.top) / r.height)
   }
-  const handlePointerLeave = () => {
-    pointerY.set(0.5)
+  const handleLeave = () => {
+    px.set(0.5)
+    py.set(0.5)
   }
+
+  const className = `${styles.row} ${item.featured ? styles.featured : ''} ${
+    interactive ? styles.interactive : ''
+  }`
+  const num = String(index + 1).padStart(2, '0')
 
   const inner = (
     <>
-      <div className={styles.head}>
-        <m.span className={styles.idx} style={reduced ? undefined : { y: idxY }}>
-          {String(index + 1).padStart(2, '0')}
+      <span className={styles.glow} aria-hidden="true" />
+
+      <div className={styles.index} aria-hidden="true">
+        <m.span
+          className={styles.indexNum}
+          style={reduced ? undefined : { x: idxX, y: idxY }}
+        >
+          {num}
         </m.span>
+      </div>
+
+      <div className={styles.main}>
+        <h3 className={styles.title}>
+          <span className={styles.titleInk}>{item.title}</span>
+        </h3>
+        {item.featured && <p className={styles.desc}>{item.desc}</p>}
         <div className={styles.tags}>
           {item.tags.map((t) => (
             <Tag key={t}>{t}</Tag>
@@ -38,56 +63,31 @@ function Card({ item, index }) {
         </div>
       </div>
 
-      <div className={styles.body}>
-        <h3 className={styles.title}>{item.title}</h3>
-        <p className={styles.desc}>{item.desc}</p>
-      </div>
-
-      <div className={styles.foot}>
-        <div className={styles.stackRow}>
-          <span className={styles.stackLabel}>// stack</span>
-          <span className={styles.stackList}>
-            {item.stack.map((s, i) => (
-              <span key={s} className={styles.stackItem}>
-                {s}
-                {i < item.stack.length - 1 && <span className={styles.stackSep}>·</span>}
-              </span>
-            ))}
+      <div className={styles.aside}>
+        <span className={styles.result}>{item.result}</span>
+        {interactive && (
+          <span className={styles.cta}>
+            View case study
+            <IconArrow className={styles.ctaIcon} />
           </span>
-        </div>
-
-        <div className={styles.resultRow}>
-          <span className={styles.resultDot} aria-hidden="true" />
-          <span className={styles.result}>{item.result}</span>
-          {interactive && (
-            <span className={styles.link}>
-              Case study
-              <IconArrow className={styles.linkIcon} />
-            </span>
-          )}
-        </div>
+        )}
       </div>
     </>
   )
 
+  const handlers = reduced
+    ? {}
+    : { onPointerMove: handleMove, onPointerLeave: handleLeave }
+
   if (interactive) {
     return (
-      <Link
-        to={item.route}
-        className={className}
-        onMouseMove={reduced ? undefined : handlePointerMove}
-        onMouseLeave={reduced ? undefined : handlePointerLeave}
-      >
+      <Link to={item.route} className={className} {...handlers}>
         {inner}
       </Link>
     )
   }
   return (
-    <article
-      className={className}
-      onMouseMove={reduced ? undefined : handlePointerMove}
-      onMouseLeave={reduced ? undefined : handlePointerLeave}
-    >
+    <article className={className} {...handlers}>
       {inner}
     </article>
   )
@@ -98,15 +98,22 @@ export default function Portfolio() {
     <section className={`section ${styles.section}`}>
       <div className="container">
         <Reveal className={styles.intro}>
-          <Eyebrow>{PORTFOLIO.eyebrow}</Eyebrow>
+          <div className={styles.meta}>
+            <span className={styles.metaIndex}>07</span>
+            <span className={styles.metaEyebrow}>{PORTFOLIO.eyebrow}</span>
+          </div>
           <h2 className={styles.heading}>{PORTFOLIO.heading}</h2>
           <p className={styles.sub}>{PORTFOLIO.sub}</p>
         </Reveal>
 
-        <div className={styles.grid}>
+        <div className={styles.list}>
           {PORTFOLIO.items.map((item, i) => (
-            <Reveal key={item.slug} delay={i * 0.06} className={styles.cardWrap}>
-              <Card item={item} index={i} />
+            <Reveal
+              key={item.slug}
+              delay={Math.min(i, 5) * 0.05}
+              className={`${styles.rowWrap} ${item.featured ? styles.featuredWrap : ''}`}
+            >
+              <Row item={item} index={i} />
             </Reveal>
           ))}
         </div>

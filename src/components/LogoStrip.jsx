@@ -1,60 +1,55 @@
-import { m } from 'framer-motion'
-import { Reveal, useMagnetic } from '../motion/index.js'
+import { Reveal } from '../motion/index.js'
 import useCounter from '../hooks/useCounter.js'
-import useReveal from '../hooks/useReveal.js'
 import styles from './LogoStrip.module.css'
 
+// Only genuine numeric proof points belong here — values that begin with a
+// digit. The numeric part gets an on-scroll count-up; any trailing glyph
+// (+, %, ★) is preserved verbatim. Non-numeric brand words (Senior, AI-native,
+// Long-term) are intentionally excluded from this section.
 const NUMERIC_VALUE = /^(\d+(?:\.\d+)?)(.*)$/
 
-function ChipValue({ value }) {
-  const match = NUMERIC_VALUE.exec(value)
-  const numStr = match ? match[1] : null
-  const suffix = match ? match[2] : ''
-  const target = numStr ? parseFloat(numStr) : 0
-  const decimals = numStr && numStr.includes('.') ? numStr.split('.')[1].length : 0
+function StatValue({ match }) {
+  const numStr = match[1]
+  const target = parseFloat(numStr)
+  const decimals = numStr.includes('.') ? numStr.split('.')[1].length : 0
+  // Internally disabled under prefers-reduced-motion (renders the target).
   const [counterRef, count] = useCounter(target)
-
-  if (!match) {
-    return <span className={styles.value}>{value}</span>
-  }
 
   return (
     <span ref={counterRef} className={styles.value}>
       {count.toFixed(decimals)}
-      {suffix}
+      {match[2]}
     </span>
   )
 }
 
-function Chip({ item, revealed }) {
-  const { ref, style, onMouseMove, onMouseLeave } = useMagnetic({ strength: 0.15 })
-
+function Stat({ item, index }) {
   return (
-    <m.li
-      ref={ref}
-      style={style}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      className={`${styles.chip} ${revealed ? styles.revealed : ''}`}
-    >
-      <ChipValue value={item.value} />
+    <Reveal as="li" className={styles.cell} delay={index * 0.06} y={18}>
+      <span className={styles.num}>{String(index + 1).padStart(2, '0')}</span>
+      <StatValue match={item.match} />
       <span className={styles.label}>{item.label}</span>
-    </m.li>
+    </Reveal>
   )
 }
 
-export default function LogoStrip({ items = [], eyebrow = 'Trusted by teams who pick craft over hype' }) {
-  const [rowRef, revealed] = useReveal({ threshold: 0.3 })
+export default function LogoStrip({ items = [], eyebrow = 'THE NUMBERS' }) {
+  // Numeric-only: attach the parsed match so the render stays declarative.
+  const numeric = items
+    .map((item) => ({ ...item, match: NUMERIC_VALUE.exec(item.value) }))
+    .filter((item) => item.match)
 
   return (
-    <section className={styles.strip} aria-label="Selected proof points">
+    <section className={styles.section} aria-label="Selected proof points">
       <div className="container">
-        <Reveal as="p" className={styles.eyebrow}>
-          {eyebrow}
+        <Reveal className={styles.head} y={0}>
+          <span className={styles.index}>03</span>
+          <span className={styles.eyebrow}>{eyebrow}</span>
         </Reveal>
-        <ul ref={rowRef} className={styles.row}>
-          {items.map((item, i) => (
-            <Chip key={i} item={item} revealed={revealed} />
+
+        <ul className={styles.grid}>
+          {numeric.map((item, i) => (
+            <Stat key={item.value} item={item} index={i} />
           ))}
         </ul>
       </div>

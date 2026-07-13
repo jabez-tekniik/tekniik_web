@@ -1,3 +1,4 @@
+import { useLayoutEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
 import Footer from './components/Footer.jsx'
@@ -12,6 +13,17 @@ import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
   const location = useLocation()
+
+  // "Signal" aurora theme is scoped to the homepage only. Currently the
+  // LIGHT aurora variant; the dark theme is retained in code (theme-dark.css)
+  // for a future toggle — switch 'light' → 'dark' here to flip it back.
+  // Set pre-paint so there is no theme flash on route change.
+  useLayoutEffect(() => {
+    const root = document.documentElement
+    if (location.pathname === '/') root.setAttribute('data-theme', 'light')
+    else root.removeAttribute('data-theme')
+  }, [location.pathname])
+
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>

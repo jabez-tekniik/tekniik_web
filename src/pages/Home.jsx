@@ -1,4 +1,5 @@
 import Hero from '../components/Hero.jsx'
+import ServiceShowcase from '../sections/ServiceShowcase.jsx'
 import LogoStrip from '../components/LogoStrip.jsx'
 import Problem from '../sections/Problem.jsx'
 import Why from '../sections/Why.jsx'
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <ServiceShowcase />
       <LogoStrip items={MARQUEE} />
       <Problem />
       <Why />

@@ -78,17 +78,18 @@ const DOCUMENTARY = [
   'no watermark, no signature, no caption, no border, no frame',
 ].join(', ')
 
-// ABSTRACT: pure editorial form compositions for page-hero frames.
-// No devices, no UI, no text, no faces — just elegant abstract shapes,
-// gradients, and light. Pixel-perfect because there's no UI/typography
-// for the model to mangle.
+// ABSTRACT: pure editorial form compositions on a BRIGHT near-white canvas,
+// restrained single-hue INDIGO accent (no pink / no violet / no rainbow).
+// No devices, no UI, no text, no faces — so there is nothing for the model
+// to mangle into garbled fake typography. Matches the light bold-editorial
+// homepage: calm, architectural, confident.
 const ABSTRACT = [
-  'abstract editorial sculpture render in the style of a high-end gallery still life',
-  'pure form composition — no devices, no screens, no UI, no typography, no readable text, no avatars, no people, no human figures',
-  'soft layered shapes in cream #F8F7F4, deep indigo #5B5BFF, violet #8B6BFF, warm pink #FF8AB6, with a museum near-white surface',
-  'volumetric studio lighting from upper-left, gentle rim light, refined contact shadow, subtle subsurface scatter on translucent forms',
-  'physically based render, matte and glossy material balance, micro-detail on surfaces, subtle dust motes in the air for atmosphere',
-  'editorial composition with intentional negative space — feels like a museum-quality still life photograph',
+  'abstract editorial sculpture render, high-end product-design still life',
+  'pure geometric form composition — no devices, no screens, no phones, no laptops, no UI, no dashboards, no charts, no typography, no readable text, no numbers, no logos, no avatars, no people',
+  'clean bright near-white studio background (#F4F5F8), crisp and airy, generous negative space, soft even light',
+  'strictly restrained palette: soft off-white and pale-grey matte forms with ONE confident indigo (#5B5BFF) accent element and subtle deep near-black (#0A0B10) edges — absolutely NO pink, NO magenta, NO violet, NO teal, NO rainbow gradients',
+  'matte tactile materials, precise soft shadows, gentle volumetric light from the upper-left, shallow depth of field',
+  'minimal, calm, architectural, confident — in the spirit of an Apple / Kinfolk product still life',
   'ultra-sharp 8K detail, perfect anti-aliased edges, no banding, no JPEG artifacts, no halftone',
   'no watermark, no signature, no caption, no border, no frame, no logo',
 ].join(', ')
@@ -105,39 +106,43 @@ const ITEMS = [
   // ── Bento card visuals — FULL-BLEED CINEMATIC (designed for cover-fit + scrim) ──
   {
     id: 'svc-websites',
-    style: 'cinematic',
+    style: 'abstract',
+    aspectRatio: '4:3',
     out: 'public/img/services/websites.webp',
     width: 1600,
-    height: 1600,
+    height: 1200,
     subject:
-      'Cinematic close-up of a sleek thin laptop floating in dramatic indigo-violet atmospheric haze, screen filling most of the composition. The screen shows a beautifully designed marketing website hero: bold display headline in elegant editorial sans-serif (placeholder words, no real text), an indigo gradient call-to-action button glowing softly, a row of three crisp feature cards beneath with hairline borders, subtle warm pink accent on a testimonial pill. Camera angle: gentle three-quarter from slightly above, lens flare grazing the top-left corner. Reflection of indigo and pink ambient light on the glossy keyboard deck. Background dissolves into deep indigo bokeh with violet and pink particles. Frame fully filled — no empty corners.',
+      'An elegant arrangement of several thin flat rectangular matte planes, softly rounded corners, floating and overlapping at gentle offsets in bright studio light — an abstract sculpture that suggests a fast, well-structured web page built in clean layers. The planes are pale off-white and light grey; ONE plane is a confident solid indigo (#5B5BFF), catching the light as the focal accent. Soft precise drop shadows between the layers give a sense of depth and craft. Absolutely no screens, no UI, no text, no icons — pure abstract layered forms on a bright near-white background with generous negative space.',
   },
   {
     id: 'svc-apps',
-    style: 'cinematic',
+    style: 'abstract',
+    aspectRatio: '4:3',
     out: 'public/img/services/apps.webp',
     width: 1600,
-    height: 1600,
+    height: 1200,
     subject:
-      'Cinematic three-quarter render of a sophisticated SaaS analytics dashboard inside a glassy floating browser frame, filling the full 1:1 frame edge-to-edge. The dashboard shows: a slim sidebar with abstract geometric section icons, a hero panel with a real-time line chart in vivid indigo with a soft glow trail, a tidy data table beneath with subtle row hovers, a small floating activity-feed card overlapping the corner with an indigo notification dot. Behind the browser frame, a second translucent panel shows a settings/permissions grid in violet tones. Atmospheric ambient: deep indigo and violet light wash, faint pink rim on the right edge, soft volumetric glow behind the line chart. Composition feels like a moody product keynote slide.',
+      'A precise abstract composition of interlocking three-dimensional geometric modules — small matte cubes, bars and rounded blocks — fitting together into a calm structured grid formation, suggesting organised software and tools replacing chaos. Materials are pale off-white and light grey with soft micro-detail; ONE module is a solid indigo (#5B5BFF) block that stands slightly proud as the focal accent. Bright studio light from the upper-left, gentle contact shadows. No screens, no dashboards, no UI, no text, no numbers — pure abstract modular forms on a bright near-white background.',
   },
   {
     id: 'svc-mobile',
-    style: 'cinematic',
+    style: 'abstract',
+    aspectRatio: '4:3',
     out: 'public/img/services/mobile.webp',
     width: 1600,
-    height: 1600,
+    height: 1200,
     subject:
-      'Cinematic close-up of two iOS-style mobile phones standing upright in dramatic warm-pink-into-indigo atmospheric light, filling the full 1:1 frame. Left phone in sharp focus shows a clean app home: a warm greeting placeholder line, a balance/summary card with a tiny gradient sparkline, three quick-action chips with indigo glyphs, and a recent-activity list with subtle dividers. Right phone slightly behind in soft focus shows a detail screen: a bold stat number, a small indigo line chart, and a glowing indigo primary action button at the bottom. Subtle reflections on the phone glass, deep shadow gradient beneath. Background dissolves into warm pink + violet bokeh.',
+      'Two smooth tall rounded vertical monolith forms (abstract phone-like slabs with completely BLANK faces — no screens, no glass, no UI, no buttons, no text) standing upright and slightly overlapping in bright studio light, casting soft elegant shadows. The forms are pale off-white matte; the front slab has a single clean indigo (#5B5BFF) edge-band as the focal accent. Minimal, tactile, product-still-life feel. Bright near-white background with generous negative space. No people, no hands, no text.',
   },
   {
     id: 'svc-ai',
-    style: 'cinematic',
+    style: 'abstract',
+    aspectRatio: '4:3',
     out: 'public/img/services/ai.webp',
     width: 1600,
-    height: 1600,
+    height: 1200,
     subject:
-      'Cinematic editorial composition of an AI-assisted workspace product, filling the full 1:1 frame with dramatic indigo-violet atmospheric light. Centre: a glassy translucent editor panel with a highlighted block of placeholder body text and three glowing AI suggestion bubbles fanning out from it, plus a softly pulsing indigo "Generating…" chip mid-stream. Beside the editor floats a secondary glass card showing a pipeline graph: 5–7 connected nodes labelled in elegant micro-typography, with luminous indigo + warm pink particles drifting along the connection lines like signal flow. Subtle volumetric god rays from above. Soft pink rim light grazes the right edge of the editor. Composition has clear top-third negative space (atmospheric sky of bokeh) so a scrim overlay reads cleanly.',
+      'An abstract sculptural network — several small pale matte spheres and rounded nodes connected by smooth flowing three-dimensional indigo (#5B5BFF) threads and ribbons that weave gracefully through the composition, suggesting intelligence, automation and signal flowing through a system. Pale off-white nodes, one or two glowing indigo connector lines as the focal accent, subtle depth of field. Bright studio light, soft shadows, calm and refined. No screens, no UI, no text, no faces, no numbers — pure abstract connected forms on a bright near-white background.',
   },
 
   // ── Page hero frames — direct documentary subjects, 16:9 full-bleed

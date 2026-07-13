@@ -23,3 +23,18 @@
   transition: opacity 800ms ease;
 }
 .canvas.ready { opacity: 1; }
+
+/* On the light homepage the shader's bright indigo/violet/pink field would
+   sit garishly on near-white with normal blend. `multiply` turns it into a
+   soft pastel ink-on-paper wash that can never blow out; opacity dialled
+   back so it reads as calm atmosphere, not a colour cast. Dark is untouched. */
+:global(html[data-theme='light']) .canvas {
+  mix-blend-mode: multiply;
+}
+:global(html[data-theme='light']) .canvas.ready {
+  opacity: 0.55;
+}
+:global(html[data-theme='light']) .fallback {
+  mix-blend-mode: multiply;
+  opacity: 0.75;
+}

@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { m } from 'framer-motion'
 
 const unitVariants = {
@@ -25,18 +26,31 @@ export default function KineticText({
       transition={{ staggerChildren: stagger }}
       {...rest}
     >
-      {units.map((unit, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}
-        >
-          <m.span style={{ display: 'inline-block', willChange: 'transform' }} variants={unitVariants}>
-            {unit}
+      {units.map((unit, i) => {
+        // In char mode, render literal spaces as normal (non-clipped) whitespace —
+        // a space inside the overflow:hidden clip box gets trimmed to zero width.
+        if (by === 'char' && unit === ' ') {
+          return (
+            <span key={i} aria-hidden="true">
+              {' '}
+            </span>
+          )
+        }
+        return (
+          <Fragment key={i}>
+            <span
+              aria-hidden="true"
+              style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}
+            >
+              <m.span style={{ display: 'inline-block', willChange: 'transform' }} variants={unitVariants}>
+                {unit}
+              </m.span>
+            </span>
+            {/* Inter-word space lives OUTSIDE the clip box so it isn't trimmed. */}
             {by === 'word' && i < units.length - 1 ? ' ' : ''}
-          </m.span>
-        </span>
-      ))}
+          </Fragment>
+        )
+      })}
     </MTag>
   )
 }

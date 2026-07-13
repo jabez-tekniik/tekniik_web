@@ -1,255 +1,273 @@
-.bento {
-  display: grid;
-  grid-template-columns: 1.45fr 1fr;
-  grid-template-rows: minmax(220px, 1fr) minmax(220px, 1fr) minmax(360px, 1.3fr);
-  gap: 16px;
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  margin-top: clamp(56px, 7vw, 88px);
+.section {
+  position: relative;
 }
 
+/* —— header —— */
+.header {
+  max-width: 900px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.headMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.index {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-left: 12px;
+  border-left: 1px solid var(--hairline);
+}
+
+.heading {
+  font-size: clamp(2.4rem, 5.2vw, 4.25rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+
+.headingLine,
+.headingAccent {
+  display: block;
+}
+
+.headingAccent {
+  color: var(--accent);
+}
+
+.sub {
+  margin-top: 20px;
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   Grid — full-width featured hero card + a 3-up of image cards
+   ============================================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.6vw, 20px);
+}
+
+.cardWrap {
+  display: flex;
+  min-width: 0;
+}
+
+.featuredWrap {
+  grid-column: 1 / -1;
+  display: flex;
+  min-width: 0;
+}
+
+/* —— card shell —— */
 .card {
   position: relative;
-  display: block;
-  border-radius: var(--r-2xl);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  color: var(--ink);
   overflow: hidden;
-  isolation: isolate;
   text-decoration: none;
-  color: #fff;
-  transition: box-shadow 200ms var(--ease-out);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.55) inset,
-    0 0 0 1px rgba(91, 91, 255, 0.10),
-    0 24px 60px -28px rgba(91, 91, 255, 0.32),
-    0 12px 36px -18px rgba(10, 15, 28, 0.10);
-  background: #11132a;
+  transition:
+    transform 420ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 420ms cubic-bezier(0.32, 0.72, 0, 1),
+    box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* Lift/scale is now owned by the Tilt primitive (transform, JS-driven) so the
-   card only owns the shadow/glow response to hover — avoids two competing
-   transform authors on nested elements. */
 .card:hover {
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.55) inset,
-    0 0 0 1px rgba(91, 91, 255, 0.22),
-    0 36px 80px -28px rgba(91, 91, 255, 0.42),
-    0 14px 40px -18px rgba(10, 15, 28, 0.14);
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 44px rgba(10, 11, 16, 0.1);
 }
 
 .card:focus-visible {
   outline: none;
-  box-shadow:
-    0 0 0 3px var(--accent-ring),
-    0 24px 60px -28px rgba(91, 91, 255, 0.32);
+  box-shadow: var(--focus-ring);
 }
 
-/* Span variants on the asymmetric grid */
-.tall {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-}
-
-.square {
-  grid-column: 2;
-}
-
-.wide {
-  grid-column: 1 / span 2;
-  grid-row: 3;
-}
-
-/* Reveal (fade/rise on scroll-in) and Tilt (pointer rotate/scale) each apply
-   their own transform, so both need to fill the card exactly to keep the
-   absolutely-positioned imgWrap/chipSlot/body children anchored correctly. */
-.revealInner,
-.tilt {
-  position: absolute;
-  inset: 0;
-}
-
-.imgWrap {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+/* —— media —— */
+.media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--bg-2);
 }
 
 .img {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  display: block;
+  transition: transform 620ms cubic-bezier(0.32, 0.72, 0, 1);
   will-change: transform;
 }
 
-/* Two-stop scrim: a strong bottom gradient for body legibility +
-   a subtle radial vignette pulling focus toward the centre of the image. */
-.scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      120% 80% at 50% 35%,
-      transparent 0%,
-      rgba(10, 15, 28, 0.18) 70%,
-      rgba(10, 15, 28, 0.36) 100%
-    ),
-    linear-gradient(
-      to top,
-      rgba(10, 15, 28, 0.86) 0%,
-      rgba(10, 15, 28, 0.58) 28%,
-      rgba(10, 15, 28, 0.18) 56%,
-      transparent 78%
-    );
-  pointer-events: none;
+.card:hover .img {
+  transform: scale(1.04);
 }
 
+/* —— body —— */
 .body {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 22px;
-  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  pointer-events: none;
-  text-align: left;
+  justify-content: space-between;
+  gap: clamp(28px, 4vw, 44px);
+  padding: clamp(22px, 2.4vw, 32px);
+  flex: 1;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.num {
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.arrow {
+  display: inline-flex;
+  color: var(--text-faint);
+  transition:
+    transform 380ms cubic-bezier(0.32, 0.72, 0, 1),
+    color 380ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.card:hover .arrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .title {
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
-  letter-spacing: -0.018em;
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(10, 15, 28, 0.4);
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
-.tall .title,
-.wide .title {
-  font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+.desc {
+  font-size: 0.975rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 42ch;
 }
 
-.tagline {
-  font-family: var(--f-body);
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.82);
-  max-width: 32ch;
-  text-shadow: 0 1px 2px rgba(10, 15, 28, 0.35);
+/* —— standard cards: image on top, text below —— */
+.standard .media {
+  aspect-ratio: 4 / 3;
 }
 
-.tall .tagline,
-.wide .tagline {
-  font-size: 14px;
-  max-width: 32ch;
+/* —— featured (inverted near-black, horizontal split) —— */
+.featured {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  background: var(--band);
+  border-color: var(--band);
+  color: var(--on-band);
 }
 
-/* Top-right chips — different per card variant */
-.chipSlot {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
-  display: inline-flex;
-  pointer-events: none;
+.featured .body {
+  order: 1;
+  gap: clamp(48px, 7vw, 96px);
+  padding: clamp(30px, 3.4vw, 52px);
 }
 
-.chipArrow,
-.chipFlagship,
-.chipSparkle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--r-full);
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  font-family: var(--f-display);
-  font-size: 12px;
-  font-weight: 500;
+.featured .media {
+  order: 2;
+  background: var(--band-2);
+  min-height: 340px;
 }
 
-.chipArrow,
-.chipSparkle {
-  width: 32px;
-  height: 32px;
+.featured .title {
+  color: var(--on-band);
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
 }
 
-.chipFlagship {
-  gap: 8px;
-  padding: 6px 14px 6px 10px;
+.featured .desc {
+  color: var(--on-band-dim);
+  max-width: 46ch;
 }
 
-.chipDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5b5bff, #ff8ab6);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+.featured .num {
+  color: var(--accent-on-band);
 }
 
-.chipSparkle svg {
-  filter: drop-shadow(0 0 4px rgba(255, 138, 182, 0.6));
+.featured .arrow {
+  color: var(--on-band-dim);
 }
 
-/* Tablet: collapse asymmetric grid into clean 2x2 */
-@media (max-width: 960px) {
-  .bento {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(220px, auto) minmax(220px, auto);
-    gap: 14px;
-  }
-  .tall {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .square:nth-of-type(2) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .square:nth-of-type(3) {
-    grid-column: 1;
-    grid-row: 2;
-  }
-  .wide {
-    grid-column: 2;
-    grid-row: 2;
-  }
+.featured:hover {
+  border-color: var(--accent);
+  box-shadow: 0 24px 54px rgba(10, 11, 16, 0.28);
 }
 
-/* Mobile: single column stack with consistent aspect ratio per card */
-@media (max-width: 600px) {
-  .bento {
+.featured:hover .arrow {
+  color: var(--accent-on-band);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 900px) {
+  /* featured collapses to a vertical card: text, then image */
+  .featured {
     grid-template-columns: 1fr;
-    grid-template-rows: none;
-    gap: 14px;
   }
-  .tall,
-  .square,
-  .wide {
-    grid-column: 1;
-    grid-row: auto;
-    aspect-ratio: 4 / 3;
+  .featured .media {
+    order: 2;
+    aspect-ratio: 16 / 10;
+    min-height: 0;
   }
-  .body {
-    left: 18px;
-    right: 18px;
-    bottom: 18px;
+  .featured .body {
+    order: 1;
   }
-  .tall .title {
-    font-size: 1.375rem;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .card,
+  .arrow,
+  .img {
     transition: none;
+  }
+  .card:hover .img {
+    transform: none;
   }
 }
