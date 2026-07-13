@@ -134,7 +134,10 @@
 .mask {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.09em; /* keep descenders + trace inside the mask */
+  /* room for Satoshi's deep descenders (g, y) + the trace; the negative
+     margin gives most of it back so the two lines stay tight */
+  padding-bottom: 0.18em;
+  margin-bottom: -0.12em;
 }
 
 /* second line steps right — editorial offset */
@@ -169,15 +172,15 @@
   color: var(--accent);
 }
 
-/* blinking teal caret block — the cursor of a build in progress */
+/* blinking teal caret — thin text-cursor bar */
 .caret {
   display: inline-block;
-  width: 0.44em;
-  height: 0.72em;
-  margin-left: 0.14em;
+  width: 0.075em;
+  height: 0.78em;
+  margin-left: 0.12em;
   background: var(--accent);
   vertical-align: baseline;
-  transform: translateY(0.04em);
+  transform: translateY(0.05em);
   animation: caretBlink 1.15s steps(2, jump-none) infinite;
 }
 

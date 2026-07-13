@@ -2,8 +2,24 @@ import Reveal from '../components/Reveal.jsx'
 import { WHY_TEKNIIK } from '../data/content.js'
 import styles from './Why.module.css'
 
-/* "The ledger" — four full-width editorial rows under hairlines:
-   number · principle · reason. No cards, no grid boxes. */
+function ArrowGlyph() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M5 11l6-6M11 5H6.5M11 5v4.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+/* "The ledger" — four full-width statement rows under hairlines: ghost
+   outlined number · oversized principle · reason. Hovering a row sweeps
+   a teal signal across it (scaleX fill + left bar), ignites the numeral,
+   and reveals an arrow. */
 export default function Why() {
   return (
     <section className={`section ${styles.section}`}>
@@ -27,6 +43,9 @@ export default function Why() {
               </span>
               <h3 className={styles.title}>{item.title}</h3>
               <p className={styles.desc}>{item.desc}</p>
+              <span className={styles.arrow} aria-hidden="true">
+                <ArrowGlyph />
+              </span>
             </Reveal>
           ))}
         </div>

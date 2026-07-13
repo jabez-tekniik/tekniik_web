@@ -84,15 +84,15 @@
 .row {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(190px, 22vw, 300px));
-  grid-template-areas: 'main aside';
+  grid-template-columns: clamp(84px, 10vw, 150px) minmax(0, 1fr) minmax(0, clamp(190px, 22vw, 300px));
+  grid-template-areas: 'idx main aside';
   align-items: center;
   column-gap: clamp(20px, 3vw, 52px);
   row-gap: 14px;
-  padding: clamp(30px, 3.8vw, 52px) clamp(16px, 1.8vw, 28px)
-    clamp(30px, 3.8vw, 52px) clamp(96px, 12vw, 190px);
+  padding: clamp(28px, 3.4vw, 46px) clamp(18px, 2.2vw, 36px);
   color: inherit;
   text-decoration: none;
+  border-radius: var(--r-2xl);
   transition: background 380ms cubic-bezier(0.32, 0.72, 0, 1);
   overflow: hidden;
 }
@@ -112,23 +112,20 @@
   min-width: 0;
 }
 
-/* —— ghost numeral behind the content —— */
+/* —— ghost outlined numeral in its own column —— */
 .index {
-  position: absolute;
-  left: clamp(10px, 1.4vw, 24px);
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 0;
+  grid-area: idx;
+  align-self: center;
   pointer-events: none;
 }
 
 .indexNum {
   display: inline-block;
   font-family: var(--f-display);
-  font-weight: 800;
-  font-size: clamp(3.6rem, 8.5vw, 8rem);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
   line-height: 0.85;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--border-strong);
   transition: -webkit-text-stroke-color 380ms cubic-bezier(0.32, 0.72, 0, 1);
@@ -313,40 +310,35 @@
 /* —— tablet —— */
 @media (max-width: 900px) {
   .row {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: clamp(60px, 9vw, 96px) minmax(0, 1fr);
     grid-template-areas:
-      'main'
-      'aside';
+      'idx main'
+      'idx aside';
     align-items: start;
-    padding-left: clamp(72px, 12vw, 120px);
+    row-gap: 16px;
+  }
+  .index {
+    align-self: start;
+  }
+  .indexNum {
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
   }
   .aside {
     align-items: flex-start;
     text-align: left;
-  }
-  .index {
-    top: clamp(30px, 3.8vw, 52px);
-    transform: none;
-  }
-  .indexNum {
-    font-size: clamp(2.6rem, 7vw, 4.4rem);
   }
 }
 
 /* —— mobile —— */
 @media (max-width: 560px) {
   .row {
-    padding: 22px 14px;
+    padding: 22px 16px;
+    grid-template-columns: 1fr;
     grid-template-areas:
       'idx'
       'main'
       'aside';
     row-gap: 12px;
-  }
-  .index {
-    position: static;
-    grid-area: idx;
-    transform: none;
   }
   .indexNum {
     font-size: 2.3rem;
