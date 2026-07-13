@@ -94,6 +94,22 @@ const ABSTRACT = [
   'no watermark, no signature, no caption, no border, no frame, no logo',
 ].join(', ')
 
+
+// INK: dark abstract form compositions for the "Deep Ink" homepage —
+// near-black navy canvas (#0A0E1A), brand navy (#202E5D) depth forms and
+// ONE teal (#72CCD6) signal accent. No devices, no UI, no text, no faces —
+// nothing for the model to mangle into garbled fake typography.
+const INK = [
+  'abstract editorial sculpture render, high-end product-design still life photographed in a dark studio',
+  'pure geometric form composition — no devices, no screens, no phones, no laptops, no UI, no dashboards, no charts, no typography, no readable text, no numbers, no logos, no avatars, no people',
+  'deep near-black navy studio background (#0A0E1A), moody and premium, generous negative space, controlled low-key lighting',
+  'strictly restrained palette: matte deep-navy (#202E5D) and graphite forms with ONE luminous cyan-teal (#72CCD6) accent element that catches the light — absolutely NO pink, NO magenta, NO violet, NO indigo, NO orange, NO rainbow gradients',
+  'matte tactile materials, precise soft rim light, cool graphite shadows, shallow depth of field, subtle atmospheric haze',
+  'minimal, calm, architectural, confident — in the spirit of a premium dark tech-brand keynote still life',
+  'ultra-sharp 8K detail, perfect anti-aliased edges, no banding, no JPEG artifacts, no halftone',
+  'no watermark, no signature, no caption, no border, no frame, no logo',
+].join(', ')
+
 const NEGATIVE = [
   'low quality, blurry, soft focus, jpeg artifacts, banding, oversaturated, neon, gaudy',
   'cartoon, illustration, 3d render game art, plastic, stock photo, clipart',
@@ -106,43 +122,43 @@ const ITEMS = [
   // ── Bento card visuals — FULL-BLEED CINEMATIC (designed for cover-fit + scrim) ──
   {
     id: 'svc-websites',
-    style: 'abstract',
+    style: 'ink',
     aspectRatio: '4:3',
     out: 'public/img/services/websites.webp',
     width: 1600,
     height: 1200,
     subject:
-      'An elegant arrangement of several thin flat rectangular matte planes, softly rounded corners, floating and overlapping at gentle offsets in bright studio light — an abstract sculpture that suggests a fast, well-structured web page built in clean layers. The planes are pale off-white and light grey; ONE plane is a confident solid indigo (#5B5BFF), catching the light as the focal accent. Soft precise drop shadows between the layers give a sense of depth and craft. Absolutely no screens, no UI, no text, no icons — pure abstract layered forms on a bright near-white background with generous negative space.',
+      'An elegant arrangement of several thin flat rectangular matte planes with softly rounded corners, floating and overlapping at gentle offsets in a dark studio — an abstract sculpture that suggests a fast, well-structured web page built in clean layers. The planes are deep matte navy (#202E5D) and dark graphite; ONE plane is a luminous cyan-teal (#72CCD6), glowing softly as the focal accent. Precise rim light traces the edges of each layer against the near-black navy background. Absolutely no screens, no UI, no text, no icons — pure abstract layered forms with generous dark negative space.',
   },
   {
     id: 'svc-apps',
-    style: 'abstract',
+    style: 'ink',
     aspectRatio: '4:3',
     out: 'public/img/services/apps.webp',
     width: 1600,
     height: 1200,
     subject:
-      'A precise abstract composition of interlocking three-dimensional geometric modules — small matte cubes, bars and rounded blocks — fitting together into a calm structured grid formation, suggesting organised software and tools replacing chaos. Materials are pale off-white and light grey with soft micro-detail; ONE module is a solid indigo (#5B5BFF) block that stands slightly proud as the focal accent. Bright studio light from the upper-left, gentle contact shadows. No screens, no dashboards, no UI, no text, no numbers — pure abstract modular forms on a bright near-white background.',
+      'A precise abstract composition of interlocking three-dimensional geometric modules — small matte cubes, bars and rounded blocks — fitting together into a calm structured grid formation, suggesting organised software replacing chaos. Materials are deep matte navy (#202E5D) and dark graphite; ONE module is a luminous cyan-teal (#72CCD6) block that stands slightly proud, lit as the focal accent. Low-key studio light, cool rim highlights, soft contact shadows on the near-black navy background. No screens, no dashboards, no UI, no text, no numbers — pure abstract modular forms.',
   },
   {
     id: 'svc-mobile',
-    style: 'abstract',
+    style: 'ink',
     aspectRatio: '4:3',
     out: 'public/img/services/mobile.webp',
     width: 1600,
     height: 1200,
     subject:
-      'Two smooth tall rounded vertical monolith forms (abstract phone-like slabs with completely BLANK faces — no screens, no glass, no UI, no buttons, no text) standing upright and slightly overlapping in bright studio light, casting soft elegant shadows. The forms are pale off-white matte; the front slab has a single clean indigo (#5B5BFF) edge-band as the focal accent. Minimal, tactile, product-still-life feel. Bright near-white background with generous negative space. No people, no hands, no text.',
+      'Two smooth tall rounded vertical monolith forms (abstract phone-like slabs with completely BLANK faces — no screens, no glass, no UI, no buttons, no text) standing upright and slightly overlapping in a dark studio, edges traced by cool rim light. The slabs are deep matte navy (#202E5D) and graphite; the front slab carries a single clean luminous cyan-teal (#72CCD6) edge-band as the focal accent. Minimal, tactile, premium product-still-life feel on a near-black navy background with generous negative space. No people, no hands, no text.',
   },
   {
     id: 'svc-ai',
-    style: 'abstract',
+    style: 'ink',
     aspectRatio: '4:3',
     out: 'public/img/services/ai.webp',
     width: 1600,
     height: 1200,
     subject:
-      'An abstract sculptural network — several small pale matte spheres and rounded nodes connected by smooth flowing three-dimensional indigo (#5B5BFF) threads and ribbons that weave gracefully through the composition, suggesting intelligence, automation and signal flowing through a system. Pale off-white nodes, one or two glowing indigo connector lines as the focal accent, subtle depth of field. Bright studio light, soft shadows, calm and refined. No screens, no UI, no text, no faces, no numbers — pure abstract connected forms on a bright near-white background.',
+      'An abstract sculptural network — several small matte deep-navy (#202E5D) spheres and rounded nodes connected by smooth flowing luminous cyan-teal (#72CCD6) light-threads that weave gracefully through the dark composition, suggesting intelligence and signal flowing through a system. The teal threads glow gently as the only light source accents, subtle depth of field, fine atmospheric haze over a near-black navy background. No screens, no UI, no text, no faces, no numbers — pure abstract connected forms.',
   },
 
   // ── Page hero frames — direct documentary subjects, 16:9 full-bleed
@@ -211,6 +227,7 @@ function buildPrompt(item) {
   const style =
     item.style === 'cinematic' ? CINEMATIC
     : item.style === 'documentary' ? DOCUMENTARY
+    : item.style === 'ink' ? INK
     : ABSTRACT
   // Items that need real people drop the people exclusions; Imagen 4 dropped
   // the dedicated negativePrompt param, so we fold what's left into the body.

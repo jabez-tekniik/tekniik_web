@@ -11,7 +11,7 @@
   position: absolute;
   width: 600px;
   height: 200px;
-  background: radial-gradient(ellipse at center, rgba(91, 91, 255, 0.08), transparent 70%);
+  background: radial-gradient(ellipse at center, var(--accent-soft), transparent 70%);
   top: -80px;
   left: 50%;
   transform: translateX(-50%);

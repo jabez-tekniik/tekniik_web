@@ -21,7 +21,7 @@
   z-index: 0;
   background: radial-gradient(
     circle at 50% 60%,
-    rgba(91, 91, 255, 0.32),
+    var(--accent-bloom),
     transparent 60%
   );
   animation: bloomBreathe 9s ease-in-out infinite;

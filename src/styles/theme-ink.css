@@ -46,6 +46,9 @@
   --accent-soft: rgba(114, 204, 214, 0.1);
   --accent-tint: rgba(114, 204, 214, 0.05);
   --accent-ring: rgba(114, 204, 214, 0.38);
+  --accent-bloom: rgba(114, 204, 214, 0.2);
+  --accent-shadow: rgba(114, 204, 214, 0.12);
+  --accent-border: rgba(114, 204, 214, 0.18);
 
   --success: #34d399;
   --danger: #f87171;

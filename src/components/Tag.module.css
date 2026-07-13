@@ -8,7 +8,7 @@
   letter-spacing: 0.12em;
   color: var(--accent-deep);
   background: var(--accent-soft);
-  border: 1px solid rgba(91, 91, 255, 0.16);
+  border: 1px solid var(--accent-border);
   border-radius: 999px;
   padding: 5px 12px;
   white-space: nowrap;
@@ -24,4 +24,9 @@
   color: var(--ink-2);
   background: transparent;
   border-color: var(--border-strong);
+}
+
+/* Deep Ink homepage: lift tag text to the light teal for dark contrast */
+:global(:root[data-theme='ink']) .tag {
+  color: var(--accent);
 }

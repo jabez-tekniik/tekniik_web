@@ -86,7 +86,7 @@
 /* "after" — indigo-accented, brought forward */
 .after {
   border-color: var(--accent);
-  box-shadow: 0 18px 44px rgba(91, 91, 255, 0.14);
+  box-shadow: 0 18px 44px var(--accent-shadow);
   margin-left: clamp(0px, 4vw, 44px);
 }
 

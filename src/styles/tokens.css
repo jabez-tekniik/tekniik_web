@@ -17,6 +17,9 @@
   --accent-soft: rgba(91, 91, 255, 0.08);
   --accent-tint: rgba(91, 91, 255, 0.04);
   --accent-ring: rgba(91, 91, 255, 0.32);
+  --accent-bloom: rgba(91, 91, 255, 0.32);
+  --accent-shadow: rgba(91, 91, 255, 0.14);
+  --accent-border: rgba(91, 91, 255, 0.16);
 
   --success: #10b981;
   --danger: #ef4444;
