@@ -99,10 +99,10 @@
   --code-comment: #4b5470;
   --code-text: #a9b1c3;
 
-  /* —— type: sharp & bold —— */
+  /* —— type: Satoshi display, Inter body/labels —— */
   --f-display: 'Satoshi', 'Inter Tight', system-ui, sans-serif;
-  --f-body: 'Satoshi', 'Inter', system-ui, sans-serif;
-  --f-mono: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  --f-mono: 'Inter', system-ui, sans-serif;
 
   /* —— elevation —— */
   --shadow-card-hover: 0 16px 40px rgba(3, 5, 12, 0.5),
@@ -206,10 +206,10 @@
   --code-comment: #4b5470;
   --code-text: #a9b1c3;
 
-  /* —— type: sharp & bold —— */
+  /* —— type: Satoshi display, Inter body/labels —— */
   --f-display: 'Satoshi', 'Inter Tight', system-ui, sans-serif;
-  --f-body: 'Satoshi', 'Inter', system-ui, sans-serif;
-  --f-mono: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  --f-mono: 'Inter', system-ui, sans-serif;
 
   /* —— elevation (navy-tinted, soft) —— */
   --shadow-card-hover: 0 16px 40px rgba(15, 23, 52, 0.1),

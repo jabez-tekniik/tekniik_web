@@ -1,4 +1,5 @@
 import Button from './Button.jsx'
+import HeroParticles from './HeroParticles.jsx'
 import {
   useInViewOnce,
   useMagneticInk,
@@ -6,8 +7,6 @@ import {
   stagger,
   utils,
   svg,
-  setRiseHidden,
-  riseIn,
   EASE_INOUT,
   EASE_OUT,
 } from '../motion/ink/index.js'
@@ -21,6 +20,13 @@ const FRAME_LABEL = {
   'mobile-app': 'Mobile Apps',
   'ai-automation': 'AI Automation',
 }
+
+// per-character delay for the typewriter — small deterministic jitter so
+// the rhythm reads human, with a longer beat at each word boundary
+const TYPE_BASE = 44
+const TYPE_JITTER = [0, 16, 7]
+const WORD_PAUSE = 230
+const START_PAUSE = 560
 
 /* Signal trace — a precise circuit-style underline that draws in beneath
    the final word, ending in a node. Engineered, not hand-drawn. */
@@ -73,6 +79,20 @@ function Watermark() {
   )
 }
 
+/* One word split into per-character spans the typewriter can reveal.
+   inline-block + nowrap keeps line wrapping at word level. */
+function TypedWord({ word, className = '' }) {
+  return (
+    <span className={`${styles.word} ${className}`}>
+      {word.split('').map((c, i) => (
+        <span key={`${c}-${i}`} data-ch="">
+          {c}
+        </span>
+      ))}
+    </span>
+  )
+}
+
 // One proof group — duplicated in the DOM so the marquee can loop seamlessly.
 function TickerGroup() {
   return (
@@ -94,28 +114,96 @@ export default function Hero() {
 
   const rootRef = useInViewOnce(
     (el) => {
-      const lines = el.querySelectorAll('[data-line]')
+      const chars = Array.from(el.querySelectorAll('[data-ch]'))
       const fades = el.querySelectorAll('[data-fade]')
       const traceEl = el.querySelector('[data-trace]')
+      const caret = el.querySelector('[data-caret]')
+      const headline = el.querySelector('[data-headline]')
+      // word boundaries → indexes that get the longer WORD_PAUSE beat
+      const boundaries = new Set([w1.length, w1.length + w2.length])
+
+      let cancelled = false
+      let timer = 0
+      let typed = -1
+
+      // park the caret against a character's edge (right edge once typed,
+      // left edge of the first character before typing starts)
+      const placeCaret = (ch, side = 'right') => {
+        if (!caret || !headline || !ch) return
+        const base = headline.getBoundingClientRect()
+        const r = ch.getBoundingClientRect()
+        const x = (side === 'right' ? r.right : r.left) - base.left + r.height * 0.03
+        const y = r.top - base.top + r.height * 0.12
+        caret.style.height = `${r.height * 0.76}px`
+        caret.style.transform = `translate3d(${x}px, ${y}px, 0)`
+      }
+
+      const finish = () => {
+        caret.classList.add(styles.caretBlink)
+        const tl = createTimeline()
+        if (traceEl) {
+          const drawables = svg.createDrawable(traceEl.querySelectorAll('path, rect'))
+          utils.set(traceEl, { opacity: 1 })
+          tl.add(drawables, { draw: '0 1', duration: 700, ease: EASE_INOUT }, 0)
+        }
+        tl.add(
+          fades,
+          { opacity: 1, translateY: 0, duration: 700, delay: stagger(110), ease: EASE_OUT },
+          160,
+        )
+      }
+
+      const typeNext = () => {
+        if (cancelled) return
+        typed += 1
+        if (typed >= chars.length) {
+          finish()
+          return
+        }
+        const ch = chars[typed]
+        ch.style.visibility = 'visible'
+        placeCaret(ch)
+        const delay =
+          TYPE_BASE +
+          TYPE_JITTER[typed % TYPE_JITTER.length] +
+          (boundaries.has(typed + 1) ? WORD_PAUSE : 0)
+        timer = setTimeout(typeNext, delay)
+      }
+
+      const onResize = () => {
+        if (typed < 0) placeCaret(chars[0], 'left')
+        else placeCaret(chars[Math.min(typed, chars.length - 1)])
+      }
+      window.addEventListener('resize', onResize, { passive: true })
+
       return {
         init() {
-          setRiseHidden(lines)
+          chars.forEach((c) => {
+            c.style.visibility = 'hidden'
+          })
           utils.set(fades, { opacity: 0, translateY: 14 })
           if (traceEl) utils.set(traceEl, { opacity: 0 })
         },
         play() {
-          const tl = createTimeline()
-          tl.add(lines, riseIn({ duration: 950, delay: stagger(95) }), 0)
-          if (traceEl) {
-            const drawables = svg.createDrawable(traceEl.querySelectorAll('path, rect'))
-            utils.set(traceEl, { opacity: 1 })
-            tl.add(drawables, { draw: '0 1', duration: 750, ease: EASE_INOUT }, 620)
+          // wait for Satoshi so caret metrics don't shift mid-type
+          const start = () => {
+            if (cancelled) return
+            placeCaret(chars[0], 'left')
+            caret.style.opacity = '1'
+            caret.classList.add(styles.caretBlink)
+            timer = setTimeout(() => {
+              if (cancelled) return
+              caret.classList.remove(styles.caretBlink)
+              typeNext()
+            }, START_PAUSE)
           }
-          tl.add(
-            fades,
-            { opacity: 1, translateY: 0, duration: 700, delay: stagger(110), ease: EASE_OUT },
-            380,
-          )
+          if (document.fonts?.ready) document.fonts.ready.then(start)
+          else start()
+        },
+        cleanup() {
+          cancelled = true
+          clearTimeout(timer)
+          window.removeEventListener('resize', onResize)
         },
       }
     },
@@ -126,6 +214,7 @@ export default function Hero() {
     <section className={styles.hero} ref={rootRef}>
       <div className={styles.blueprint} aria-hidden="true" />
       <Watermark />
+      <HeroParticles />
 
       <div className={`container ${styles.inner}`}>
         {/* Meta bar — eyebrow left, trust right, under a hairline */}
@@ -137,23 +226,22 @@ export default function Hero() {
           <span className={styles.trust}>{HERO.trust}</span>
         </div>
 
-        {/* Oversized flush-left poster statement */}
-        <h1 className={styles.headline}>
-          <span className={styles.mask}>
-            <span className={styles.line} data-line="">
-              {w1}
+        {/* Oversized flush-left poster statement — typed in on load */}
+        <h1 className={styles.headline} data-headline="">
+          <span className={styles.srOnly}>{`${w1} ${w2} ${w3}`}</span>
+          <span aria-hidden="true">
+            <span className={styles.line}>
+              <TypedWord word={w1} />
             </span>
-          </span>
-          <span className={`${styles.mask} ${styles.maskOffset}`}>
-            <span className={styles.line} data-line="">
-              <span className={styles.ghostWord}>{w2}</span>{' '}
+            <span className={styles.line}>
+              <TypedWord word={w2} className={styles.ghostWord} />{' '}
               <span className={styles.signal}>
-                {w3}
+                <TypedWord word={w3} />
                 <Trace />
               </span>
-              <span className={styles.caret} aria-hidden="true" />
             </span>
           </span>
+          <span className={styles.caret} data-caret="" aria-hidden="true" />
         </h1>
 
         {/* Lower row — supporting line + actions */}

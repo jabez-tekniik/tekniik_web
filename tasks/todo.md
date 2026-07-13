@@ -60,6 +60,8 @@ Brand: navy `#202E5D` + teal `#72CCD6` from `src/images/brand/`, neutrals black/
 ## Decisions log
 - Direction: "Deep Ink" dark (user-picked) → 2026-07-13: user asked for LIGHT as default with dark-mode toggle in Nav. anime.js only on home (user-picked).
 - Fonts: **Satoshi** (display 900 + body) / JetBrains Mono. Clash Display and Cabinet Grotesk both dropped — user font feedback.
+- 2026-07-13 (round @ 65fb2ff): hover text-shift effects BANNED site-wide (user: "looks horrible"); no em dashes in copy ("AI slop"); full logo (chevron + wordmark) in Nav+Footer via --logo-ink; footer got Chennai/London office tabs (London = 71-75 Shelton St temp address); portfolio pills 3 distinct recipes; services imagery regenerated with STUDIO (photoreal cinematic) style.
+- 2026-07-13 (antigravity round): hero headline TYPES in char-by-char (antigravity.google-style) with teal caret riding the text edge; interactive canvas speck field w/ mouse repulsion + trailing teal glow follower (HeroParticles.jsx); 2nd headline line offset REMOVED (user: "disoriented"); body/labels font → **Inter**, headings stay Satoshi (user request).
 - User 2026-07-13: "enhancing ≠ revamping" — every section got a structurally new composition (see phases 3–6), committed @ b77a6c1.
 - framer-motion fully removed (only home used it; other routes never did).
 - Old work committed to feature/homepage-motion @ c097b9a before branching.
