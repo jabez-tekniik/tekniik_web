@@ -1,32 +1,49 @@
 import { useEffect, useRef } from 'react'
 import styles from './Hero.module.css'
 
-/* Interactive speck field — tiny brand-colored dashes drifting gently
-   upward across the hero; specks near the pointer are pushed aside as it
-   moves (antigravity.google-style — no visible cursor follower).
-   Canvas cannot read CSS custom properties, so the palettes below mirror
-   theme-ink.css (teal #72ccd6 / teal-ink #0e7c8c / navy #202e5d). */
+/* Faithful 2D-canvas port of antigravity.google's hero particle field
+   (their version is a THREE.js GPGPU sim; the math below mirrors their
+   sim shader):
+   - every speck is ANCHORED to a home position and wobbles around it on
+     layered noise — specks never free-drift across the canvas
+   - an invisible ring (radius ~0.175u, pulsing) lerps lazily toward the
+     cursor while hovering (0.02/frame) and wanders on noise when idle
+     (0.01/frame); the cursor pulls the ring only 17.5% of the way
+   - specks under the ring band GROW (band factors t/t2/t3) and get pushed
+     radially away from the ring centre with springy decay (pos *= 0.8)
+   - speck size everywhere twinkles on an ambient noise term
+   Canvas cannot read CSS custom properties → palettes mirror theme-ink.css. */
 
 const PALETTES = {
-  ink: {
-    specks: [
-      'rgba(114, 204, 214, 0.75)',
-      'rgba(155, 227, 234, 0.5)',
-      'rgba(148, 163, 199, 0.45)',
-      'rgba(244, 246, 251, 0.3)',
-    ],
-  },
-  'ink-light': {
-    specks: [
-      'rgba(14, 124, 140, 0.55)',
-      'rgba(114, 204, 214, 0.9)',
-      'rgba(32, 46, 93, 0.4)',
-      'rgba(32, 46, 93, 0.22)',
-    ],
-  },
+  ink: ['#72ccd6', '#9be3ea', '#94a3c7'],
+  'ink-light': ['#0e7c8c', '#72ccd6', '#202e5d'],
 }
 
-const REPEL_RADIUS = 130
+/* their camera shows ~2.26 world units of height → 1 unit = H/2.26 px */
+const UNITS_VISIBLE_H = 2.26
+const RING_RADIUS = 0.175
+const RING_WIDTH = 0.15
+const RING_WIDTH2 = 0.05
+const RING_DISPLACEMENT = 0.15
+const CURSOR_PULL = 0.175
+const DENSITY_PX2 = 2400 // ≈1 speck per 2400 css-px² (their density=200 field)
+
+/* GLSL smoothstep incl. the reversed-edge form their shader relies on */
+function sstep(a, b, x) {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
+  return t * t * (3 - 2 * t)
+}
+
+/* smooth 1-D noise stand-in: two detuned sines. Their shader samples
+   simplex noise at the (constant) home position, so per speck every
+   channel is just a smooth function of time — this is equivalent. */
+function makeChannel(speed = 1) {
+  const p1 = Math.random() * Math.PI * 2
+  const p2 = Math.random() * Math.PI * 2
+  const w1 = (0.3 + Math.random() * 0.35) * speed
+  const w2 = w1 * 1.73
+  return (t) => Math.sin(p1 + t * w1) * 0.62 + Math.sin(p2 + t * w2) * 0.38
+}
 
 export default function HeroParticles() {
   const canvasRef = useRef(null)
@@ -43,95 +60,134 @@ export default function HeroParticles() {
 
     let w = 0
     let h = 0
+    let U = 1 // px per world unit
     let parts = []
     let raf = 0
     let inView = true
     let pageVisible = !document.hidden
     let running = false
+    const t0 = performance.now()
 
     let palette = PALETTES['ink-light']
     const readPalette = () => {
       const theme = document.documentElement.getAttribute('data-theme')
       palette = PALETTES[theme] || PALETTES['ink-light']
       parts.forEach((p) => {
-        p.color = palette.specks[p.colorIndex % palette.specks.length]
+        p.color = palette[p.colorIndex % palette.length]
       })
     }
 
-    const mouse = { tx: -9999, ty: -9999, active: false }
+    const mouse = { x: 0, y: 0, over: false }
+    const ring = { x: 0, y: 0 }
+    const wanderX = makeChannel(0.66)
+    const wanderY = makeChannel(0.75)
 
     const spawn = () => {
-      const count = Math.min(110, Math.round((w * h) / 15000))
+      const count = Math.min(560, Math.max(90, Math.round((w * h) / DENSITY_PX2)))
       parts = Array.from({ length: count }, () => {
-        const colorIndex = Math.floor(Math.random() * palette.specks.length)
+        const colorIndex = Math.floor(Math.random() * palette.length)
         return {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          len: 4 + Math.random() * 5,
-          thick: 1.4 + Math.random() * 1.1,
+          hx: Math.random() * w,
+          hy: Math.random() * h,
           rot: Math.random() * Math.PI,
-          spin: (Math.random() - 0.5) * 0.012,
-          vy: -(0.1 + Math.random() * 0.28),
-          sway: Math.random() * Math.PI * 2,
-          swaySpeed: 0.004 + Math.random() * 0.009,
-          swayAmp: 0.15 + Math.random() * 0.3,
-          pushX: 0,
-          pushY: 0,
+          n1: makeChannel(0.35),
+          n2: makeChannel(0.35),
+          n3: makeChannel(0.5),
+          n4: makeChannel(0.5),
+          nS: makeChannel(0.5),
+          nHF: makeChannel(1),
+          px: 0,
+          py: 0,
+          scale: 0.4,
           colorIndex,
-          color: palette.specks[colorIndex],
+          color: palette[colorIndex % palette.length],
         }
       })
     }
 
-    const drawSpecks = () => {
-      for (const p of parts) {
-        ctx.save()
-        ctx.translate(p.x, p.y)
-        ctx.rotate(p.rot)
-        ctx.fillStyle = p.color
-        ctx.beginPath()
-        ctx.roundRect(-p.len / 2, -p.thick / 2, p.len, p.thick, p.thick / 2)
-        ctx.fill()
-        ctx.restore()
+    /* one sim step, straight port of their fragment shader */
+    const simulate = (elapsed) => {
+      const T = elapsed * 0.5
+      const R = RING_RADIUS + Math.sin(elapsed) * 0.03 + Math.cos(elapsed * 3) * 0.02
+
+      // ring target: cursor-biased while hovering, noise wander otherwise
+      const cx = w / 2
+      const cy = h / 2
+      let tx
+      let ty
+      let lerp
+      if (mouse.over) {
+        tx = cx + (mouse.x - cx) * CURSOR_PULL + wanderX(elapsed) * 0.1 * U
+        ty = cy + (mouse.y - cy) * CURSOR_PULL + wanderY(elapsed) * 0.1 * U
+        lerp = 0.02
+      } else {
+        tx = cx + wanderX(elapsed) * 0.2 * U
+        ty = cy + wanderY(elapsed) * 0.1 * U
+        lerp = 0.01
       }
+      ring.x += (tx - ring.x) * lerp
+      ring.y += (ty - ring.y) * lerp
+
+      for (const p of parts) {
+        const hxU = p.hx / U
+        const hyU = p.hy / U
+        const dist = Math.hypot(p.hx - ring.x, p.hy - ring.y) / U
+
+        // ring band factors (t drives scale, t2 drives the radial push)
+        let tA = sstep(R - RING_WIDTH * 2, R, dist) - sstep(R, R + RING_WIDTH, dist)
+        let t2 = sstep(R - RING_WIDTH2 * 2, R, dist) - sstep(R, R + RING_WIDTH2, dist)
+        const t3 = sstep(R + RING_WIDTH2, R, dist)
+        tA *= tA
+        t2 = t2 * t2 * t2
+
+        let tScale = tA + t2 * 3 + t3 * 0.4 + p.nHF(T) * t3 * 0.5
+        const nS = p.nS(T)
+        tScale += ((nS + 1.5) * 0.5) ** 2 * 0.6
+
+        // ambient wobble around home (world units)
+        const clampDist = Math.min(dist, 1)
+        const dispX =
+          p.n1(T) * 0.03 + p.n3(T) * 0.005 + Math.sin(hxU * 20 + T * 4) * 0.02 * clampDist
+        const dispY =
+          p.n2(T) * 0.03 + p.n4(T) * 0.005 + Math.cos(hyU * 20 + T * 3) * 0.02 * clampDist
+
+        // springy radial push away from the ring centre
+        p.px *= 0.8
+        p.py *= 0.8
+        const push = t2 ** 0.75 * RING_DISPLACEMENT
+        p.px -= (ring.x / U - (hxU + dispX)) * push
+        p.py -= (ring.y / U - (hyU + dispY)) * push
+
+        p.scale += (tScale - p.scale) * 0.2
+
+        p.x = (hxU + dispX + p.px * 0.25) * U
+        p.y = (hyU + dispY + p.py * 0.25) * U
+      }
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h)
+      ctx.lineCap = 'round'
+      for (const p of parts) {
+        const s = p.scale
+        if (s <= 0.05) continue
+        const len = 1.5 + s * 2.6
+        const dx = Math.cos(p.rot) * len * 0.5
+        const dy = Math.sin(p.rot) * len * 0.5
+        ctx.globalAlpha = Math.min(0.85, 0.18 + s * 0.38)
+        ctx.strokeStyle = p.color
+        ctx.lineWidth = Math.max(0.9, 0.6 + s * 0.55)
+        ctx.beginPath()
+        ctx.moveTo(p.x - dx, p.y - dy)
+        ctx.lineTo(p.x + dx, p.y + dy)
+        ctx.stroke()
+      }
+      ctx.globalAlpha = 1
     }
 
     const step = () => {
-      ctx.clearRect(0, 0, w, h)
-
-      for (const p of parts) {
-        p.sway += p.swaySpeed
-        p.rot += p.spin
-        p.y += p.vy
-        p.x += Math.sin(p.sway) * p.swayAmp
-
-        // specks near the live pointer get pushed away
-        if (mouse.active) {
-          const dx = p.x - mouse.tx
-          const dy = p.y - mouse.ty
-          const d2 = dx * dx + dy * dy
-          if (d2 < REPEL_RADIUS * REPEL_RADIUS && d2 > 0.01) {
-            const d = Math.sqrt(d2)
-            const f = (1 - d / REPEL_RADIUS) * 0.85
-            p.pushX += (dx / d) * f
-            p.pushY += (dy / d) * f
-          }
-        }
-        p.pushX *= 0.9
-        p.pushY *= 0.9
-        p.x += p.pushX
-        p.y += p.pushY
-
-        // wrap around the edges (upward drift respawns at the bottom)
-        if (p.y < -12) {
-          p.y = h + 12
-          p.x = Math.random() * w
-        }
-        if (p.x < -12) p.x = w + 12
-        if (p.x > w + 12) p.x = -12
-      }
-
-      drawSpecks()
+      simulate((performance.now() - t0) / 1000)
+      draw()
       raf = requestAnimationFrame(step)
     }
 
@@ -150,13 +206,16 @@ export default function HeroParticles() {
       const rect = canvas.getBoundingClientRect()
       w = Math.round(rect.width)
       h = Math.round(rect.height)
+      U = h / UNITS_VISIBLE_H
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ring.x = w / 2
+      ring.y = h / 2
       spawn()
       if (reduced) {
-        ctx.clearRect(0, 0, w, h)
-        drawSpecks()
+        simulate(0)
+        draw()
       }
     }
     resize()
@@ -187,12 +246,12 @@ export default function HeroParticles() {
       const rect = canvas.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
-      mouse.active = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height
-      mouse.tx = x
-      mouse.ty = y
+      mouse.over = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height
+      mouse.x = x
+      mouse.y = y
     }
     const onPointerLeave = () => {
-      mouse.active = false
+      mouse.over = false
     }
     if (finePointer && !reduced) {
       window.addEventListener('pointermove', onPointerMove, { passive: true })
