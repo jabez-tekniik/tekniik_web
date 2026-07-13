@@ -8,6 +8,7 @@
 .mark {
   display: block;
   flex-shrink: 0;
+  width: auto;
 }
 
 /* Navy chevron: follows --logo-ink (navy on light themes, white on the
@@ -19,12 +20,4 @@
 /* Teal chevron is constant brand teal in every theme. */
 .tealPath {
   fill: #72ccd6;
-}
-
-.word {
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 1.22rem;
-  letter-spacing: -0.02em;
-  color: var(--ink);
 }

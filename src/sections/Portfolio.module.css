@@ -141,7 +141,7 @@
   grid-area: main;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
 .title {
@@ -202,11 +202,38 @@
   gap: 6px;
 }
 
-/* keep mono tag chips legible on the navy band */
-.featured .tags span,
+/* distinct pill recipes — teal (default) / ink / neutral, cycling */
+.row .tags span:nth-child(3n + 2) {
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.row .tags span:nth-child(3n) {
+  color: var(--text-dim);
+  background: transparent;
+  border-color: var(--border);
+}
+
+/* the same three recipes translated for the navy band */
+.row.featured .tags span,
 .row:hover .tags span {
+  color: var(--accent-on-band);
+  background: rgba(114, 204, 214, 0.08);
+  border-color: rgba(114, 204, 214, 0.3);
+}
+
+.row.featured .tags span:nth-child(3n + 2),
+.row:hover .tags span:nth-child(3n + 2) {
   color: var(--on-band);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--band-hairline-strong);
+}
+
+.row.featured .tags span:nth-child(3n),
+.row:hover .tags span:nth-child(3n) {
+  color: var(--on-band-dim);
+  background: transparent;
   border-color: var(--band-hairline);
 }
 

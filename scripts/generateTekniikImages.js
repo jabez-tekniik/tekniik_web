@@ -110,6 +110,21 @@ const INK = [
   'no watermark, no signature, no caption, no border, no frame, no logo',
 ].join(', ')
 
+// STUDIO: photorealistic cinematic product photography for the homepage
+// "What we build" stage — real devices and scenes, brand-graded: deep navy
+// environment with ONE luminous cyan-teal accent. Screens carry elegant
+// ABSTRACT interface compositions (panels, gradients, hairlines) with no
+// readable words, so nothing can render as garbled fake typography.
+const STUDIO = [
+  'photorealistic cinematic product photograph in the style of a premium tech-brand keynote hero shot',
+  'dark moody studio environment graded deep navy (#0A0E1A into #202E5D) with ONE luminous cyan-teal (#72CCD6) accent light source — absolutely NO pink, NO magenta, NO violet, NO orange, NO rainbow',
+  'dramatic rim lighting tracing every edge, soft volumetric haze, shallow depth of field with creamy bokeh, subtle reflections on dark surfaces',
+  'device screens (where present) show elegant ABSTRACT interface compositions only — soft glowing panels, gradient blocks, hairline dividers, teal accent shapes — with NO readable words, NO letters, NO numbers, NO icons that resemble text',
+  'rich blacks, glowing teal highlights, refined contrast, color-graded like an Apple or Sony keynote render',
+  'no people, no faces, no hands, no real-world brand logos, no watermark, no signature, no caption',
+  'ultra-sharp 8K product detail, premium studio quality, photographed on a cinema prime lens',
+].join(', ')
+
 const NEGATIVE = [
   'low quality, blurry, soft focus, jpeg artifacts, banding, oversaturated, neon, gaudy',
   'cartoon, illustration, 3d render game art, plastic, stock photo, clipart',
@@ -122,43 +137,43 @@ const ITEMS = [
   // ── Bento card visuals — FULL-BLEED CINEMATIC (designed for cover-fit + scrim) ──
   {
     id: 'svc-websites',
-    style: 'ink',
+    style: 'studio',
     aspectRatio: '4:3',
     out: 'public/img/services/websites.webp',
     width: 1600,
     height: 1200,
     subject:
-      'An elegant arrangement of several thin flat rectangular matte planes with softly rounded corners, floating and overlapping at gentle offsets in a dark studio — an abstract sculpture that suggests a fast, well-structured web page built in clean layers. The planes are deep matte navy (#202E5D) and dark graphite; ONE plane is a luminous cyan-teal (#72CCD6), glowing softly as the focal accent. Precise rim light traces the edges of each layer against the near-black navy background. Absolutely no screens, no UI, no text, no icons — pure abstract layered forms with generous dark negative space.',
+      'A stunning ultra-thin premium laptop sitting slightly angled on a dark walnut and black slate designer desk at night, photographed from a low three-quarter hero angle. The laptop screen glows with an elegant abstract marketing-website layout: a large dark hero panel, a soft luminous image block, thin hairline section dividers and one bright cyan-teal glowing pill shape that is COMPLETELY BLANK inside (a pure solid color pill with absolutely no label, no letters, no numbers, no characters on it). Every shape on the screen is empty and unlabeled — the screen contains ZERO typography of any kind, no words, no letters, no digits anywhere. Beside it: a small ceramic cup and a matte black notebook, both catching a teal rim light from the left. Deep navy studio darkness behind with soft window bokeh, fine dust motes floating in the teal light beam. Photorealistic, cinematic, premium.',
   },
   {
     id: 'svc-apps',
-    style: 'ink',
+    style: 'studio',
     aspectRatio: '4:3',
     out: 'public/img/services/apps.webp',
     width: 1600,
     height: 1200,
     subject:
-      'A precise abstract composition of interlocking three-dimensional geometric modules — small matte cubes, bars and rounded blocks — fitting together into a calm structured grid formation, suggesting organised software replacing chaos. Materials are deep matte navy (#202E5D) and dark graphite; ONE module is a luminous cyan-teal (#72CCD6) block that stands slightly proud, lit as the focal accent. Low-key studio light, cool rim highlights, soft contact shadows on the near-black navy background. No screens, no dashboards, no UI, no text, no numbers — pure abstract modular forms.',
+      'A professional dual-monitor engineering workstation at night, photographed from a cinematic three-quarter angle. Both dark ultrawide monitors glow with elegant abstract analytics dashboards: dark navy panels, one smooth luminous cyan-teal (#72CCD6) area-chart curve sweeping upward, small gradient stat blocks and hairline grid lines — all abstract, NO readable words or numbers. A backlit low-profile keyboard glows faint teal in the foreground, a slim desk lamp casts a warm-free cool accent, blurred deep-navy city-light bokeh through a window behind. Photorealistic reflections on the black desk surface, volumetric haze, premium cinematic grade.',
   },
   {
     id: 'svc-mobile',
-    style: 'ink',
+    style: 'studio',
     aspectRatio: '4:3',
     out: 'public/img/services/mobile.webp',
     width: 1600,
     height: 1200,
     subject:
-      'Two smooth tall rounded vertical monolith forms (abstract phone-like slabs with completely BLANK faces — no screens, no glass, no UI, no buttons, no text) standing upright and slightly overlapping in a dark studio, edges traced by cool rim light. The slabs are deep matte navy (#202E5D) and graphite; the front slab carries a single clean luminous cyan-teal (#72CCD6) edge-band as the focal accent. Minimal, tactile, premium product-still-life feel on a near-black navy background with generous negative space. No people, no hands, no text.',
+      'Two premium flagship smartphones on wet-look black slate, one standing upright and one leaning against it at a slight angle, photographed macro-close with dramatic cinema lighting. Their edge-to-edge screens glow with elegant abstract app interfaces: deep navy gradient backgrounds, rounded luminous card shapes, one bright cyan-teal (#72CCD6) action-button form and soft teal chart curves — all abstract, NO readable words or icons. Crisp mirror reflections of the phones on the wet slate below, a precise teal rim light tracing the metal frames, deep navy darkness with gentle haze behind. Photorealistic, stunning, premium keynote quality.',
   },
   {
     id: 'svc-ai',
-    style: 'ink',
+    style: 'studio',
     aspectRatio: '4:3',
     out: 'public/img/services/ai.webp',
     width: 1600,
     height: 1200,
     subject:
-      'An abstract sculptural network — several small matte deep-navy (#202E5D) spheres and rounded nodes connected by smooth flowing luminous cyan-teal (#72CCD6) light-threads that weave gracefully through the dark composition, suggesting intelligence and signal flowing through a system. The teal threads glow gently as the only light source accents, subtle depth of field, fine atmospheric haze over a near-black navy background. No screens, no UI, no text, no faces, no numbers — pure abstract connected forms.',
+      'A breathtaking macro photograph of a dark glass-and-metal AI core: a translucent sculptural orb hovering just above a dark brushed-metal base, with intricate luminous cyan-teal (#72CCD6) neural filaments flowing and branching inside it like a living network of light. Fine teal light-threads arc from the base up into the orb, micro-particles of light drift in the air around it, and the glow reflects softly on the dark surface below. Deep navy studio darkness, dramatic rim light, shallow depth of field, subtle volumetric haze. Photorealistic, cinematic, awe-inspiring — NO text, NO faces, NO screens.',
   },
 
   // ── Page hero frames — direct documentary subjects, 16:9 full-bleed
@@ -228,6 +243,7 @@ function buildPrompt(item) {
     item.style === 'cinematic' ? CINEMATIC
     : item.style === 'documentary' ? DOCUMENTARY
     : item.style === 'ink' ? INK
+    : item.style === 'studio' ? STUDIO
     : ABSTRACT
   // Items that need real people drop the people exclusions; Imagen 4 dropped
   // the dedicated negativePrompt param, so we fold what's left into the body.

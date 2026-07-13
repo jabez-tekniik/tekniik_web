@@ -34,13 +34,15 @@ function Trace() {
       aria-hidden="true"
       data-trace=""
     >
+      {/* low segment runs under the "g" descender, then steps UP to the
+          node under "ht." — so the line never crosses the g's stroke */}
       <path
-        d="M2 10 H196 l22 14 H304"
+        d="M2 24 H196 l22 -14 H304"
         stroke="currentColor"
         strokeWidth="5"
         strokeLinecap="square"
       />
-      <rect x="306" y="17" width="12" height="12" fill="currentColor" />
+      <rect x="306" y="4" width="12" height="12" fill="currentColor" />
     </svg>
   )
 }

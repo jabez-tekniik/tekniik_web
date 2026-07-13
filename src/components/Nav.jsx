@@ -10,7 +10,7 @@ import styles from './Nav.module.css'
 function Logo() {
   return (
     <Link to="/" className={styles.logo} aria-label="Tekniik — home">
-      <BrandLogo size={24} />
+      <BrandLogo size={34} />
     </Link>
   )
 }

@@ -124,7 +124,6 @@
   letter-spacing: -0.02em;
   color: var(--text);
   margin: 0;
-  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .desc {
@@ -157,9 +156,6 @@
   }
   .row:hover .num {
     -webkit-text-stroke-color: var(--accent);
-  }
-  .row:hover .title {
-    transform: translateX(12px);
   }
   .row:hover .arrow {
     opacity: 1;
@@ -196,11 +192,7 @@
   .row::before,
   .row::after,
   .num,
-  .title,
   .arrow {
     transition: none;
-  }
-  .row:hover .title {
-    transform: none;
   }
 }

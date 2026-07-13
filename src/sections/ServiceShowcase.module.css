@@ -114,7 +114,7 @@
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--text-dim);
-  transition: color 260ms var(--ease), transform 320ms var(--ease-out);
+  transition: color 260ms var(--ease);
 }
 
 .rowDesc {
@@ -152,12 +152,6 @@
 .rowActive .rowArrow {
   color: var(--accent);
   transform: translate(3px, -3px);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .row:hover .rowTitle {
-    transform: translateX(6px);
-  }
 }
 
 /* —— stage —— */

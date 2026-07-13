@@ -1,4 +1,5 @@
-/* Verbatim copy extracted from references/tekniik-prototype-v4.html. Do not paraphrase. */
+/* Copy originally extracted from references/tekniik-prototype-v4.html.
+   Homepage copy humanized 2026-07-13 per user (no em dashes, natural voice). */
 
 export const NAV_LINKS = [
   { label: 'Home', to: '/' },
@@ -37,7 +38,7 @@ export const PROBLEM = {
   heading: "You've probably been here before.",
   paragraphs: [
     "You hired an agency. They promised bespoke solutions, agile methodology, cutting-edge technology. Then deadlines slipped. Budgets ballooned. The junior developer who built your project had never spoken to you.",
-    "We hear this constantly. It's the reason Tekniik exists — because agency work can be better than this.",
+    "We hear this constantly. It's the reason Tekniik exists. Agency work can be better than this.",
   ],
   beforeCard: {
     label: 'Previous Agency',
@@ -83,7 +84,7 @@ export const CAPABILITIES = {
 export const WHY_TEKNIIK = {
   eyebrow: 'WHY TEKNIIK',
   heading: 'We do things differently.',
-  sub: 'Not for the sake of it — because our clients demand better.',
+  sub: 'Not for the sake of it. Our clients demand better.',
   items: [
     {
       key: 'team',
@@ -98,7 +99,7 @@ export const WHY_TEKNIIK = {
     {
       key: 'ai',
       title: 'AI built in, not bolted on.',
-      desc: 'Smarter systems as standard — woven into every solution, not a separate upsell.',
+      desc: 'Smarter systems come as standard, woven into every solution rather than sold as an upsell.',
     },
     {
       key: 'partner',
@@ -196,7 +197,7 @@ export const PORTFOLIO = {
 }
 
 export const TESTIMONIAL = {
-  text: 'Tekniik was completely different — they listened properly, kept us involved throughout, and delivered exactly what they said they would. For the first time, we have a system that actually works.',
+  text: 'Tekniik was completely different. They actually listened, kept us in the loop the whole way, and delivered exactly what they promised. For the first time we have a system that just works.',
   name: 'James Crawford',
   role: 'Managing Director, Crawford Property Group',
 }
@@ -516,12 +517,27 @@ export const FOOTER = {
   whatsapp: '+918148984627',
   whatsappLabel: 'WhatsApp · +91 81489 84627',
   region: 'United Kingdom · India',
-  officeHeading: 'Chennai',
-  officeLines: [
-    'WeWork Block 10, DLF Cybercity',
-    '124, Mount Poonamallee Rd',
-    'Manapakkam, Chennai',
-    'Tamil Nadu 600089',
+  offices: [
+    {
+      key: 'chennai',
+      label: 'Chennai',
+      lines: [
+        'WeWork Block 10, DLF Cybercity',
+        '124, Mount Poonamallee Rd',
+        'Manapakkam, Chennai',
+        'Tamil Nadu 600089',
+      ],
+    },
+    {
+      key: 'uk',
+      label: 'London',
+      lines: [
+        '71-75 Shelton Street',
+        'Covent Garden',
+        'London WC2H 9JQ',
+        'United Kingdom',
+      ],
+    },
   ],
   cols: [
     {

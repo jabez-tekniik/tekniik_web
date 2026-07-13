@@ -134,10 +134,10 @@
 .mask {
   display: block;
   overflow: hidden;
-  /* room for Satoshi's deep descenders (g, y) + the trace; the negative
-     margin gives most of it back so the two lines stay tight */
-  padding-bottom: 0.18em;
-  margin-bottom: -0.12em;
+  /* room for Satoshi's deep descenders (g, y) + the lowered trace; the
+     negative margin gives most of it back so the two lines stay tight */
+  padding-bottom: 0.26em;
+  margin-bottom: -0.18em;
 }
 
 /* second line steps right — editorial offset */
@@ -166,7 +166,7 @@
 .trace {
   position: absolute;
   left: 0.02em;
-  bottom: -0.07em;
+  bottom: -0.19em;
   width: calc(100% - 0.08em);
   height: 0.14em;
   color: var(--accent);

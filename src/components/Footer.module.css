@@ -104,6 +104,48 @@
   color: #1ebe5a;
 }
 
+.officeTabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.officeTab {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 12px;
+  min-height: 26px;
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease),
+    background 200ms var(--ease);
+}
+
+.officeTab:hover {
+  color: var(--ink);
+}
+
+.officeTabActive,
+.officeTab.officeTabActive:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+.officeTab:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
 .address {
   display: flex;
   flex-direction: column;
