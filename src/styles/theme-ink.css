@@ -1,0 +1,115 @@
+/* ============================================================
+   "Deep Ink" theme — homepage (/) ONLY.
+   Applied via data-theme="ink" on <html> (toggled in App.jsx,
+   scoped to the Home route). Brand palette extracted from the
+   new logo (src/images/brand/): navy #202E5D (primary) and
+   teal #72CCD6 (signal accent). Neutrals: black / grey / white.
+   Same token NAMES as the base theme so shared components
+   (Nav, Footer, Button) flip automatically.
+   Never hardcode hex outside the theme token files.
+   ============================================================ */
+
+:root[data-theme='ink'] {
+  /* —— canvas & surfaces (navy-black, never pure black) —— */
+  --bg: #0a0e1a;
+  --bg-2: #0d1322;
+  --bg-raise: #111931;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.06);
+
+  /* —— brand navy (logo primary) —— */
+  --navy: #202e5d;
+  --navy-raise: #26366c;
+  --navy-soft: rgba(32, 46, 93, 0.55);
+
+  /* —— hairlines / borders —— */
+  --hairline: rgba(148, 163, 199, 0.16);
+  --border: rgba(148, 163, 199, 0.16);
+  --border-soft: rgba(148, 163, 199, 0.09);
+  --border-strong: rgba(148, 163, 199, 0.32);
+
+  /* —— text —— */
+  --text: #f4f6fb;
+  --text-dim: #a9b1c3;
+  --text-faint: #6a7389;
+  --ink: #f4f6fb; /* headings / primary on dark */
+  --ink-2: #dde2ee;
+  --body: #a9b1c3;
+  --muted: #8890a4;
+  --muted-2: #6a7389;
+
+  /* —— accent: teal signal (logo secondary) — the ONLY color —— */
+  --accent: #72ccd6;
+  --accent-deep: #4fa9b5;
+  --accent-2: #72ccd6; /* aliased — single hue, no rainbow */
+  --accent-3: #4fa9b5; /* aliased */
+  --accent-soft: rgba(114, 204, 214, 0.1);
+  --accent-tint: rgba(114, 204, 214, 0.05);
+  --accent-ring: rgba(114, 204, 214, 0.38);
+
+  --success: #34d399;
+  --danger: #f87171;
+
+  /* —— teal helpers (restrained) —— */
+  --glow: 0 0 40px rgba(114, 204, 214, 0.16);
+  --glow-soft: 0 0 60px rgba(114, 204, 214, 0.09);
+  --grad-aurora: linear-gradient(
+    100deg,
+    var(--accent) 0%,
+    var(--accent-deep) 100%
+  );
+  --hairline-lit: linear-gradient(
+    100deg,
+    rgba(114, 204, 214, 0.7),
+    rgba(79, 169, 181, 0.5)
+  );
+
+  /* —— blueprint grid line (structure, barely-there) —— */
+  --dot: rgba(148, 163, 199, 0.07);
+  --grid-line: rgba(148, 163, 199, 0.055);
+
+  /* —— inverted band → brand navy moments (FinalCta) —— */
+  --band: #202e5d;
+  --band-2: #1b2750;
+  --band-raise: #26366c;
+  --on-band: #f4f6fb;
+  --on-band-dim: #b6bfd6;
+  --on-band-faint: #7e89ab;
+  --band-hairline: rgba(255, 255, 255, 0.12);
+  --band-hairline-strong: rgba(255, 255, 255, 0.2);
+  --accent-on-band: #72ccd6;
+
+  /* —— terminal syntax (teal-graded, on raised navy-black) —— */
+  --code-bg: #0d1322;
+  --code-keyword: #72ccd6;
+  --code-string: #9be3ea;
+  --code-variable: #dde2ee;
+  --code-punct: #6a7389;
+  --code-comment: #4b5470;
+  --code-text: #a9b1c3;
+
+  /* —— type: sharp & bold —— */
+  --f-display: 'Clash Display', 'Inter Tight', system-ui, sans-serif;
+  --f-body: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  /* —— elevation (dark: depth via soft black, never glow spam) —— */
+  --shadow-card-hover: 0 16px 40px rgba(3, 5, 12, 0.5),
+    0 2px 6px rgba(3, 5, 12, 0.35);
+  --shadow-glass: 0 20px 50px rgba(3, 5, 12, 0.45),
+    0 0 0 1px rgba(148, 163, 199, 0.08);
+
+  /* —— focus —— */
+  --focus-ring: 0 0 0 3px var(--accent-ring);
+}
+
+/* Page canvas + selection on ink ----------------------------------- */
+html[data-theme='ink'] body {
+  background: var(--bg);
+  color: var(--body);
+}
+
+html[data-theme='ink'] ::selection {
+  background: var(--accent);
+  color: #0a0e1a;
+}

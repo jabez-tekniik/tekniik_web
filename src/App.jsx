@@ -14,13 +14,12 @@ import NotFound from './pages/NotFound.jsx'
 export default function App() {
   const location = useLocation()
 
-  // "Signal" aurora theme is scoped to the homepage only. Currently the
-  // LIGHT aurora variant; the dark theme is retained in code (theme-dark.css)
-  // for a future toggle — switch 'light' → 'dark' here to flip it back.
+  // "Deep Ink" theme (theme-ink.css — navy/teal from the brand logo) is
+  // scoped to the homepage only; other routes keep the base light theme.
   // Set pre-paint so there is no theme flash on route change.
   useLayoutEffect(() => {
     const root = document.documentElement
-    if (location.pathname === '/') root.setAttribute('data-theme', 'light')
+    if (location.pathname === '/') root.setAttribute('data-theme', 'ink')
     else root.removeAttribute('data-theme')
   }, [location.pathname])
 
