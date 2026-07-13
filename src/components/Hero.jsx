@@ -132,9 +132,10 @@ export default function Hero() {
         if (!caret || !headline || !ch) return
         const base = headline.getBoundingClientRect()
         const r = ch.getBoundingClientRect()
-        const x = (side === 'right' ? r.right : r.left) - base.left + r.height * 0.03
-        const y = r.top - base.top + r.height * 0.12
-        caret.style.height = `${r.height * 0.76}px`
+        // generous gap so the bar clears descender glyphs (g, y)
+        const x = (side === 'right' ? r.right : r.left) - base.left + r.height * 0.06
+        const y = r.top - base.top + r.height * 0.15
+        caret.style.height = `${r.height * 0.7}px`
         caret.style.transform = `translate3d(${x}px, ${y}px, 0)`
       }
 

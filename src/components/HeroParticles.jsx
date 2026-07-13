@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 import styles from './Hero.module.css'
 
 /* Interactive speck field — tiny brand-colored dashes drifting gently
-   upward across the hero. The pointer carries a soft teal glow that
-   trails it with easing, and nearby specks are pushed aside as it moves.
+   upward across the hero; specks near the pointer are pushed aside as it
+   moves (antigravity.google-style — no visible cursor follower).
    Canvas cannot read CSS custom properties, so the palettes below mirror
    theme-ink.css (teal #72ccd6 / teal-ink #0e7c8c / navy #202e5d). */
 
@@ -15,7 +15,6 @@ const PALETTES = {
       'rgba(148, 163, 199, 0.45)',
       'rgba(244, 246, 251, 0.3)',
     ],
-    glow: '114, 204, 214',
   },
   'ink-light': {
     specks: [
@@ -24,12 +23,10 @@ const PALETTES = {
       'rgba(32, 46, 93, 0.4)',
       'rgba(32, 46, 93, 0.22)',
     ],
-    glow: '14, 124, 140',
   },
 }
 
 const REPEL_RADIUS = 130
-const GLOW_RADIUS = 150
 
 export default function HeroParticles() {
   const canvasRef = useRef(null)
@@ -61,8 +58,7 @@ export default function HeroParticles() {
       })
     }
 
-    // pointer: (tx, ty) is the live position, (x, y) trails it with lerp
-    const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, active: false }
+    const mouse = { tx: -9999, ty: -9999, active: false }
 
     const spawn = () => {
       const count = Math.min(110, Math.round((w * h) / 15000))
@@ -102,21 +98,6 @@ export default function HeroParticles() {
 
     const step = () => {
       ctx.clearRect(0, 0, w, h)
-
-      // trailing glow follows the pointer with easing
-      mouse.x += (mouse.tx - mouse.x) * 0.09
-      mouse.y += (mouse.ty - mouse.y) * 0.09
-      if (mouse.active) {
-        const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, GLOW_RADIUS)
-        g.addColorStop(0, `rgba(${palette.glow}, 0.1)`)
-        g.addColorStop(1, `rgba(${palette.glow}, 0)`)
-        ctx.fillStyle = g
-        ctx.fillRect(mouse.x - GLOW_RADIUS, mouse.y - GLOW_RADIUS, GLOW_RADIUS * 2, GLOW_RADIUS * 2)
-        ctx.fillStyle = `rgba(${palette.glow}, 0.85)`
-        ctx.beginPath()
-        ctx.arc(mouse.x, mouse.y, 3, 0, Math.PI * 2)
-        ctx.fill()
-      }
 
       for (const p of parts) {
         p.sway += p.swaySpeed
@@ -206,13 +187,7 @@ export default function HeroParticles() {
       const rect = canvas.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
-      const inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height
-      if (inside && !mouse.active) {
-        // snap the trail to the entry point so the glow doesn't fly across
-        mouse.x = x
-        mouse.y = y
-      }
-      mouse.active = inside
+      mouse.active = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height
       mouse.tx = x
       mouse.ty = y
     }
