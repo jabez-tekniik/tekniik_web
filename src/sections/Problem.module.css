@@ -1,112 +1,118 @@
+/* Problem — "The verdict": full-width statement, offset editorial column,
+   split comparison ledger (before ✕ muted / after ✓ teal) on one hairline. */
+
 .section {
   position: relative;
+  border-top: 1px solid var(--hairline);
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 88px);
-  align-items: start;
-}
-
-/* —— head (left) —— */
-.head {
-  position: sticky;
-  top: 108px;
-}
-
-.meta {
-  display: inline-flex;
+/* —— meta —— */
+.metaRow {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 22px;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(28px, 4vw, 48px);
 }
 
 .index {
   font-family: var(--f-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.18em;
   color: var(--accent);
 }
 
 .eyebrow {
   font-family: var(--f-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-faint);
-  padding-left: 12px;
-  border-left: 1px solid var(--hairline);
 }
 
-.heading {
-  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+/* —— full-width statement —— */
+.statement {
+  font-family: var(--f-display);
   font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-  color: var(--ink);
-  max-width: 15ch;
+  font-size: clamp(2.4rem, 6.4vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  max-width: 18ch;
+}
+
+/* —— paragraphs pushed into the right editorial column —— */
+.paraRow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(24px, 4vw, 64px);
+  margin-bottom: clamp(44px, 6vw, 80px);
+}
+
+.paraCol {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .para {
-  margin-top: 22px;
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
-  line-height: 1.62;
+  font-family: var(--f-body);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.7;
   color: var(--text-dim);
-  max-width: 46ch;
+  max-width: 58ch;
+  margin: 0;
 }
 
-/* —— panels (right) —— */
-.panels {
+/* —— comparison ledger —— */
+.ledger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.half {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  padding: clamp(28px, 4vw, 52px) clamp(20px, 3vw, 48px);
 }
 
-.panel {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: clamp(24px, 2.4vw, 32px);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  will-change: opacity, transform;
+.half + .half {
+  border-left: 1px solid var(--hairline);
 }
 
-/* "before" — muted, pushed back; slight negative offset for the overlap read */
 .before {
-  background: var(--bg-2);
-  border-color: var(--border-soft);
-  margin-right: clamp(0px, 4vw, 44px);
+  color: var(--text-faint);
 }
 
-/* "after" — indigo-accented, brought forward */
 .after {
-  border-color: var(--accent);
-  box-shadow: 0 18px 44px var(--accent-shadow);
-  margin-left: clamp(0px, 4vw, 44px);
+  background: var(--accent-tint);
 }
 
-.panelHead {
+.halfMeta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
-.panelLabel {
+.halfTag {
   font-family: var(--f-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
 
-.after .panelLabel {
+.after .halfTag {
   color: var(--accent);
 }
 
@@ -118,71 +124,80 @@
   font-family: var(--f-mono);
   font-size: 0.66rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 5px 10px;
-  border-radius: var(--r-sm);
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .badgeBad {
   color: var(--danger);
-  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.28);
 }
 
 .badgeGood {
-  color: var(--success);
-  background: rgba(16, 185, 129, 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
 }
 
-.panelBody {
-  font-size: 0.98rem;
-  line-height: 1.55;
-  color: var(--text-dim);
+.halfBody {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text-faint);
+  margin: 0;
+  max-width: 30ch;
 }
 
-.before .panelBody {
-  color: var(--muted);
+.after .halfBody {
+  color: var(--text);
 }
 
+/* —— schematic bars —— */
 .lines {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  margin-top: 4px;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 .lineBad,
 .lineGood {
-  height: 6px;
-  border-radius: var(--r-full);
+  display: block;
+  height: 5px;
 }
 
 .lineBad {
   background: repeating-linear-gradient(
-    -45deg,
-    var(--border-strong) 0 6px,
-    transparent 6px 12px
+    135deg,
+    rgba(248, 113, 113, 0.32) 0 4px,
+    transparent 4px 9px
   );
 }
 
 .lineGood {
   background: var(--accent);
-  opacity: 0.9;
+  box-shadow: 0 0 14px var(--accent-shadow);
 }
 
 /* —— responsive —— */
-@media (max-width: 900px) {
-  .layout {
+@media (max-width: 820px) {
+  .paraRow {
     grid-template-columns: 1fr;
-    gap: clamp(36px, 7vw, 52px);
   }
-  .head {
-    position: static;
+  .paraCol {
+    grid-column: 1;
   }
-  .before {
-    margin-right: 0;
+  .ledger {
+    grid-template-columns: 1fr;
   }
-  .after {
-    margin-left: 0;
+  .half + .half {
+    border-left: none;
+    border-top: 1px solid var(--hairline);
   }
 }

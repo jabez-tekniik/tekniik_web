@@ -1,43 +1,33 @@
-/* FinalCta — "Crescendo": full-bleed inverted near-black closing stage with
-   a single breathing indigo bloom. Oversized kinetic headline, magnetic CTA. */
+/* FinalCta — "Crescendo": full-bleed brand-navy closing stage. Giant
+   chevron watermark bleeding off the right edge, left-anchored oversized
+   heading, action row under a hairline. */
 
 .section {
   position: relative;
-  padding-block: clamp(96px, 14vw, 190px);
+  padding-block: clamp(88px, 12vw, 170px);
   background: var(--band);
   color: var(--on-band);
   overflow: hidden;
   isolation: isolate;
 }
 
-.bloom {
+/* —— chevron watermark —— */
+.watermark {
   position: absolute;
-  bottom: -30%;
-  left: 50%;
-  width: min(1100px, 110vw);
-  aspect-ratio: 1 / 1;
-  transform: translateX(-50%);
-  pointer-events: none;
+  right: -12%;
+  bottom: -18%;
+  width: clamp(340px, 52vw, 760px);
+  height: auto;
   z-index: 0;
-  background: radial-gradient(
-    circle at 50% 60%,
-    var(--accent-bloom),
-    transparent 60%
-  );
-  animation: bloomBreathe 9s ease-in-out infinite;
-  will-change: transform, opacity;
+  pointer-events: none;
 }
 
-@keyframes bloomBreathe {
-  0%,
-  100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translateX(-50%) scale(1.08);
-    opacity: 1;
-  }
+.wmInk {
+  fill: rgba(255, 255, 255, 0.045);
+}
+
+.wmTeal {
+  fill: rgba(114, 204, 214, 0.09);
 }
 
 .inner {
@@ -45,22 +35,16 @@
   z-index: 1;
 }
 
-.wrap {
-  max-width: 1000px;
-  margin-inline: auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* —— heading: left-anchored —— */
 .heading {
   font-family: var(--f-display);
-  font-weight: 900;
-  font-size: clamp(2.6rem, 6.4vw, 5.5rem);
-  letter-spacing: -0.05em;
-  line-height: 0.94;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--on-band);
+  margin: 0 0 clamp(44px, 6vw, 80px);
+  max-width: 16ch;
 }
 
 .line {
@@ -71,28 +55,44 @@
   color: var(--accent-on-band);
 }
 
+/* —— action row —— */
+.footerRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-top: clamp(24px, 3vw, 36px);
+  border-top: 1px solid var(--band-hairline);
+}
+
 .sub {
-  margin-top: clamp(22px, 3vw, 32px);
-  max-width: 44ch;
-  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
-  line-height: 1.55;
+  font-family: var(--f-body);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.6;
   color: var(--on-band-dim);
+  max-width: 34ch;
+  margin: 0;
 }
 
 .actions {
-  margin-top: clamp(32px, 4vw, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  flex-shrink: 0;
 }
 
 .magnetic {
-  display: inline-flex;
+  display: inline-block;
   will-change: transform;
 }
 
 .email {
-  margin-top: clamp(26px, 3vw, 34px);
   font-family: var(--f-mono);
-  font-size: 0.85rem;
-  color: var(--on-band-dim);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--on-band-faint);
+  margin: 0;
 }
 
 .emailNote {
@@ -100,8 +100,8 @@
 }
 
 .emailLink {
-  position: relative;
   color: var(--accent-on-band);
+  text-decoration: none;
 }
 
 .emailText {
@@ -113,22 +113,52 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -2px;
+  bottom: -3px;
   height: 1px;
   background: var(--accent-on-band);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 340ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 260ms var(--ease-out, ease-out);
 }
 
-.emailLink:hover .emailText::after {
+.emailLink:hover .emailText::after,
+.emailLink:focus-visible .emailText::after {
   transform: scaleX(1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .bloom {
-    animation: none;
+.emailLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 2px;
+}
+
+/* —— responsive —— */
+@media (max-width: 760px) {
+  .footerRow {
+    flex-direction: column;
+    align-items: flex-start;
   }
+  .actions {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .magnetic {
+    display: block;
+    width: 100%;
+  }
+  .magnetic :global(a) {
+    width: 100%;
+  }
+  .watermark {
+    right: -28%;
+    bottom: -10%;
+    width: 120vw;
+    max-width: none;
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .emailText::after {
     transition: none;
   }

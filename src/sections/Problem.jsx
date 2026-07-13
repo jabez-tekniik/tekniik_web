@@ -1,60 +1,75 @@
 import Reveal from '../components/Reveal.jsx'
+import WordRise from '../motion/ink/WordRise.jsx'
 import { IconClose, IconCheck } from '../components/Icon.jsx'
 import { PROBLEM } from '../data/content.js'
 import styles from './Problem.module.css'
 
+function Half({ card, tone, lineWidths, Icon, badgeClass, lineClass }) {
+  return (
+    <div className={`${styles.half} ${tone}`}>
+      <div className={styles.halfMeta}>
+        <span className={styles.halfTag}>{card.label}</span>
+        <span className={badgeClass}>
+          <Icon width="11" height="11" /> {card.badge}
+        </span>
+      </div>
+      <p className={styles.halfBody}>{card.body}</p>
+      <div className={styles.lines} aria-hidden="true">
+        {lineWidths.map((w) => (
+          <span key={w} className={lineClass} style={{ width: w }} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* "The verdict" — a full-width oversized statement, paragraphs offset into
+   the right editorial column, then a split comparison ledger: previous
+   agency (muted, hatched) vs Tekniik (teal, lit), divided by one hairline. */
 export default function Problem() {
   return (
     <section className={`section ${styles.section}`}>
       <div className="container">
-        <div className={styles.layout}>
-          <div className={styles.head}>
-            <Reveal className={styles.meta}>
-              <span className={styles.index}>04</span>
-              <span className={styles.eyebrow}>{PROBLEM.eyebrow}</span>
-            </Reveal>
-            <Reveal as="h2" delay={60} className={styles.heading}>
-              {PROBLEM.heading}
-            </Reveal>
+        <Reveal className={styles.metaRow}>
+          <span className={styles.index}>04</span>
+          <span className={styles.eyebrow}>{PROBLEM.eyebrow}</span>
+        </Reveal>
+
+        <WordRise
+          text={PROBLEM.heading}
+          as="h2"
+          staggerMs={40}
+          className={styles.statement}
+        />
+
+        <div className={styles.paraRow}>
+          <div className={styles.paraCol}>
             {PROBLEM.paragraphs.map((p, i) => (
-              <Reveal key={i} as="p" delay={(i + 2) * 70} className={styles.para}>
+              <Reveal key={i} as="p" delay={i * 90} className={styles.para}>
                 {p}
               </Reveal>
             ))}
           </div>
-
-          <Reveal className={styles.panels} delay={100}>
-            <div className={`${styles.panel} ${styles.before}`}>
-              <div className={styles.panelHead}>
-                <span className={styles.panelLabel}>{PROBLEM.beforeCard.label}</span>
-                <span className={styles.badgeBad}>
-                  <IconClose width="11" height="11" /> {PROBLEM.beforeCard.badge}
-                </span>
-              </div>
-              <p className={styles.panelBody}>{PROBLEM.beforeCard.body}</p>
-              <div className={styles.lines} aria-hidden="true">
-                <span className={styles.lineBad} style={{ width: '92%' }} />
-                <span className={styles.lineBad} style={{ width: '74%' }} />
-                <span className={styles.lineBad} style={{ width: '52%' }} />
-              </div>
-            </div>
-
-            <div className={`${styles.panel} ${styles.after}`}>
-              <div className={styles.panelHead}>
-                <span className={styles.panelLabel}>{PROBLEM.afterCard.label}</span>
-                <span className={styles.badgeGood}>
-                  <IconCheck width="11" height="11" /> {PROBLEM.afterCard.badge}
-                </span>
-              </div>
-              <p className={styles.panelBody}>{PROBLEM.afterCard.body}</p>
-              <div className={styles.lines} aria-hidden="true">
-                <span className={styles.lineGood} style={{ width: '88%' }} />
-                <span className={styles.lineGood} style={{ width: '94%' }} />
-                <span className={styles.lineGood} style={{ width: '82%' }} />
-              </div>
-            </div>
-          </Reveal>
         </div>
+
+        <Reveal className={styles.ledger} delay={80}>
+          <Half
+            card={PROBLEM.beforeCard}
+            tone={styles.before}
+            lineWidths={['92%', '74%', '52%']}
+            Icon={IconClose}
+            badgeClass={styles.badgeBad}
+            lineClass={styles.lineBad}
+          />
+          <Half
+            card={PROBLEM.afterCard}
+            tone={styles.after}
+            lineWidths={['88%', '94%', '82%']}
+            Icon={IconCheck}
+            badgeClass={styles.badgeGood}
+            lineClass={styles.lineGood}
+          />
+        </Reveal>
       </div>
     </section>
   )

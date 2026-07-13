@@ -1,4 +1,4 @@
-import Reveal from '../components/Reveal.jsx'
+import Reveal from './Reveal.jsx'
 import useCounter from '../hooks/useCounter.js'
 import styles from './LogoStrip.module.css'
 
@@ -18,21 +18,13 @@ function StatValue({ match }) {
   return (
     <span ref={counterRef} className={styles.value}>
       {count.toFixed(decimals)}
-      {match[2]}
+      <span className={styles.valueGlyph}>{match[2]}</span>
     </span>
   )
 }
 
-function Stat({ item, index }) {
-  return (
-    <Reveal as="li" className={styles.cell} delay={index * 60}>
-      <span className={styles.num}>{String(index + 1).padStart(2, '0')}</span>
-      <StatValue match={item.match} />
-      <span className={styles.label}>{item.label}</span>
-    </Reveal>
-  )
-}
-
+/* "The Numbers" — one full-bleed data band. Giant instrument-panel readouts
+   divided by vertical hairlines, mono meta rail on the left. */
 export default function LogoStrip({ items = [], eyebrow = 'THE NUMBERS' }) {
   // Numeric-only: attach the parsed match so the render stays declarative.
   const numeric = items
@@ -40,19 +32,22 @@ export default function LogoStrip({ items = [], eyebrow = 'THE NUMBERS' }) {
     .filter((item) => item.match)
 
   return (
-    <section className={styles.section} aria-label="Selected proof points">
-      <div className="container">
-        <Reveal className={styles.head}>
-          <span className={styles.index}>03</span>
-          <span className={styles.eyebrow}>{eyebrow}</span>
-        </Reveal>
-
-        <ul className={styles.grid}>
-          {numeric.map((item, i) => (
-            <Stat key={item.value} item={item} index={i} />
-          ))}
-        </ul>
-      </div>
+    <section className={styles.band} aria-label="Selected proof points">
+      <Reveal className={styles.inner}>
+        <div className={styles.rail}>
+          <span className={styles.railIndex}>03</span>
+          <span className={styles.railEyebrow}>{eyebrow}</span>
+        </div>
+        {numeric.map((item, i) => (
+          <div key={item.value} className={styles.cell}>
+            <StatValue match={item.match} />
+            <span className={styles.label}>{item.label}</span>
+            <span className={styles.cellNum} aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </div>
+        ))}
+      </Reveal>
     </section>
   )
 }

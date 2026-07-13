@@ -3,38 +3,30 @@ import WordRise from '../motion/ink/WordRise.jsx'
 import { TESTIMONIAL } from '../data/content.js'
 import styles from './Testimonial.module.css'
 
-const initials = TESTIMONIAL.name
-  .split(' ')
-  .map((n) => n[0])
-  .join('')
-  .slice(0, 2)
-
+/* "The word" — asymmetric editorial spread: a left rail carrying an
+   oversized teal quote glyph + attribution, the quote itself set huge
+   on the right. One vertical hairline divides them; nothing is boxed. */
 export default function Testimonial() {
   return (
     <section className={`section ${styles.section}`}>
-      <div className={styles.spotlight} aria-hidden="true" />
       <div className="container">
-        <div className={styles.wrap}>
-          <span className={styles.quoteMark} aria-hidden="true">
-            &ldquo;
-          </span>
+        <div className={styles.spread}>
+          <Reveal className={styles.rail}>
+            <span className={styles.glyph} aria-hidden="true">
+              &ldquo;
+            </span>
+            <div className={styles.attr}>
+              <strong className={styles.name}>{TESTIMONIAL.name}</strong>
+              <span className={styles.role}>{TESTIMONIAL.role}</span>
+            </div>
+          </Reveal>
+
           <WordRise
             text={TESTIMONIAL.text}
             as="blockquote"
-            staggerMs={45}
+            staggerMs={30}
             className={styles.quote}
           />
-          <Reveal delay={500} className={styles.attrWrap}>
-            <span className={styles.attribution}>
-              <span className={styles.avatar} aria-hidden="true">
-                {initials}
-              </span>
-              <span className={styles.attrText}>
-                <strong>{TESTIMONIAL.name}</strong>
-                <span>{TESTIMONIAL.role}</span>
-              </span>
-            </span>
-          </Reveal>
         </div>
       </div>
     </section>

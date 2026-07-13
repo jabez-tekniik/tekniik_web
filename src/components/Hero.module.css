@@ -105,11 +105,10 @@
 /* —— headline —— */
 .headline {
   font-family: var(--f-display);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: clamp(3rem, 11.5vw, 9.4rem);
-  line-height: 0.94;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  font-size: clamp(3.2rem, 11.5vw, 9.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(36px, 6vh, 64px);
 }
@@ -257,7 +256,7 @@
 
 .tickerValue {
   font-family: var(--f-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.35rem;
   letter-spacing: -0.01em;
   color: var(--text);
