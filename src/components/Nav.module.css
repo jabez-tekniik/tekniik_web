@@ -132,6 +132,19 @@
   filter: blur(8px);
 }
 
+/* hover face: white fill + brand-navy label (element + theme selectors so
+   this outranks the .primary:hover theme overrides in Button.module.css) */
+a.ctaBtn:hover,
+a.ctaBtn:focus-visible,
+:global(:root[data-theme='ink']) a.ctaBtn:hover,
+:global(:root[data-theme='ink']) a.ctaBtn:focus-visible,
+:global(:root[data-theme='ink-light']) a.ctaBtn:hover,
+:global(:root[data-theme='ink-light']) a.ctaBtn:focus-visible {
+  background: #ffffff;
+  color: var(--navy, #202e5d);
+  box-shadow: 0 6px 18px rgba(10, 14, 26, 0.16);
+}
+
 .ctaBtn:hover::before,
 .ctaBtn:focus-visible::before {
   opacity: 1;
