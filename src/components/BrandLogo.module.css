@@ -10,13 +10,10 @@
   flex-shrink: 0;
 }
 
-/* Navy chevron: brand navy on light routes, white on the ink homepage. */
+/* Navy chevron: follows --logo-ink (navy on light themes, white on the
+   dark ink homepage — set in the theme token files). */
 .inkPath {
   fill: var(--logo-ink, #202e5d);
-}
-
-:global(html[data-theme='ink']) .inkPath {
-  fill: #ffffff;
 }
 
 /* Teal chevron is constant brand teal in every theme. */

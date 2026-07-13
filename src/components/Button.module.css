@@ -113,6 +113,21 @@
   border-color: var(--text-dim);
 }
 
-:global(:root[data-theme='ink']) .btn {
+:global(:root[data-theme='ink']) .btn,
+:global(:root[data-theme='ink-light']) .btn {
   border-radius: var(--r-full);
+}
+
+/* —— Ink light (homepage default): teal-ink primary —— */
+:global(:root[data-theme='ink-light']) .primary {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.14) inset,
+    0 6px 18px rgba(14, 124, 140, 0.24);
+}
+
+:global(:root[data-theme='ink-light']) .primary:hover {
+  background: var(--accent-deep);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.14) inset,
+    0 10px 28px rgba(14, 124, 140, 0.3);
 }

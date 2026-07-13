@@ -45,6 +45,32 @@ function Trace() {
   )
 }
 
+/* Faint brand-mark watermark behind the poster — theme-aware fills
+   (--wm-ink / --wm-teal). Bookends the page with FinalCta's chevron. */
+function Watermark() {
+  return (
+    <svg
+      className={styles.watermark}
+      viewBox="236 288 612 504"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        className={styles.wmInk}
+        d="M666.773,333.508l-175.323,363.24c-5.36,11.105-16.603,18.162-28.933,18.162H428.12L535.545,492.36
+        c8.76-18.148-0.56-32.996-20.712-32.996H242.266l67.897-140.689c5.36-11.106,16.603-18.164,28.934-18.164h306.964
+        C666.211,300.512,675.532,315.36,666.773,333.508z"
+      />
+      <path
+        className={styles.wmTeal}
+        d="M453.798,380.768c-15.283,0-29.218,8.748-35.866,22.513L236.35,779.488h137.602
+        c14.087,0,26.931-8.062,33.055-20.749l99.702-206.547c3.837-7.949,11.885-13.001,20.712-13.001h219.66
+        c12.298,0,23.511-7.039,28.857-18.115l67.712-140.308H453.798z"
+      />
+    </svg>
+  )
+}
+
 // One proof group — duplicated in the DOM so the marquee can loop seamlessly.
 function TickerGroup() {
   return (
@@ -97,6 +123,7 @@ export default function Hero() {
   return (
     <section className={styles.hero} ref={rootRef}>
       <div className={styles.blueprint} aria-hidden="true" />
+      <Watermark />
 
       <div className={`container ${styles.inner}`}>
         {/* Meta bar — eyebrow left, trust right, under a hairline */}
@@ -115,9 +142,9 @@ export default function Hero() {
               {w1}
             </span>
           </span>
-          <span className={styles.mask}>
+          <span className={`${styles.mask} ${styles.maskOffset}`}>
             <span className={styles.line} data-line="">
-              {w2}{' '}
+              <span className={styles.ghostWord}>{w2}</span>{' '}
               <span className={styles.signal}>
                 {w3}
                 <Trace />

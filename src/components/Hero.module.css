@@ -39,14 +39,32 @@
   background:
     radial-gradient(
       ellipse 55% 45% at 82% 8%,
-      rgba(32, 46, 93, 0.55),
+      var(--hero-glow-a),
       transparent 68%
     ),
     radial-gradient(
       ellipse 40% 30% at 8% 96%,
-      rgba(32, 46, 93, 0.35),
+      var(--hero-glow-b),
       transparent 70%
     );
+}
+
+/* —— giant brand-mark watermark, bleeding off the right edge —— */
+.watermark {
+  position: absolute;
+  right: -7%;
+  top: 4%;
+  width: clamp(300px, 36vw, 580px);
+  height: auto;
+  pointer-events: none;
+}
+
+.wmInk {
+  fill: var(--wm-ink);
+}
+
+.wmTeal {
+  fill: var(--wm-teal);
 }
 
 .inner {
@@ -105,10 +123,10 @@
 /* —— headline —— */
 .headline {
   font-family: var(--f-display);
-  font-weight: 800;
-  font-size: clamp(3.2rem, 11.5vw, 9.6rem);
+  font-weight: 900;
+  font-size: clamp(3.2rem, 11vw, 9rem);
   line-height: 0.96;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--text);
   margin: 0 0 clamp(36px, 6vh, 64px);
 }
@@ -117,6 +135,17 @@
   display: block;
   overflow: hidden;
   padding-bottom: 0.09em; /* keep descenders + trace inside the mask */
+}
+
+/* second line steps right — editorial offset */
+.maskOffset {
+  margin-left: clamp(24px, 6vw, 110px);
+}
+
+/* outlined ghost word — typographic contrast against the solid words */
+.ghostWord {
+  color: transparent;
+  -webkit-text-stroke: 0.022em var(--text);
 }
 
 .line {

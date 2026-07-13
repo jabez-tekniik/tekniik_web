@@ -15,7 +15,35 @@ function Logo() {
   )
 }
 
-export default function Nav() {
+function IconSun(props) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <circle cx="12" cy="12" r="4.4" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M12 2.6v2.4M12 19v2.4M2.6 12H5M19 12h2.4M5.1 5.1l1.7 1.7M17.2 17.2l1.7 1.7M18.9 5.1l-1.7 1.7M6.8 17.2l-1.7 1.7"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+function IconMoon(props) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M20.2 13.6A8.4 8.4 0 0 1 10.4 3.8 8.4 8.4 0 1 0 20.2 13.6Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export default function Nav({ themeMode = null, onToggleTheme }) {
   const scrolled = useScrolled(24)
   const [open, setOpen] = useState(false)
 
@@ -44,21 +72,34 @@ export default function Nav() {
             </NavLink>
           ))}
         </nav>
-        <div className={styles.cta}>
+
+        <div className={styles.right}>
+          {themeMode && (
+            <button
+              type="button"
+              className={styles.themeToggle}
+              onClick={onToggleTheme}
+              aria-label={
+                themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+              }
+            >
+              {themeMode === 'dark' ? <IconSun /> : <IconMoon />}
+            </button>
+          )}
           <Button to="/contact" variant="primary" className={styles.ctaBtn}>
             Get a Quote
           </Button>
+          <button
+            type="button"
+            className={styles.hamburger}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <IconClose /> : <IconMenu />}
+          </button>
         </div>
-        <button
-          type="button"
-          className={styles.hamburger}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <IconClose /> : <IconMenu />}
-        </button>
       </div>
 
       <div
