@@ -189,6 +189,11 @@
   white-space: nowrap;
 }
 
+/* soft per-char reveal — snap-in reads abrupt at display sizes */
+.word [data-ch] {
+  transition: opacity 130ms ease-out;
+}
+
 /* final word carries the signal trace */
 .signal {
   position: relative;
@@ -261,6 +266,15 @@
 .magnetic {
   display: inline-block;
   will-change: transform;
+}
+
+/* opaque fill so the circuit traces/electrons never show through */
+.actions .solidGhost {
+  background: var(--bg-raise);
+}
+
+.actions .solidGhost:hover {
+  background: var(--bg-2);
 }
 
 /* —— proof ticker —— */

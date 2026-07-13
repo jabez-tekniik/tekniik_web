@@ -23,10 +23,10 @@ const FRAME_LABEL = {
 
 // per-character delay for the typewriter — small deterministic jitter so
 // the rhythm reads human, with a longer beat at each word boundary
-const TYPE_BASE = 44
-const TYPE_JITTER = [0, 16, 7]
-const WORD_PAUSE = 230
-const START_PAUSE = 560
+const TYPE_BASE = 84
+const TYPE_JITTER = [0, 24, 12]
+const WORD_PAUSE = 320
+const START_PAUSE = 650
 
 /* Signal trace — a precise circuit-style underline that draws in beneath
    the final word, ending in a node. Engineered, not hand-drawn. */
@@ -132,15 +132,31 @@ export default function Hero() {
       let spots = []
       const measure = () => {
         const base = headline.getBoundingClientRect()
+        // caret spans exactly the "t" of "right": from the t's top down to
+        // the baseline, located via canvas font metrics
+        const cs = getComputedStyle(headline)
+        const ctx2d = document.createElement('canvas').getContext('2d')
+        ctx2d.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
+        const tm = ctx2d.measureText('t')
+        const fm = ctx2d.measureText('Hg')
+        const hasMetrics =
+          tm.actualBoundingBoxAscent > 0 && fm.fontBoundingBoxAscent > 0
         spots = chars.map((ch) => {
           const r = ch.getBoundingClientRect()
+          let y = r.top - base.top + r.height * 0.36
+          let h = r.height * 0.46
+          if (hasMetrics) {
+            const halfLead =
+              (r.height - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2
+            const baseline = r.top - base.top + halfLead + fm.fontBoundingBoxAscent
+            y = baseline - tm.actualBoundingBoxAscent
+            h = tm.actualBoundingBoxAscent
+          }
           return {
-            // short bar seated low in the line box — clears the previous
-            // line's descenders above and the trace below
             xr: r.right - base.left + r.height * 0.07,
             xl: r.left - base.left + r.height * 0.07,
-            y: r.top - base.top + r.height * 0.36,
-            h: r.height * 0.46,
+            y,
+            h,
           }
         })
       }
@@ -184,7 +200,7 @@ export default function Hero() {
           const el = now - t0
           while (typed + 1 < chars.length && el >= times[typed + 1]) {
             typed += 1
-            chars[typed].style.visibility = 'visible'
+            chars[typed].style.opacity = '1'
           }
           if (typed >= 0) placeCaret(typed)
           if (typed >= chars.length - 1) {
@@ -206,7 +222,7 @@ export default function Hero() {
       return {
         init() {
           chars.forEach((c) => {
-            c.style.visibility = 'hidden'
+            c.style.opacity = '0'
           })
           utils.set(fades, { opacity: 0, translateY: 14 })
           if (traceEl) utils.set(traceEl, { opacity: 0 })
@@ -285,7 +301,12 @@ export default function Hero() {
                 {HERO.primaryCta.label}
               </Button>
             </span>
-            <Button to={HERO.ghostCta.to} variant="ghost" arrow>
+            <Button
+              to={HERO.ghostCta.to}
+              variant="ghost"
+              className={styles.solidGhost}
+              arrow
+            >
               {HERO.ghostCta.label}
             </Button>
           </div>
