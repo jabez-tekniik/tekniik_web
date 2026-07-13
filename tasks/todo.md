@@ -50,9 +50,16 @@ Brand: navy `#202E5D` + teal `#72CCD6` from `src/images/brand/`, neutrals black/
 - [ ] Update CLAUDE.md + ISSUES.md (after user signs off on the design)
 - [ ] User review of the revamped design — hero "more extreme" pass optional if requested
 
+## Theme toggle + light default (user request @ 7728702)
+- [x] `ink-light` theme (DEFAULT): paper canvas #f7f8fb, teal-ink accent #0e7c8c, same navy band moments
+- [x] Dark `ink` theme kept; moon/sun toggle left of Get a Quote (Nav), persisted `localStorage['tekniik-ink-mode']`, visible on mobile
+- [x] Display font → **Satoshi Black (900)**; Cabinet Grotesk dropped
+- [x] Hero pushed harder: outlined ghost "built", offset 2nd line, brand-mark watermark, theme-aware glows
+- [x] Verified: lint + build pass, both modes screenshot-checked, toggle + persistence tested, no h-scroll at 7 breakpoints
+
 ## Decisions log
-- Direction: "Deep Ink" dark (user-picked). anime.js only on home (user-picked).
-- Fonts: **Cabinet Grotesk** (display, 700/800, sentence case) / Satoshi / JetBrains Mono. Clash Display dropped 2026-07-13 — user: uppercase Clash was "a disaster for visibility".
+- Direction: "Deep Ink" dark (user-picked) → 2026-07-13: user asked for LIGHT as default with dark-mode toggle in Nav. anime.js only on home (user-picked).
+- Fonts: **Satoshi** (display 900 + body) / JetBrains Mono. Clash Display and Cabinet Grotesk both dropped — user font feedback.
 - User 2026-07-13: "enhancing ≠ revamping" — every section got a structurally new composition (see phases 3–6), committed @ b77a6c1.
 - framer-motion fully removed (only home used it; other routes never did).
 - Old work committed to feature/homepage-motion @ c097b9a before branching.
