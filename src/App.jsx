@@ -22,20 +22,24 @@ function readStoredMode() {
   }
 }
 
+// Routes that have been redesigned onto the "Deep Ink" brand themes.
+// Grows page by page until every route is inked, then the set can go away.
+const INK_ROUTES = new Set(['/', '/services', '/about', '/contact'])
+
 export default function App() {
   const location = useLocation()
-  const onHome = location.pathname === '/'
+  const inked = INK_ROUTES.has(location.pathname)
 
-  // "Deep Ink" brand themes (theme-ink.css) are scoped to the homepage:
+  // "Deep Ink" brand themes (theme-ink.css) are scoped to redesigned routes:
   // ink-light (default) or ink (dark), toggled from the Nav and persisted.
   // Other routes keep the base light theme. Set pre-paint — no theme flash.
   const [mode, setMode] = useState(readStoredMode)
 
   useLayoutEffect(() => {
     const root = document.documentElement
-    if (onHome) root.setAttribute('data-theme', mode === 'dark' ? 'ink' : 'ink-light')
+    if (inked) root.setAttribute('data-theme', mode === 'dark' ? 'ink' : 'ink-light')
     else root.removeAttribute('data-theme')
-  }, [onHome, mode])
+  }, [inked, mode])
 
   useEffect(() => {
     try {
@@ -49,7 +53,7 @@ export default function App() {
     <>
       <a className="skip-link" href="#main">Skip to content</a>
       <Nav
-        themeMode={onHome ? mode : null}
+        themeMode={inked ? mode : null}
         onToggleTheme={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
       />
       <ScrollToTop />

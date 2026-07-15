@@ -1,191 +1,259 @@
-.section {
+/* Contact — "The open line" (Deep Ink).
+   Poster hero + status ledger, working spread (ledger form | direct
+   lines), and a brand-navy "what happens next" band with scroll-lit
+   rails. Tokens only — both ink modes adapt. Transform/opacity motion;
+   the form underline draw (scaleX) is the focus signal. */
+
+/* ————————————————————————————— hero ————————————————————————————— */
+
+.hero {
   position: relative;
-  border-top: 1px solid var(--border);
+  padding-top: clamp(88px, 9vw, 120px);
   overflow: hidden;
   isolation: isolate;
 }
 
-.sectionAura {
+.hero::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(91, 91, 255, 0.07), transparent 70%),
-    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(255, 138, 182, 0.06), transparent 70%);
+  top: -12%;
+  right: -10%;
+  width: min(720px, 62vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hero-glow-a) 0%,
+    var(--hero-glow-b) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
-.statusBar {
+.heroInner {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 18px;
-  padding: 12px 16px;
-  margin-bottom: 32px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  width: fit-content;
-  max-width: 100%;
 }
 
-.status {
+.metaBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(32px, 4.4vw, 56px);
+}
+
+.eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding-right: 16px;
-  border-right: 1px solid var(--border);
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-.statusDot {
+.node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-bloom);
+}
+
+.metaRight {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+/* hero split — poster copy left, the open-line chart right */
+.heroSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
+  margin-bottom: clamp(32px, 4.4vw, 56px);
+}
+
+.heroSplit .sub {
+  margin-bottom: 0;
+}
+
+.heroVisual {
+  min-width: 0;
+}
+
+.headline {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 clamp(20px, 2.6vw, 32px);
+  max-width: 14ch;
+}
+
+.hLine {
+  display: block;
+}
+
+.hAccent {
+  color: var(--accent);
+}
+
+.sub {
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 46ch;
+  margin: 0 0 clamp(32px, 4.4vw, 56px);
+}
+
+/* status ledger — three availability facts across a hairline */
+.status {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--hairline);
+}
+
+.statusCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 14px clamp(4px, 1vw, 16px);
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.statusCell + .statusCell {
+  border-left: 1px solid var(--hairline);
+}
+
+.liveDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--success);
-  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
-  animation: contactPulse 2.4s var(--ease-out) infinite;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--success) 45%, transparent);
+  animation: livePulse 2.4s var(--ease) infinite;
 }
 
-@keyframes contactPulse {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
-  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+@keyframes livePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
 }
 
-.statusText {
-  font-family: var(--f-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  font-weight: 600;
-}
+/* ——————————————— the working spread: form | lines ——————————————— */
 
-.statusMeta {
-  color: var(--muted);
-  font-weight: 400;
-  margin-left: 4px;
-}
-
-.statusChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.statusChip svg {
-  color: var(--accent);
+.spread {
+  position: relative;
+  padding-block: clamp(56px, 7vw, 104px);
+  overflow: hidden;
 }
 
 .grid {
-  position: relative;
-  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: clamp(40px, 6vw, 80px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(40px, 6vw, 112px);
   align-items: start;
 }
 
+/* — form: ledger fields, teal underline draws on focus — */
 .form {
-  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-2xl);
-  padding: clamp(28px, 4vw, 48px);
-  isolation: isolate;
-  transition: border-color 280ms var(--ease-out), box-shadow 280ms var(--ease-out);
-}
-
-.formGlow {
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(
-    180deg,
-    rgba(91, 91, 255, 0.22),
-    rgba(190, 140, 255, 0.16) 30%,
-    transparent 60%
-  );
-  z-index: -1;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  padding: 1px;
-  pointer-events: none;
-  transition: opacity 280ms var(--ease-out);
-}
-
-.form:focus-within {
-  border-color: rgba(91, 91, 255, 0.18);
-  box-shadow:
-    0 30px 80px -36px rgba(91, 91, 255, 0.32),
-    0 8px 24px -12px rgba(10, 15, 28, 0.04);
+  gap: clamp(28px, 3.4vw, 40px);
 }
 
 .field {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .label {
   font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
+  font-size: 0.66rem;
+  font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--muted);
-  transition: color 220ms var(--ease);
-}
-
-.field:focus-within .label,
-.field.filled .label {
-  color: var(--accent);
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .input {
-  font-family: var(--f-body);
-  font-size: 1rem;
-  color: var(--ink);
-  background: transparent;
-  padding: 12px 4px;
-  border: none;
-  border-bottom: 1px solid var(--border);
+  appearance: none;
   width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  padding: 6px 0 14px;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--text);
+  transition: border-color var(--d-base) var(--ease);
+}
+
+textarea.input {
   resize: vertical;
-  min-height: 48px;
-  transition: border-color 220ms var(--ease);
+  min-height: 120px;
 }
 
 .input::placeholder {
-  color: var(--muted-2);
+  color: var(--text-faint);
+  opacity: 0.7;
 }
 
-.input:focus {
+.input:focus-visible {
   outline: none;
-  border-bottom-color: transparent;
+  /* the drawn teal underline IS the visible focus indicator — the global
+     reset's box-shadow ring doubles it up on ledger fields */
+  box-shadow: none;
+  border-radius: 0;
 }
 
+/* the focus signal: a teal rail draws along the field's hairline */
 .underline {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 320ms var(--ease);
+  transition: transform 340ms var(--ease-out);
+  pointer-events: none;
 }
 
 .field:focus-within .underline {
@@ -195,22 +263,9 @@
 .submitRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
-  border-top: 1px solid var(--border);
-  padding-top: 24px;
-}
-
-.note {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  max-width: 280px;
-}
-
-.btnSent {
-  background: var(--success) !important;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.32) !important;
+  margin-top: 4px;
 }
 
 .sentInner {
@@ -219,244 +274,440 @@
   gap: 8px;
 }
 
-.aside {
-  position: sticky;
-  top: 100px;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
+.note {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin: 0;
+  max-width: 32ch;
 }
 
+/* — aside: direct lines ledger — */
 .asideHead {
-  font-size: clamp(1.25rem, 2.4vw, 1.625rem);
-  margin-bottom: 24px;
-  color: var(--ink);
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
   letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0 0 clamp(18px, 2.2vw, 26px);
 }
 
-.email {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 22px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  margin-bottom: 12px;
-  transition: border-color 220ms var(--ease), transform 220ms var(--ease), box-shadow 220ms var(--ease);
+/* one label column shared by every row via subgrid, so all values
+   start on the same left edge */
+.lines {
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) 20px;
+}
+
+.line {
   position: relative;
   isolation: isolate;
-}
-
-.email:hover {
-  border-color: rgba(91, 91, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -16px rgba(91, 91, 255, 0.32);
-}
-
-.emailIcon {
-  display: inline-flex;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(110px, auto) minmax(0, 1fr) 20px; /* no-subgrid fallback */
+  grid-template-columns: subgrid;
   align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(91, 91, 255, 0.16), rgba(190, 140, 255, 0.12));
-  color: var(--accent);
-  border: 1px solid rgba(91, 91, 255, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  flex-shrink: 0;
-  transition: transform 240ms var(--ease-out);
+  gap: 14px;
+  min-height: 60px;
+  /* no inline padding: with subgrid it insets the edge tracks and would
+     crush the 20px arrow column (and knock values off the shared edge) */
+  padding: 14px 0;
+  border-bottom: 1px solid var(--hairline);
+  color: inherit;
 }
 
-.email:hover .emailIcon {
-  transform: rotate(-6deg) scale(1.06);
+/* teal sweep behind the row (same device as the Services index rows) */
+.line::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
 }
 
-.emailContent {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.emailLabel {
+.lineLabel {
   font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  color: var(--muted-2);
-  text-transform: uppercase;
-}
-
-.emailValue {
-  font-family: var(--f-display);
+  font-size: 0.64rem;
   font-weight: 600;
-  font-size: 1rem;
-  color: var(--ink);
-  word-break: break-word;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
-.whatsappCard:hover {
-  border-color: #25d366;
-  box-shadow: 0 14px 30px -16px rgba(37, 211, 102, 0.32);
+.lineValue {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  letter-spacing: -0.01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
 }
 
-.whatsappIcon {
-  background: linear-gradient(135deg, rgba(37, 211, 102, 0.16), rgba(37, 211, 102, 0.08));
-  border-color: rgba(37, 211, 102, 0.22);
-  color: #1aa851;
+.lineArrow {
+  display: inline-flex;
+  justify-self: end;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition:
+    opacity 240ms var(--ease-out),
+    transform 320ms var(--ease-out);
+}
+
+.lineArrow svg {
+  flex-shrink: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .line:hover::before {
+    transform: scaleX(1);
+  }
+  .line:hover .lineArrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }
 
 .availability {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  padding-left: 4px;
-  margin-top: 6px;
+  font-family: var(--f-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: clamp(18px, 2.2vw, 26px) 0 clamp(24px, 3vw, 36px);
 }
 
 .office {
-  position: relative;
-  margin-top: 24px;
-  padding: 22px;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  isolation: isolate;
+  border-left: 2px solid var(--accent);
+  padding-left: clamp(16px, 2vw, 22px);
 }
 
-.officePin {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.officeEyebrow {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+/* office tabs — flag + city, same pair as the footer's location switch */
+.officeTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.officeTab {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(91, 91, 255, 0.16), rgba(190, 140, 255, 0.12));
-  color: var(--accent);
-  border: 1px solid rgba(91, 91, 255, 0.16);
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    background 200ms var(--ease-out),
+    transform 160ms var(--ease-out);
 }
 
-.officeHead {
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  color: var(--muted-2);
-  text-transform: uppercase;
-  margin-bottom: 12px;
+.officeTab:active {
+  transform: scale(0.97);
+}
+
+.officeTabActive,
+.officeTab.officeTabActive:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .officeTab:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+}
+
+.flag {
+  display: inline-flex;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--hairline);
+  line-height: 0;
+}
+
+.flag svg {
+  display: block;
+  width: 18px;
+  height: 12px;
 }
 
 .officeAddress {
+  font-style: normal;
+  font-family: var(--f-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-dim);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-style: normal;
-  font-size: 0.9375rem;
-  color: var(--ink);
-  line-height: 1.55;
+  animation: officeIn 280ms var(--ease-out) backwards;
 }
 
+.officeCountry {
+  margin-top: 4px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+@keyframes officeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ————————— what happens next — brand-navy band ————————— */
+/* Semantic tokens re-scoped so every child adapts (same device as the
+   About process band). No FinalCta on this page — the form is the CTA —
+   so this band is the closing dark beat. */
 .next {
   position: relative;
-  margin-top: 24px;
-  padding: 24px;
-  border-radius: var(--r-lg);
-  background: var(--bg-2);
-  border: 1px solid var(--border);
+  padding-block: clamp(64px, 8vw, 120px);
+  overflow: hidden;
+  background: var(--band);
+
+  --bg: var(--band);
+  --bg-2: var(--band-2);
+  --bg-raise: var(--band-raise);
+  --text: var(--on-band);
+  --text-dim: var(--on-band-dim);
+  --text-faint: var(--on-band-faint);
+  --hairline: var(--band-hairline);
+  --border: var(--band-hairline);
+  --border-strong: var(--band-hairline-strong);
+  --accent: var(--accent-on-band);
+  --accent-soft: rgba(114, 204, 214, 0.12);
+  --accent-tint: rgba(114, 204, 214, 0.07);
+  --accent-border: rgba(114, 204, 214, 0.28);
+  --accent-bloom: rgba(114, 204, 214, 0.2);
+}
+
+.meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+}
+
+.index {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+.metaEyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .nextHead {
-  font-size: 0.9375rem;
-  margin-bottom: 18px;
-  color: var(--ink);
+  margin-bottom: clamp(32px, 4.4vw, 56px);
 }
 
-.nextList {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.nextHeading {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0;
+}
+
+.nextSteps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 48px);
+}
+
+.nextStep {
   position: relative;
 }
 
-.nextList::before {
-  content: '';
+.rail {
+  position: relative;
+  display: block;
+  height: 2px;
+  background: var(--hairline);
+  margin-bottom: clamp(16px, 2vw, 22px);
+}
+
+.railFill {
   position: absolute;
-  left: 11px;
-  top: 12px;
-  bottom: 12px;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    rgba(91, 91, 255, 0.4),
-    rgba(190, 140, 255, 0.3) 50%,
-    rgba(255, 138, 182, 0.2)
-  );
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
-.nextItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  position: relative;
-  font-size: 0.875rem;
-  color: var(--body);
-  line-height: 1.55;
-}
-
-.nextNode {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+.railNode {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: var(--surface);
-  border: 1px solid rgba(91, 91, 255, 0.3);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  box-shadow: 0 0 0 4px var(--bg-2);
+  background: var(--text-faint);
+  transform: translate(-1px, -50%) scale(0.55);
+  transition:
+    background var(--d-base) var(--ease),
+    box-shadow var(--d-base) var(--ease),
+    transform var(--d-base) var(--ease-out);
 }
 
-.nextNodeInner {
+.rail.lit .railNode {
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-bloom);
+  transform: translate(-1px, -50%) scale(1);
+}
+
+.nextNum {
+  display: block;
   font-family: var(--f-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.04em;
-  color: var(--accent);
+  font-size: 0.66rem;
   font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 10px;
 }
 
 .nextText {
-  padding-top: 4px;
+  font-family: var(--f-body);
+  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+  max-width: 26ch;
 }
 
-@media (max-width: 880px) {
-  .grid {
+/* ————————————————————————— responsive ————————————————————————— */
+
+@media (max-width: 960px) {
+  /* single column: the chart is decorative — drop it, keep the copy lean */
+  .heroSplit {
     grid-template-columns: 1fr;
   }
-  .aside {
-    position: static;
+  .heroVisual {
+    display: none;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 6vw, 64px);
+  }
+  .nextSteps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 540px) {
-  .statusBar {
-    border-radius: var(--r-lg);
+@media (max-width: 640px) {
+  .status {
+    grid-template-columns: 1fr;
+  }
+  .statusCell + .statusCell {
+    border-left: none;
+  }
+  .statusCell {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .metaBar {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
-  .status {
-    border-right: none;
-    padding-right: 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-    width: 100%;
+  .metaRight {
+    text-align: left;
+  }
+  .nextSteps {
+    grid-template-columns: 1fr;
+  }
+  /* stack label over value — shared column no longer fits */
+  .lines {
+    display: block;
+  }
+  .line {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    row-gap: 2px;
+    padding-block: 12px;
+  }
+  .lineLabel {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .lineValue {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .lineArrow {
+    grid-column: 2;
+    grid-row: 1 / 3;
   }
 }
 
+/* —— reduced motion: rails render filled (hook fires once with p=1),
+      underline snaps, hovers and the live pulse go inert —— */
 @media (prefers-reduced-motion: reduce) {
-  .statusDot { animation: none; }
-  .email:hover,
-  .email:hover .emailIcon { transform: none; }
+  .underline,
+  .line::before,
+  .lineArrow,
+  .officeTab,
+  .railNode {
+    transition: none;
+  }
+  .liveDot {
+    animation: none;
+  }
+  .officeAddress {
+    animation: none;
+  }
+  .railNode {
+    background: var(--accent);
+    transform: translate(-1px, -50%) scale(1);
+  }
 }

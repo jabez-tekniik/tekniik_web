@@ -2,6 +2,7 @@
   --pad-x: 24px;
   --pad-y: 14px;
   --fs: 0.875rem;
+  --sheen: rgba(255, 255, 255, 0.22);
 
   display: inline-flex;
   align-items: center;
@@ -23,11 +24,25 @@
   border: 1px solid transparent;
   min-height: 44px;
   position: relative;
+  overflow: hidden;
   user-select: none;
   white-space: nowrap;
 }
 
+/* looping hover life: a soft sheen band that sweeps the button face for as
+   long as the pointer stays (animation only attaches on :hover) */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 34%, var(--sheen) 50%, transparent 66%);
+  transform: translateX(-160%);
+  pointer-events: none;
+}
+
 .inner {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -43,6 +58,48 @@
 
 .btn:hover .arrow {
   transform: translateX(3px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover::before,
+  .inverse:hover::before,
+  .ghost:hover::before {
+    animation: btnSheen 1.6s var(--ease) infinite;
+  }
+  .btn:hover .arrow {
+    transform: none;
+    animation: arrowNudge 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes btnSheen {
+  0% {
+    transform: translateX(-160%);
+  }
+  55%,
+  100% {
+    transform: translateX(160%);
+  }
+}
+
+@keyframes arrowNudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::before {
+    display: none;
+  }
+  .btn:hover .arrow {
+    animation: none;
+    transform: translateX(3px);
+  }
 }
 
 .primary {
@@ -64,6 +121,8 @@
 
 /* —— Inverse: white button with brand-navy text, for the navy band (FinalCta) —— */
 .inverse {
+  /* white sheen is invisible on a white face — sweep a navy tint instead */
+  --sheen: rgba(32, 46, 93, 0.1);
   background: #ffffff;
   color: var(--navy, #202e5d);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset,
@@ -81,6 +140,8 @@
 }
 
 .ghost {
+  /* transparent face — sweep the theme's accent tint */
+  --sheen: var(--accent-soft, rgba(114, 204, 214, 0.14));
   background: transparent;
   color: var(--ink);
   border-color: var(--border-strong);

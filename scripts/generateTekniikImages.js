@@ -179,18 +179,8 @@ const ITEMS = [
   // ── Page hero frames — direct documentary subjects, 16:9 full-bleed
   //    cinematic widescreen. Right-weighted so the left half is reserved
   //    for the text overlay used by the PageHeader full-bleed variant. ──
-  {
-    // Services — "We build the technology your business runs on"
-    // Direct: a modern developer's workstation, no people.
-    id: 'page-services',
-    style: 'documentary',
-    aspectRatio: '16:9',
-    out: 'public/img/page/services-hero.webp',
-    width: 1920,
-    height: 1080,
-    subject:
-      'A premium modern developer\'s workstation positioned ENTIRELY in the right 45% of the 16:9 frame: a slim open laptop with abstract dark code panels (soft indigo line numbers + violet keyword accents, NO readable text), a low-profile mechanical keyboard, a small notebook with a brass pen, a ceramic mug of black coffee, a tiny sculptural plant in a matte indigo pot. CRITICAL COMPOSITION RULE: the laptop, keyboard, mug, notebook and plant must ALL sit between the 55% vertical line and the right edge of the frame — none of these objects, NOR any portion of them, NOR their shadows, may extend into the left 55% of the frame. The LEFT 55% of the frame is empty pale-cream studio space with the merest hint of soft window light bokeh — a clean field that will hold text in production. Soft natural daylight from upper-right grazes the laptop edge with a clean rim highlight. Real photographic detail, shallow depth of field, premium editorial. NO people, NO hands, NO readable text, NO brand logos. 16:9 cinematic widescreen.',
-  },
+  // (page-services entry removed 2026-07-15 — the /services hero now runs a
+  //  combined animated vignette reel instead of generated imagery)
   {
     // About — "A small team that builds big things"
     // Direct: a small modern team working together at a studio desk.

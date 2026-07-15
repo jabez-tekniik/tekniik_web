@@ -10,26 +10,54 @@ QA sweep (2026-07-14); unrelated to that change. No overflow at 414px+. Fix
 candidates: `overflow-x: clip` on the hero, or size/mask the circuit layer to
 the viewport at small widths.
 
-### Footer legal links are placeholders (medium)
-The footer `// Legal` column (Privacy Policy, Terms of Service, GDPR Cookie
-Policy — `FOOTER.cols` in `src/data/content.js`) points at `#` because the
-actual legal pages don't exist yet. Needs real `/privacy`, `/terms`,
-`/cookie-policy` routes with reviewed legal copy, then update the `to` values.
-`Footer.jsx` already renders route links (`/...`) as `<Link>` and anything else
-as a plain `<a>`, so swapping in real routes is a data-only change.
+### Footer legal links point at routes that don't exist yet (medium)
+As of the 2026-07-16 content-spec sync the footer `// Legal` column
+(`FOOTER.cols` in `src/data/content.js`) is wired to real routes
+`/privacy-policy` `/terms-of-service` `/cookie-policy` `/gdpr` (per the legal
+spec, which wants the links in place before the pages ship). Those routes don't
+exist yet, so they currently hit NotFound. Building the 4 legal pages + cookie
+consent banner is **Phase 4** of the content-sync plan (`tasks/todo.md`).
 
-### `/img/services/*.webp` no longer used on the homepage (low)
-The 2026-07-14 vignette revamp replaced the ServiceShowcase image stage with
-coded animated scenes (`src/sections/ServiceVignettes.jsx`), so the homepage no
-longer loads the four service webp images. They ARE still used by
-`pages/Services.jsx` rows — keep the files. If the Services page ever gets its
-own vignettes, the images and their `svc-*` entries in
-`scripts/generateTekniikImages.js` can be deleted.
+### Homepage "What We Engineer" cards link to the /services hub, not sub-pages (low)
+`CAPABILITIES` items in `content.js` set `to: '/services'` for all four rows.
+The services spec wants each to deep-link to a dedicated sub-page
+(`/services/custom-software`, `/web-platforms`, `/mobile-apps`, `/ai-systems`).
+Those sub-pages are **Phase 2**; update the `to` values when they ship.
+
+### `/img/services/*.webp` no longer used by ANY page (low)
+The 2026-07-14 vignette revamp replaced the homepage ServiceShowcase image
+stage with coded animated scenes (`src/sections/ServiceVignettes.jsx`), and the
+2026-07-15 Services-page redesign hosts those same vignettes per discipline —
+so the four service webp images are now completely unreferenced. Kept on disk
+because they're paid Imagen 4 Ultra generations whose prompts live in
+`scripts/generateTekniikImages.js` (`svc-*` entries); delete both together if
+they stay unused once all pages are redesigned. (`page/services-hero.webp` was
+DELETED 2026-07-15 with its manifest entry — the user rejected generated hero
+imagery on /services; the hero now runs a combined animated vignette reel.)
+
+### `page/contact-hero.webp` no longer used (low)
+The 2026-07-15 Contact ink redesign dropped the full-bleed PageHeader, so
+`contact-hero.webp` is unreferenced (About KEEPS `about-hero.webp` in its ink
+hero frame per user). Same policy as the services images above: paid Imagen
+generation, kept on disk with its manifest entry until the redesign settles.
 
 ### `ogl` + `AuroraShader` are now dead weight on the homepage
 The 2026-07-07 "Bold Editorial" revamp removed the aurora wash — `AuroraShader` (OGL WebGL) is no longer imported by any route (Hero + FinalCta dropped it). It's still exported from `src/motion/index.js` and the `ogl` dependency is still installed, so it ships in the bundle graph as an unused lazy chunk. Follow-up: either delete `src/motion/AuroraShader.*` + drop `ogl` from `package.json`, or repurpose the shader for a future dark toggle. Left in place for now (self-contained, harmless) to keep the revamp scoped to layout/design.
 
 ## Resolved
+
+### Homepage aligned to finalized /content specs — Phase 1 of content-spec sync (2026-07-16)
+Applied the locked `/content/*.md` copy to the homepage + added new sections:
+hero "engineer" positioning + "See our work" scroll-to-`#work`, proof-ticker
+relabel, 4th stat (8+ Industries Served), blended empathy copy, "What We
+Engineer" rename + reorder (Custom Software first), Why copy, Process split
+4→5 phases, portfolio real countries (UK/South Africa) with the two routed case
+studies geo-rewritten to match + testimonials realigned, and a new
+**AiAccelerated** (§10) section (light teal-tinted 4-up, both ink modes). Home
+sections reordered/renumbered to the spec table (03–08, 10). lint ✓ build ✓,
+Playwright-verified 1280 + 375 both modes, no h-scroll, 0 console errors. See
+`tasks/todo.md` "CONTENT SPEC SYNC" for Phases 2–5 (About/Contact/Services
+sub-pages, /work, /support, legal pages + cookie banner, /website-package).
 
 ### Sharp ★ text glyph replaced with rounded IconStar everywhere on the homepage (2026-07-14)
 User: the ★ star (Hero trust line, `4.9★` Numbers stat, `4.8★ app store` proof

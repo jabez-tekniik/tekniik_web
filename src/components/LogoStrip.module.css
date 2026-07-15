@@ -10,7 +10,7 @@
 
 .inner {
   display: grid;
-  grid-template-columns: minmax(150px, 0.55fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(140px, 0.5fr) repeat(4, minmax(0, 1fr));
   width: 100%;
   max-width: var(--max);
   margin-inline: auto;
@@ -96,6 +96,9 @@
 }
 
 /* —— responsive —— */
+/* ≤900px: rail spans the top, the four readouts fall into a clean 2×2.
+   Grid children are rail(1) + cells(2–5): left col = nth-child(2,4),
+   right col = nth-child(3,5); second row = nth-child(4,5). */
 @media (max-width: 900px) {
   .inner {
     grid-template-columns: 1fr 1fr;
@@ -116,14 +119,14 @@
   .cell + .cell {
     border-left: none;
   }
-  .cell:nth-child(3) {
+  .cell:nth-child(3),
+  .cell:nth-child(5) {
     border-left: 1px solid var(--hairline);
     padding-inline: 18px 0;
   }
-  .cell:nth-child(4) {
-    grid-column: 1 / -1;
+  .cell:nth-child(4),
+  .cell:nth-child(5) {
     border-top: 1px solid var(--hairline);
-    padding-inline: 0;
   }
 }
 
@@ -132,11 +135,14 @@
     grid-template-columns: 1fr;
   }
   .cell,
-  .cell:nth-child(3) {
+  .cell:nth-child(3),
+  .cell:nth-child(5) {
     border-left: none;
     padding-inline: 0;
   }
-  .cell + .cell {
+  .cell + .cell,
+  .cell:nth-child(4),
+  .cell:nth-child(5) {
     border-top: 1px solid var(--hairline);
   }
 }

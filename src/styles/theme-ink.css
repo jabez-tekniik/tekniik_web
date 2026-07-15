@@ -82,6 +82,9 @@
   /* —— inverted band → brand navy moments (Portfolio, FinalCta) —— */
   --band: #202e5d;
   --band-2: #1b2750;
+  /* deeper navy for a band that directly precedes a --band section
+     (Services AI discipline → FinalCta), so the two don't merge */
+  --band-deep: #141d40;
   --band-raise: #26366c;
   --on-band: #f4f6fb;
   --on-band-dim: #b6bfd6;
@@ -112,6 +115,14 @@
 
   /* —— logo —— */
   --logo-ink: #ffffff;
+
+  /* —— discipline hues — /services hero constellation ONLY ——
+     a deliberate colorful beat (user request); everywhere else the
+     system stays single-accent teal */
+  --svc-websites: #72ccd6;
+  --svc-apps: #97a3ff;
+  --svc-mobile: #ffbe66;
+  --svc-ai: #ff8fc4;
 
   /* —— focus —— */
   --focus-ring: 0 0 0 3px var(--accent-ring);
@@ -189,6 +200,9 @@
   /* —— inverted band → brand navy moments (identical in both modes) —— */
   --band: #202e5d;
   --band-2: #1b2750;
+  /* deeper navy for a band that directly precedes a --band section
+     (Services AI discipline → FinalCta), so the two don't merge */
+  --band-deep: #141d40;
   --band-raise: #26366c;
   --on-band: #f4f6fb;
   --on-band-dim: #b6bfd6;
@@ -219,6 +233,13 @@
 
   /* —— logo —— */
   --logo-ink: #202e5d;
+
+  /* —— discipline hues — /services hero constellation ONLY ——
+     (deepened for light-canvas contrast) */
+  --svc-websites: #0e7c8c;
+  --svc-apps: #4d5ac9;
+  --svc-mobile: #b2690a;
+  --svc-ai: #c23a80;
 
   /* —— focus —— */
   --focus-ring: 0 0 0 3px var(--accent-ring);

@@ -55,9 +55,12 @@
 }
 
 .link {
-  font-family: var(--f-display);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  /* Satoshi on every route (user request) — --f-display is only Satoshi
+     on inked routes, so name the face directly */
+  font-family: 'Satoshi', var(--f-display);
+  /* Satoshi ships 400/500/700/900 here — 600 would be synthesized */
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--body);
   padding: 7px 14px;
   border-radius: 999px;
@@ -99,10 +102,17 @@
   initial-value: 0deg;
 }
 
+/* Button.module.css puts overflow:hidden + a ::before sheen on every .btn;
+   the ring paints OUTSIDE the face, so this button opts back out and every
+   ring selector is a.ctaBtn (0,1,2+) to outrank the .btn/.primary styles */
+a.ctaBtn {
+  overflow: visible;
+}
+
 /* the gradient is masked down to a ring band, so it can never flood the
    button face — only the 2.5px halo outside the fill is painted */
-.ctaBtn::before,
-.ctaBtn::after {
+a.ctaBtn::before,
+a.ctaBtn::after {
   content: '';
   position: absolute;
   inset: -2.5px;
@@ -122,11 +132,12 @@
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   opacity: 0;
+  transform: none; /* the .btn::before sheen parks at translateX(-160%) */
   pointer-events: none;
   transition: opacity 240ms var(--ease);
 }
 
-.ctaBtn::after {
+a.ctaBtn::after {
   inset: -4px;
   padding: 4px;
   filter: blur(8px);
@@ -145,14 +156,14 @@ a.ctaBtn:focus-visible,
   box-shadow: 0 6px 18px rgba(10, 14, 26, 0.16);
 }
 
-.ctaBtn:hover::before,
-.ctaBtn:focus-visible::before {
+a.ctaBtn:hover::before,
+a.ctaBtn:focus-visible::before {
   opacity: 1;
   animation: gqSpin 2.6s linear infinite;
 }
 
-.ctaBtn:hover::after,
-.ctaBtn:focus-visible::after {
+a.ctaBtn:hover::after,
+a.ctaBtn:focus-visible::after {
   opacity: 0.45;
   animation: gqSpin 2.6s linear infinite;
 }
@@ -164,10 +175,16 @@ a.ctaBtn:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ctaBtn:hover::before,
-  .ctaBtn:hover::after,
-  .ctaBtn:focus-visible::before,
-  .ctaBtn:focus-visible::after {
+  /* Button's RM block display:nones .btn::before — bring the ring back
+     (static, no spin) so the hover still reads */
+  a.ctaBtn::before,
+  a.ctaBtn::after {
+    display: block;
+  }
+  a.ctaBtn:hover::before,
+  a.ctaBtn:hover::after,
+  a.ctaBtn:focus-visible::before,
+  a.ctaBtn:focus-visible::after {
     animation: none;
   }
 }
@@ -266,7 +283,7 @@ a.ctaBtn:focus-visible,
   display: flex;
   align-items: baseline;
   gap: 18px;
-  font-family: var(--f-display);
+  font-family: 'Satoshi', var(--f-display);
   font-size: clamp(2rem, 8vw, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.04em;

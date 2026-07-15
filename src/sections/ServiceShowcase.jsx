@@ -60,7 +60,7 @@ export default function ServiceShowcase() {
       <div className="container">
         <Reveal className={styles.header}>
           <div className={styles.headMeta}>
-            <span className={styles.index}>02</span>
+            <span className={styles.index}>05</span>
             <span className={styles.eyebrow}>{CAPABILITIES.eyebrow}</span>
           </div>
           <h2 className={styles.heading}>
@@ -79,7 +79,7 @@ export default function ServiceShowcase() {
             {items.map((item, i) => (
               <Reveal key={item.key} delay={i * 70}>
                 <Link
-                  to="/services"
+                  to={item.to || '/services'}
                   className={`${styles.row} ${i === active ? styles.rowActive : ''}`}
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}

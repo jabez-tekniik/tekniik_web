@@ -27,7 +27,7 @@ export default function Process() {
         <Reveal className={styles.head}>
           <div className={styles.headText}>
             <div className={styles.meta}>
-              <span className={styles.index}>06</span>
+              <span className={styles.index}>07</span>
               <span className={styles.eyebrow}>{PROCESS.eyebrow}</span>
             </div>
             <h2 className={styles.heading}>{PROCESS.heading}</h2>

@@ -1,20 +1,22 @@
 import { useState } from 'react'
-import PageHeader from '../components/PageHeader.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Button from '../components/Button.jsx'
-import {
-  IconCheck,
-  IconMail,
-  IconWhatsApp,
-  IconClock,
-  IconBolt,
-  IconPing,
-} from '../components/Icon.jsx'
-import { CONTACT_PAGE } from '../data/content.js'
+import Decode from '../motion/ink/Decode.jsx'
+import OpenLine from '../components/OpenLine.jsx'
+import { useScrollProgressInk } from '../motion/ink/index.js'
+import { IconCheck, IconFlagIndia, IconFlagUK } from '../components/Icon.jsx'
+import { CONTACT_PAGE, OFFICES } from '../data/content.js'
 import styles from './Contact.module.css'
 
-function FloatingField({ id, label, type = 'text', textarea, placeholder, value, onChange, required }) {
-  const filled = value && value.length > 0
+const FLAGS = { chennai: IconFlagIndia, uk: IconFlagUK }
+
+/* Contact — "The open line" (Deep Ink).
+   Lean poster hero with a live status strip, then the working spread:
+   ledger form left (teal underline draws on focus), direct-lines ledger +
+   office right. "What happens next?" closes as a brand-navy band with
+   four scroll-lit rail steps — the page's dark beat. Tokens only. */
+
+function Field({ id, label, type = 'text', textarea, placeholder, value, onChange, required }) {
   const inputProps = {
     id,
     name: id,
@@ -25,24 +27,49 @@ function FloatingField({ id, label, type = 'text', textarea, placeholder, value,
     className: styles.input,
   }
   return (
-    <div className={`${styles.field} ${filled ? styles.filled : ''}`}>
+    <div className={styles.field}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {required && <span aria-hidden="true"> *</span>}
       </label>
-      {textarea ? (
-        <textarea {...inputProps} rows={5} />
-      ) : (
-        <input type={type} {...inputProps} />
-      )}
+      {textarea ? <textarea {...inputProps} rows={5} /> : <input type={type} {...inputProps} />}
       <span className={styles.underline} aria-hidden="true" />
     </div>
   )
 }
 
+/* Direct line — one hairline ledger row: mono label, Satoshi value */
+function Line({ href, label, value, external }) {
+  return (
+    <a
+      href={href}
+      className={styles.line}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      <span className={styles.lineLabel}>{label}</span>
+      <span className={styles.lineValue}>{value}</span>
+      <span className={styles.lineArrow} aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M5 11l6-6M11 5H6.5M11 5v4.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </a>
+  )
+}
+
 export default function Contact() {
+  const [line1, line2] = CONTACT_PAGE.heading
+  const { side, form: formCopy } = CONTACT_PAGE
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [officeKey, setOfficeKey] = useState(OFFICES[0].key)
+  const office = OFFICES.find((o) => o.key === officeKey) ?? OFFICES[0]
 
   const update = (key) => (e) => setForm((s) => ({ ...s, [key]: e.target.value }))
   const handleSubmit = (e) => {
@@ -51,156 +78,190 @@ export default function Contact() {
     setTimeout(() => setSent(false), 4000)
   }
 
+  const total = side.next.length
+  const nextRef = useScrollProgressInk((p, grid) => {
+    grid.querySelectorAll('[data-rail]').forEach((rail, i) => {
+      const local = Math.min(1, Math.max(0, p * total - i))
+      rail.firstElementChild.style.transform = `scaleX(${local})`
+      rail.classList.toggle(styles.lit, local > 0.02)
+    })
+  })
+
   return (
     <>
-      <PageHeader
-        eyebrow={CONTACT_PAGE.eyebrow}
-        heading={CONTACT_PAGE.heading}
-        sub={CONTACT_PAGE.sub}
-        variant="full-bleed"
-        media={{
-          src: '/img/page/contact-hero.webp',
-          alt: '',
-          width: 1920,
-          height: 1080,
-        }}
-      />
-
-      <section className={`section ${styles.section}`} style={{ paddingTop: 24 }}>
-        <div className={styles.sectionAura} aria-hidden="true" />
-
-        <div className="container">
-          <Reveal className={styles.statusBar}>
-            <span className={styles.status}>
-              <span className={styles.statusDot} aria-hidden="true" />
-              <span className={styles.statusText}>
-                Available now <span className={styles.statusMeta}>· UK / Chennai</span>
-              </span>
+      {/* —— Hero: poster + status strip —————————————————— */}
+      <section className={styles.hero}>
+        <div className={`container ${styles.heroInner}`}>
+          <Reveal className={styles.metaBar}>
+            <span className={styles.eyebrow}>
+              <span className={styles.node} aria-hidden="true" />
+              {CONTACT_PAGE.eyebrow}
             </span>
-            <span className={styles.statusChip}>
-              <IconBolt width="12" height="12" aria-hidden="true" />
-              Replies within 24 hours
-            </span>
-            <span className={styles.statusChip}>
-              <IconClock width="12" height="12" aria-hidden="true" />
-              Discovery call · 30 min
-            </span>
+            <span className={styles.metaRight}>UK · Chennai / one working day</span>
           </Reveal>
 
+          <div className={styles.heroSplit}>
+            <div>
+              <h1 className={styles.headline}>
+                <Decode text={line1} as="span" className={styles.hLine} />
+                <Decode
+                  text={line2}
+                  as="span"
+                  delay={420}
+                  className={`${styles.hLine} ${styles.hAccent}`}
+                />
+              </h1>
+              <Reveal delay={280}>
+                <p className={styles.sub}>{CONTACT_PAGE.sub}</p>
+              </Reveal>
+            </div>
+
+            <Reveal delay={200} className={styles.heroVisual}>
+              <OpenLine />
+            </Reveal>
+          </div>
+
+          {/* status strip — availability facts as a hairline ledger */}
+          <Reveal className={styles.status} delay={200}>
+            <span className={styles.statusCell}>
+              <span className={styles.liveDot} aria-hidden="true" />
+              Available now
+            </span>
+            <span className={styles.statusCell}>Replies within 24 hours</span>
+            <span className={styles.statusCell}>Discovery call · 30 min</span>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* —— The working spread: form | direct lines ————————— */}
+      <section className={styles.spread}>
+        <div className="container">
           <div className={styles.grid}>
             <Reveal>
               <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                <span className={styles.formGlow} aria-hidden="true" />
-
-                <FloatingField
+                <Field
                   id="name"
-                  label={CONTACT_PAGE.form.nameLabel}
-                  placeholder={CONTACT_PAGE.form.namePlaceholder}
+                  label={formCopy.nameLabel}
+                  placeholder={formCopy.namePlaceholder}
                   value={form.name}
                   onChange={update('name')}
                   required
                 />
-                <FloatingField
+                <Field
                   id="email"
                   type="email"
-                  label={CONTACT_PAGE.form.emailLabel}
-                  placeholder={CONTACT_PAGE.form.emailPlaceholder}
+                  label={formCopy.emailLabel}
+                  placeholder={formCopy.emailPlaceholder}
                   value={form.email}
                   onChange={update('email')}
                   required
                 />
-                <FloatingField
+                <Field
                   id="message"
                   textarea
-                  label={CONTACT_PAGE.form.messageLabel}
-                  placeholder={CONTACT_PAGE.form.messagePlaceholder}
+                  label={formCopy.messageLabel}
+                  placeholder={formCopy.messagePlaceholder}
                   value={form.message}
                   onChange={update('message')}
                   required
                 />
 
                 <div className={styles.submitRow}>
-                  <Button type="submit" variant="primary" arrow={!sent} className={sent ? styles.btnSent : ''}>
+                  <Button type="submit" variant="primary" arrow={!sent}>
                     {sent ? (
                       <span className={styles.sentInner}>
                         <IconCheck width="14" height="14" /> Sent — we’ll be in touch
                       </span>
                     ) : (
-                      CONTACT_PAGE.form.submitLabel
+                      formCopy.submitLabel
                     )}
                   </Button>
-                  <p className={styles.note}>{CONTACT_PAGE.form.note}</p>
+                  <p className={styles.note}>{formCopy.note}</p>
                 </div>
               </form>
             </Reveal>
 
             <Reveal delay={120} className={styles.aside}>
-              <h3 className={styles.asideHead}>{CONTACT_PAGE.side.heading}</h3>
+              <h2 className={styles.asideHead}>{side.heading}</h2>
 
-              <a href={`mailto:${CONTACT_PAGE.side.email}`} className={styles.email}>
-                <span className={styles.emailIcon} aria-hidden="true">
-                  <IconMail width="16" height="16" />
-                </span>
-                <span className={styles.emailContent}>
-                  <span className={styles.emailLabel}>email</span>
-                  <span className={styles.emailValue}>{CONTACT_PAGE.side.email}</span>
-                </span>
-              </a>
-
-              <a href={`mailto:${CONTACT_PAGE.side.careersEmail}`} className={styles.email}>
-                <span className={styles.emailIcon} aria-hidden="true">
-                  <IconMail width="16" height="16" />
-                </span>
-                <span className={styles.emailContent}>
-                  <span className={styles.emailLabel}>{CONTACT_PAGE.side.careersLabel}</span>
-                  <span className={styles.emailValue}>{CONTACT_PAGE.side.careersEmail}</span>
-                </span>
-              </a>
-
-              <a
-                href={`https://wa.me/${CONTACT_PAGE.side.phoneRaw.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${styles.email} ${styles.whatsappCard}`}
-              >
-                <span className={`${styles.emailIcon} ${styles.whatsappIcon}`} aria-hidden="true">
-                  <IconWhatsApp width="16" height="16" />
-                </span>
-                <span className={styles.emailContent}>
-                  <span className={styles.emailLabel}>{CONTACT_PAGE.side.whatsappLabel}</span>
-                  <span className={styles.emailValue}>{CONTACT_PAGE.side.phone}</span>
-                </span>
-              </a>
-
-              <p className={styles.availability}>{CONTACT_PAGE.side.availability}</p>
-
-              <div className={styles.office}>
-                <span className={styles.officePin} aria-hidden="true">
-                  <IconPing width="14" height="14" />
-                </span>
-                <h4 className={styles.officeHead}>{CONTACT_PAGE.side.officeHeading}</h4>
-                <address className={styles.officeAddress}>
-                  {CONTACT_PAGE.side.officeLines.map((line) => (
-                    <span key={line}>{line}</span>
-                  ))}
-                </address>
+              <div className={styles.lines}>
+                <Line href={`mailto:${side.email}`} label="Email" value={side.email} />
+                <Line
+                  href={`mailto:${side.careersEmail}`}
+                  label={side.careersLabel}
+                  value={side.careersEmail}
+                />
+                <Line
+                  href={`https://wa.me/${side.phoneRaw.replace(/[^0-9]/g, '')}`}
+                  label={side.whatsappLabel}
+                  value={side.phone}
+                  external
+                />
               </div>
 
-              <div className={styles.next}>
-                <h4 className={styles.nextHead}>{CONTACT_PAGE.side.nextHeading}</h4>
-                <ol className={styles.nextList}>
-                  {CONTACT_PAGE.side.next.map((step, i) => (
-                    <li key={i} className={styles.nextItem}>
-                      <span className={styles.nextNode} aria-hidden="true">
-                        <span className={styles.nextNodeInner}>{`0${i + 1}`}</span>
-                      </span>
-                      <span className={styles.nextText}>{step}</span>
-                    </li>
+              <p className={styles.availability}>{side.availability}</p>
+
+              <div className={styles.office}>
+                <span className={styles.officeEyebrow}>{side.officeHeading}</span>
+                <div className={styles.officeTabs} role="tablist" aria-label="Office locations">
+                  {OFFICES.map((o) => {
+                    const Flag = FLAGS[o.key]
+                    return (
+                      <button
+                        key={o.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={o.key === office.key}
+                        className={`${styles.officeTab} ${o.key === office.key ? styles.officeTabActive : ''}`}
+                        onClick={() => setOfficeKey(o.key)}
+                      >
+                        {Flag && (
+                          <span className={styles.flag} aria-hidden="true">
+                            <Flag />
+                          </span>
+                        )}
+                        {o.label}
+                      </button>
+                    )
+                  })}
+                </div>
+                <address className={styles.officeAddress} key={office.key}>
+                  {office.lines.map((line) => (
+                    <span key={line}>{line}</span>
                   ))}
-                </ol>
+                  <span className={styles.officeCountry}>{office.country}</span>
+                </address>
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* —— What happens next — navy band, four scroll-lit steps ——— */}
+      <section className={styles.next}>
+        <div className="container">
+          <Reveal className={styles.nextHead}>
+            <div className={styles.meta}>
+              <span className={styles.index}>01</span>
+              <span className={styles.metaEyebrow}>After you hit send</span>
+            </div>
+            <h2 className={styles.nextHeading}>{side.nextHeading}</h2>
+          </Reveal>
+
+          <ol ref={nextRef} className={styles.nextSteps}>
+            {side.next.map((step, i) => (
+              <li key={step} className={styles.nextStep}>
+                <span className={styles.rail} data-rail="" aria-hidden="true">
+                  <span className={styles.railFill} />
+                  <span className={styles.railNode} />
+                </span>
+                <Reveal delay={i * 90} className={styles.nextBody}>
+                  <span className={styles.nextNum}>0{i + 1}</span>
+                  <p className={styles.nextText}>{step}</p>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
     </>

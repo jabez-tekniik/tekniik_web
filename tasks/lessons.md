@@ -86,3 +86,14 @@ brand band, many thin moving lines look like tearing/artifacts. Prefer one
 quiet CSS radial bloom (transform/opacity breathe) for ambient background
 motion; reserve line-draw effects for single deliberate strokes (hero
 Marker), never fields of them.
+
+## Shared-component base styles can silently kill per-instance overrides (2026-07-15)
+Adding `overflow: hidden` + a `::before` sheen to the shared `.btn`
+(Button.module.css) clipped and shadowed the nav CTA''s Gemini ring
+(Nav.module.css styles the SAME element''s ::before/::after, painted
+OUTSIDE the face). CSS-module specificity ties resolve by import order -
+nondeterministic across builds. Pattern: before adding base styles or
+pseudo-elements to a shared component, grep for per-instance styling of
+that component (`ctaBtn`, className props) and check for pseudo-element
+and overflow collisions; resolve with deliberately higher-specificity
+selectors (e.g. `a.ctaBtn::before`), never by cascade order luck.

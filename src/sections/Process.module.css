@@ -77,13 +77,13 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(24px, 3.2vw, 48px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 40px);
   align-items: start;
 }
 
 .step {
-  margin-top: calc(var(--i) * clamp(18px, 4vw, 60px));
+  margin-top: calc(var(--i) * clamp(12px, 2.2vw, 34px));
 }
 
 /* —— rail: top hairline + sequential teal fill + node —— */
@@ -123,6 +123,26 @@
   background: var(--accent-on-band);
   box-shadow: 0 0 14px rgba(114, 204, 214, 0.55);
   transform: translate(-1px, -50%) scale(1);
+}
+
+/* Last phase ("Support & Grow" · Ongoing) reads as open-ended — a small
+   teal chevron caps the rail's right edge instead of a hard stop. */
+.step:last-child .rail::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--accent-on-band);
+  border-right: 2px solid var(--accent-on-band);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0;
+  transition: opacity var(--d-base) var(--ease);
+}
+
+.step:last-child .rail.lit::after {
+  opacity: 0.75;
 }
 
 /* —— phase content —— */
@@ -255,6 +275,10 @@
   .node {
     background: var(--accent-on-band);
     transform: translate(-1px, -50%) scale(1);
+  }
+  .step:last-child .rail::after {
+    opacity: 0.75;
+    transition: none;
   }
   .step:hover .phase {
     transform: none;

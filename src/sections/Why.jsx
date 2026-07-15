@@ -27,7 +27,7 @@ export default function Why() {
         <Reveal className={styles.head}>
           <div>
             <div className={styles.meta}>
-              <span className={styles.index}>05</span>
+              <span className={styles.index}>06</span>
               <span className={styles.eyebrow}>{WHY_TEKNIIK.eyebrow}</span>
             </div>
             <h2 className={styles.heading}>{WHY_TEKNIIK.heading}</h2>

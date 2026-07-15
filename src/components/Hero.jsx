@@ -11,15 +11,29 @@ import {
   EASE_INOUT,
   EASE_OUT,
 } from '../motion/ink/index.js'
+import { getLenis } from '../motion/SmoothScroll.jsx'
 import { HERO, TERMINAL_FRAMES } from '../data/content.js'
 import styles from './Hero.module.css'
 
+/* "See our work" jumps to the on-page Our Work section. Lenis owns the scroll
+   when active, so route through it (native scrollIntoView gets cancelled by its
+   rAF loop); reduced motion jumps instantly. Mirrors the Services index. */
+function scrollToWork(e) {
+  const el = document.getElementById('work')
+  if (!el) return // no #work on this route — let the link navigate normally
+  e.preventDefault()
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const lenis = getLenis()
+  if (lenis && !reduced) lenis.scrollTo(el, { offset: -88 })
+  else el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+}
+
 // type → human label for the proof ticker
 const FRAME_LABEL = {
-  website: 'Websites',
-  'web-app': 'Web Apps',
+  website: 'Web Platforms',
+  'web-app': 'Custom Software',
   'mobile-app': 'Mobile Apps',
-  'ai-automation': 'AI Automation',
+  'ai-automation': 'AI Systems',
 }
 
 // per-character delay for the typewriter — small deterministic jitter so
@@ -314,6 +328,7 @@ export default function Hero() {
               to={HERO.ghostCta.to}
               variant="ghost"
               className={styles.solidGhost}
+              onClick={scrollToWork}
               arrow
             >
               {HERO.ghostCta.label}

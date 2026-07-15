@@ -9,25 +9,30 @@ export const NAV_LINKS = [
 ]
 
 export const HERO = {
-  eyebrow: 'WEB · APPS · AI · PARTNERSHIP',
+  eyebrow: 'Custom Software · Web Platforms · Mobile Apps · AI Systems',
   headline: ['Technology', 'built', 'right.'],
-  sub: 'We design and build websites, web apps, mobile apps, and AI-powered systems for businesses that need technology they can actually rely on.',
+  sub: 'We design and engineer custom software, web platforms, mobile applications, and AI-powered systems for businesses that need technology they can actually rely on.',
   primaryCta: { label: 'Get a Quote', to: '/contact' },
-  ghostCta: { label: 'See how we work', to: '/about' },
-  trust: '4.9★ · 50+ PROJECTS · UK · INDIA',
+  // "See our work" scrolls to the on-page Our Work section (#work); Hero
+  // intercepts the click and smooth-scrolls via Lenis (see Hero.jsx).
+  ghostCta: { label: 'See our work', to: '/#work' },
+  trust: '4.9★ · 50+ Projects · 98% Retention',
 }
 
+/* Proof ticker (Hero) — order and results per homepage spec §02.
+   `type` also keys the ServiceVignettes metric chips, so keys are unchanged. */
 export const TERMINAL_FRAMES = [
-  { type: 'website', result: '2.1s load · 4x leads' },
   { type: 'web-app', result: '15hrs saved / week' },
+  { type: 'website', result: '2.1s load · 4x leads' },
   { type: 'mobile-app', result: '4.8★ app store' },
   { type: 'ai-automation', result: '3hrs → 20min' },
 ]
 
 export const MARQUEE = [
-  { value: '50+', label: 'projects delivered' },
-  { value: '98%', label: 'client retention' },
-  { value: '4.9★', label: 'average rating' },
+  { value: '50+', label: 'Projects Delivered' },
+  { value: '98%', label: 'Client Retention' },
+  { value: '4.9★', label: 'Average Rating' },
+  { value: '8+', label: 'Industries Served' },
   { value: 'Senior', label: 'team only' },
   { value: 'AI-native', label: 'development' },
   { value: 'Long-term', label: 'partnerships' },
@@ -37,8 +42,8 @@ export const PROBLEM = {
   eyebrow: 'THE PROBLEM',
   heading: "You've probably been here before.",
   paragraphs: [
-    "You hired an agency. They promised bespoke solutions, agile methodology, cutting-edge technology. Then deadlines slipped. Budgets ballooned. The junior developer who built your project had never spoken to you.",
-    "We hear this constantly. It's the reason Tekniik exists. Agency work can be better than this.",
+    "You hired a team to build your website or software. They talked about bespoke solutions, agile sprints, and scalable architecture. Then deadlines slipped. Budgets ballooned. The junior developer who actually built your project had never spoken to you. And the thing they delivered? It didn't quite work.",
+    "We hear this story constantly. It's the reason Tekniik exists. Software development deserves better than this.",
   ],
   beforeCard: {
     label: 'Previous Agency',
@@ -53,30 +58,37 @@ export const PROBLEM = {
 }
 
 export const CAPABILITIES = {
-  eyebrow: 'WHAT WE BUILD',
-  heading: ['Four capabilities.', 'One team.'],
-  sub: 'We focus where we deliver real, measurable impact.',
+  eyebrow: 'WHAT WE ENGINEER',
+  heading: ['What we', 'engineer.'],
+  sub: 'From custom software platforms to AI-powered automation, we engineer technology that runs businesses.',
+  // Order per homepage spec §05: Custom Software first, Web Platforms second.
+  // `key` maps each row to its ServiceVignettes scene (app = dashboard,
+  // web = marketing site, mobile = phone, ai = pipeline). `to` will point at
+  // the dedicated service sub-pages once they ship (Phase 2); /services for now.
   items: [
     {
-      key: 'web',
-      title: 'Websites',
-      desc: 'Your website is your most important salesperson. We build sites that are fast, clear, and convert visitors into customers. Custom design, no templates.',
-      featured: true,
+      key: 'app',
+      title: 'Custom Software',
+      desc: 'We architect and build business software that handles real operational complexity. Customer portals, SaaS platforms, booking systems, admin dashboards, and internal tools. Engineered around your workflows, not templates.',
+      to: '/services',
     },
     {
-      key: 'app',
-      title: 'Web Apps',
-      desc: 'Dashboards, portals, and tools that replace spreadsheets.',
+      key: 'web',
+      title: 'Web Platforms',
+      desc: 'High-performance websites and e-commerce platforms that do more than look good. Fast, accessible, SEO-optimised, and built on modern frameworks, designed to convert visitors into customers.',
+      to: '/services',
     },
     {
       key: 'mobile',
       title: 'Mobile Apps',
-      desc: 'iOS, Android, or both. Designed around real behaviour.',
+      desc: 'Native and cross-platform applications for iOS and Android. From consumer-facing products to internal field tools, designed around real user behaviour, not assumptions.',
+      to: '/services',
     },
     {
       key: 'ai',
-      title: 'AI & Automation',
-      desc: 'Practical AI that saves time. No hype, just results.',
+      title: 'AI Systems',
+      desc: 'Intelligent document processing, workflow automation, predictive analytics, and machine learning integrations. We embed AI where it delivers measurable ROI, not as a buzzword.',
+      to: '/services',
     },
   ],
 }
@@ -89,12 +101,12 @@ export const WHY_TEKNIIK = {
     {
       key: 'team',
       title: 'Senior team, direct access.',
-      desc: 'You work with the people building your project. No account managers. No juniors.',
+      desc: 'You work with the people building your project. No account managers relaying messages. No junior developers working unsupervised. The person you meet is the person who delivers.',
     },
     {
       key: 'clarity',
       title: 'Radical clarity.',
-      desc: "Plain English. No jargon. You always know what's happening and what it costs.",
+      desc: "Plain English. No jargon. You'll always know what's happening, what's coming next, and what it costs. No black boxes. No surprises.",
     },
     {
       key: 'ai',
@@ -104,33 +116,34 @@ export const WHY_TEKNIIK = {
     {
       key: 'partner',
       title: 'Partnership, not projects.',
-      desc: "We don't disappear after launch. We stay, maintaining and evolving your systems.",
+      desc: "We don't build something and disappear. We stay on as your technology partner, maintaining, improving, and evolving your systems as your business grows.",
     },
   ],
 }
 
 export const PROCESS = {
   eyebrow: 'HOW WE WORK',
-  heading: 'Four chapters. One outcome.',
+  heading: 'Predictable process. Predictable outcome.',
   sub: 'Every step structured so you always know what’s next.',
   steps: [
     { n: '01', title: 'Listen', duration: '~1 week', desc: "We understand your business first. What you're trying to achieve." },
     { n: '02', title: 'Plan', duration: '~1 week', desc: 'Clear proposal with scope, timeline, and investment.' },
     { n: '03', title: 'Build', duration: '4–12 weeks', desc: 'Short cycles. Real progress every week.' },
-    { n: '04', title: 'Launch & Grow', duration: 'Ongoing', desc: 'We launch together, then stay on as your partner.' },
+    { n: '04', title: 'Launch', duration: '~1 week', desc: 'Testing, deployment, training, and go-live support. We launch with you.' },
+    { n: '05', title: 'Support & Grow', duration: 'Ongoing', desc: 'Maintenance, improvements, and evolution as your business grows.' },
   ],
 }
 
 export const PORTFOLIO = {
   eyebrow: 'OUR WORK',
   heading: 'Real results. Real businesses.',
-  sub: "A selection of projects we've designed, built, and continue to support.",
+  sub: "A selection of projects we've designed, engineered, and continue to support.",
   items: [
     {
       slug: 'tcc',
       title: 'CareGrid',
-      tags: ['Healthcare', 'Web Platform', 'Netherlands'],
-      desc: 'We developed a comprehensive all-in-one management platform for CareGrid, a leader in the Dutch healthcare industry. The application streamlines operations for both clients and staff, supporting efficient management and seamless service delivery across the organisation.',
+      tags: ['Healthcare', 'Web Platform', 'UK'],
+      desc: 'We developed a comprehensive all-in-one management platform for CareGrid, a leader in the healthcare industry. The application streamlines operations for both clients and staff, supporting efficient management and seamless service delivery across the organisation.',
       result: 'Serving 1,000+ clients with streamlined operations',
       featured: true,
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -138,8 +151,8 @@ export const PORTFOLIO = {
     {
       slug: 'looqz',
       title: 'GlowBook',
-      tags: ['Beauty & Wellness', 'Booking Platform', 'France'],
-      desc: 'A full-featured beauty and salon booking platform enabling customers across France to discover services, book appointments, and manage bookings seamlessly online.',
+      tags: ['Beauty & Wellness', 'Booking Platform', 'UK'],
+      desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings seamlessly online.',
       result: 'End-to-end booking with real-time availability',
       route: '/case/looqz',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -147,24 +160,24 @@ export const PORTFOLIO = {
     {
       slug: 'escape',
       title: 'ClearPath',
-      tags: ['Financial Services', 'Web Application', 'Italy'],
-      desc: 'An end-to-end platform linking users with experienced Italian attorneys for debt review flag removal, helping hundreds achieve financial freedom through a seamless online process.',
+      tags: ['Financial Services', 'Web Application', 'South Africa'],
+      desc: 'An end-to-end platform linking users with experienced South African attorneys for debt review removal, helping hundreds achieve financial freedom through a seamless online process.',
       result: 'Hundreds of customers helped to financial freedom',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'famili',
       title: 'StoryNest',
-      tags: ['Family & Lifestyle', 'Cloud Platform', 'Sweden'],
-      desc: "A cloud-based family story preservation platform where Swedish families can capture, organise, and share their most precious memories and stories for future generations.",
+      tags: ['Family & Lifestyle', 'Cloud Platform', 'South Africa'],
+      desc: "A cloud-based family story preservation platform where South African families can capture, organise, and share their most precious memories and stories for future generations.",
       result: 'Every family has a story worth preserving',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'autoscreen',
       title: 'ScreenFix',
-      tags: ['Automotive', 'Service Website', 'Germany'],
-      desc: "A professional service website for ScreenFix, Germany's auto glass repair and replacement specialists. Built for fast quote requests and seamless customer booking.",
+      tags: ['Automotive', 'Service Website', 'South Africa'],
+      desc: "A professional service website for ScreenFix, South Africa's auto glass repair and replacement specialists. Built for fast quote requests and seamless customer booking.",
       result: 'Streamlined customer booking and quote requests',
       route: '/case/autoscreen',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -172,24 +185,24 @@ export const PORTFOLIO = {
     {
       slug: 'cape',
       title: 'StoneCraft',
-      tags: ['Manufacturing', 'E-commerce Website', 'Portugal'],
-      desc: 'A customer-centric website for premium granite worktops in Porto, featuring seamless product browsing, viewing, and quote requests that have driven numerous customer enquiries.',
+      tags: ['Manufacturing', 'E-commerce Website', 'South Africa'],
+      desc: 'A customer-centric website for premium granite worktops in Cape Town, featuring seamless product browsing, viewing, and quote requests that have driven numerous customer enquiries.',
       result: 'Significant increase in online customer enquiries',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'refurnish',
       title: 'ReNest',
-      tags: ['Retail & Warehouse', 'Web + POS App', 'Belgium'],
-      desc: 'A new website and POS application for ReNest in Antwerp to digitise warehouse operations, facilitate online sale of refurbished products, and enhance in-store sales management.',
+      tags: ['Retail & Warehouse', 'Web + POS App', 'UK'],
+      desc: 'A new website and POS application for ReNest in Manchester to digitise warehouse operations, facilitate online sale of refurbished products, and enhance in-store sales management.',
       result: 'Digitised warehouse operations and online sales',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'southern',
       title: 'BoxWorks',
-      tags: ['Packaging Industry', 'Product Website', 'Poland'],
-      desc: "A product catalogue website presenting BoxWorks's diverse range of Polish packaging clearly, with categorised products to enhance browsing and easy enquiry forms for efficient customer communication.",
+      tags: ['Packaging Industry', 'Product Website', 'UK'],
+      desc: "A product catalogue website presenting BoxWorks's diverse range of packaging clearly, with categorised products to enhance browsing and easy enquiry forms for efficient customer communication.",
       result: 'Enhanced product discovery and customer enquiries',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
@@ -204,22 +217,22 @@ export const TESTIMONIALS = [
   },
   {
     text: 'They took the time to understand how care actually works before writing a single line of code. The platform now runs our entire operation, and the team is still with us today.',
-    name: 'Marieke van Dijk',
+    name: 'Sarah Whitmore',
     role: 'Operations Director, CareGrid',
   },
   {
     text: 'From the first call it felt like they were part of our team. Bookings that used to take phone calls now happen in seconds, and our salons noticed the difference immediately.',
-    name: 'Camille Laurent',
+    name: 'Hannah Whitfield',
     role: 'Founder, GlowBook',
   },
   {
     text: 'Fast, precise, and no surprises. They shipped exactly what was scoped, in the week they said they would. Quote requests have more than doubled since the site went live.',
-    name: 'Stefan Bauer',
+    name: 'Johan van der Merwe',
     role: 'Managing Director, ScreenFix',
   },
   {
     text: 'We are craftsmen, not technologists, and they respected that. They translated what we do into a website that finally sells it properly. Enquiries have never been stronger.',
-    name: 'Rui Almeida',
+    name: 'Pieter Botha',
     role: 'Owner, StoneCraft',
   },
 ]
@@ -244,6 +257,58 @@ export const FINAL_CTA = {
   cta: { label: 'Get a Quote', to: '/contact' },
   emailNote: 'Prefer email?',
   email: 'hello@tekniik.ai',
+}
+
+/* Interstitial CTA strips between sections (homepage + services) */
+export const MINI_CTAS = {
+  // Homepage §05b — after "What We Engineer"
+  homeServices: {
+    kicker: 'The right fit',
+    line: "Not sure which service fits? Let's figure it out together.",
+    cta: 'Get a Quote',
+  },
+  // Homepage §08b — after "Our Work"
+  homeWork: {
+    kicker: 'Your project',
+    line: "Want to see how we'd approach your project?",
+    cta: 'Get a Quote',
+  },
+  // Services page — between disciplines 02 and 03
+  services: {
+    kicker: 'Skip ahead',
+    line: 'Already know what you need?',
+    cta: 'Get a Quote',
+  },
+}
+
+/* Homepage §10 — "AI-Accelerated Development" (new section) */
+export const AI_ACCELERATED = {
+  eyebrow: 'AI-ACCELERATED',
+  heading: 'AI-accelerated development.',
+  sub: "We don't just build AI for clients, we use it to engineer better software, faster.",
+  points: [
+    {
+      key: 'engineering',
+      title: 'AI-assisted engineering',
+      desc: "Cleaner code, fewer bugs, faster delivery. AI tools help us write, review, and optimise code at a level that manual processes can't match.",
+    },
+    {
+      key: 'qa',
+      title: 'Automated quality assurance',
+      desc: 'Issues caught before they reach production. Automated testing across devices, browsers, and edge cases, continuously.',
+    },
+    {
+      key: 'delivery',
+      title: 'Intelligent project delivery',
+      desc: 'Smarter sprint planning, risk detection, and progress tracking. Problems flagged before they become blockers.',
+    },
+    {
+      key: 'prototyping',
+      title: 'Rapid prototyping',
+      desc: 'More design concepts explored in less time. AI-powered prototyping means we validate ideas faster, so you get the right solution sooner.',
+    },
+  ],
+  closing: 'The result? Higher-quality software, delivered faster, not because we cut corners, but because our tools are smarter.',
 }
 
 /* SERVICES */
@@ -365,6 +430,27 @@ export const ABOUT_PAGE = {
   },
 }
 
+/* OFFICES — shared by the Footer location tabs and the Contact office card */
+export const OFFICES = [
+  {
+    key: 'chennai',
+    label: 'Chennai',
+    country: 'India',
+    lines: [
+      'WeWork Block 10, DLF Cybercity',
+      '124, Mount Poonamallee Rd',
+      'Manapakkam, Chennai',
+      'Tamil Nadu 600089',
+    ],
+  },
+  {
+    key: 'uk',
+    label: 'London',
+    country: 'United Kingdom',
+    lines: ['71-75 Shelton Street', 'Covent Garden', 'London WC2H 9JQ'],
+  },
+]
+
 /* CONTACT */
 export const CONTACT_PAGE = {
   eyebrow: 'CONTACT',
@@ -389,13 +475,7 @@ export const CONTACT_PAGE = {
     phoneRaw: '+918148984627',
     whatsappLabel: 'WhatsApp',
     availability: 'Available for meetings across the UK and at our Chennai office.',
-    officeHeading: 'Visit our office',
-    officeLines: [
-      'WeWork Block 10, DLF Cybercity',
-      '124, Mount Poonamallee Rd',
-      'Manapakkam, Chennai',
-      'Tamil Nadu 600089, India',
-    ],
+    officeHeading: 'Visit our offices',
     nextHeading: 'What happens next?',
     next: [
       'We read your message (same day).',
@@ -424,11 +504,11 @@ export const CASE_LOOQZ = {
     { value: '8', label: 'Service categories' },
   ],
   challenge: [
-    "The French beauty and wellness industry is fragmented. Customers searching for coiffeurs, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly — especially outside business hours.",
+    "The UK beauty and wellness industry is fragmented. Customers searching for hair salons, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly — especially outside business hours.",
     'For salon owners and independent beauty professionals, the problem is equally frustrating. Missed calls mean missed bookings. Manual scheduling leads to double-bookings and no-shows. And without a discoverable online presence, talented professionals struggle to attract new clients beyond their immediate circle.',
   ],
   builtIntro:
-    'We designed and built GlowBook as a two-sided marketplace connecting beauty consumers with verified professionals across France. The platform covers eight service categories — Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa — with city-level curation across Paris, Lyon, Marseille, Toulouse, and Nice.',
+    'We designed and built GlowBook as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories — Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa — with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
   customerHeading: 'For customers:',
   customer: [
     'Location-aware search with filters for service type, price, availability, and ratings',
@@ -453,12 +533,12 @@ export const CASE_LOOQZ = {
   ],
   result: [
     'GlowBook launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews — a strong signal that the product genuinely works for both sides of the marketplace.',
-    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+) — with verified salons across major French cities maintaining consistently high ratings.',
+    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+) — with verified salons across major UK cities maintaining consistently high ratings.',
   ],
   resultIntro: 'As one verified client put it:',
   quote: {
-    text: 'Lovely gel manicure by Amélie. Lasted a full two weeks with no chipping. Will be back for acrylics next time.',
-    who: 'Camille Laurent, Paris',
+    text: 'Lovely gel manicure by Amelia. Lasted a full two weeks with no chipping. Will be back for acrylics next time.',
+    who: 'Sophie Bennett, London',
   },
   tags: ['Marketplace', 'Real-time Booking', 'Verified Profiles', 'Mobile App', 'City Pages', 'Pro Dashboard'],
   finalCta: {
@@ -472,7 +552,7 @@ export const CASE_LOOQZ = {
 export const CASE_AUTOSCREEN = {
   eyebrow: 'CASE STUDY',
   title: 'ScreenFix',
-  sub: 'Auto glass repair & replacement — dispatched to you on demand. A platform connecting vehicle owners with verified fitters across Germany.',
+  sub: 'Auto glass repair & replacement — dispatched to you on demand. A platform connecting vehicle owners with verified fitters across South Africa.',
   stats: [
     { value: '15,000+', label: 'Jobs completed' },
     { value: '500+', label: 'Verified fitters' },
@@ -480,7 +560,7 @@ export const CASE_AUTOSCREEN = {
     { value: '98%', label: 'Customer satisfaction' },
   ],
   challenge: [
-    'When your windscreen cracks, you need it fixed fast. But the traditional auto glass experience in Germany is fragmented — customers call around for quotes, struggle to verify quality, and have no visibility into when a fitter will actually arrive. Pricing is opaque, and there’s no guarantee the glass meets safety standards.',
+    'When your windscreen cracks, you need it fixed fast. But the traditional auto glass experience in South Africa is fragmented — customers call around for quotes, struggle to verify quality, and have no visibility into when a fitter will actually arrive. Pricing is opaque, and there’s no guarantee the glass meets safety standards.',
     'ScreenFix needed more than a website. They needed a service platform — an on-demand dispatch system that works like Uber for auto glass, connecting vehicle owners with nearby verified fitters in real time.',
   ],
   builtIntro:
@@ -490,16 +570,16 @@ export const CASE_AUTOSCREEN = {
     'Instant quote tool — select vehicle make, model, and year to get pricing in minutes',
     "On-demand fitter dispatch — requests broadcast to verified fitters in the customer's area",
     'Live status tracking — Requested → Accepted → On the way → Completed',
-    'Transparent pricing from €35 (chip repair) to €140+ (full windscreen replacement)',
+    'Transparent pricing from R500 (chip repair) to R2,600+ (full windscreen replacement)',
     'Secure payment — pay only after accepting a quote, no upfront cost',
     'Insurance claim documentation and assistance',
   ],
   coverageHeading: 'Service coverage:',
   coverage: [
-    'Windscreen Replacement (from €140) — OE-quality glass, mobile or workshop',
-    'Side Window Replacement (from €75) — driver, passenger, or rear side',
-    'Rear Glass Replacement (from €110) — including defogger reconnection',
-    'Chip & Crack Repair (from €35) — prevent full replacement',
+    'Windscreen Replacement (from R2,600) — OE-quality glass, mobile or workshop',
+    'Side Window Replacement (from R1,300) — driver, passenger, or rear side',
+    'Rear Glass Replacement (from R2,000) — including defogger reconnection',
+    'Chip & Crack Repair (from R500) — prevent full replacement',
   ],
   flowIntro:
     "The four-step flow is designed for urgency — because a cracked windscreen isn't something you schedule for next month:",
@@ -510,18 +590,18 @@ export const CASE_AUTOSCREEN = {
     { n: '04', title: 'Get it done', desc: 'Service at your location. Pay when satisfied.' },
   ],
   result: [
-    'ScreenFix has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ districts across Berlin, Munich, Hamburg, Cologne, and Frankfurt — with same-day service available in high-demand areas.',
+    'ScreenFix has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ suburbs across Johannesburg, Cape Town, Durban, Pretoria, and Gqeberha — with same-day service available in high-demand areas.',
     'The on-demand dispatch model transformed ScreenFix from a traditional service business into a technology-driven marketplace — giving them a structural advantage over competitors still operating on phone calls and manual coordination.',
   ],
   resultIntro: 'What customers say:',
   quotes: [
     {
-      text: 'Got quotes in minutes, and the fitter was at my Mitte office the same day. Couldn’t be easier.',
-      who: 'Lukas Müller, Berlin',
+      text: 'Got quotes in minutes, and the fitter was at my Sandton office the same day. Couldn’t be easier.',
+      who: 'Sipho Ndlovu, Johannesburg',
     },
     {
       text: 'Compared three providers through the platform. Great price for my Golf rear window and the fitter was professional.',
-      who: 'Anna Fischer, Munich',
+      who: 'Megan Pretorius, Cape Town',
     },
   ],
   tags: ['On-demand Dispatch', 'Live Tracking', 'Instant Quoting', 'Marketplace', 'WhatsApp Integration'],
@@ -538,30 +618,7 @@ export const FOOTER = {
   careersEmail: 'hr@tekniik.ai',
   whatsapp: '+918148984627',
   whatsappLabel: 'WhatsApp · +91 81489 84627',
-  offices: [
-    {
-      key: 'chennai',
-      label: 'Chennai',
-      country: 'India',
-      lines: [
-        'WeWork Block 10, DLF Cybercity',
-        '124, Mount Poonamallee Rd',
-        'Manapakkam, Chennai',
-        'Tamil Nadu 600089',
-      ],
-    },
-    {
-      key: 'uk',
-      label: 'London',
-      country: 'United Kingdom',
-      lines: [
-        '71-75 Shelton Street',
-        'Covent Garden',
-        'London WC2H 9JQ',
-        'United Kingdom',
-      ],
-    },
-  ],
+  offices: OFFICES,
   cols: [
     {
       label: 'Pages',
@@ -575,9 +632,10 @@ export const FOOTER = {
     {
       label: 'Legal',
       links: [
-        { label: 'Privacy Policy', to: '#' },
-        { label: 'Terms of Service', to: '#' },
-        { label: 'GDPR Cookie Policy', to: '#' },
+        { label: 'Privacy Policy', to: '/privacy-policy' },
+        { label: 'Terms of Service', to: '/terms-of-service' },
+        { label: 'Cookie Policy', to: '/cookie-policy' },
+        { label: 'GDPR Compliance', to: '/gdpr' },
       ],
     },
   ],

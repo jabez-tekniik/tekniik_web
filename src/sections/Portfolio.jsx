@@ -73,11 +73,11 @@ function Row({ item, index }) {
 
 export default function Portfolio() {
   return (
-    <section className={`section ${styles.section}`}>
+    <section id="work" className={`section ${styles.section}`}>
       <div className="container">
         <Reveal className={styles.intro}>
           <div className={styles.meta}>
-            <span className={styles.metaIndex}>07</span>
+            <span className={styles.metaIndex}>08</span>
             <span className={styles.metaEyebrow}>{PORTFOLIO.eyebrow}</span>
           </div>
           <h2 className={styles.heading}>{PORTFOLIO.heading}</h2>
