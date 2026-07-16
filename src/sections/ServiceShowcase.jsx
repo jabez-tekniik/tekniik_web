@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import { CAPABILITIES } from '../data/content.js'
 import { WebScene, AppScene, MobileScene, AiScene } from './ServiceVignettes.jsx'
-import useStageParallax from '../hooks/useStageParallax.js'
+import { getLenis } from '../motion/SmoothScroll.jsx'
 import styles from './ServiceShowcase.module.css'
 
 const VIGNETTES = { web: WebScene, app: AppScene, mobile: MobileScene, ai: AiScene }
 
 function ArrowGlyph() {
   return (
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path
         d="M5 11l6-6M11 5H6.5M11 5v4.5"
         stroke="currentColor"
@@ -22,95 +22,180 @@ function ArrowGlyph() {
   )
 }
 
-/* "Capability index" — an interactive ledger. The rows on the left drive a
-   sticky vignette stage on the right: hover/focus a capability and its coded,
-   animated scene crossfades in (see ServiceVignettes.jsx). The stage also
-   parallaxes toward the pointer; on touch devices it auto-cycles instead. */
+/* "Capability index" — a full-bleed, one-service-at-a-time immersive stage.
+   Each service is a wide stage (blueprint + bloom + a giant ghost index +
+   the floating vignette) with the copy overlaid; the headline rises up "out
+   of" the scene on a masked reveal. On desktop the deck PINS: the page holds
+   while it scrolls, the stages cross-fade one to the next, and the active
+   panel's scene/copy parallax continuously with the scroll (no slider UI).
+   On touch / narrow / reduced-motion the panels stack and scroll naturally,
+   an IntersectionObserver lighting whichever is centred so its scene runs. */
 export default function ServiceShowcase() {
   const [active, setActive] = useState(0)
+  const [pinned, setPinned] = useState(false)
   const items = CAPABILITIES.items
-  const stageRef = useStageParallax()
+  const pinRef = useRef(null)
+  const deckRef = useRef(null)
+  const panelRefs = useRef([])
 
-  /* touch devices have no hover to drive the ledger — cycle the scenes
-     while the stage is on screen (skipped under reduced motion) */
+  /* decide pin mode: real pointer + room + motion allowed */
   useEffect(() => {
-    if (!window.matchMedia('(hover: none), (pointer: coarse)').matches) return undefined
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
-    const el = stageRef.current
+    const mq = window.matchMedia('(min-width: 961px) and (pointer: fine)')
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const decide = () => setPinned(mq.matches && !rm.matches)
+    decide()
+    mq.addEventListener('change', decide)
+    rm.addEventListener('change', decide)
+    return () => {
+      mq.removeEventListener('change', decide)
+      rm.removeEventListener('change', decide)
+    }
+  }, [])
+
+  /* pinned: map scroll progress through the tall wrapper to the active
+     service + write per-service local progress (--p) for the parallax.
+     rAF-throttled; rides the Lenis scroll event when present. */
+  useEffect(() => {
+    if (!pinned) return undefined
+    const el = pinRef.current
     if (!el) return undefined
-    let id
+    const n = items.length
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const travel = el.offsetHeight - window.innerHeight
+      if (travel <= 0) return
+      const p = Math.min(Math.max(-el.getBoundingClientRect().top / travel, 0), 1)
+      const prog = p * n
+      const idx = Math.min(n - 1, Math.floor(prog))
+      const local = Math.min(1, Math.max(0, prog - idx))
+      setActive(idx)
+      // continuous scroll-linked motion (drives per-panel parallax); no
+      // visible slider UI — the scroll itself carries the reveal
+      if (deckRef.current) deckRef.current.style.setProperty('--p', local.toFixed(4))
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    const lenis = getLenis()
+    if (lenis) lenis.on('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    update()
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      if (lenis) lenis.off('scroll', onScroll)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [pinned, items.length])
+
+  /* not pinned: light up whichever stacked panel is most in view, so its
+     vignette animates while the rest sit quiet */
+  useEffect(() => {
+    if (pinned) return undefined
+    const nodes = panelRefs.current.filter(Boolean)
+    if (!nodes.length) return undefined
+    const ratios = new Map()
     const io = new IntersectionObserver(
       (entries) => {
-        clearInterval(id)
-        if (entries.some((e) => e.isIntersecting)) {
-          id = setInterval(() => setActive((a) => (a + 1) % CAPABILITIES.items.length), 4800)
-        }
+        entries.forEach((e) => ratios.set(e.target, e.isIntersecting ? e.intersectionRatio : 0))
+        let best = 0
+        let bestI = 0
+        nodes.forEach((node, i) => {
+          const r = ratios.get(node) || 0
+          if (r > best) {
+            best = r
+            bestI = i
+          }
+        })
+        if (best > 0) setActive(bestI)
       },
-      { threshold: 0.35 },
+      { threshold: [0.2, 0.5, 0.8], rootMargin: '-18% 0px -18% 0px' },
     )
-    io.observe(el)
-    return () => {
-      clearInterval(id)
-      io.disconnect()
-    }
-  }, [stageRef])
+    nodes.forEach((node) => io.observe(node))
+    return () => io.disconnect()
+  }, [pinned, items.length])
 
   return (
-    <section className={`section ${styles.section}`}>
+    <section className={`section ${styles.section}`} data-pinned={pinned || undefined}>
       <div className="container">
         <Reveal className={styles.header}>
           <div className={styles.headMeta}>
             <span className={styles.index}>05</span>
             <span className={styles.eyebrow}>{CAPABILITIES.eyebrow}</span>
           </div>
-          <h2 className={styles.heading}>
-            {CAPABILITIES.heading.map((line, i) => (
-              <span key={line} className={i === 1 ? styles.headingAccent : styles.headingLine}>
-                {line}
-              </span>
-            ))}
-          </h2>
-          <p className={styles.sub}>{CAPABILITIES.sub}</p>
-        </Reveal>
-
-        <div className={styles.split}>
-          {/* capability ledger */}
-          <div className={styles.ledger}>
-            {items.map((item, i) => (
-              <Reveal key={item.key} delay={i * 70}>
-                <Link
-                  to={item.to || '/services'}
-                  className={`${styles.row} ${i === active ? styles.rowActive : ''}`}
-                  onMouseEnter={() => setActive(i)}
-                  onFocus={() => setActive(i)}
-                  aria-label={`${item.title} — ${item.desc}`}
-                >
-                  <span className={styles.rowNum}>{String(i + 1).padStart(2, '0')}</span>
-                  <span className={styles.rowBody}>
-                    <span className={styles.rowTitle}>{item.title}</span>
-                    <span className={styles.rowDesc}>{item.desc}</span>
-                  </span>
-                  <span className={styles.rowArrow} aria-hidden="true">
-                    <ArrowGlyph />
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
+          <div className={styles.headRow}>
+            <h2 className={styles.heading}>
+              {CAPABILITIES.heading.map((line, i, arr) => (
+                <span key={line} className={i === 1 ? styles.headingAccent : styles.headingLine}>
+                  {line}
+                  {i < arr.length - 1 ? ' ' : ''}
+                </span>
+              ))}
+            </h2>
+            <p className={styles.sub}>{CAPABILITIES.sub}</p>
           </div>
+        </Reveal>
+      </div>
 
-          {/* vignette stage — sticky on desktop, leading on mobile */}
-          <Reveal className={styles.stageWrap} delay={120}>
-            <div ref={stageRef} className={styles.stage} aria-hidden="true">
-              {items.map((item, i) => {
-                const Scene = VIGNETTES[item.key]
-                return <Scene key={item.key} active={i === active} />
-              })}
-              <span className={styles.stageIndex}>
-                {String(active + 1).padStart(2, '0')}
-                <span className={styles.stageIndexTotal}> / {String(items.length).padStart(2, '0')}</span>
-              </span>
-            </div>
-          </Reveal>
+      {/* pin region — tall wrapper on desktop, collapses to auto elsewhere */}
+      <div ref={pinRef} className={styles.pin}>
+        <div className={styles.pinInner}>
+          {/* deck — one full-bleed service stage shown at a time */}
+          <div ref={deckRef} className={styles.deck}>
+            {items.map((item, i) => {
+              const Scene = VIGNETTES[item.key]
+              const on = i === active
+              const ghostWord = item.title.toUpperCase()
+              return (
+                <article
+                  key={item.key}
+                  ref={(node) => {
+                    panelRefs.current[i] = node
+                  }}
+                  className={`${styles.panel} ${on ? styles.panelOn : ''}`}
+                  aria-hidden={pinned && !on ? true : undefined}
+                >
+                  {/* copy — full width, above the vignette; the giant service
+                      name sits as a faint watermark BEHIND the heading */}
+                  <div className={styles.overlay}>
+                    <div className={styles.titleWrap}>
+                      <span className={styles.ghost} aria-hidden="true">
+                        <span className={styles.ghostInner}>{ghostWord}</span>
+                      </span>
+                      <h3 className={styles.title}>
+                        {item.title.split(' ').map((word, wi) => (
+                          <span key={`${word}-${wi}`} className={styles.titleMask}>
+                            <span
+                              className={styles.titleWord}
+                              style={{ transitionDelay: on ? `${140 + wi * 80}ms` : '0ms' }}
+                            >
+                              {word}
+                            </span>
+                          </span>
+                        ))}
+                      </h3>
+                    </div>
+                    <p className={styles.desc}>{item.desc}</p>
+                    <Link to={item.to || '/services'} className={styles.link}>
+                      <span>Explore {item.title.toLowerCase()}</span>
+                      <span className={styles.linkIcon}>
+                        <ArrowGlyph />
+                      </span>
+                    </Link>
+                  </div>
+
+                  {/* full-bleed vignette band: grid + bloom + framed screen */}
+                  <div className={styles.stage} aria-hidden="true">
+                    <div className={styles.sceneHolder}>
+                      <Scene active={on} />
+                    </div>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

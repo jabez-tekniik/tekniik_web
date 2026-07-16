@@ -3,8 +3,8 @@
    Tokens only — adapts to both ink modes and the navy band re-scopes. */
 
 .strip {
-  background: var(--accent-tint);
-  border-top: 1px solid var(--hairline);
+  background: var(--accent-soft);
+  border-top: 1px solid var(--accent-border);
   border-bottom: 1px solid var(--hairline);
 }
 

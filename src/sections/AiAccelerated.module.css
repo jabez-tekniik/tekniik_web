@@ -9,7 +9,9 @@
   overflow: hidden;
   border-top: 1px solid var(--hairline);
   border-bottom: 1px solid var(--hairline);
-  background: var(--bg-2);
+  /* pre-crescendo: deepens top-to-bottom toward the navy FinalCta below,
+     so it never reads as the same flat grey as the Testimonial above */
+  background: linear-gradient(180deg, var(--bg) 0%, var(--prelude) 100%);
   padding-block: clamp(52px, 6vw, 88px);
 }
 
@@ -28,6 +30,79 @@
     transparent 68%
   );
   pointer-events: none;
+}
+
+/* —— neural-net signal-flow visual (behind the head, top-right) —— */
+.net {
+  position: absolute;
+  z-index: -1;
+  top: clamp(-8px, 1.5vw, 30px);
+  right: clamp(-28px, 0vw, 44px);
+  width: min(45vw, 512px);
+  height: auto;
+  color: var(--accent);
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(132% 118% at 76% 32%, #000 48%, transparent 84%);
+  mask-image: radial-gradient(132% 118% at 76% 32%, #000 48%, transparent 84%);
+}
+
+/* faint always-on connections */
+.edge {
+  stroke: var(--accent);
+  stroke-width: 1;
+  fill: none;
+  opacity: 0.14;
+}
+
+/* one lit dash glides each edge input → output (period = dash + gap) */
+.flow {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 3 63;
+  filter: drop-shadow(0 0 3px var(--accent-bloom));
+  animation: netFlow 3.1s linear infinite;
+}
+
+@keyframes netFlow {
+  to {
+    stroke-dashoffset: -66;
+  }
+}
+
+/* breathing node rings */
+.nodeRing {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0.24;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: netPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes netPulse {
+  0%,
+  100% {
+    opacity: 0.14;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 0.42;
+    transform: scale(1.12);
+  }
+}
+
+.nodeCore {
+  fill: var(--accent);
+  opacity: 0.7;
+}
+
+.nodeCoreOut {
+  fill: var(--accent);
+  opacity: 0.95;
+  filter: drop-shadow(0 0 4px var(--accent-bloom));
 }
 
 /* —— head —— */
@@ -86,17 +161,27 @@
   gap: clamp(20px, 2.4vw, 36px);
 }
 
+/* Reveal wrapper = grid item (carries the stagger delay). The card box is a
+   CHILD with its own transition, so the reveal delay never leaks onto hover. */
+.cardWrap {
+  display: flex;
+  min-width: 0;
+}
+
 .card {
   position: relative;
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
   padding-top: clamp(18px, 2vw, 24px);
   border-top: 2px solid var(--border-strong);
+  will-change: transform;
   transition:
-    transform 260ms var(--ease-out),
-    border-color 260ms var(--ease);
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms ease;
 }
 
 .cardIcon {
@@ -180,6 +265,11 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(24px, 4vw, 36px);
   }
+  /* the neural visual needs the header whitespace it can't get once the grid
+     stacks — drop it, keep the bloom for ambience */
+  .net {
+    display: none;
+  }
 }
 
 @media (max-width: 520px) {
@@ -195,5 +285,13 @@
   }
   .card:hover {
     transform: none;
+  }
+  .nodeRing {
+    animation: none;
+  }
+  .flow {
+    animation: none;
+    stroke-dasharray: none;
+    opacity: 0.28;
   }
 }

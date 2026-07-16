@@ -1,6 +1,6 @@
 import Reveal from '../components/Reveal.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
-import FlipWords from '../motion/ink/FlipWords.jsx'
+import MaskRise from '../motion/ink/MaskRise.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
 import { ABOUT_PAGE } from '../data/content.js'
 import styles from './About.module.css'
@@ -50,11 +50,11 @@ export default function About() {
           <div className={styles.heroSplit}>
             <div>
               <h1 className={styles.headline}>
-                <FlipWords text={line1} as="span" className={styles.hLine} />
-                <FlipWords
+                <MaskRise text={line1} as="span" className={styles.hLine} />
+                <MaskRise
                   text={line2}
                   as="span"
-                  delay={220}
+                  delay={120}
                   className={`${styles.hLine} ${styles.hAccent}`}
                 />
               </h1>

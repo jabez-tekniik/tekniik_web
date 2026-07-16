@@ -1,13 +1,45 @@
-/* ServiceShowcase — "Capability index": interactive ledger rows (left)
-   driving a sticky ink-visual stage (right). Hairline structure, no cards. */
+/* ServiceShowcase — "Capability index": a full-bleed, one-service-at-a-time
+   immersive stage. Each service is a wide stage (blueprint grid + bloom +
+   a giant ghost index + the floating vignette) with the copy overlaid — the
+   headline rises up "out of" the scene on a masked reveal. On desktop the
+   deck pins and the stages cross-fade + parallax with the scroll; elsewhere
+   the panels stack and scroll naturally. */
 
 .section {
   position: relative;
 }
 
+/* —— pin region ——
+   default: transparent wrapper, normal flow (mobile/tablet/reduced-motion).
+   [data-pinned]: tall wrapper + sticky inner → the section holds while the
+   page scrolls through all four services, ~1 screen each (immersive). */
+.pin {
+  position: relative;
+}
+
+.pinInner {
+  position: relative;
+}
+
+.section[data-pinned='true'] .pin {
+  height: 440vh;
+}
+
+.section[data-pinned='true'] .pinInner {
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* top-biased so the composition clears the fixed nav */
+  padding-top: clamp(84px, 11vh, 120px);
+  padding-bottom: clamp(28px, 5vh, 64px);
+}
+
 /* —— header —— */
 .header {
-  margin-bottom: clamp(40px, 6vw, 72px);
+  margin-bottom: clamp(28px, 4vw, 52px);
 }
 
 .headMeta {
@@ -36,138 +68,133 @@
   color: var(--text-faint);
 }
 
+/* heading on one line, description on the next — both spanning the width so
+   there's no dead whitespace on the right */
+.headRow {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.9vw, 14px);
+}
+
 .heading {
   font-family: var(--f-display);
   font-weight: 800;
-  font-size: clamp(2.2rem, 5.6vw, 4.6rem);
-  line-height: 1;
-  letter-spacing: -0.025em;
+  font-size: clamp(2.3rem, 6.2vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   color: var(--text);
-  margin: 0 0 18px;
+  margin: 0;
 }
 
+/* inline so "What we engineer." reads as a single line */
 .headingLine {
-  display: block;
+  display: inline;
 }
 
 .headingAccent {
-  display: block;
+  display: inline;
   color: var(--accent);
 }
 
 .sub {
   font-family: var(--f-body);
-  font-size: 1.05rem;
+  font-size: clamp(1.05rem, 1.3vw, 1.3rem);
   line-height: 1.6;
   color: var(--text-dim);
-  max-width: 44ch;
+  max-width: 64ch;
   margin: 0;
 }
 
-/* —— split: ledger left, stage right —— */
-.split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(32px, 5vw, 72px);
-  align-items: start;
-}
-
-.ledger {
-  border-top: 1px solid var(--hairline);
-}
-
-.row {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(16px, 2.4vw, 28px);
-  padding: clamp(20px, 3vw, 30px) 4px;
-  border-bottom: 1px solid var(--hairline);
-  color: var(--text-dim);
-  transition:
-    background 260ms var(--ease),
-    color 260ms var(--ease);
-}
-
-.rowNum {
-  font-family: var(--f-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--text-faint);
-  padding-top: 0.55em;
-  flex-shrink: 0;
-  transition: color 260ms var(--ease);
-}
-
-.rowBody {
+/* —— deck ——
+   container-aligned so overlaid copy lines up with the header.
+   default (not pinned): panels stack in normal flow and scroll past.
+   pinned: fixed-height stage; panels overlay + cross-fade. */
+.deck {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  flex: 1;
+  gap: clamp(72px, 11vw, 148px);
 }
 
-.rowTitle {
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--text-dim);
-  transition: color 260ms var(--ease);
+/* pinned: the deck goes edge-to-edge (full-bleed) — the blueprint grid, bloom
+   and ghost word bleed to the viewport, while the copy + vignette align to the
+   container content edge via --edge (matches the header's gutter). */
+.section[data-pinned='true'] .deck {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+  /* fills the space the padded sticky inner leaves (capped on tall screens), so
+     the whole composition always fits below the nav — no overflow-clipping,
+     which is what read as jitter */
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 860px;
+  --edge: calc(max(0px, (100% - var(--max)) / 2) + var(--gutter));
 }
 
-.rowDesc {
-  font-family: var(--f-body);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--text-faint);
-  max-width: 46ch;
-  transition: color 260ms var(--ease);
+/* —— panel —— */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 40px);
 }
 
-.rowArrow {
-  color: var(--text-faint);
-  padding-top: 0.5em;
-  margin-left: auto;
-  flex-shrink: 0;
+/* pinned: each service is a vertical composition — full-width copy on top,
+   the full-bleed vignette band below (stacked, never side-by-side) */
+.section[data-pinned='true'] .panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(18px, 2.6vh, 38px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  pointer-events: none;
   transition:
-    color 260ms var(--ease),
-    transform 320ms var(--ease-out);
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out),
+    visibility 0s linear 560ms;
 }
 
-/* active state — the signal moves through the ledger */
-.rowActive .rowNum {
-  color: var(--accent);
+.section[data-pinned='true'] .panelOn {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition:
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out);
 }
 
-.rowActive .rowTitle {
-  color: var(--text);
-}
-
-.rowActive .rowDesc {
-  color: var(--text-dim);
-}
-
-.rowActive .rowArrow {
-  color: var(--accent);
-  transform: translate(3px, -3px);
-}
-
-/* —— stage —— */
-.stageWrap {
-  position: sticky;
-  top: calc(68px + 24px);
-}
-
-/* frameless: scenes float directly on the page canvas, filling the column */
+/* —— stage: blueprint canvas the scene + copy live on —— */
 .stage {
   position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
   isolation: isolate;
-  /* size container: vignettes scale via cqw/cqh at every viewport */
-  container-type: size;
+  overflow: hidden;
+  border-radius: var(--r-2xl);
+}
+
+/* the vignette band: full-bleed (spans the viewport), sits below the copy;
+   the blueprint grid + bloom bleed edge-to-edge, the scene sits as a framed
+   "screen" centred to the container width inside it. flex:1 so it grows to fill
+   whatever height is left under the copy — the composition always fits exactly. */
+.section[data-pinned='true'] .stage {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: clamp(220px, 30vh, 300px);
+  max-height: 560px;
+  border-radius: 0;
+  overflow: hidden;
 }
 
 /* blueprint grid, faded at the edges */
@@ -179,86 +206,275 @@
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 26px 26px;
-  -webkit-mask-image: radial-gradient(130% 130% at 50% 42%, #000 52%, transparent 100%);
-  mask-image: radial-gradient(130% 130% at 50% 42%, #000 52%, transparent 100%);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(130% 120% at 68% 42%, #000 46%, transparent 92%);
+  mask-image: radial-gradient(130% 120% at 68% 42%, #000 46%, transparent 92%);
 }
 
-/* slow-breathing accent bloom behind the scenes */
+/* slow-breathing accent bloom */
 .stage::after {
   content: '';
   position: absolute;
   z-index: 0;
-  left: 6%;
-  top: 10%;
-  width: 56%;
+  right: 6%;
+  top: 4%;
+  width: 46%;
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--accent-bloom), transparent 72%);
-  opacity: 0.3;
-  filter: blur(28px);
-  animation: bloomDrift 14s ease-in-out infinite alternate;
+  opacity: 0.32;
+  filter: blur(30px);
+  animation: bloomDrift 15s ease-in-out infinite alternate;
 }
 
 @keyframes bloomDrift {
   to {
-    transform: translate(42%, 24%) scale(1.18);
+    transform: translate(-24%, 22%) scale(1.16);
   }
 }
 
-.stageIndex {
-  z-index: 2;
+/* —— giant ghost word watermark (pinned only) — the full service name, huge
+   and faint, sitting directly BEHIND the heading as an editorial backdrop —— */
+.ghost {
+  display: none;
+}
+
+.section[data-pinned='true'] .ghost {
+  display: block;
   position: absolute;
-  right: 16px;
-  bottom: 12px;
-  font-family: var(--f-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  z-index: 0;
+  left: -0.06em;
+  top: 50%;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(3.4rem, 8vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--text) 7%, transparent);
+  user-select: none;
+  pointer-events: none;
+  transform: translateY(-50%) translateY(calc(var(--p, 0) * -10px));
+}
+
+/* the word itself drifts left↔right on its own rhythm, so the backdrop feels
+   alive (the wrapper keeps the scroll parallax; drift is separate) */
+.ghostInner {
+  display: inline-block;
+}
+
+.section[data-pinned='true'] .ghostInner {
+  animation: ghostDrift 13s ease-in-out infinite alternate;
+}
+
+@keyframes ghostDrift {
+  from {
+    transform: translateX(-30px);
+  }
+  to {
+    transform: translateX(30px);
+  }
+}
+
+/* —— scene holder (size container for the vignette) —— */
+.sceneHolder {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  container-type: size;
+}
+
+.section[data-pinned='true'] .sceneHolder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100% - 2 * var(--gutter), var(--max));
+  height: calc(100% - clamp(24px, 5vh, 56px));
+  aspect-ratio: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg, 0 30px 80px -40px rgb(0 0 0 / 0.4));
+  overflow: hidden;
+  transform: translate(-50%, -50%) translateY(calc(var(--p, 0) * -8px));
+}
+
+/* —— copy overlay —— */
+.overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(14px, 1.6vw, 20px);
+}
+
+.section[data-pinned='true'] .overlay {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  transform: translateY(calc(var(--p, 0) * -5px));
+}
+
+/* wraps the ghost watermark + heading so the ghost can sit directly behind
+   the title text (title paints on top, ghost peeks around it) */
+.titleWrap {
+  position: relative;
+}
+
+.section[data-pinned='true'] .titleWrap {
+  display: flex;
+  align-items: center;
+  min-height: 1em;
+  margin-bottom: clamp(4px, 1vh, 12px);
+}
+
+/* —— title: rises out of the stage word-by-word —— */
+.title {
+  font-family: var(--f-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
   color: var(--text);
-  background: var(--bg-raise);
-  padding: 6px 10px;
-  border-radius: var(--r-md);
-  border: 1px solid var(--hairline);
-  box-shadow: var(--shadow-card-hover);
+  margin: 0;
+  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
 }
 
-.stageIndexTotal {
-  color: var(--text-faint);
+.section[data-pinned='true'] .title {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2.3rem, 4.6vw, 4rem);
 }
 
-/* —— responsive —— */
-@media (max-width: 960px) {
-  .split {
-    grid-template-columns: 1fr;
-  }
-  .stageWrap {
-    position: static;
-    order: -1;
-  }
+.titleMask {
+  display: inline-block;
+  margin-right: 0.26em;
+  vertical-align: bottom;
+}
+
+.section[data-pinned='true'] .titleMask {
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.titleWord {
+  display: inline-block;
+}
+
+.section[data-pinned='true'] .titleWord {
+  transform: translateY(116%);
+  opacity: 0;
+  transition:
+    transform 760ms var(--ease-out),
+    opacity 520ms ease;
+}
+
+.section[data-pinned='true'] .panelOn .titleWord {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.desc {
+  font-family: var(--f-body);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 58ch;
+  margin: 0;
+}
+
+/* reserve the tallest copy height so the copy block (and therefore the flex
+   band + framed screen below it) stays the SAME size across all four services —
+   otherwise the screen would jump between services during the cross-fade */
+.section[data-pinned='true'] .desc {
+  min-height: calc(1.65em * 4);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 4px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: gap 260ms var(--ease);
+}
+
+.link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+.linkIcon {
+  display: inline-flex;
+  transition: transform 260ms var(--ease-out);
+}
+
+.link:hover {
+  gap: 13px;
+}
+
+.link:hover .linkIcon {
+  transform: translate(3px, -3px);
+}
+
+/* —— pinned: desc / link ease in with the active panel —— */
+.section[data-pinned='true'] .desc,
+.section[data-pinned='true'] .link {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out);
+}
+
+.section[data-pinned='true'] .panelOn .desc {
+  opacity: 1;
+  transform: none;
+  transition-delay: 300ms;
+}
+
+.section[data-pinned='true'] .panelOn .link {
+  opacity: 1;
+  transform: none;
+  transition-delay: 400ms;
+}
+
+/* —— responsive (non-pinned layouts) —— */
+@media (max-width: 640px) {
   .stage {
-    aspect-ratio: 16 / 10;
+    border-radius: var(--r-xl);
   }
-}
-
-@media (max-width: 560px) {
-  .row {
-    gap: 12px;
+  .sceneHolder {
+    aspect-ratio: 4 / 3;
   }
-  .rowArrow {
-    display: none;
+  .title {
+    font-size: clamp(2.1rem, 9vw, 3rem);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row,
-  .rowNum,
-  .rowTitle,
-  .rowDesc,
-  .rowArrow {
+  .panel,
+  .titleWord,
+  .desc,
+  .link,
+  .linkIcon {
     transition: none;
   }
-  .stage::after {
+  .titleWord {
+    transform: none;
+    opacity: 1;
+  }
+  .stage::after,
+  .ghostInner {
     animation: none;
   }
 }

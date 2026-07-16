@@ -462,3 +462,16 @@ components:
       it's for, how it works, FAQ accordion, CTA); noindex optional
 - [ ] Intake form or mailto CTA; conversion event stub
 - [ ] Gates
+
+## Iteration 9 — subtle hero entrances + HeroThread (2026-07-16)
+User feedback: Decode (Contact) + FlipWords (About) hero animations "look so unprofessional";
+OpenLine hero visual "looks very bad and irrelevant".
+- [x] About hero → `motion/ink/MaskRise.jsx` (whole-line masked rise, 900ms EASE_OUT, line2 delay 120)
+- [x] Contact hero → `motion/ink/BlurRise.jsx` (opacity + y14 + blur10→0, 950ms, line2 delay 140)
+- [x] Contact hero visual → `components/HeroThread.jsx` + module.css ("first reply" chat card:
+      incoming bubble → typing dots crossfade → navy reply → "First reply · 21 minutes" stamp;
+      typing is CSS opacity:0 by default so RM render has no overlap; ping + float keep it alive)
+- [x] Deleted Decode.jsx, FlipWords.jsx, OpenLine.jsx, OpenLine.module.css (orphaned)
+- [x] CLAUDE.md hero-animations section rewritten (subtlety rule recorded) + Contact hero paragraph
+- [x] Gates: lint ✓, build ✓, 0 console errors, h-scroll 0 @320–1440, RM + dark verified, QA shots deleted
+Rule going forward: hero entrances stay distinct per page but RESTRAINED — no scramble/flip/per-char effects.

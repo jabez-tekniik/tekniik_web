@@ -46,6 +46,96 @@ The 2026-07-07 "Bold Editorial" revamp removed the aurora wash — `AuroraShader
 
 ## Resolved
 
+### "What We Engineer" — full-bleed immersive one-service stage (2026-07-16)
+Four iterative requests reshaped the pinned What-We-Engineer section. (1) The
+first pin build showed **all four services at once** (a ledger with the active
+row highlighted); user wanted **only one at a time** — page stops, scrolls
+through them one-by-one, then behaves normally. Rebuilt as a **deck of full
+panels**; pinned, panels overlay + cross-fade, scroll-mapped `floor(p·4)` picks
+the sole visible one, release after the fourth. (2) "Looks like a slider with nav
+lines — I want immersive." Removed the `.progress` rail and bound the active
+panel to continuous scroll via `--p` (0→1) written to the deck each frame. (3)
+"Make it more immersive — full-width vignette with the text coming out of it,
+something creative." Reworked each panel into a **full-bleed `.stage`** (blueprint
++ bloom + a **giant faint ghost word** of the service name + the floating
+vignette) with the copy **overlaid**; the **headline rises word-by-word out of
+the stage** (`overflow:hidden` `.titleMask`, each word `translateY 116%→0` on
+activate, staggered). `.sceneHolder`/`.ghost`/`.overlay` parallax off `--p` (rise
++ zoom / faster drift / settle), no transition → tracks the wheel. (4) "Don't
+need numbering like 1/4." Removed the `NN/04` counter; the ghost word is the only
+cue. Non-pinned fallback: panels **stack** (ghost hidden, title un-masked,
+overlay below the vignette), IO lights the centred one's scene. Dropped
+`useStageParallax` here (still used by Services). (5) Three more tweaks: header
+**heading forced to one line** (`What we engineer.`, inline spans) with the
+**description on the next line**, both full-width (killed the right-side
+whitespace); the pinned deck made **truly full-bleed** (edge-to-edge grid/bloom/
+ghost via `width:100%`, copy+vignette re-aligned to the container edge with an
+`--edge` calc); and the ghost word given a continuous **left↔right drift**
+(`ghostDrift`, wrapper keeps the parallax) for life. (6) "We agreed on full-width
+text **then** the vignette full-width — not 2-column — and the moving background
+text should show the **full name** (`Custom Software`, not `Custom`); also tighten
+the whitespace under the heading." Re-composed each pinned panel as a **vertical
+stack** (flex column, centred): full-width `.overlay` copy on top, then the
+`.stage` as a **full-bleed band** below (fixed height, grid/bloom/ghost bleed
+edge-to-edge, `.sceneHolder` centred to container width) — dropped the old
+copy-left / vignette-right split. Ghost word now the **whole title** uppercased
+(`item.title.toUpperCase()`). Header `.headRow` gap cut (`clamp(8px,.9vw,14px)`)
++ `.header` margin trimmed to close the gap under the one-line heading. Verified:
+lint + build clean, Playwright desktop pinned (stacked full-width copy over a
+full-bleed vignette band, drifting full-name ghost `CUSTOM SOFTWARE`, one-line
+header + tight description, masked-rise headline, `--p` parallax) in **both ink
+modes**, base/non-pinned CSS path overflow-safe (widest element = viewport, ghost
+`display:none`), 0 console errors. (Note: the browser tooling couldn't shrink the
+CSS viewport below 1536 this session, so the 390px re-screenshot was deferred; the
+mobile path is unchanged in width behaviour — full-bleed/ghost are `[data-pinned]`-
+scoped, base deck keeps `max-width`+gutter.) (7) "The grey text should run **behind
+the actual heading**; the vignette should be **taller / look like a screen**; the
+experience is immersive but **jittery**." Root cause of the jitter: the pinned
+composition (copy + fixed-height band) was **taller than short viewports**, so it
+clipped top/bottom and shifted as you scrolled. Fixes: (a) ghost moved out of the
+band into a `.titleWrap` **behind the heading** (`z-index` under `.title`, sized
+`clamp(3.4rem,8vw,9rem)` to stay in-container); (b) the `.sceneHolder` is now a
+framed **"screen"** (border + `--r-xl` radius + shadow + `--surface` bg) and the
+band **flex-grows** to fill leftover height, so the vignette is much taller and
+reads as a screen; (c) **fit made height-driven** — `.pinInner` top-padded to
+clear the nav, pinned `.deck` `flex:1`/`max-height:860px`, `.stage` `flex:1` — so
+the whole composition always fits the viewport (no overflow-clip = no jitter);
+(d) parallax cut to a few px and `.desc` given a fixed `min-height` (tallest copy)
+so the band/screen stays the same size across services (no cross-fade size-jump).
+Verified in Playwright (1536×695, a deliberately short window): all four bands
+align (`stageTop` identical, `screenH` 264 each), title clears the nav
+(`top:81`), band bottom `660 < 695` (fits), ghost `CUSTOM SOFTWARE` behind the
+heading + drifting, `hOverflow` 0, in **both ink modes**; build + lint clean.
+
+### Homepage polish follow-ups — uniform card hover + AI-section neural net (2026-07-16)
+Three follow-up requests after the band/pin/bento work. (1) **Portfolio hover
+was inconsistent** — only the two routed cards drew the accent top-line +
+underline (they alone were `.interactive`); moved those triggers to `.card`
+so **every** card gets the same hover (lift + accent line + underline + region-pin
+brighten), routed cards keep their CTA-arrow motion. (2) **AiAccelerated card
+hover felt sluggish/stuck** — root cause: `.card` sat directly on its `Reveal`,
+so the reveal's per-card stagger `transition-delay` (up to 240ms) leaked onto
+the hover transform. Fixed by making the card a **child** of the Reveal wrapper
+(matches Portfolio) with its own snappy easing. (3) **Added a neural-net
+signal-flow visual** to the AI section (`NeuralNet`, top-right) — curved edges
+with gliding teal pips + breathing nodes, both ink modes. Verified: lint + build
+clean, both modes at desktop, 0 console errors.
+
+### Homepage band rhythm + pinned What We Engineer + bento Our Work (2026-07-16)
+Three homepage polish requests. (1) **Band differentiation** — the run into
+FinalCta was three near-identical greys (faint `--accent-tint` MiniCta →
+`--bg-2` Testimonial → `--bg-2` AiAccelerated). Fixed to a graded rhythm:
+MiniCta strengthened to an `--accent-soft` teal strip, AiAccelerated moved to a
+navy pre-crescendo wash via a new `--prelude` token (both ink modes), Testimonial
+kept as the single grey. FinalCta stays the only dark band. (2) **What We
+Engineer pins** on desktop and scroll-steps through all four services (`440vh`
+sticky wrapper, Lenis-driven active index, progress rail; progressive-enhanced,
+off for touch/narrow/reduced-motion). (3) **Our Work** rebuilt as a **bento
+grid** (navy 2×2 CareGrid anchor + varied tiles, location-pin region chips,
+small single-line pills). Verified: lint + build clean, Playwright both ink
+modes at 375/768/1024/1280, pin engage/release, 0 console errors, no h-scroll.
+Removed orphaned `portfolioParallax.js`.
+
 ### Homepage aligned to finalized /content specs — Phase 1 of content-spec sync (2026-07-16)
 Applied the locked `/content/*.md` copy to the homepage + added new sections:
 hero "engineer" positioning + "See our work" scroll-to-`#work`, proof-ticker

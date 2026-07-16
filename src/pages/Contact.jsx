@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
 import Button from '../components/Button.jsx'
-import Decode from '../motion/ink/Decode.jsx'
-import OpenLine from '../components/OpenLine.jsx'
+import BlurRise from '../motion/ink/BlurRise.jsx'
+import HeroThread from '../components/HeroThread.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
 import { IconCheck, IconFlagIndia, IconFlagUK } from '../components/Icon.jsx'
 import { CONTACT_PAGE, OFFICES } from '../data/content.js'
@@ -103,11 +103,11 @@ export default function Contact() {
           <div className={styles.heroSplit}>
             <div>
               <h1 className={styles.headline}>
-                <Decode text={line1} as="span" className={styles.hLine} />
-                <Decode
+                <BlurRise text={line1} as="span" className={styles.hLine} />
+                <BlurRise
                   text={line2}
                   as="span"
-                  delay={420}
+                  delay={140}
                   className={`${styles.hLine} ${styles.hAccent}`}
                 />
               </h1>
@@ -117,7 +117,7 @@ export default function Contact() {
             </div>
 
             <Reveal delay={200} className={styles.heroVisual}>
-              <OpenLine />
+              <HeroThread />
             </Reveal>
           </div>
 

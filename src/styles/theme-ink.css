@@ -18,6 +18,10 @@
   --bg: #0a0e1a;
   --bg-2: #0d1322;
   --bg-raise: #111931;
+  /* pre-crescendo wash — a navy step between --bg-2 and --band, so the
+     section before FinalCta warms toward the dark finale without becoming
+     a second dark band (see AiAccelerated) */
+  --prelude: #10162c;
   --surface: rgba(255, 255, 255, 0.03);
   --surface-2: rgba(255, 255, 255, 0.06);
 
@@ -136,6 +140,9 @@
   --bg: #f7f8fb;
   --bg-2: #eef1f7;
   --bg-raise: #ffffff;
+  /* pre-crescendo wash — a cool navy-tinted step below --bg-2, so the
+     section before FinalCta deepens toward the dark finale (AiAccelerated) */
+  --prelude: #dce2f1;
   --surface: rgba(32, 46, 93, 0.04);
   --surface-2: rgba(32, 46, 93, 0.07);
 
