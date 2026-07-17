@@ -436,12 +436,25 @@ components:
       reworded (Honesty first / Engineering over shortcuts), process 6→5 phases
       with "What you get" lines
 - [ ] CONTACT_PAGE: minor copy alignment to spec
-- [ ] Services hub: convert /services to card hub linking to 4 sub-pages
-- [ ] NEW pages /services/custom-software, /web-platforms, /mobile-apps,
-      /ai-systems (shared template: hero, problem, deliverables, approach,
-      related case study, CTA, "also explore" bar); routes in App.jsx
-- [ ] Update homepage CAPABILITIES `to` → sub-page routes
-- [ ] Gates
+- [x] Services hub: DECISION CHANGED 2026-07-17 (user-locked) — hub STAYS the
+      immersive build-sheet; each discipline instead got a mono "Full details →"
+      link to its detail page (META[].detail in Services.jsx). No card hub.
+- [x] NEW pages /services/custom-software, /web-platforms, /mobile-apps,
+      /ai-systems — shared ServiceDetail.jsx template (hero + RailRise entrance
+      + per-discipline vignette, problem, deliverables ledger, approach,
+      conditional case-study strip, "also explore" rows, FinalCta); dynamic
+      route /services/:slug in App.jsx + 4 paths added to INK_ROUTES;
+      SERVICE_PAGES map in content.js (spec copy verbatim). Case links: only
+      routed case pages (web-platforms→/case/autoscreen,
+      mobile-apps→/case/looqz); custom-software + ai-systems have none.
+      Spec: docs/superpowers/specs/2026-07-17-services-detail-pages-design.md
+- [x] Update homepage CAPABILITIES `to` → sub-page routes
+- [x] Gates (2026-07-17): lint ✓ build ✓; qa-test.py (new routes + 1024
+      viewport added) — 4 detail routes clean at 320/414/768/1024/1280/1600,
+      0 console errors; link wiring, NotFound slug, breadcrumb, RM static
+      render, dark mode all verified; shots deleted. KNOWN: home 320px
+      h-scroll (2px) traced to the parallel LogoStrip "THE NUMBERS" revamp
+      (uncommitted, that session's scope) + pre-existing HeroCircuit issue.
 
 ## Phase 3 — /work (Portfolio page) + /support
 - [ ] /work: hero, CareGrid featured full-width card, 7-card grid, bottom CTA

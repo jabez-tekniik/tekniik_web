@@ -63,32 +63,32 @@ export const CAPABILITIES = {
   sub: 'From custom software platforms to AI-powered automation, we engineer technology that runs businesses.',
   // Order per homepage spec §05: Custom Software first, Web Platforms second.
   // `key` maps each row to its ServiceVignettes scene (app = dashboard,
-  // web = marketing site, mobile = phone, ai = pipeline). `to` will point at
-  // the dedicated service sub-pages once they ship (Phase 2); /services for now.
+  // web = marketing site, mobile = phone, ai = pipeline). `to` points at the
+  // dedicated service detail page (SERVICE_PAGES).
   items: [
     {
       key: 'app',
       title: 'Custom Software',
       desc: 'We architect and build business software that handles real operational complexity. Customer portals, SaaS platforms, booking systems, admin dashboards, and internal tools. Engineered around your workflows, not templates.',
-      to: '/services',
+      to: '/services/custom-software',
     },
     {
       key: 'web',
       title: 'Web Platforms',
       desc: 'High-performance websites and e-commerce platforms that do more than look good. Fast, accessible, SEO-optimised, and built on modern frameworks, designed to convert visitors into customers.',
-      to: '/services',
+      to: '/services/web-platforms',
     },
     {
       key: 'mobile',
       title: 'Mobile Apps',
       desc: 'Native and cross-platform applications for iOS and Android. From consumer-facing products to internal field tools, designed around real user behaviour, not assumptions.',
-      to: '/services',
+      to: '/services/mobile-apps',
     },
     {
       key: 'ai',
       title: 'AI Systems',
       desc: 'Intelligent document processing, workflow automation, predictive analytics, and machine learning integrations. We embed AI where it delivers measurable ROI, not as a buzzword.',
-      to: '/services',
+      to: '/services/ai-systems',
     },
   ],
 }
@@ -383,6 +383,111 @@ export const SERVICES_PAGE = {
     heading: "Let's build something great.",
     sub: 'No sales pitch. Just an honest conversation.',
     cta: 'Get a Quote',
+  },
+}
+
+/* SERVICE DETAIL PAGES — copy verbatim from content/tekniik-services-spec.md
+   (§Service Page sections). Keyed by URL slug (/services/<slug>). `sceneKey`
+   maps each page to its ServiceVignettes scene; `caseStudy` links only where
+   a routed case-study page exists (desc/result condensed from PORTFOLIO). */
+export const SERVICE_PAGES = {
+  'custom-software': {
+    name: 'Custom Software',
+    headline: 'Custom software that runs your business.',
+    problem: [
+      "Off-the-shelf tools force your team into someone else's workflow. Spreadsheets, disconnected apps, and manual processes fill the gaps — until the gaps become the system. You need software built around how your business actually works.",
+    ],
+    deliver: [
+      'Customer portals and client-facing platforms',
+      'SaaS products and multi-tenant applications',
+      'Admin dashboards and management systems',
+      'Booking and scheduling platforms',
+      'Internal tools and workflow automation',
+      'Data-driven reporting and analytics dashboards',
+      'API integrations with existing tools (CRMs, payments, ERPs)',
+    ],
+    approach:
+      'We start with your business logic, not a tech stack. Every system is architected for your specific workflows, built in iterative sprints with weekly visibility, and engineered to scale as your business grows. No templates. No shortcuts.',
+    cta: { text: "Let's discuss your software project.", button: 'Get a Quote' },
+    sceneKey: 'app',
+    caseStudy: null,
+  },
+  'web-platforms': {
+    name: 'Web Platforms',
+    headline: 'Web platforms that earn their keep.',
+    problem: [
+      "Your website is often the first conversation a customer has with your business. If it's slow, outdated, or built on a template that looks like everyone else's — you're losing credibility and customers before they even speak to you.",
+    ],
+    deliver: [
+      'Corporate and brand websites',
+      'E-commerce platforms and online stores',
+      'Marketing websites with conversion optimisation',
+      'Landing pages and campaign microsites',
+      'Content management systems (update your own site without calling us)',
+      'SEO foundations built in from day one',
+      'Performance optimisation (under 2-second load times)',
+    ],
+    approach:
+      "We don't use off-the-shelf themes. Every web platform is custom-designed for your brand and audience, built on modern frameworks like React and Next.js, and optimised for speed, accessibility, and search visibility. Mobile-first as standard.",
+    cta: { text: "Let's discuss your web platform.", button: 'Get a Quote' },
+    sceneKey: 'web',
+    caseStudy: {
+      kicker: 'Case study',
+      title: 'ScreenFix',
+      desc: "A professional service website for South Africa's auto glass repair specialists — built for fast quote requests and seamless customer booking.",
+      result: 'Streamlined customer booking and quote requests',
+      to: '/case/autoscreen',
+    },
+  },
+  'mobile-apps': {
+    name: 'Mobile Apps',
+    headline: 'Mobile apps people actually keep.',
+    problem: [
+      "Most apps get downloaded once and forgotten. The problem is rarely the idea — it's the execution. Clunky interfaces, slow performance, and features nobody asked for. Your app needs to solve a real problem so well that users can't imagine going back to life without it.",
+    ],
+    deliver: [
+      'iOS and Android applications',
+      'Cross-platform apps (React Native, Flutter)',
+      'Consumer-facing products and marketplace apps',
+      'Internal business tools and field service apps',
+      'UX research and interactive prototyping before development begins',
+      'Push notifications, offline capability, and device-native features',
+      'App Store and Google Play submission and launch support',
+      'Post-launch monitoring, updates, and iteration',
+    ],
+    approach:
+      'Every app starts with user research and prototyping — we validate the experience before writing a line of code. We build in short cycles with real device testing throughout, so what launches is what users actually need, not what a spec document assumed three months ago.',
+    cta: { text: "Let's discuss your mobile app.", button: 'Get a Quote' },
+    sceneKey: 'mobile',
+    caseStudy: {
+      kicker: 'Case study',
+      title: 'GlowBook',
+      desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings online.',
+      result: 'End-to-end booking with real-time availability',
+      to: '/case/looqz',
+    },
+  },
+  'ai-systems': {
+    name: 'AI Systems',
+    headline: 'AI that solves problems, not just talks about them.',
+    problem: [
+      "AI is everywhere right now — and most of it is noise. Agencies slap \"AI-powered\" on everything without explaining what it actually does for your business. You don't need a chatbot for the sake of having one. You need to know: what time does it save, what cost does it reduce, what decision does it improve? If the answer isn't clear, it's not worth building.",
+    ],
+    deliver: [
+      'Intelligent document processing and data extraction',
+      'Workflow automation that eliminates repetitive manual tasks',
+      'AI-powered chatbots and customer support systems',
+      'Predictive analytics and forecasting dashboards',
+      'Machine learning integrations with existing business systems',
+      'Natural language processing for search, classification, and summarisation',
+      'Computer vision for image recognition and quality inspection',
+      "AI strategy consulting — honest assessment of where AI fits and where it doesn't",
+    ],
+    approach:
+      "Every AI implementation starts with a business case, not a technology demo. We identify the specific process that's costing you time or money, prove the AI solution works with a focused pilot, then scale it into production. If AI isn't the right answer, we'll tell you — and recommend a simpler solution instead.",
+    cta: { text: "Let's discuss your AI project.", button: 'Get a Quote' },
+    sceneKey: 'ai',
+    caseStudy: null,
   },
 }
 

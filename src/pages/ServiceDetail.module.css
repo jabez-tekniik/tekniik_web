@@ -1,0 +1,493 @@
+/* Service detail pages — shared Deep Ink template for /services/<slug>.
+   Mirrors the hub's devices: node + mono meta bar, NN / EYEBROW section
+   heads, hairline spec ledger, frameless vignette stage, teal rails. */
+
+/* —— Hero ——————————————————————————————————— */
+.hero {
+  position: relative;
+  padding-top: clamp(88px, 9vw, 120px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -14%;
+  right: -12%;
+  width: min(640px, 58vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hero-glow-a) 0%,
+    var(--hero-glow-b) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.heroInner {
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.metaBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(32px, 4.4vw, 56px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-bloom);
+  flex-shrink: 0;
+}
+
+/* breadcrumb back to the hub — mono, 44px hit area */
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 200ms var(--ease-out);
+}
+
+.crumb > span {
+  transition: transform 240ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .crumb:hover {
+    color: var(--accent);
+  }
+  .crumb:hover > span {
+    transform: translateX(-3px);
+  }
+}
+
+.heroSplit {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(40px, 6vw, 88px);
+  align-items: center;
+}
+
+.headline {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2.3rem, 4.6vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0;
+  max-width: 16ch;
+}
+
+/* frameless vignette stage — size container so scenes scale via cqw/cqh */
+.stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  isolation: isolate;
+  container-type: size;
+}
+
+.stage::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 6%;
+  top: 10%;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-bloom), transparent 72%);
+  opacity: 0.3;
+  filter: blur(28px);
+  animation: bloomDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes bloomDrift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(10%, 8%, 0) scale(1.12);
+  }
+}
+
+/* —— Sections ————————————————————————————————— */
+.section {
+  padding-block: clamp(60px, 7.5vw, 104px);
+}
+
+.sectionTint {
+  background: var(--bg-2);
+  border-block: 1px solid var(--hairline);
+}
+
+.secHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: clamp(26px, 3.5vw, 44px);
+}
+
+.secIndex {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.secEyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* 01 — problem statement: hairline-railed editorial column */
+.problemCol {
+  border-left: 1px solid var(--hairline);
+  padding-left: clamp(20px, 3vw, 36px);
+  max-width: 62ch;
+}
+
+.problemPara {
+  font-family: var(--f-body);
+  font-size: clamp(1.08rem, 1.5vw, 1.28rem);
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.problemPara + .problemPara {
+  margin-top: 1.2em;
+}
+
+/* 02 — deliverables: hairline spec ledger (never a paragraph) */
+.specs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 780px;
+  border-top: 1px solid var(--hairline);
+}
+
+.specRow {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.specRow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .specRow:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.specNum {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.specText {
+  font-family: var(--f-body);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+/* 03 — approach: teal-railed Satoshi statement */
+.approach {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  line-height: 1.5;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: clamp(20px, 2.5vw, 32px);
+  max-width: 40ch;
+  margin: 0;
+}
+
+/* —— Case study strip ————————————————————————— */
+.caseCard {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: clamp(28px, 4vw, 56px);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-top: 2px solid var(--border-strong);
+  padding: clamp(24px, 3.5vw, 44px);
+}
+
+.caseKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.caseTitle {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.caseDesc {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 52ch;
+  margin: 0;
+}
+
+.caseFoot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  border-left: 1px solid var(--hairline);
+  padding-left: clamp(20px, 2.5vw, 32px);
+}
+
+.caseResult {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.caseLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.caseLink svg {
+  transition: transform 240ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .caseLink:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+/* —— Also explore ————————————————————————————— */
+.explore {
+  border-top: 2px solid var(--border-strong);
+  padding-top: clamp(20px, 3vw, 30px);
+}
+
+.exploreLabel {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: clamp(14px, 2vw, 22px);
+}
+
+.exploreRows {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: clamp(24px, 3.5vw, 48px);
+}
+
+.exploreRow {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px;
+  border-bottom: 1px solid var(--hairline);
+  text-decoration: none;
+}
+
+.exploreRow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
+}
+
+.exploreNum {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.exploreName {
+  flex: 1;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  color: var(--text);
+  transition: color 200ms var(--ease-out);
+}
+
+.exploreArrow {
+  display: inline-flex;
+  color: var(--text-dim);
+  transition: transform 240ms var(--ease-out), color 200ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .exploreRow:hover::after {
+    transform: scaleX(1);
+  }
+  .exploreRow:hover .exploreName,
+  .exploreRow:hover .exploreArrow {
+    color: var(--accent);
+  }
+  .exploreRow:hover .exploreArrow {
+    transform: translateX(4px);
+  }
+}
+
+/* —— Responsive ———————————————————————————————— */
+@media (max-width: 960px) {
+  .heroSplit {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 6vw, 48px);
+  }
+
+  .headline {
+    max-width: 20ch;
+  }
+
+  .stage {
+    max-width: 620px;
+  }
+
+  .exploreRows {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .caseCard {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .caseFoot {
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+    padding-left: 0;
+    padding-top: 18px;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .metaBar {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+}
+
+/* —— Reduced motion: static, complete render ———————————— */
+@media (prefers-reduced-motion: reduce) {
+  .stage::after {
+    animation: none;
+  }
+
+  .crumb,
+  .crumb > span,
+  .specRow::after,
+  .exploreRow::after,
+  .exploreName,
+  .exploreArrow,
+  .caseLink svg {
+    transition: none;
+  }
+}

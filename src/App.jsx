@@ -5,6 +5,7 @@ import Footer from './components/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
 import Services from './pages/Services.jsx'
+import ServiceDetail from './pages/ServiceDetail.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import CaseLooqz from './pages/CaseLooqz.jsx'
@@ -24,7 +25,16 @@ function readStoredMode() {
 
 // Routes that have been redesigned onto the "Deep Ink" brand themes.
 // Grows page by page until every route is inked, then the set can go away.
-const INK_ROUTES = new Set(['/', '/services', '/about', '/contact'])
+const INK_ROUTES = new Set([
+  '/',
+  '/services',
+  '/services/custom-software',
+  '/services/web-platforms',
+  '/services/mobile-apps',
+  '/services/ai-systems',
+  '/about',
+  '/contact',
+])
 
 export default function App() {
   const location = useLocation()
@@ -62,6 +72,7 @@ export default function App() {
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/services/:slug" element={<ServiceDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/case/looqz" element={<CaseLooqz />} />

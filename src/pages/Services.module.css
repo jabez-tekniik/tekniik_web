@@ -478,6 +478,35 @@
 
 .ctaRow {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+}
+
+/* quiet mono link to the discipline's detail page — sits beside the CTA
+   button; .discDark re-scopes the tokens, so it adapts on the navy band */
+.detailLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.detailLink svg {
+  transition: transform 240ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .detailLink:hover svg {
+    transform: translateX(4px);
+  }
 }
 
 /* visual — the discipline's coded vignette on a frameless blueprint stage
@@ -635,6 +664,7 @@
   .indexRow::before,
   .indexArrow,
   .specRow::after,
+  .detailLink svg,
   .railNode {
     transition: none;
   }

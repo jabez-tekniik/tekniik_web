@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../components/Button.jsx'
 import Reveal from '../components/Reveal.jsx'
 import MiniCta from '../components/MiniCta.jsx'
@@ -18,10 +19,30 @@ import styles from './Services.module.css'
    Each discipline reuses its homepage coded vignette (ServiceVignettes):
    animated, theme-token-driven scenes instead of static imagery. */
 const META = {
-  websites: { label: 'Websites', badge: 'Marketing site', Scene: WebScene },
-  apps: { label: 'Web Applications', badge: 'Web platform', Scene: AppScene },
-  mobile: { label: 'Mobile Apps', badge: 'iOS · Android', Scene: MobileScene },
-  ai: { label: 'AI & Automation', badge: 'AI · Automation', Scene: AiScene },
+  websites: {
+    label: 'Websites',
+    badge: 'Marketing site',
+    Scene: WebScene,
+    detail: '/services/web-platforms',
+  },
+  apps: {
+    label: 'Web Applications',
+    badge: 'Web platform',
+    Scene: AppScene,
+    detail: '/services/custom-software',
+  },
+  mobile: {
+    label: 'Mobile Apps',
+    badge: 'iOS · Android',
+    Scene: MobileScene,
+    detail: '/services/mobile-apps',
+  },
+  ai: {
+    label: 'AI & Automation',
+    badge: 'AI · Automation',
+    Scene: AiScene,
+    detail: '/services/ai-systems',
+  },
 }
 
 /* Pure-JS anchor scroll — no location hash (user request). Lenis owns the
@@ -147,6 +168,18 @@ function Discipline({ svc, i }) {
               <Button to="/contact" variant={dark ? 'inverse' : 'primary'} arrow>
                 {svc.cta}
               </Button>
+              <Link className={styles.detailLink} to={meta.detail}>
+                Full details
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.5 8h9M9 4.5 12.5 8 9 11.5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
             </Reveal>
           </div>
 

@@ -18,11 +18,13 @@ spec, which wants the links in place before the pages ship). Those routes don't
 exist yet, so they currently hit NotFound. Building the 4 legal pages + cookie
 consent banner is **Phase 4** of the content-sync plan (`tasks/todo.md`).
 
-### Homepage "What We Engineer" cards link to the /services hub, not sub-pages (low)
-`CAPABILITIES` items in `content.js` set `to: '/services'` for all four rows.
-The services spec wants each to deep-link to a dedicated sub-page
-(`/services/custom-software`, `/web-platforms`, `/mobile-apps`, `/ai-systems`).
-Those sub-pages are **Phase 2**; update the `to` values when they ship.
+### No per-page `<title>`/meta description anywhere on the site (medium, SEO)
+The SPA has no head management — every route shows the static `index.html`
+title. The services spec ships an SEO table (unique meta title + description
+per services page), and the same applies site-wide (Home/About/Contact/cases).
+Deliberately NOT bolted onto the 4 new service detail pages alone (2026-07-17)
+so it lands once, consistently: add a tiny `useDocumentTitle`/head hook (or
+react-helmet-style module) covering ALL routes in one pass.
 
 ### `/img/services/*.webp` no longer used by ANY page (low)
 The 2026-07-14 vignette revamp replaced the homepage ServiceShowcase image
@@ -45,6 +47,13 @@ generation, kept on disk with its manifest entry until the redesign settles.
 The 2026-07-07 "Bold Editorial" revamp removed the aurora wash — `AuroraShader` (OGL WebGL) is no longer imported by any route (Hero + FinalCta dropped it). It's still exported from `src/motion/index.js` and the `ogl` dependency is still installed, so it ships in the bundle graph as an unused lazy chunk. Follow-up: either delete `src/motion/AuroraShader.*` + drop `ogl` from `package.json`, or repurpose the shader for a future dark toggle. Left in place for now (self-contained, harmless) to keep the revamp scoped to layout/design.
 
 ## Resolved
+
+### Homepage "What We Engineer" cards link to the /services hub, not sub-pages (2026-07-17)
+Phase-2 service detail pages shipped (`/services/custom-software`,
+`/web-platforms`, `/mobile-apps`, `/ai-systems` — shared `ServiceDetail.jsx`
+template, `SERVICE_PAGES` in `content.js`). All four `CAPABILITIES[].to`
+values now deep-link to their sub-page, and the `/services` hub disciplines
+carry "Full details →" links.
 
 ### "What We Engineer" — full-bleed immersive one-service stage (2026-07-16)
 Four iterative requests reshaped the pinned What-We-Engineer section. (1) The

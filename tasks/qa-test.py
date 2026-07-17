@@ -10,6 +10,10 @@ os.makedirs(OUT, exist_ok=True)
 ROUTES = [
     ('home', '/'),
     ('services', '/services'),
+    ('svc-custom-software', '/services/custom-software'),
+    ('svc-web-platforms', '/services/web-platforms'),
+    ('svc-mobile-apps', '/services/mobile-apps'),
+    ('svc-ai-systems', '/services/ai-systems'),
     ('about', '/about'),
     ('contact', '/contact'),
     ('case-looqz', '/case/looqz'),
@@ -21,6 +25,7 @@ VIEWPORTS = [
     ('mobile-sm', 320, 720),
     ('mobile-md', 414, 896),
     ('tablet', 768, 1024),
+    ('laptop', 1024, 800),
     ('desktop', 1280, 900),
     ('wide', 1600, 1000),
 ]
