@@ -1,148 +1,359 @@
-/* "The Numbers" — full-bleed instrument band. One row: mono meta rail +
-   giant readouts separated by vertical hairlines. */
+/* "The Numbers" — signal field. A full-bleed deep-navy stage. Ambient life
+   comes from a breathing pulse + edge vignette; interaction comes from a
+   cursor-tracked light (--sx/--sy section-space, --bx/--by board-space CSS
+   vars written directly from JS) that brightens the dot grid and reveals a
+   teal "hot" clone of the readouts through a radial mask. The band tokens
+   are identical in both ink modes, so this section reads the same in light
+   and dark. Colors here are on-band rgba shades of the brand navy/teal —
+   the established idiom for inverted band sections. */
 
 .band {
   position: relative;
-  border-top: 1px solid var(--hairline);
-  border-bottom: 1px solid var(--hairline);
-  background: var(--bg-2);
+  overflow: hidden;
+  background: var(--band-deep);
+  padding-block: clamp(56px, 7vw, 96px);
 }
 
 .inner {
-  display: grid;
-  grid-template-columns: minmax(140px, 0.5fr) repeat(4, minmax(0, 1fr));
-  width: 100%;
-  max-width: var(--max);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  position: relative; /* paints above the absolute ambience layers */
 }
 
-/* —— meta rail —— */
-.rail {
+/* —— ambience layers (back → front) —— */
+.dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(148, 163, 199, 0.17) 1px, transparent 1.6px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(130% 100% at 50% 40%, #000 32%, transparent 80%);
+  mask-image: radial-gradient(130% 100% at 50% 40%, #000 32%, transparent 80%);
+}
+
+/* the animated vignette — a slow breathing teal-navy glow behind the board */
+.pulse {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(1100px, 130vw);
+  aspect-ratio: 1.5;
+  pointer-events: none;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(114, 204, 214, 0.1),
+    rgba(38, 54, 108, 0.22) 45%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  animation: breathe 9s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* static edge darkening — frames the stage */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 95% at 50% 38%,
+    transparent 52%,
+    rgba(7, 11, 28, 0.62) 100%
+  );
+}
+
+/* —— cursor light —— */
+/* teal dot grid, visible only inside the light's radius */
+.dotsHot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(114, 204, 214, 0.5) 1px, transparent 1.6px);
+  background-size: 26px 26px;
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 300px at var(--sx, 50%) var(--sy, 50%),
+    #000 0%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    circle 300px at var(--sx, 50%) var(--sy, 50%),
+    #000 0%,
+    transparent 72%
+  );
+}
+
+/* soft glow that chases the cursor with a trailing ease */
+.aura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 620px;
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(114, 204, 214, 0.13),
+    rgba(114, 204, 214, 0.05) 40%,
+    transparent 68%
+  );
+  opacity: 0;
+  transform: translate3d(var(--sx, 50%), var(--sy, 50%), 0) translate(-50%, -50%);
+  transition:
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease-out;
+  will-change: transform;
+}
+
+.hasLight .dotsHot,
+.hasLight .aura {
+  opacity: 1;
+}
+
+/* —— head —— */
+.metaRow {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
-  padding: clamp(28px, 4vw, 48px) clamp(16px, 2vw, 28px) clamp(28px, 4vw, 48px) 0;
-  border-right: 1px solid var(--hairline);
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--band-hairline);
+  margin-bottom: clamp(24px, 3.4vw, 40px);
 }
 
-.railIndex {
+.metaNode {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-on-band);
+  flex: none;
+}
+
+.index {
   font-family: var(--f-mono);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.18em;
-  color: var(--accent);
+  color: var(--accent-on-band);
 }
 
-.railEyebrow {
+.eyebrow {
   font-family: var(--f-mono);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--on-band-faint);
 }
 
-/* —— readout cells —— */
-.cell {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: clamp(28px, 4vw, 48px) clamp(18px, 2.4vw, 36px);
-}
-
-.cell + .cell {
-  border-left: 1px solid var(--hairline);
-}
-
-.value {
+.statement {
   font-family: var(--f-display);
   font-weight: 800;
-  font-size: clamp(2.6rem, 6vw, 5.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  color: var(--text);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--on-band);
+  margin: 0 0 clamp(36px, 5vw, 64px);
+}
+
+.statementAccent {
+  color: var(--accent-on-band);
+}
+
+/* —— the board: base layer + cursor-masked hot clone —— */
+.board {
+  position: relative;
+}
+
+.layer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: clamp(20px, 3vw, 48px);
+  row-gap: clamp(36px, 6vw, 56px);
+}
+
+.layerHot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 260px at var(--bx, -999px) var(--by, -999px),
+    #000 32%,
+    transparent 74%
+  );
+  mask-image: radial-gradient(
+    circle 260px at var(--bx, -999px) var(--by, -999px),
+    #000 32%,
+    transparent 74%
+  );
+}
+
+.hasLight .layerHot {
+  opacity: 1;
+}
+
+/* —— stat anatomy —— */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  /* entrance: rise + fade, staggered per row */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row) * 130ms),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row) * 130ms);
+}
+
+.on .stat {
+  opacity: 1;
+  transform: none;
+}
+
+/* ink-fill: digits arrive as a hairline outline, then fill solid */
+.statValue {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 4.8vw, 5.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(182, 191, 214, 0.38);
+  transition:
+    color 900ms ease-out calc(var(--row) * 130ms + 220ms),
+    -webkit-text-stroke-color 900ms ease-out calc(var(--row) * 130ms + 220ms);
 }
 
-.valueGlyph {
-  color: var(--accent);
-  /* IconStar sizes off this em — smaller than the digits, like a rating badge */
-  font-size: 0.58em;
+.on .statValue {
+  color: var(--on-band);
+  -webkit-text-stroke-color: transparent;
 }
 
-.label {
+.statGlyph {
+  color: var(--accent-on-band);
+  -webkit-text-stroke: 0;
+  font-size: 0.6em;
+}
+
+.statRule {
+  width: 44px;
+  height: 2px;
+  background: var(--band-hairline-strong);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--row) * 130ms + 420ms);
+}
+
+.on .statRule {
+  transform: scaleX(1);
+}
+
+.statLabel {
   font-family: var(--f-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--on-band-dim);
 }
 
-.cellNum {
-  position: absolute;
-  top: clamp(16px, 2vw, 24px);
-  right: clamp(18px, 2.4vw, 36px);
-  font-family: var(--f-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
-  color: var(--text-faint);
-  opacity: 0.7;
+.statDetail {
+  font-family: var(--f-body);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--on-band-faint);
+  max-width: 28ch;
 }
 
-/* —— responsive —— */
-/* ≤900px: rail spans the top, the four readouts fall into a clean 2×2.
-   Grid children are rail(1) + cells(2–5): left col = nth-child(2,4),
-   right col = nth-child(3,5); second row = nth-child(4,5). */
+/* —— hot clone: everything the light touches turns signal-teal —— */
+.layerHot .statValue,
+.on .layerHot .statValue {
+  color: var(--accent-on-band);
+  -webkit-text-stroke-color: transparent;
+  text-shadow: 0 0 32px rgba(114, 204, 214, 0.45);
+}
+
+.layerHot .statGlyph {
+  color: var(--on-band);
+}
+
+.layerHot .statLabel {
+  color: var(--accent-on-band);
+}
+
+.layerHot .statDetail {
+  color: rgba(114, 204, 214, 0.75);
+}
+
+.layerHot .statRule,
+.on .layerHot .statRule {
+  background: var(--accent-on-band);
+  box-shadow: 0 0 14px rgba(114, 204, 214, 0.55);
+}
+
+/* —— touch / coarse pointers: no cursor light; the breathing pulse and
+      vignette carry the ambience on their own —— */
+@media (hover: none) {
+  .dotsHot,
+  .aura,
+  .layerHot {
+    display: none;
+  }
+}
+
+/* —— responsive: 4 → 2 → 1 columns —— */
 @media (max-width: 900px) {
-  .inner {
-    grid-template-columns: 1fr 1fr;
+  .layer {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .rail {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    border-right: none;
-    border-bottom: 1px solid var(--hairline);
-    padding: 18px 0;
-  }
-  .cell {
-    padding-inline: 0 18px;
-  }
-  .cell + .cell {
-    border-left: none;
-  }
-  .cell:nth-child(3),
-  .cell:nth-child(5) {
-    border-left: 1px solid var(--hairline);
-    padding-inline: 18px 0;
-  }
-  .cell:nth-child(4),
-  .cell:nth-child(5) {
-    border-top: 1px solid var(--hairline);
+  .statValue {
+    font-size: clamp(3rem, 8.5vw, 4.4rem);
   }
 }
 
-@media (max-width: 480px) {
-  .inner {
+@media (max-width: 520px) {
+  .layer {
     grid-template-columns: 1fr;
   }
-  .cell,
-  .cell:nth-child(3),
-  .cell:nth-child(5) {
-    border-left: none;
-    padding-inline: 0;
+  .band {
+    padding-block: clamp(48px, 13vw, 64px);
   }
-  .cell + .cell,
-  .cell:nth-child(4),
-  .cell:nth-child(5) {
-    border-top: 1px solid var(--hairline);
+  .statValue {
+    font-size: clamp(3rem, 14vw, 3.8rem);
+  }
+  .statDetail {
+    max-width: none;
+  }
+}
+
+/* —— reduced motion: static final state; the cursor light stays available
+      but snaps instead of easing —— */
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+    opacity: 0.7;
+  }
+  .stat,
+  .statValue,
+  .statRule,
+  .aura,
+  .dotsHot,
+  .layerHot {
+    transition: none;
   }
 }

@@ -25,13 +25,14 @@ export default function Why() {
     <section className={`section ${styles.section}`}>
       <div className="container">
         <Reveal className={styles.head}>
-          <div>
-            <div className={styles.meta}>
-              <span className={styles.index}>06</span>
-              <span className={styles.eyebrow}>{WHY_TEKNIIK.eyebrow}</span>
-            </div>
-            <h2 className={styles.heading}>{WHY_TEKNIIK.heading}</h2>
+          <div className={styles.meta}>
+            <span className={styles.index}>06</span>
+            <span className={styles.eyebrow}>{WHY_TEKNIIK.eyebrow}</span>
           </div>
+          <h2 className={styles.heading}>
+            {WHY_TEKNIIK.heading}{' '}
+            <span className={styles.headingAccent}>{WHY_TEKNIIK.headingAccent}</span>
+          </h2>
           <p className={styles.sub}>{WHY_TEKNIIK.sub}</p>
         </Reveal>
 

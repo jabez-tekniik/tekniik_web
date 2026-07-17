@@ -310,17 +310,19 @@
   border-left: 2px solid var(--accent);
 }
 
-/* ——————————————— 02 · process — brand-navy band ——————————————— */
+/* ——————————————— 03 · process — brand-navy band ——————————————— */
 /* Semantic tokens re-scoped so every child adapts (same device as the
-   Services AI discipline). --band here, not --band-deep: the principles
-   section separates this band from the FinalCta band. */
+   Services AI discipline). --band-deep here: the process timeline is now the
+   last section before FinalCta (spec order Story → Principles → Process → CTA,
+   which puts two dark bands adjacent by design). The deeper navy steps UP into
+   FinalCta's brighter --band + teal bloom, so the pair reads as a crescendo. */
 .process {
   position: relative;
   padding-block: clamp(64px, 8vw, 120px);
   overflow: hidden;
-  background: var(--band);
+  background: var(--band-deep);
 
-  --bg: var(--band);
+  --bg: var(--band-deep);
   --bg-2: var(--band-2);
   --bg-raise: var(--band-raise);
   --surface: rgba(255, 255, 255, 0.04);
@@ -488,7 +490,7 @@
   margin-right: 10px;
 }
 
-/* ————————————————————— 03 · principles ————————————————————— */
+/* ————————————————————— 02 · principles ————————————————————— */
 
 .principles {
   position: relative;

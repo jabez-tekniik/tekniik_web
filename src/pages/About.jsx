@@ -9,8 +9,9 @@ import styles from './About.module.css'
    Hero: poster headline left, the documentary team photo right (kept per
    user) in an ink frame; a 4-cell signals ledger closes the hero. Then:
    01 story (editorial split, final paragraph as the pull statement),
-   02 process (brand-navy band, six steps with scroll-drawn teal rails),
-   03 principles (2×2 statement cells), FinalCta. Tokens only. */
+   02 principles (2×2 statement cells),
+   03 process (brand-navy --band-deep band, five steps with scroll-drawn teal
+   rails — last dark section before FinalCta, per spec order). Tokens only. */
 
 const SIGNALS = [
   { num: '1-on-1', label: 'Direct senior contact' },
@@ -128,13 +129,38 @@ export default function About() {
         </div>
       </section>
 
-      {/* —— 02 · Process — navy band, six scroll-lit steps ——— */}
+      {/* —— 02 · Principles ————————————————————————————— */}
+      <section className={styles.principles}>
+        <div className="container">
+          <Reveal className={styles.prHead}>
+            <div className={styles.meta}>
+              <span className={styles.index}>02</span>
+              <span className={styles.metaEyebrow}>{principles.eyebrow}</span>
+            </div>
+            <h2 className={styles.prHeading}>{principles.heading}</h2>
+          </Reveal>
+
+          <div className={styles.prGrid}>
+            {principles.items.map((p, i) => (
+              <Reveal key={p.title} delay={i * 80} className={styles.principle}>
+                <span className={styles.prNum}>
+                  0{i + 1} / 0{principles.items.length}
+                </span>
+                <h3 className={styles.prTitle}>{p.title}</h3>
+                <p className={styles.prDesc}>{p.desc}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* —— 03 · Process — navy band, five scroll-lit steps ——— */}
       <section className={styles.process}>
         <div className="container">
           <Reveal className={styles.processHead}>
             <div>
               <div className={styles.meta}>
-                <span className={styles.index}>02</span>
+                <span className={styles.index}>03</span>
                 <span className={styles.metaEyebrow}>{process.eyebrow}</span>
               </div>
               <h2 className={styles.processHeading}>{process.heading}</h2>
@@ -165,31 +191,6 @@ export default function About() {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* —— 03 · Principles ————————————————————————————— */}
-      <section className={styles.principles}>
-        <div className="container">
-          <Reveal className={styles.prHead}>
-            <div className={styles.meta}>
-              <span className={styles.index}>03</span>
-              <span className={styles.metaEyebrow}>{principles.eyebrow}</span>
-            </div>
-            <h2 className={styles.prHeading}>{principles.heading}</h2>
-          </Reveal>
-
-          <div className={styles.prGrid}>
-            {principles.items.map((p, i) => (
-              <Reveal key={p.title} delay={i * 80} className={styles.principle}>
-                <span className={styles.prNum}>
-                  0{i + 1} / 0{principles.items.length}
-                </span>
-                <h3 className={styles.prTitle}>{p.title}</h3>
-                <p className={styles.prDesc}>{p.desc}</p>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

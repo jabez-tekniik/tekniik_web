@@ -157,13 +157,14 @@ export default function ServiceShowcase() {
                   className={`${styles.panel} ${on ? styles.panelOn : ''}`}
                   aria-hidden={pinned && !on ? true : undefined}
                 >
-                  {/* copy — full width, above the vignette; the giant service
-                      name sits as a faint watermark BEHIND the heading */}
+                  {/* the giant service name — a faint watermark drifting
+                      left↔right across the whole panel, BEHIND the screen */}
+                  <span className={styles.ghost} aria-hidden="true">
+                    <span className={styles.ghostInner}>{ghostWord}</span>
+                  </span>
+
                   <div className={styles.overlay}>
                     <div className={styles.titleWrap}>
-                      <span className={styles.ghost} aria-hidden="true">
-                        <span className={styles.ghostInner}>{ghostWord}</span>
-                      </span>
                       <h3 className={styles.title}>
                         {item.title.split(' ').map((word, wi) => (
                           <span key={`${word}-${wi}`} className={styles.titleMask}>
@@ -186,10 +187,17 @@ export default function ServiceShowcase() {
                     </Link>
                   </div>
 
-                  {/* full-bleed vignette band: grid + bloom + framed screen */}
+                  {/* vignette stage: grid + bloom + the device-framed screen */}
                   <div className={styles.stage} aria-hidden="true">
-                    <div className={styles.sceneHolder}>
-                      <Scene active={on} />
+                    <div className={styles.screen}>
+                      <div className={styles.screenBar}>
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                      <div className={styles.sceneHolder}>
+                        <Scene active={on} />
+                      </div>
                     </div>
                   </div>
                 </article>

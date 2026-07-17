@@ -193,13 +193,72 @@ function MScreen({ v }) {
   )
 }
 
+/* tablet-landscape variants of the same three app screens — both devices
+   scroll in sync (same keyframes/duration), telling the responsiveness
+   story: one app, every form factor */
+function TScreen({ v }) {
+  if (v === 2) {
+    return (
+      <div className={styles.tScreen}>
+        <span className={`${styles.skel} ${styles.mHead}`} />
+        <span className={styles.tCols}>
+          <span className={styles.tStack}>
+            <span className={styles.mRow} />
+            <span className={styles.mRow} />
+          </span>
+          <span className={styles.tStack}>
+            <span className={styles.mRow} />
+            <span className={styles.mRow} />
+          </span>
+        </span>
+      </div>
+    )
+  }
+  if (v === 3) {
+    return (
+      <div className={styles.tScreen}>
+        <span className={`${styles.skel} ${styles.mHead}`} />
+        <span className={styles.tCols}>
+          <span className={styles.mTile} />
+          <span className={styles.mTile} />
+          <span className={styles.mTile} />
+        </span>
+      </div>
+    )
+  }
+  return (
+    <div className={styles.tScreen}>
+      <span className={`${styles.skel} ${styles.mHead}`} />
+      <span className={styles.tCols}>
+        <span className={`${styles.mHeroCard} ${styles.tHero}`}>
+          <span className={`${styles.skel} ${styles.mCardLine}`} />
+          <span className={`${styles.skel} ${styles.mCardLineShort}`} />
+        </span>
+        <span className={styles.tStack}>
+          <span className={styles.mRow} />
+          <span className={styles.mRow} />
+        </span>
+      </span>
+    </div>
+  )
+}
+
 export function MobileScene({ active }) {
   return (
     <Scene active={active} metric={METRIC.mobile} chipClass={styles.mobileChip}>
-      <div className={styles.back}>
-        <span className={styles.phoneGhost} />
-      </div>
       <div className={styles.mid}>
+        {/* iPad in landscape — same app, tablet layout */}
+        <div className={styles.tablet}>
+          <div className={styles.tViewport}>
+            <div className={styles.mTrack}>
+              <TScreen v={1} />
+              <TScreen v={2} />
+              <TScreen v={3} />
+              <TScreen v={1} />
+            </div>
+          </div>
+        </div>
+        {/* iPhone in front — slim 9:19.5, scrolls in sync with the tablet */}
         <div className={styles.phone}>
           <span className={styles.island} />
           <div className={styles.mViewport}>

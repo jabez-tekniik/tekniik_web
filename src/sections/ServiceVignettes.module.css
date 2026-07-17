@@ -62,7 +62,7 @@
 .browser,
 .appWin,
 .phone,
-.phoneGhost,
+.tablet,
 .docNode,
 .core,
 .chipWrap,
@@ -863,45 +863,59 @@
 /* ============================================================
    03 · MOBILE APPS
    ============================================================ */
-.phoneGhost {
+/* iPad, landscape — behind-left, showing the tablet layout of the same app */
+.tablet {
   position: absolute;
-  left: 62%;
-  top: 12%;
-  width: 32%;
-  aspect-ratio: 9 / 18;
-  border: 1px solid var(--hairline);
-  border-radius: clamp(14px, 4cqw, 24px);
-  transform: rotate(7deg);
+  left: 2%;
+  top: 50%;
+  width: min(67%, 90cqh * 4 / 3);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  background: var(--bg-raise);
+  border: 1px solid var(--border-strong);
+  border-radius: clamp(12px, 2.6cqw, 22px);
+  box-shadow: var(--shadow-glass);
+  padding: clamp(8px, 1.6cqw, 14px);
   opacity: 0;
+  transform: translateY(-50%) translateY(18px);
 }
 
-.on .phoneGhost {
+.on .tablet {
   opacity: 1;
-  transform: rotate(7deg);
-  transition-delay: 300ms;
+  transform: translateY(-50%);
+  transition-delay: 120ms;
 }
 
+.tViewport {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+  border-radius: clamp(6px, 1.2cqw, 10px);
+}
+
+/* iPhone, portrait 9:19.5 — in front, overlapping the tablet's right edge.
+   Width-only sizing (no max-height clamp) so the aspect never distorts
+   into a squat tablet-ish slab. */
 .phone {
   position: absolute;
-  left: 28%;
-  top: 4%;
-  width: 42%;
-  aspect-ratio: 9 / 18.5;
-  max-height: 92%;
+  left: 64%;
+  top: 50%;
+  width: min(26%, 44cqh);
+  aspect-ratio: 9 / 19.5;
   display: flex;
   flex-direction: column;
   background: var(--bg-raise);
   border: 1px solid var(--border-strong);
-  border-radius: clamp(16px, 5cqw, 28px);
+  border-radius: clamp(14px, 3cqw, 26px);
   box-shadow: var(--shadow-glass);
-  padding: clamp(18px, 8.5cqh, 34px) clamp(9px, 2.4cqw, 14px) clamp(8px, 2.2cqh, 12px);
+  padding: clamp(14px, 5cqh, 24px) clamp(7px, 1.6cqw, 11px) clamp(7px, 1.8cqh, 10px);
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(-50%) translateY(18px);
 }
 
 .on .phone {
   opacity: 1;
-  transform: none;
+  transform: translateY(-50%);
 }
 
 .island {
@@ -956,6 +970,34 @@
   flex-direction: column;
   gap: clamp(4px, 2cqh, 10px);
   padding-top: 4%;
+}
+
+/* tablet-landscape screens ride the same 4-stop track as the phone —
+   identical keyframes/duration keep the two devices scrolling in sync */
+.tScreen {
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5px, 2.4cqh, 12px);
+  padding: 3.5% 3% 3%;
+}
+
+.tCols {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 4%;
+}
+
+.tHero {
+  flex: 1.5;
+}
+
+.tStack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8%;
 }
 
 .mHead {
@@ -1078,9 +1120,9 @@
 
 .notif {
   position: absolute;
-  left: 22%;
-  top: 10%;
-  width: 52%;
+  left: 48%;
+  top: 8%;
+  width: 44%;
   display: flex;
   align-items: center;
   gap: 8px;

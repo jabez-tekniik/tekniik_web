@@ -488,3 +488,64 @@ OpenLine hero visual "looks very bad and irrelevant".
 - [x] CLAUDE.md hero-animations section rewritten (subtlety rule recorded) + Contact hero paragraph
 - [x] Gates: lint ✓, build ✓, 0 console errors, h-scroll 0 @320–1440, RM + dark verified, QA shots deleted
 Rule going forward: hero entrances stay distinct per page but RESTRAINED — no scramble/flip/per-char effects.
+
+## Iteration 10 — "The Numbers" (§03) revamp (2026-07-17)
+Client rejected the current flat readout band (4 equal cells on grey — reads as the
+generic "big number / small label" template). New direction: **honest instrument
+ledger** — each stat gets a true-to-data teal mark system that ignites on scroll.
+- [x] `content.js` — additive `NUMBERS_HEAD` (eyebrow kept `THE NUMBERS`, new short
+      Satoshi statement heading, accent tail)
+- [x] Rewrite `components/LogoStrip.jsx` — head (node + 03 / eyebrow + statement),
+      then a 4-row hairline ledger: mono index | count-up value (existing useCounter
+      parse) | mono label | data-mark visualization right column:
+      50+ → 50-tick meter all lit · 98% → 50-tick meter 49 lit / 1 dim ·
+      4.9★ → 5 stars, 5th clipped to 90% · 8+ → node rail, 8 igniting nodes
+- [x] Rewrite `LogoStrip.module.css` — ledger borders (2px strong top), sequential
+      tick ignition via --i transition-delays, row hover accent-tint sweep
+      (pointer:fine), both ink modes via tokens, RM = final state instantly
+- [x] Responsive: rows restack ≤820px (meta line / value / marks), marks grid uses
+      1fr tracks so 50 ticks fit 280px; sweep 320/375/414/640/768/1024/1280
+- [x] Gates: lint, build, screenshots both ink modes, RM check, delete shots
+- [x] Docs: CLAUDE.md LogoStrip section rewritten
+
+## Iteration 11 — "The Numbers" (§03) v2: "Signal Field" (2026-07-17)
+Client feedback on v1 ledger: too quiet. New direction: interactive, modern, stunning —
+full-bleed dark navy showcase band with an animated vignette + cursor-tracked light.
+
+- [x] content.js: add NUMBERS_DETAILS (one-line human detail per stat, additive)
+- [x] Rewrite LogoStrip.jsx — band-deep full-bleed section; layers: dot grid,
+      breathing pulse (animated vignette), edge vignette, cursor aura (trailing
+      translate3d), hot dot-grid + hot stat clone masked by cursor radial
+      (--sx/--sy section-relative, --bx/--by board-relative, rAF-throttled,
+      direct DOM var writes — no React state). Shared ignition progress hook
+      drives all four count-ups (setState only inside rAF).
+- [x] Rewrite LogoStrip.module.css — asymmetric 12-col editorial grid (stagger
+      offsets), stat values ink-fill entrance (stroke → solid), rules draw in,
+      hover:none → hot layers hidden + pulse stays (mobile ambience), single
+      column ≤820px, RM = static final state, band tokens only
+- [x] Gates: lint, build, both ink modes, breakpoint sweep 320–1280, RM, 0 console
+      errors, delete screenshots
+- [x] Docs: CLAUDE.md LogoStrip section updated
+- [x] Iteration 11 follow-up (user): single 4-up row, per-stat indices removed,
+      spacing tightened (band/statement/gaps); cols 4→2 (≤900) →1 (≤520);
+      re-verified lint/build/hover/768/375, no new h-scroll
+
+## Iteration 12 — ServiceShowcase split layout + Why head (2026-07-17)
+- [x] ServiceShowcase pinned panels → copy column left, tall device screen right
+      (.screen frame + .screenBar window chrome, right edge on container line,
+      near-full deck height); non-pinned keeps stacked flow with same chrome;
+      ghost word shrunk + mask-faded + clipped to the copy column; desc reserve 6 lines
+- [x] Why head: "differently." accented (heading/headingAccent split in content.js),
+      sub stacked below heading; removed stale 820px grid override
+- [x] Fixed pre-existing syntax error content.js:501 (apostrophe in single-quoted
+      string, from parallel edit) — requoted only, copy unchanged
+- [x] Gates: lint, build, pinned panels 1+3 @1440, @1024, 375 stacked (no h-scroll),
+      Why head shot; screenshots deleted, dev server stopped
+
+## Iteration 13 — Mobile vignette devices + panel-wide ghost (2026-07-17)
+- [x] MobileScene: landscape 4:3 tablet (TScreen layouts) + slim 9:19.5 iPhone,
+      width-only min(%, cqh*ratio) sizing (no aspect distortion), synced
+      screensLoop tracks = responsiveness story; phoneGhost removed; notif over phone
+- [x] Ghost word: panel-level watermark clamp(5rem,11vw,13rem), z0 behind the
+      screen (stage z1), drift ±5% own width; .pin overflow:clip guards h-scroll
+- [x] Gates: lint, build, panels 2+3 @1440, 375 stacked, no h-scroll; shots deleted

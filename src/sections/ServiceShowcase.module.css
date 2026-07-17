@@ -23,6 +23,9 @@
 
 .section[data-pinned='true'] .pin {
   height: 440vh;
+  /* the panel-wide ghost word can poke past the viewport at its drift
+     extremes; clip (not hidden — hidden would break position: sticky) */
+  overflow: clip;
 }
 
 .section[data-pinned='true'] .pinInner {
@@ -146,15 +149,17 @@
   gap: clamp(24px, 4vw, 40px);
 }
 
-/* pinned: each service is a vertical composition — full-width copy on top,
-   the full-bleed vignette band below (stacked, never side-by-side) */
+/* pinned: each service is a split composition — copy column on the left,
+   the tall device screen filling the space on the right (user request:
+   the vignette should sit inline with the copy/Explore link and read as
+   a computer screen) */
 .section[data-pinned='true'] .panel {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(18px, 2.6vh, 38px);
+  flex-direction: row;
+  align-items: stretch;
+  gap: clamp(28px, 3vw, 56px);
   opacity: 0;
   visibility: hidden;
   transform: translateY(12px);
@@ -175,24 +180,25 @@
     transform 560ms var(--ease-out);
 }
 
-/* —— stage: blueprint canvas the scene + copy live on —— */
+/* —— stage: blueprint canvas the device screen lives on —— */
 .stage {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   border-radius: var(--r-2xl);
+  padding: clamp(16px, 3.5vw, 36px);
 }
 
-/* the vignette band: full-bleed (spans the viewport), sits below the copy;
-   the blueprint grid + bloom bleed edge-to-edge, the scene sits as a framed
-   "screen" centred to the container width inside it. flex:1 so it grows to fill
-   whatever height is left under the copy — the composition always fits exactly. */
+/* pinned: the stage is the right column — the blueprint grid + bloom bleed to
+   the viewport's right edge while the screen insets to the container edge.
+   flex:1 so it takes everything the copy column leaves. */
 .section[data-pinned='true'] .stage {
   position: relative;
+  z-index: 1; /* above the panel-wide ghost word */
   flex: 1 1 auto;
-  width: 100%;
-  min-height: clamp(220px, 30vh, 300px);
-  max-height: 560px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
   border-radius: 0;
   overflow: hidden;
 }
@@ -243,11 +249,11 @@
   display: block;
   position: absolute;
   z-index: 0;
-  left: -0.06em;
+  left: 2%;
   top: 50%;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(3.4rem, 8vw, 9rem);
+  font-size: clamp(5rem, 11vw, 13rem);
   line-height: 0.9;
   letter-spacing: -0.05em;
   white-space: nowrap;
@@ -267,37 +273,78 @@
   animation: ghostDrift 13s ease-in-out infinite alternate;
 }
 
+/* percentage of the word's own width, so long names sweep further —
+   a visible left↔right travel behind the screen (user request) */
 @keyframes ghostDrift {
   from {
-    transform: translateX(-30px);
+    transform: translateX(-5%);
   }
   to {
-    transform: translateX(30px);
+    transform: translateX(5%);
   }
+}
+
+/* —— the device screen: chrome bar + scene, framed like a monitor —— */
+.screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg, 0 30px 80px -40px rgb(0 0 0 / 0.4));
+  overflow: hidden;
+}
+
+/* pinned: the screen stands tall in the right column — top/bottom of the
+   deck, left edge at the copy column, right edge on the container line */
+.section[data-pinned='true'] .screen {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: var(--edge);
+  width: auto;
+  height: calc(100% - clamp(10px, 2vh, 28px));
+  transform: translateY(-50%) translateY(calc(var(--p, 0) * -8px));
+}
+
+/* window chrome — makes the frame read as a computer screen */
+.screenBar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding-inline: 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.screenBar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.screenBar span:first-child {
+  background: var(--accent);
 }
 
 /* —— scene holder (size container for the vignette) —— */
 .sceneHolder {
   position: relative;
-  z-index: 1;
   width: 100%;
   aspect-ratio: 16 / 10;
   container-type: size;
 }
 
 .section[data-pinned='true'] .sceneHolder {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(100% - 2 * var(--gutter), var(--max));
-  height: calc(100% - clamp(24px, 5vh, 56px));
+  flex: 1 1 auto;
+  min-height: 0;
   aspect-ratio: auto;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-xl);
-  background: var(--surface);
-  box-shadow: var(--shadow-lg, 0 30px 80px -40px rgb(0 0 0 / 0.4));
-  overflow: hidden;
-  transform: translate(-50%, -50%) translateY(calc(var(--p, 0) * -8px));
 }
 
 /* —— copy overlay —— */
@@ -308,14 +355,15 @@
   gap: clamp(14px, 1.6vw, 20px);
 }
 
+/* pinned: the copy is the left column, vertically centred against the tall
+   screen */
 .section[data-pinned='true'] .overlay {
   position: relative;
   z-index: 2;
-  flex: 0 0 auto;
-  width: 100%;
-  max-width: var(--max);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  flex: 0 0 clamp(340px, 34vw, 540px);
+  min-width: 0;
+  justify-content: center;
+  padding-left: var(--edge);
   transform: translateY(calc(var(--p, 0) * -5px));
 }
 
@@ -346,7 +394,7 @@
 .section[data-pinned='true'] .title {
   position: relative;
   z-index: 1;
-  font-size: clamp(2.3rem, 4.6vw, 4rem);
+  font-size: clamp(1.9rem, 2.9vw, 3rem);
 }
 
 .titleMask {
@@ -387,11 +435,11 @@
   margin: 0;
 }
 
-/* reserve the tallest copy height so the copy block (and therefore the flex
-   band + framed screen below it) stays the SAME size across all four services —
-   otherwise the screen would jump between services during the cross-fade */
+/* reserve the tallest copy height so the copy block stays the SAME size
+   across all four services — otherwise the title/link would jump vertically
+   during the cross-fade (narrow column → the longest desc wraps ~6 lines) */
 .section[data-pinned='true'] .desc {
-  min-height: calc(1.65em * 4);
+  min-height: calc(1.65em * 6);
 }
 
 .link {

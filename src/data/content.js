@@ -28,6 +28,22 @@ export const TERMINAL_FRAMES = [
   { type: 'ai-automation', result: '3hrs → 20min' },
 ]
 
+/* "The Numbers" (§03) head — additive copy (2026-07-17 ledger revamp).
+   The heading splits so the tail can carry the accent, like the Hero. */
+export const NUMBERS_HEAD = {
+  eyebrow: 'THE NUMBERS',
+  headline: 'Track record,',
+  headlineAccent: 'not talk.',
+}
+
+/* One-line human detail per §03 stat — keyed by MARQUEE label. */
+export const NUMBERS_DETAILS = {
+  'Projects Delivered': 'Scoped, built, and shipped end to end.',
+  'Client Retention': 'Clients who come back for the next build.',
+  'Average Rating': 'Averaged across every engagement to date.',
+  'Industries Served': 'Fintech, healthcare, retail, and counting.',
+}
+
 export const MARQUEE = [
   { value: '50+', label: 'Projects Delivered' },
   { value: '98%', label: 'Client Retention' },
@@ -95,7 +111,8 @@ export const CAPABILITIES = {
 
 export const WHY_TEKNIIK = {
   eyebrow: 'WHY TEKNIIK',
-  heading: 'We do things differently.',
+  heading: 'We do things',
+  headingAccent: 'differently.',
   sub: 'Not for the sake of it. Our clients demand better.',
   items: [
     {
@@ -510,21 +527,20 @@ export const ABOUT_PAGE = {
     heading: 'Designed around clarity.',
     sub: "Here's exactly what happens. No mysteries.",
     steps: [
-      { n: '1', title: 'Discovery Call', body: '30 minutes. Your business, not your tech stack.', win: 'You get: an honest assessment.' },
-      { n: '2', title: 'Proposal & Scope', body: "What we'll build, how long, what it costs.", win: 'You get: no hidden costs.' },
-      { n: '3', title: 'Design & Prototype', body: 'See it before we build it.', win: 'You get: confidence before code.' },
-      { n: '4', title: 'Development', body: '1-2 week cycles. Working software.', win: 'You get: progress every week.' },
-      { n: '5', title: 'Launch', body: 'Testing, deployment, support. Together.', win: 'You get: a smooth launch.' },
-      { n: '6', title: 'Grow', body: 'Ongoing support, maintenance, evolution.', win: 'You get: a long-term partner.' },
+      { n: '1', title: 'Listen', body: 'A 30-minute conversation about your business — what works, what doesn’t, what you’re trying to achieve.', win: 'You get: an honest assessment of whether we can help.' },
+      { n: '2', title: 'Plan', body: 'A clear proposal in plain English — what we’ll build, how long, and what it costs.', win: 'You get: a proposal you can actually read, with no hidden costs.' },
+      { n: '3', title: 'Build', body: '1–2 week cycles. At the end of each, real working software you can test — not a status report.', win: 'You get: working software you can see and test every week.' },
+      { n: '4', title: 'Launch', body: 'Final testing, deployment, and launch-day support. We launch with you, not over the fence.', win: 'You get: a smooth, stress-free launch with our team beside you.' },
+      { n: '5', title: 'Support & Grow', body: 'Ongoing support, proactive maintenance, and regular check-ins as your business evolves.', win: 'You get: a long-term partner, not a one-off vendor.' },
     ],
   },
   principles: {
     eyebrow: 'PRINCIPLES',
     heading: 'What we believe.',
     items: [
-      { title: 'Honesty over comfort.', desc: "If your idea needs rethinking, we'll say so. Even if it means a smaller project." },
+      { title: 'Honesty first.', desc: "If your idea needs rethinking, we'll say so. Even if it means a smaller project." },
       { title: 'Clarity over cleverness.', desc: 'Every decision communicated in language you understand.' },
-      { title: 'Quality over speed.', desc: "We'd rather take an extra week than ship something we're not proud of." },
+      { title: 'Engineering over shortcuts.', desc: 'No templates or copy-paste. Every system architected from the ground up for your needs.' },
       { title: 'Partnership over transactions.', desc: 'We want the right clients — where we can make a real difference.' },
     ],
   },
