@@ -1,0 +1,544 @@
+/* HeroBuildBoard — About hero visual ("the build board").
+   Sibling of HeroThread: hairline ink frame, soft accent wash, diffusion
+   shadow, slow ambient float. Perpetual life = live-dot ping, the ledger
+   cycle (each row flips Queued → Building → Shipped in turn, the last
+   row Deployed — the JSX
+   drives the phase, this file animates the swaps and the drawing progress
+   bar), and the footer pipeline: a teal line draws start→end, igniting
+   each station chip as it passes; the finished run holds, resets, repeats.
+   Color from theme tokens; transform/opacity (+ cheap color/shadow paints
+   on 24px chips). */
+
+/* no aspect-ratio: with six ledger rows the content sizes the card —
+   a fixed 4/3 box clipped the last rows + foot at ≤414 and ~1024 */
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 82% 8%, var(--accent-tint), transparent 55%),
+    var(--bg-raise);
+  box-shadow: 0 28px 56px -36px color-mix(in srgb, var(--navy) 45%, transparent);
+  overflow: hidden;
+  animation: bbFloat 8s ease-in-out infinite;
+}
+
+/* —— header strip ————————————————————————————— */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.live {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: bbPing 2.8s var(--ease-out, ease-out) infinite;
+}
+
+.addr {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.chip {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-tint);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+/* —— sprint ledger ————————————————————————————— */
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: clamp(10px, 1.4vw, 16px) clamp(18px, 2.4vw, 28px);
+}
+
+/* six rows now share the cell the original four had — tighter block
+   padding + a smaller initials chip keep the ledger inside the 4/3 board */
+.row {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 14px);
+  padding-block: clamp(7px, 1vw, 10px);
+}
+
+.row + .row {
+  border-top: 1px solid var(--border-soft);
+}
+
+/* initials chip — the "small senior team", no stock faces */
+/* task-type glyph chip (was fake team initials — read as meaningless) */
+.who {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: var(--accent);
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+}
+
+.whoIcon {
+  width: 13px;
+  height: 13px;
+}
+
+.task {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(0.86rem, 1vw, 0.98rem);
+  letter-spacing: -0.01em;
+  color: var(--text);
+  min-width: 0;
+}
+
+/* —— states (right-aligned mono verdicts) —————————
+   each verdict fades-rises in as React swaps it (fresh mount per phase) */
+.stateShipped,
+.stateBuilding,
+.stateQueued {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: bbStateIn 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stateShipped {
+  color: var(--accent);
+}
+
+.stateBuilding {
+  color: var(--text-dim);
+}
+
+.stateQueued {
+  color: var(--text-faint);
+}
+
+/* in-build progress — draws 0→1 across the row's build beat (mounts fresh
+   each time a row goes into build, so the animation restarts per row) */
+.progress {
+  position: relative;
+  width: clamp(34px, 4vw, 52px);
+  height: 2px;
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--accent);
+  /* completes ~700ms before the JSX STEP beat (2600ms) ends, so the full
+     bar settles before the row flips to Deployed and the next one starts */
+  animation: bbLoad 1.9s linear forwards;
+}
+
+/* —— "one team ↔ always shipping" link ————————————— */
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.footTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.footDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.link {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* the hairline the stations sit on */
+.link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--border-soft);
+}
+
+/* the run: a teal line draws start→end over the hairline; each station chip
+   ignites as the line reaches it and STAYS lit; the finished pipeline holds,
+   everything resets together, repeats. One 7.2s clock shared by all — fill
+   is linear so its edge lines up with the space-between chip positions
+   (0/25/50/75/100% of the link → keyframe times 2/17/32/47/62%). */
+.linkFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: bbFill 7.2s linear infinite;
+}
+
+/* pipeline station — a chip like the ledger's initials chips, punched out
+   of the line (opaque bg, z above the fill) */
+.stage {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-raise);
+  border: 1px solid var(--border-soft);
+  color: var(--text-dim);
+  animation-duration: 7.2s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+.stage:nth-child(2) {
+  animation-name: bbStage1;
+}
+.stage:nth-child(3) {
+  animation-name: bbStage2;
+}
+.stage:nth-child(4) {
+  animation-name: bbStage3;
+}
+.stage:nth-child(5) {
+  animation-name: bbStage4;
+}
+.stage:nth-child(6) {
+  animation-name: bbStage5;
+}
+
+.stageIcon {
+  width: 13px;
+  height: 13px;
+  /* 1.6 viewBox stroke ≈ 0.9px at 13px — thicken so glyphs read at size */
+  stroke-width: 2;
+}
+
+@keyframes bbFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes bbPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes bbStateIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bbLoad {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* fill: draw 2→62%, hold complete to 80%, fade, rest. The 100%→0% snap is
+   invisible (opacity 0 while scaleX resets). */
+@keyframes bbFill {
+  0%,
+  2% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  62%,
+  80% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  87%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* stations: off until the fill's edge arrives, pop lit, HOLD lit to 80%,
+   fade with the fill, rest. Same shape per stage, shifted ignition time. */
+@keyframes bbStage1 {
+  0%,
+  2% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  5% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1.3);
+  }
+  9%,
+  80% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1);
+  }
+  87%,
+  100% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes bbStage2 {
+  0%,
+  17% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  20% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1.3);
+  }
+  24%,
+  80% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1);
+  }
+  87%,
+  100% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes bbStage3 {
+  0%,
+  32% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  35% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1.3);
+  }
+  39%,
+  80% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1);
+  }
+  87%,
+  100% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes bbStage4 {
+  0%,
+  47% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  50% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1.3);
+  }
+  54%,
+  80% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1);
+  }
+  87%,
+  100% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+/* ship gets a slightly bigger pop — the payoff beat */
+@keyframes bbStage5 {
+  0%,
+  62% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  65% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 14px var(--accent-bloom);
+    transform: scale(1.4);
+  }
+  70%,
+  80% {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 12px var(--accent-bloom);
+    transform: scale(1);
+  }
+  87%,
+  100% {
+    color: var(--text-dim);
+    border-color: var(--border-soft);
+    box-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+/* tight boards: shrink chips at large-mobile, drop the pipeline (plain
+   hairline stays) below 381px where the foot tags leave no room */
+@media (max-width: 480px) {
+  .foot {
+    gap: 8px;
+  }
+
+  .stage {
+    width: 18px;
+    height: 18px;
+  }
+
+  .stageIcon {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stage,
+  .linkFill {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap,
+  .live::after,
+  .progressFill,
+  .stage,
+  .linkFill,
+  .stateShipped,
+  .stateBuilding,
+  .stateQueued {
+    animation: none;
+  }
+
+  /* static state = the finished run: line drawn, every station lit */
+  .linkFill {
+    transform: scaleX(1);
+  }
+
+  .stage {
+    color: var(--accent);
+    border-color: var(--accent-border);
+  }
+}

@@ -32,77 +32,102 @@
   pointer-events: none;
 }
 
-/* —— neural-net signal-flow visual (behind the head, top-right) —— */
-.net {
+/* —— full-band AI circuit (traces span the whole section; chip sits right
+   of the head). width:100%/height:auto keeps the 1440×520 aspect so the
+   traces land behind the head + upper grid, fading out before the closing
+   statement. —— */
+.circuit {
   position: absolute;
   z-index: -1;
-  top: clamp(-8px, 1.5vw, 30px);
-  right: clamp(-28px, 0vw, 44px);
-  width: min(45vw, 512px);
+  top: 0;
+  left: 0;
+  width: 100%;
   height: auto;
-  color: var(--accent);
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(132% 118% at 76% 32%, #000 48%, transparent 84%);
-  mask-image: radial-gradient(132% 118% at 76% 32%, #000 48%, transparent 84%);
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 97%);
+  mask-image: linear-gradient(180deg, #000 55%, transparent 97%);
 }
 
-/* faint always-on connections */
-.edge {
+/* faint blueprint traces — same 45°-step language as the home hero */
+.trace {
   stroke: var(--accent);
   stroke-width: 1;
   fill: none;
-  opacity: 0.14;
+  opacity: 0.13;
 }
 
-/* one lit dash glides each edge input → output (period = dash + gap) */
-.flow {
+.pin {
   stroke: var(--accent);
-  stroke-width: 1.6;
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: 3 63;
-  filter: drop-shadow(0 0 3px var(--accent-bloom));
-  animation: netFlow 3.1s linear infinite;
+  stroke-width: 1.5;
+  opacity: 0.28;
 }
 
-@keyframes netFlow {
-  to {
-    stroke-dashoffset: -66;
-  }
+.chipBody {
+  fill: var(--accent-tint);
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0.55;
 }
 
-/* breathing node rings */
-.nodeRing {
+.chipDie {
   fill: none;
   stroke: var(--accent);
   stroke-width: 1;
-  opacity: 0.24;
+  opacity: 0.5;
+}
+
+/* the core breathes — processing */
+.chipPulse {
+  fill: var(--accent);
+  opacity: 0.08;
   transform-box: fill-box;
   transform-origin: center;
-  animation: netPulse 3.2s ease-in-out infinite;
+  animation: aiChipPulse 3.2s ease-in-out infinite;
 }
 
-@keyframes netPulse {
+@keyframes aiChipPulse {
   0%,
   100% {
-    opacity: 0.14;
-    transform: scale(0.82);
+    opacity: 0.06;
+    transform: scale(0.96);
   }
   50% {
-    opacity: 0.42;
-    transform: scale(1.12);
+    opacity: 0.2;
+    transform: scale(1.04);
   }
 }
 
-.nodeCore {
+.chipLabel {
+  font-family: var(--f-mono);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   fill: var(--accent);
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
-.nodeCoreOut {
+/* electrons: dim + slow into the chip, bright + fast out of it */
+.haloIn,
+.haloOut {
+  fill: var(--accent);
+}
+
+.haloIn {
+  opacity: 0.1;
+}
+
+.haloOut {
+  opacity: 0.2;
+}
+
+.coreIn {
+  fill: var(--accent);
+  opacity: 0.5;
+}
+
+.coreOut {
   fill: var(--accent);
   opacity: 0.95;
-  filter: drop-shadow(0 0 4px var(--accent-bloom));
 }
 
 /* —— head —— */
@@ -179,9 +204,21 @@
   padding-top: clamp(18px, 2vw, 24px);
   border-top: 2px solid var(--border-strong);
   will-change: transform;
-  transition:
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 240ms ease;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* hover rail — a teal line draws left→right over the grey top border */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cardIcon {
@@ -196,7 +233,9 @@
   background: var(--surface);
   transition:
     color 260ms var(--ease),
-    border-color 260ms var(--ease);
+    background-color 260ms var(--ease),
+    border-color 260ms var(--ease),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cardIcon svg {
@@ -214,7 +253,7 @@
 
 .title {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(1.15rem, 1.6vw, 1.4rem);
   line-height: 1.1;
   letter-spacing: -0.015em;
@@ -248,14 +287,20 @@
   margin: 0;
 }
 
-/* —— hover (pointer-fine only, no text-shift) —— */
+/* —— hover (pointer-fine only, no text-shift): card lifts, the teal rail
+   draws across the top, the icon chip fills accent and pops with a tilt —— */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
     transform: translateY(-6px);
-    border-top-color: var(--accent);
+  }
+  .card:hover::before {
+    transform: scaleX(1);
   }
   .card:hover .cardIcon {
+    background: var(--accent);
     border-color: var(--accent);
+    color: var(--bg-raise);
+    transform: translateY(-2px) scale(1.06) rotate(-4deg);
   }
 }
 
@@ -265,9 +310,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(24px, 4vw, 36px);
   }
-  /* the neural visual needs the header whitespace it can't get once the grid
+  /* the circuit needs the header whitespace it can't get once the grid
      stacks — drop it, keep the bloom for ambience */
-  .net {
+  .circuit {
     display: none;
   }
 }
@@ -280,18 +325,20 @@
 
 @media (prefers-reduced-motion: reduce) {
   .card,
+  .card::before,
   .cardIcon {
     transition: none;
   }
   .card:hover {
     transform: none;
   }
-  .nodeRing {
-    animation: none;
+  .card:hover .cardIcon {
+    transform: none;
   }
-  .flow {
+  .electron {
+    display: none;
+  }
+  .chipPulse {
     animation: none;
-    stroke-dasharray: none;
-    opacity: 0.28;
   }
 }

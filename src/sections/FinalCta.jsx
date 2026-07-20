@@ -1,6 +1,6 @@
 import Button from '../components/Button.jsx'
 import Reveal from '../components/Reveal.jsx'
-import WordRise from '../motion/ink/WordRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import { useMagneticInk } from '../motion/ink/index.js'
 import styles from './FinalCta.module.css'
 
@@ -51,11 +51,11 @@ export default function FinalCta({
       <div className={`container ${styles.inner}`}>
         <h2 className={styles.heading}>
           {lines.map((line, i) => (
-            <WordRise
+            <FadeIn
               key={i}
               text={line}
               as="span"
-              staggerMs={60}
+              delay={i * 120}
               className={
                 i === lines.length - 1
                   ? `${styles.line} ${styles.lineAccent}`

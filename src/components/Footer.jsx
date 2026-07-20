@@ -1,11 +1,20 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FOOTER } from '../data/content.js'
-import { IconMail, IconWhatsApp, IconFlagIndia, IconFlagUK } from './Icon.jsx'
+import {
+  IconMail,
+  IconLinkedIn,
+  IconInstagram,
+  IconXSocial,
+  IconFlagIndia,
+  IconFlagUK,
+} from './Icon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import styles from './Footer.module.css'
 
 const FLAGS = { chennai: IconFlagIndia, uk: IconFlagUK }
+
+const SOCIAL_ICONS = { linkedin: IconLinkedIn, instagram: IconInstagram, x: IconXSocial }
 
 export default function Footer() {
   const [officeKey, setOfficeKey] = useState(FOOTER.offices[0].key)
@@ -28,29 +37,28 @@ export default function Footer() {
                 <span>{FOOTER.email}</span>
               </a>
             </li>
-            <li>
-              <a href={`mailto:${FOOTER.careersEmail}`} className={styles.contactRow}>
-                <IconMail width="16" height="16" aria-hidden="true" />
-                <span>{FOOTER.careersEmail}</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href={`https://wa.me/${FOOTER.whatsapp.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${styles.contactRow} ${styles.whatsapp}`}
-              >
-                <IconWhatsApp width="16" height="16" aria-hidden="true" />
-                <span>{FOOTER.whatsappLabel}</span>
-              </a>
-            </li>
           </ul>
+          {/* social profile URLs pending — dead '#' links until content lands */}
+          <div className={styles.socials}>
+            {FOOTER.socials.map((s) => {
+              const SocialIcon = SOCIAL_ICONS[s.key]
+              return (
+                <a
+                  key={s.key}
+                  href={s.href || '#'}
+                  className={styles.socialLink}
+                  aria-label={s.label}
+                >
+                  <SocialIcon width="16" height="16" />
+                </a>
+              )
+            })}
+          </div>
         </div>
 
         {FOOTER.cols.map((col) => (
           <div key={col.label}>
-            <div className={styles.colHead}>// {col.label}</div>
+            <div className={styles.colHead}>{col.label}</div>
             <ul className={styles.colLinks}>
               {col.links.map((l) => (
                 <li key={l.label}>
@@ -65,8 +73,10 @@ export default function Footer() {
           </div>
         ))}
 
+        {/* office addresses stay (user: revert); only narrative copy about
+            where development happens is banned outside /contact */}
         <div>
-          <div className={styles.colHead}>// Location</div>
+          <div className={styles.colHead}>Location</div>
           <div className={styles.officeTabs} role="tablist" aria-label="Office locations">
             {FOOTER.offices.map((o) => (
               <button

@@ -210,6 +210,13 @@ export default function Hero() {
           { opacity: 1, translateY: 0, duration: 700, delay: stagger(110), ease: EASE_OUT },
           160,
         )
+        // circuit electrons hold until the whole entrance lands (user:
+        // "start only after the entire hero content has loaded") — timed off
+        // the timeline's computed duration; timer, not anime callback, so a
+        // cleanup-cancelled run can never leave the class stranded half-added
+        timer = setTimeout(() => {
+          if (!cancelled) el.classList.add(styles.circuitLive)
+        }, tl.duration + 120)
       }
 
       // rAF-driven reveal — frame-locked, so the rhythm never stutters the

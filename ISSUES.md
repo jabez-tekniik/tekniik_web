@@ -2,21 +2,19 @@
 
 ## Open
 
-### HeroCircuit SVG traces overflow the viewport at 320px (low, pre-existing)
-At a 320px viewport, `document.scrollWidth > clientWidth` — the culprits are the
-decorative `HeroCircuit.jsx` SVG traces/electrons (elements ~300–500px wide
-extending past the right edge), not page content. Surfaced during the star-icon
-QA sweep (2026-07-14); unrelated to that change. No overflow at 414px+. Fix
-candidates: `overflow-x: clip` on the hero, or size/mask the circuit layer to
-the viewport at small widths.
+### Satoshi is served as `.otf`, not `.woff2` (low)
+`public/fonts/satoshi/` holds OpenType files (~45–52 KB each; ~195 KB for the four
+weights in use). Converting to woff2 would roughly halve that and is the standard
+web format — worth doing, but it needs the woff2 files sourced from Fontshare's
+download bundle. Purely a payload optimization; rendering is correct as-is.
 
-### Footer legal links point at routes that don't exist yet (medium)
-As of the 2026-07-16 content-spec sync the footer `// Legal` column
-(`FOOTER.cols` in `src/data/content.js`) is wired to real routes
-`/privacy-policy` `/terms-of-service` `/cookie-policy` `/gdpr` (per the legal
-spec, which wants the links in place before the pages ship). Those routes don't
-exist yet, so they currently hit NotFound. Building the 4 legal pages + cookie
-consent banner is **Phase 4** of the content-sync plan (`tasks/todo.md`).
+
+### No cookie consent banner despite GA being specced (medium, compliance)
+The cookie policy page (shipped 2026-07-20) documents a consent banner and
+analytics categories, and the privacy policy names Google Analytics 4 — but the
+site has neither a consent banner nor any analytics integration yet. When
+analytics is added, the banner must land with it (accept/reject non-essential,
+per the legal spec).
 
 ### No per-page `<title>`/meta description anywhere on the site (medium, SEO)
 The SPA has no head management — every route shows the static `index.html`
@@ -37,16 +35,66 @@ they stay unused once all pages are redesigned. (`page/services-hero.webp` was
 DELETED 2026-07-15 with its manifest entry — the user rejected generated hero
 imagery on /services; the hero now runs a combined animated vignette reel.)
 
-### `page/contact-hero.webp` no longer used (low)
-The 2026-07-15 Contact ink redesign dropped the full-bleed PageHeader, so
-`contact-hero.webp` is unreferenced (About KEEPS `about-hero.webp` in its ink
-hero frame per user). Same policy as the services images above: paid Imagen
-generation, kept on disk with its manifest entry until the redesign settles.
+### Generated page/case imagery fully unused (low)
+As of 2026-07-20 NO generated webp is referenced by any page: `contact-hero`
+(Contact ink redesign, 2026-07-15), `about-hero` (About hero photo replaced by
+the coded `HeroBuildBoard` vignette — user called the photo off-style), and
+`case/{looqz,autoscreen}-hero` (case-study ink redesign swapped the cinematic
+renders for the discipline ServiceVignettes scenes). Same policy as the
+services images above: paid Imagen generations, kept on disk with their
+manifest entries; delete together if a future round confirms they stay unused.
 
 ### `ogl` + `AuroraShader` are now dead weight on the homepage
 The 2026-07-07 "Bold Editorial" revamp removed the aurora wash — `AuroraShader` (OGL WebGL) is no longer imported by any route (Hero + FinalCta dropped it). It's still exported from `src/motion/index.js` and the `ogl` dependency is still installed, so it ships in the bundle graph as an unused lazy chunk. Follow-up: either delete `src/motion/AuroraShader.*` + drop `ogl` from `package.json`, or repurpose the shader for a future dark toggle. Left in place for now (self-contained, harmless) to keep the revamp scoped to layout/design.
 
 ## Resolved
+
+### Footer legal links hit NotFound (2026-07-20)
+All four legal routes now render the shared `LegalPage` template
+(`src/pages/Legal.jsx` + `src/data/legal.js`, copy verbatim from the locked
+legal spec). Shipped in the same pass: `/work`, `/support`, `/website-package`,
+and the StoryNest case at `/case/famili` — every spec-defined page now exists.
+Follow-on compliance gap tracked above (cookie banner ships with analytics).
+
+### StatBlock rendered non-numeric stats as "0<text>" (2026-07-20)
+`parse()` fell back to `{num: 0, suffix: str}` for values with no digits, so
+StoryNest's `Free` stat displayed "0Free". Non-numeric values now return
+`{raw}` and render verbatim, skipping the counter; numeric path unchanged.
+
+### Services page ghost numerals collided with headlines (2026-07-20)
+`.ghost` was right-anchored in the text column and overlapped the headline's
+last word on wide screens. Now a left-anchored backdrop BEHIND the title (the
+ServiceShowcase watermark idiom, `z-index` layered); section rhythm also
+tightened (padding 120→92px max) after user feedback about desktop whitespace.
+
+### ServiceShowcase copy column crushed to ~190px on wide monitors (2026-07-20)
+The pinned overlay's flex-basis `clamp(340px,34vw,540px)` contained the
+`--edge` container padding inside the border-box, so at ≥1900px the text got
+~190px. Basis is now `calc(var(--edge) + clamp(360px,26vw,520px))`; the desc
+line-reserve drops 6→5 lines ≥1880px.
+
+### 320px horizontal overflow on `/` (2026-07-20)
+The long-open "HeroCircuit traces overflow at 320px" note blamed the wrong
+element: the hero already clips (`overflow: hidden`); the actual document
+overflow (+12px) came from the **Testimonial rotation nav** — five 44px hit
+areas whose row didn't fit the rail column at 320px. Fixed with
+`flex-wrap: wrap` on `.nav` (Testimonial.module.css). Full 7-route × 7-width
+iframe sweep (320–1280) now shows zero horizontal scroll.
+
+### Case-study pages + NotFound were still on the old indigo base theme (2026-07-20)
+`/case/looqz` and `/case/autoscreen` ran the pre-ink PageHeader design (Inter
+Tight headings, indigo accent, aurora blooms, cinematic renders). Rebuilt on a
+shared Deep Ink template (`pages/CaseStudy.jsx` + rewritten
+`CaseStudy.module.css`); `App.jsx` now inks ALL routes (INK_ROUTES gate
+removed), so Satoshi + ink tokens apply on every page including NotFound.
+`components/PageHeader.jsx/.module.css` deleted (no longer used anywhere).
+
+### Satoshi rendered synthesized 600/800 weights (2026-07-20)
+Display rules asked Satoshi for 600/800, which don't exist as files — the
+browser faux-bolded 500/700/900. All Satoshi call sites now use real file
+weights (800→900 on display headings, 600→700 on Button/Footer country), and
+every shipped Satoshi file (300/400/500/700/900 + italics) is registered in
+`tokens.css`. Inter keeps its real 600 from the Google load.
 
 ### Homepage "What We Engineer" cards link to the /services hub, not sub-pages (2026-07-17)
 Phase-2 service detail pages shipped (`/services/custom-software`,
@@ -238,6 +286,22 @@ Services / About / Contact / case-study pages all rendered a centered text-only 
 
 ### Capabilities section duplicated the hero bento on Home — removed
 The home page rendered both the new `ServiceShowcase` bento (in Hero) and the old `Capabilities` section beneath it, listing the same four offerings twice. Removed the `Capabilities` import + render from `Home.jsx` and deleted `src/sections/Capabilities.jsx` + its CSS module.
+
+### Site silently rendered Inter Tight instead of Satoshi — Fontshare CDN returned 200-OK non-CSS
+`index.html` loaded Satoshi from `api.fontshare.com`. The API began responding
+**HTTP 200** with a 162-byte body of `/* Access to the Fontshare API has been
+temporarily restricted. */` — valid-looking CSS containing zero `@font-face`
+rules. Because the request "succeeded", there was no console error and no failed
+entry in the Network tab; the `Satoshi` family simply never existed, so every
+`--f-display` consumer fell through the stack to `'Inter Tight'` and the site
+looked subtly-but-entirely wrong with no diagnostic signal. `document.fonts.check()`
+was *also* misleading here — it returns `true` whenever the text is renderable by
+any font including fallbacks, so it reported Satoshi as present. The reliable probe
+is enumerating `[...document.fonts]` for the family, or comparing rendered text
+width against a known-different family.
+Fixed by self-hosting: `@font-face` blocks in `tokens.css` pointing at the
+already-present `public/fonts/satoshi/*.otf`, CDN `<link>` + preconnects removed,
+Black/Medium preloaded. No third-party font dependency remains.
 
 ### Page hero frames were tall portrait rectangles — squared
 `PageHeader.media` was rendering at `aspect-ratio: 4/5` on desktop (and 16/11 on tablet) which read as elongated. Switched all variants to a clean `1/1` square frame so the hero feels balanced beside the text column. Updated all `media.width/height` props from `1280×1600` (page heroes) and `1920×1080` (case studies) to `1600×1600`.

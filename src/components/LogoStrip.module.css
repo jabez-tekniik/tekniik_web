@@ -157,7 +157,7 @@
 
 .statement {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(2.2rem, 5vw, 4.2rem);
   line-height: 1;
   letter-spacing: -0.03em;
@@ -225,7 +225,7 @@
 /* ink-fill: digits arrive as a hairline outline, then fill solid */
 .statValue {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(3rem, 4.8vw, 5.2rem);
   line-height: 0.92;
   letter-spacing: -0.03em;

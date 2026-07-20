@@ -1,0 +1,243 @@
+/* Legal pages — shared quiet document template (/privacy-policy,
+   /terms-of-service, /cookie-policy, /gdpr). Per the locked spec:
+   no hero visuals, standard heading + body format, ~720px reading
+   column, "Last updated" at the top. Ink devices kept minimal:
+   node + mono meta bar, hairline section ledger, teal dash markers. */
+
+.page {
+  padding-top: clamp(88px, 9vw, 120px);
+  padding-bottom: clamp(72px, 9vw, 128px);
+}
+
+/* —— meta bar: node + LEGAL eyebrow | last-updated stamp ———— */
+.metaBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-bloom);
+  flex-shrink: 0;
+}
+
+.updated {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* —— document column ————————————————————————————— */
+.doc {
+  max-width: 720px;
+}
+
+/* quieter than --fs-page-hero on purpose — legal pages are documents */
+.title {
+  display: block;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 clamp(24px, 3.4vw, 36px);
+}
+
+/* —— sections: hairline ledger —————————————————————— */
+.section {
+  border-top: 1px solid var(--border-soft);
+  padding-top: clamp(22px, 3vw, 30px);
+  margin-top: clamp(26px, 3.4vw, 38px);
+}
+
+.heading {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.7vw, 1.32rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.sub {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--text);
+  margin: 22px 0 8px;
+}
+
+.para {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-dim);
+  margin: 0 0 14px;
+}
+
+.label {
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0 0 8px;
+}
+
+.section > :last-child {
+  margin-bottom: 0;
+}
+
+.para strong,
+.item strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* —— lists: teal dash markers ———————————————————————— */
+.list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.item {
+  position: relative;
+  padding-left: 24px;
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.item + .item {
+  margin-top: 8px;
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 12px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* —— inline links ————————————————————————————————— */
+.link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 3px;
+  /* long bare URLs (policies.google.com/…) must wrap, not overflow, at 320px */
+  overflow-wrap: anywhere;
+  transition: text-decoration-color 200ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* —— tables (cookie ledgers, third-party services) ——————————
+   the wrapper scrolls internally on narrow viewports so the page
+   itself never scrolls horizontally */
+.tableWrap {
+  overflow-x: auto;
+  margin: 4px 0 18px;
+  border: 1px solid var(--hairline);
+}
+
+.table {
+  width: 100%;
+  min-width: 440px;
+  border-collapse: collapse;
+  font-family: var(--f-body);
+  font-size: 0.92rem;
+}
+
+.table th {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text);
+  background: var(--surface);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.table td {
+  padding: 10px 14px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* —— warm variant (GDPR — trust page, not a legal document) ————
+   the opening commitment section reads as a teal-railed lede */
+.warm .section:first-of-type {
+  border-top: 0;
+  border-left: 3px solid var(--accent);
+  padding-top: 0;
+  padding-left: clamp(18px, 2.5vw, 28px);
+}
+
+.warm .section:first-of-type .heading {
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+}
+
+.warm .section:first-of-type .para {
+  font-size: clamp(1.02rem, 1.4vw, 1.12rem);
+  color: var(--text);
+}
+
+/* —— responsive ———————————————————————————————— */
+@media (max-width: 560px) {
+  .metaBar {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+}
+
+/* —— reduced motion ————————————————————————————— */
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

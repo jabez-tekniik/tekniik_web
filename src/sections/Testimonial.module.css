@@ -27,7 +27,7 @@
 
 .glyph {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(5rem, 11vw, 9.5rem);
   line-height: 0.55;
   color: var(--accent);
@@ -81,9 +81,12 @@
   color: var(--text-faint);
 }
 
-/* —— rotation nav: thin editorial bars, 44px hit areas —— */
+/* —— rotation nav: thin editorial bars, 44px hit areas ——
+   flex-wrap so the five hit areas fold instead of forcing h-scroll at
+   very narrow viewports (320px overflowed by 12px) */
 .nav {
   display: flex;
+  flex-wrap: wrap;
   margin: -12px 0 -16px -9px;
 }
 

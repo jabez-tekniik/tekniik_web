@@ -5,11 +5,13 @@ import { IconArrow } from '../components/Icon.jsx'
 import { PORTFOLIO } from '../data/content.js'
 import styles from './Portfolio.module.css'
 
-/* Bento cell spans by position (4-col grid). CareGrid (0) is the 2x2 navy
-   anchor; the two routed case studies (1 GlowBook, 4 ScreenFix) get wide
-   tiles; 2 and 3 tuck in as small squares beside the anchor. The pattern
-   tiles the eight items cleanly; any extra items fall back to wide. */
-const CELLS = ['cellBig', 'cellWide', 'cellSmall', 'cellSmall', 'cellWide', 'cellWide', 'cellWide', 'cellWide']
+/* Bento cell spans by data, not position (user: cards with no case study
+   run smaller): CareGrid is the 2x2 navy anchor, routed case studies get
+   wide tiles, everything else tucks in as a compact square. Items render
+   featured → routed → rest so the numbering follows the visual order the
+   dense grid produces. */
+const cellFor = (item) =>
+  item.featured ? 'cellBig' : item.route ? 'cellWide' : 'cellSmall'
 
 function LocationGlyph({ className }) {
   return (
@@ -53,9 +55,7 @@ function Card({ item, index, compact }) {
         </span>
       </div>
 
-      <h3 className={styles.title}>
-        <span className={styles.titleInk}>{item.title}</span>
-      </h3>
+      <h3 className={styles.title}>{item.title}</h3>
 
       {item.featured && <p className={styles.desc}>{item.desc}</p>}
 
@@ -101,13 +101,17 @@ export default function Portfolio() {
         </Reveal>
 
         <div className={styles.grid}>
-          {PORTFOLIO.items.map((item, i) => (
+          {[
+            ...PORTFOLIO.items.filter((p) => p.featured),
+            ...PORTFOLIO.items.filter((p) => !p.featured && p.route),
+            ...PORTFOLIO.items.filter((p) => !p.featured && !p.route),
+          ].map((item, i) => (
             <Reveal
               key={item.slug}
               delay={Math.min(i, 5) * 50}
-              className={`${styles.cardWrap} ${styles[CELLS[i] || 'cellWide']}`}
+              className={`${styles.cardWrap} ${styles[cellFor(item)]}`}
             >
-              <Card item={item} index={i} compact={CELLS[i] === 'cellSmall'} />
+              <Card item={item} index={i} compact={!item.featured && !item.route} />
             </Reveal>
           ))}
         </div>

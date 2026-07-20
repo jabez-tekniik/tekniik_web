@@ -10,6 +10,11 @@ import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import CaseLooqz from './pages/CaseLooqz.jsx'
 import CaseAutoScreen from './pages/CaseAutoScreen.jsx'
+import CaseFamili from './pages/CaseFamili.jsx'
+import Work from './pages/Work.jsx'
+import Support from './pages/Support.jsx'
+import WebsitePackage from './pages/WebsitePackage.jsx'
+import LegalPage from './pages/Legal.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 const MODE_KEY = 'tekniik-ink-mode'
@@ -23,33 +28,18 @@ function readStoredMode() {
   }
 }
 
-// Routes that have been redesigned onto the "Deep Ink" brand themes.
-// Grows page by page until every route is inked, then the set can go away.
-const INK_ROUTES = new Set([
-  '/',
-  '/services',
-  '/services/custom-software',
-  '/services/web-platforms',
-  '/services/mobile-apps',
-  '/services/ai-systems',
-  '/about',
-  '/contact',
-])
-
 export default function App() {
   const location = useLocation()
-  const inked = INK_ROUTES.has(location.pathname)
 
-  // "Deep Ink" brand themes (theme-ink.css) are scoped to redesigned routes:
+  // Every route runs the "Deep Ink" brand themes (theme-ink.css):
   // ink-light (default) or ink (dark), toggled from the Nav and persisted.
-  // Other routes keep the base light theme. Set pre-paint — no theme flash.
+  // The old per-route INK_ROUTES gate is gone — the case-study redesign
+  // (2026-07-20) inked the last base-theme pages. Set pre-paint, no flash.
   const [mode, setMode] = useState(readStoredMode)
 
   useLayoutEffect(() => {
-    const root = document.documentElement
-    if (inked) root.setAttribute('data-theme', mode === 'dark' ? 'ink' : 'ink-light')
-    else root.removeAttribute('data-theme')
-  }, [inked, mode])
+    document.documentElement.setAttribute('data-theme', mode === 'dark' ? 'ink' : 'ink-light')
+  }, [mode])
 
   useEffect(() => {
     try {
@@ -63,7 +53,7 @@ export default function App() {
     <>
       <a className="skip-link" href="#main">Skip to content</a>
       <Nav
-        themeMode={inked ? mode : null}
+        themeMode={mode}
         onToggleTheme={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
       />
       <ScrollToTop />
@@ -77,6 +67,14 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/case/looqz" element={<CaseLooqz />} />
             <Route path="/case/autoscreen" element={<CaseAutoScreen />} />
+            <Route path="/case/famili" element={<CaseFamili />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/website-package" element={<WebsitePackage />} />
+            <Route path="/privacy-policy" element={<LegalPage page="privacy-policy" />} />
+            <Route path="/terms-of-service" element={<LegalPage page="terms-of-service" />} />
+            <Route path="/cookie-policy" element={<LegalPage page="cookie-policy" />} />
+            <Route path="/gdpr" element={<LegalPage page="gdpr" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

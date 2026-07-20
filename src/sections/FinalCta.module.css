@@ -73,7 +73,7 @@
 /* —— heading: left-anchored —— */
 .heading {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(2.6rem, 7.2vw, 6.2rem);
   line-height: 1;
   letter-spacing: -0.03em;

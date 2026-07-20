@@ -1,0 +1,650 @@
+/* Website Package — standalone conversion landing page (Deep Ink).
+   Simpler register than the main site, same system: node + mono meta bar,
+   NN / EYEBROW section heads, numbered specRow ledgers, statement cells,
+   brand-navy process band with scroll-lit rails, hairline <details> FAQ.
+   Tokens only — both ink modes adapt. Transform/opacity motion only. */
+
+/* —— Hero ——————————————————————————————————— */
+.hero {
+  position: relative;
+  padding-top: clamp(88px, 9vw, 120px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -14%;
+  right: -12%;
+  width: min(640px, 58vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hero-glow-a) 0%,
+    var(--hero-glow-b) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.heroInner {
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.metaBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(32px, 4.4vw, 56px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-bloom);
+  flex-shrink: 0;
+}
+
+.metaRight {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.heroSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(40px, 6vw, 88px);
+  align-items: center;
+}
+
+.headline {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: var(--fs-page-hero);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 clamp(20px, 2.6vw, 32px);
+  max-width: 22ch;
+}
+
+.headlineAccent {
+  color: var(--accent);
+}
+
+.sub {
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 48ch;
+  margin: 0;
+}
+
+.actions {
+  margin-top: clamp(24px, 3vw, 36px);
+}
+
+/* fixed-price stat card — mono kicker, oversized figure, trust-line foot.
+   The ink ledger treatment (surface + hairlines + strong top rule), not a
+   pricing badge. */
+.priceCard {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-top: 2px solid var(--border-strong);
+  padding: clamp(24px, 3.5vw, 44px);
+}
+
+.priceKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.priceFigure {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: clamp(14px, 1.8vw, 22px) 0 clamp(18px, 2.4vw, 28px);
+}
+
+.priceValue {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(3.6rem, 6.5vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.priceVat {
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.priceFoot {
+  border-top: 1px solid var(--hairline);
+  padding-top: 16px;
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* —— Sections ————————————————————————————————— */
+.section {
+  padding-block: clamp(60px, 7.5vw, 104px);
+}
+
+.sectionTint {
+  background: var(--bg-2);
+  border-block: 1px solid var(--hairline);
+}
+
+.secHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: clamp(26px, 3.5vw, 44px);
+}
+
+.secIndex {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.secEyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.sectionHeading {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0;
+}
+
+/* —— 01 · What's included — grouped spec ledgers ——————— */
+.inclHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin-bottom: clamp(28px, 3.6vw, 44px);
+}
+
+.inclPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+}
+
+.inclPriceNum {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.inclPriceVat {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.group + .group {
+  margin-top: clamp(28px, 3.6vw, 44px);
+}
+
+.groupHead {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 14px;
+}
+
+.specs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 780px;
+  border-top: 1px solid var(--hairline);
+}
+
+.specRow {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.specRow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .specRow:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.specNum {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.specText {
+  font-family: var(--f-body);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--text);
+  /* guard for long unbroken tokens ("you@yourbusiness.co.uk") at 320px */
+  overflow-wrap: break-word;
+}
+
+/* —— 02 · Who this is for — statement cells ————————— */
+.audHeading {
+  max-width: 24ch;
+}
+
+.audGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 56px);
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+.audCell {
+  border-top: 2px solid var(--border-strong);
+  padding-top: clamp(16px, 2vw, 24px);
+  transition:
+    border-color var(--d-base) var(--ease),
+    transform 320ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .audCell:hover {
+    border-top-color: var(--accent);
+    transform: translateY(-4px);
+  }
+}
+
+.audNum {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.audText {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* —— 03 · How it works — brand-navy band, scroll-lit rails ——— */
+/* Semantic tokens re-scoped so every child adapts (same device as the About
+   process band). --band here, not --band-deep: the light FAQ section sits
+   between this band and FinalCta, so they never touch. */
+.process {
+  position: relative;
+  padding-block: clamp(64px, 8vw, 120px);
+  overflow: hidden;
+  background: var(--band);
+
+  --bg: var(--band);
+  --bg-2: var(--band-2);
+  --bg-raise: var(--band-raise);
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --text: var(--on-band);
+  --text-dim: var(--on-band-dim);
+  --text-faint: var(--on-band-faint);
+  --hairline: var(--band-hairline);
+  --border: var(--band-hairline);
+  --border-soft: rgba(255, 255, 255, 0.07);
+  --border-strong: var(--band-hairline-strong);
+  --accent: var(--accent-on-band);
+  --accent-soft: rgba(114, 204, 214, 0.12);
+  --accent-tint: rgba(114, 204, 214, 0.07);
+  --accent-border: rgba(114, 204, 214, 0.28);
+  --accent-bloom: rgba(114, 204, 214, 0.2);
+}
+
+.processHead {
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.processHead .secHead {
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(24px, 3vw, 48px);
+  row-gap: clamp(36px, 4.4vw, 56px);
+}
+
+.step {
+  position: relative;
+}
+
+/* scroll-drawn rail: hairline that fills teal in step order */
+.rail {
+  position: relative;
+  display: block;
+  height: 2px;
+  background: var(--hairline);
+  margin-bottom: clamp(16px, 2vw, 22px);
+}
+
+.railFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.railNode {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  transform: translate(-1px, -50%) scale(0.55);
+  transition:
+    background var(--d-base) var(--ease),
+    box-shadow var(--d-base) var(--ease),
+    transform var(--d-base) var(--ease-out);
+}
+
+.rail.lit .railNode {
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-bloom);
+  transform: translate(-1px, -50%) scale(1);
+}
+
+.stepBody {
+  position: relative;
+}
+
+.stepLabel {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* outlined numeral floating behind each step title */
+.ghost {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 4.6vw, 4rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.25px var(--border-strong);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}
+
+.stepTitle {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.stepDesc {
+  font-family: var(--f-body);
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* —— 04 · Common questions — hairline <details> rows ——————— */
+.faq {
+  margin-top: clamp(28px, 4vw, 48px);
+  max-width: 780px;
+  border-top: 1px solid var(--hairline);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.faqQ {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 18px 6px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  letter-spacing: -0.01em;
+  color: var(--text);
+  transition: color 200ms var(--ease-out);
+}
+
+.faqQ::-webkit-details-marker {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faqQ:hover {
+    color: var(--accent);
+  }
+}
+
+.faqIcon {
+  flex-shrink: 0;
+  color: var(--text-dim);
+  transition:
+    transform 240ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+.faqItem[open] .faqIcon {
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+
+.faqA {
+  padding: 0 6px 22px;
+}
+
+.faqA p {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.faqItem[open] .faqA {
+  animation: faqIn 300ms var(--ease-out) backwards;
+}
+
+@keyframes faqIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Responsive ———————————————————————————————— */
+@media (max-width: 960px) {
+  .heroSplit {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 6vw, 48px);
+  }
+
+  .priceCard {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .stepDesc {
+    max-width: 52ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .audGrid {
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 5vw, 32px);
+  }
+
+  .audText {
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .metaBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .metaRight {
+    text-align: left;
+  }
+}
+
+/* —— Reduced motion: static, complete render ———————————— */
+@media (prefers-reduced-motion: reduce) {
+  .specRow::after,
+  .audCell,
+  .faqQ,
+  .faqIcon,
+  .railNode {
+    transition: none;
+  }
+
+  .railNode {
+    background: var(--accent);
+    transform: translate(-1px, -50%) scale(1);
+  }
+
+  .faqItem[open] .faqA {
+    animation: none;
+  }
+}

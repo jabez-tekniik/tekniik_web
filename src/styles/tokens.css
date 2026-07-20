@@ -1,3 +1,84 @@
+/* —— Satoshi (self-hosted) ——
+   Served from public/fonts/satoshi/ rather than the Fontshare CDN: the API
+   started returning a 200 OK whose body is "access temporarily restricted"
+   instead of CSS, so Satoshi silently vanished and every --f-display use fell
+   through to the 'Inter Tight' fallback with no console error. Self-hosting
+   removes the third-party dependency entirely.
+   EVERY shipped file is registered (300/400/500/700/900, normal + italic) and
+   Satoshi call sites use ONLY these weights — never 600/800, which would
+   synthesize a faux weight instead of loading a real file (user rule,
+   2026-07-20). font-display: swap; unused faces cost nothing until used. */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   /* —— color —— */
   --bg: #f7f8fa;
@@ -36,6 +117,11 @@
   /* —— type —— */
   --f-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
   --f-body: 'Inter', system-ui, sans-serif;
+  /* ONE hero-headline size for every interior page (Services hub + details,
+     About, Contact, case studies) — sized so the longest headline holds ≤3
+     lines in a split-hero column (user rule, 2026-07-20). The home poster
+     keeps its own oversized scale. */
+  --fs-page-hero: clamp(2.4rem, 4.6vw, 4rem);
   /* "mono" label slot — now plain Inter (the code-like mono read as off-brand).
      Kept as a distinct token so the tiny uppercase-tracked labels can be tuned
      independently of body/display without touching every call site. */

@@ -81,7 +81,7 @@
 
 .heading {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(2.3rem, 6.2vw, 5.4rem);
   line-height: 1.02;
   letter-spacing: -0.03em;
@@ -356,11 +356,13 @@
 }
 
 /* pinned: the copy is the left column, vertically centred against the tall
-   screen */
+   screen. Width = container edge + a real content width — padding-left
+   (--edge) is inside the border-box, so a plain clamp() basis starved the
+   text to ~190px once --edge grew past ~300px on wide monitors. */
 .section[data-pinned='true'] .overlay {
   position: relative;
   z-index: 2;
-  flex: 0 0 clamp(340px, 34vw, 540px);
+  flex: 0 0 calc(var(--edge) + clamp(360px, 26vw, 520px));
   min-width: 0;
   justify-content: center;
   padding-left: var(--edge);
@@ -383,7 +385,7 @@
 /* —— title: rises out of the stage word-by-word —— */
 .title {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   line-height: 0.98;
   letter-spacing: -0.03em;
   color: var(--text);
@@ -440,6 +442,14 @@
    during the cross-fade (narrow column → the longest desc wraps ~6 lines) */
 .section[data-pinned='true'] .desc {
   min-height: calc(1.65em * 6);
+}
+
+/* wide monitors: the copy column is broad enough that the longest desc wraps
+   ~4-5 lines — a 6-line reserve left a dead band under the text */
+@media (min-width: 1880px) {
+  .section[data-pinned='true'] .desc {
+    min-height: calc(1.65em * 5);
+  }
 }
 
 .link {

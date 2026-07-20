@@ -96,12 +96,41 @@
   color: var(--accent);
 }
 
-.whatsapp svg {
-  color: #25d366;
+/* social row — hairline squares matching the office-tab device; links are
+   dead ('#') until the profile URLs land */
+.socials {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
 }
 
-.whatsapp:hover svg {
-  color: #1ebe5a;
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--muted-2);
+  transition:
+    color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    transform 160ms var(--ease-out);
+}
+
+.socialLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.socialLink:active {
+  transform: scale(0.94);
+}
+
+.socialLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .officeTabs {
@@ -160,31 +189,6 @@
   animation: regionIn 360ms var(--ease-out) backwards;
 }
 
-.colHead {
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--muted-2);
-  margin-bottom: 16px;
-}
-
-.colLinks {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.colLinks a {
-  font-size: 0.875rem;
-  color: var(--body);
-  transition: color 200ms var(--ease);
-}
-
-.colLinks a:hover {
-  color: var(--accent);
-}
-
 .region {
   display: flex;
   align-items: center;
@@ -196,11 +200,10 @@
   animation: regionIn 360ms var(--ease-out) backwards;
 }
 
+/* flag badge art brings its own corner radius + inset border — no ring/clip
+   here, and align-items:center on .region lines it up with the country name */
 .flag {
   display: inline-flex;
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px var(--border);
   line-height: 0;
   animation: flagIn 420ms var(--ease-out) 60ms backwards;
 }
@@ -209,9 +212,10 @@
   display: block;
 }
 
+/* Satoshi has no 600 file — 700 is the nearest real weight */
 .country {
   font-family: var(--f-display);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ink);
   white-space: nowrap;
@@ -245,7 +249,36 @@
   .address {
     animation: none;
   }
+  .socialLink:active {
+    transform: none;
+  }
 }
+
+.colHead {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted-2);
+  margin-bottom: 16px;
+}
+
+.colLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.colLinks a {
+  font-size: 0.875rem;
+  color: var(--body);
+  transition: color 200ms var(--ease);
+}
+
+.colLinks a:hover {
+  color: var(--accent);
+}
+
 
 .bottom {
   position: relative;

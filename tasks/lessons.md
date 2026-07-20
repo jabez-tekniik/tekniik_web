@@ -97,3 +97,26 @@ pseudo-elements to a shared component, grep for per-instance styling of
 that component (`ctaBtn`, className props) and check for pseudo-element
 and overflow collisions; resolve with deliberately higher-specificity
 selectors (e.g. `a.ctaBtn::before`), never by cascade order luck.
+
+## CDP browser checks vs anime.js entrances (2026-07-20)
+
+Screenshots via the Chrome extension on an occluded tab catch entrances
+mid-fade "forever": background tabs throttle rAF (sometimes to zero), so
+anime timelines crawl and a 650ms fade can look frozen for many seconds.
+Judge the SETTLED state (screenshot again later), never the first frame.
+Corollaries for scripted checks in that context:
+- `window.__x = async ...` + awaiting rAF hangs the Runtime.evaluate call —
+  never wait on requestAnimationFrame in an occluded tab; setTimeout is
+  clamped (~1s) but fires.
+- `resize_window` can silently not change the viewport (maximized/snapped
+  window). For breakpoint sweeps, load routes in a same-origin IFRAME and
+  resize the iframe: media queries re-evaluate per-iframe, and reading
+  `scrollWidth` right after a width change forces a synchronous reflow —
+  no waiting at all. 7 routes × 7 widths runs in seconds.
+
+## "X overflows at 320px" blame needs the clip chain, not getBoundingClientRect
+
+Elements report rects past the viewport even when an ancestor clips them.
+The long-blamed HeroCircuit overflow was actually the Testimonial nav (five
+44px hit areas in a narrow rail). Walk parents checking computed overflowX
+before accusing a child; fix was `flex-wrap: wrap` on the nav row.

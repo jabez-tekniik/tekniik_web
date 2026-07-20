@@ -4,8 +4,7 @@ import Button from '../components/Button.jsx'
 import Reveal from '../components/Reveal.jsx'
 import MiniCta from '../components/MiniCta.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
-import WordRise from '../motion/ink/WordRise.jsx'
-import LineWipe from '../motion/ink/LineWipe.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
 import { getLenis } from '../motion/SmoothScroll.jsx'
 import { WebScene, AppScene, MobileScene, AiScene } from '../sections/ServiceVignettes.jsx'
@@ -143,7 +142,7 @@ function Discipline({ svc, i }) {
             <span className={styles.ghost} aria-hidden="true">
               0{i + 1}
             </span>
-            <WordRise text={svc.title} as="h2" staggerMs={40} className={styles.discTitle} />
+            <FadeIn text={svc.title} as="h2" className={styles.discTitle} />
             <Reveal delay={100}>
               <p className={styles.lede}>{svc.lede}</p>
             </Reveal>
@@ -240,14 +239,17 @@ export default function Services() {
 
           <div className={styles.heroSplit}>
             <div className={styles.heroText}>
+              {/* segments flow inline (accent tail) so the headline wraps
+                  naturally to ≤3 lines at the shared hero size; the {' '}
+                  keeps the word gap, the nbsp binds the last two words so
+                  no single-word orphan — copy is unchanged */}
               <h1 className={styles.headline}>
-                <LineWipe text={line1} as="span" className={styles.hLine} />
-              {/* nbsp binds the last two words so the line never wraps to a
-                  single-word orphan ("…runs / on.") — copy is unchanged */}
-              <LineWipe
+                <FadeIn text={line1} as="span" className={styles.hLine} />
+              {' '}
+              <FadeIn
                 text={line2.replace(/ (\S+)$/, ' $1')}
                 as="span"
-                delay={200}
+                delay={150}
                 className={`${styles.hLine} ${styles.hAccent}`}
               />
               </h1>

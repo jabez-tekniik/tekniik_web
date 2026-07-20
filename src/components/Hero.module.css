@@ -70,6 +70,17 @@
   animation: nodePulse 2.4s var(--ease) infinite;
 }
 
+/* electrons stay dark until the hero entrance timeline completes —
+   .circuitLive lands on the section root from the typewriter's finish() */
+.electron {
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+}
+
+.circuitLive .electron {
+  opacity: 1;
+}
+
 .electronHalo {
   fill: var(--accent);
   opacity: 0.18;

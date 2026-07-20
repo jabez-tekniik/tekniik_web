@@ -36,7 +36,7 @@
 /* —— full-width statement —— */
 .statement {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(2.4rem, 6.4vw, 5.6rem);
   line-height: 1;
   letter-spacing: -0.03em;

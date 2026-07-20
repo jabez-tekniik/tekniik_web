@@ -30,3 +30,6 @@ dist-ssr
 
 # Superpowers SDD scratch
 .superpowers/
+
+# Claude Code local settings
+.claude/

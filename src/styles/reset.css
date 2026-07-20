@@ -74,7 +74,7 @@ h6 {
   color: var(--ink);
   letter-spacing: -0.03em;
   line-height: 1.0;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 h1 {
@@ -86,7 +86,7 @@ h1 {
 
 h2 {
   font-size: clamp(2.25rem, 5vw, 4rem);
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: -0.045em;
   line-height: 0.98;
 }

@@ -97,8 +97,8 @@
 .headline {
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
-  line-height: 0.98;
+  font-size: var(--fs-page-hero);
+  line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(20px, 2.6vw, 32px);
@@ -119,10 +119,18 @@
   line-height: 1.65;
   color: var(--text-dim);
   max-width: 46ch;
-  margin: 0 0 clamp(32px, 4.4vw, 56px);
+  margin: 0;
 }
 
-/* status ledger — three availability facts across a hairline */
+/* hero CTA — jumps to the form spread below */
+.heroCta {
+  margin-top: clamp(24px, 3vw, 36px);
+}
+
+/* status ledger — three availability facts split by hairlines. Each cell
+   runs mono label over a confident Satoshi value (the About-signals
+   hierarchy) instead of flat mono caps; the first cell sits flush with
+   the headline's left edge */
 .status {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -130,22 +138,37 @@
 }
 
 .statusCell {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 56px;
-  padding: 14px clamp(4px, 1vw, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: clamp(16px, 2vw, 22px) 16px clamp(18px, 2.2vw, 24px) 0;
   border-bottom: 1px solid var(--hairline);
-  font-family: var(--f-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-dim);
 }
 
 .statusCell + .statusCell {
   border-left: 1px solid var(--hairline);
+  padding-left: clamp(16px, 2.4vw, 28px);
+}
+
+.statusLabel {
+  font-family: var(--f-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.statusValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--text);
 }
 
 .liveDot {
@@ -175,6 +198,8 @@
   position: relative;
   padding-block: clamp(56px, 7vw, 104px);
   overflow: hidden;
+  /* anchor target of the hero CTA — clear the 68px fixed nav */
+  scroll-margin-top: 84px;
 }
 
 .grid {
@@ -320,12 +345,17 @@ textarea.input {
   color: inherit;
 }
 
-/* teal sweep behind the row (same device as the Services index rows) */
+/* teal sweep behind the row (same device as the Services index rows).
+   Flush with the list edges (user: bleeding past them looked wrong) — the
+   breathing room comes from the content nudging inward on hover instead.
+   Transforms, not padding: subgrid can't take inline padding (see above)
+   and padding would animate layout */
 .line::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
+  border-radius: var(--r-lg);
   background: var(--accent-tint);
   transform: scaleX(0);
   transform-origin: left center;
@@ -339,6 +369,7 @@ textarea.input {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-faint);
+  transition: transform 340ms var(--ease-out);
 }
 
 .lineValue {
@@ -348,6 +379,7 @@ textarea.input {
   letter-spacing: -0.01em;
   color: var(--text);
   overflow-wrap: anywhere;
+  transition: transform 340ms var(--ease-out);
 }
 
 .lineArrow {
@@ -369,9 +401,15 @@ textarea.input {
   .line:hover::before {
     transform: scaleX(1);
   }
+  /* hover "padding": label + value slide right, arrow settles short of the
+     right edge, so the flush highlight still gets 12px of breathing room */
+  .line:hover .lineLabel,
+  .line:hover .lineValue {
+    transform: translateX(12px);
+  }
   .line:hover .lineArrow {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(-12px, 0);
   }
 }
 
@@ -446,18 +484,21 @@ textarea.input {
   }
 }
 
+/* flag badge art brings its own corner radius + inset border — no ring/clip.
+   16px box → 12px visible art (art spans 24/32 of the viewBox): with the
+   0.5px up-nudge the art overhangs the label's 8px caps by exactly 2px top
+   AND bottom (measured 2026-07-21) — the 18px flag hung low of the caps */
 .flag {
   display: inline-flex;
-  border-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px var(--hairline);
   line-height: 0;
+  position: relative;
+  top: -1.5px;
 }
 
 .flag svg {
   display: block;
-  width: 18px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
 }
 
 .officeAddress {
@@ -649,9 +690,10 @@ textarea.input {
   }
   .statusCell + .statusCell {
     border-left: none;
+    padding-left: 0;
   }
   .statusCell {
-    min-height: 48px;
+    padding-block: 14px 16px;
   }
 }
 
@@ -695,6 +737,8 @@ textarea.input {
 @media (prefers-reduced-motion: reduce) {
   .underline,
   .line::before,
+  .lineLabel,
+  .lineValue,
   .lineArrow,
   .officeTab,
   .railNode {

@@ -180,7 +180,8 @@ export default function ServiceShowcase() {
                     </div>
                     <p className={styles.desc}>{item.desc}</p>
                     <Link to={item.to || '/services'} className={styles.link}>
-                      <span>Explore {item.title.toLowerCase()}</span>
+                      {/* acronyms survive the lowercasing — "AI" never "ai" */}
+                      <span>Explore {item.title.toLowerCase().replace(/\bai\b/g, 'AI')}</span>
                       <span className={styles.linkIcon}>
                         <ArrowGlyph />
                       </span>

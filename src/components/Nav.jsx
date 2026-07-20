@@ -68,7 +68,15 @@ export default function Nav({ themeMode = null, onToggleTheme }) {
                 `${styles.link} ${isActive ? styles.active : ''}`
               }
             >
-              {link.label}
+              {/* text roll: label slides up, ink duplicate slides in */}
+              <span className={styles.roll}>
+                <span className={styles.rollTop}>{link.label}</span>
+                <span className={styles.rollBottom} aria-hidden="true">
+                  {link.label}
+                </span>
+              </span>
+              {/* active marker: dash with curved top corners */}
+              <span className={styles.marker} aria-hidden="true" />
             </NavLink>
           ))}
         </nav>
@@ -77,13 +85,19 @@ export default function Nav({ themeMode = null, onToggleTheme }) {
           {themeMode && (
             <button
               type="button"
-              className={styles.themeToggle}
+              className={`${styles.themeToggle} ${
+                themeMode === 'dark' ? styles.toggleDark : ''
+              }`}
               onClick={onToggleTheme}
               aria-label={
                 themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
               }
             >
-              {themeMode === 'dark' ? <IconSun /> : <IconMoon />}
+              {/* both icons stay mounted so the swap can rotate/crossfade */}
+              <span className={styles.toggleIcons} aria-hidden="true">
+                <IconSun className={styles.iconSun} />
+                <IconMoon className={styles.iconMoon} />
+              </span>
             </button>
           )}
           <Button to="/contact" variant="primary" className={styles.ctaBtn}>

@@ -4,6 +4,7 @@
 export const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
+  { label: 'Our Work', to: '/work' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ]
@@ -188,6 +189,7 @@ export const PORTFOLIO = {
       tags: ['Family & Lifestyle', 'Cloud Platform', 'South Africa'],
       desc: "A cloud-based family story preservation platform where South African families can capture, organise, and share their most precious memories and stories for future generations.",
       result: 'Every family has a story worth preserving',
+      route: '/case/famili',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
@@ -733,19 +735,86 @@ export const CASE_AUTOSCREEN = {
   },
 }
 
+/* CASE: FAMILI (StoryNest) */
+export const CASE_FAMILI = {
+  eyebrow: 'CASE STUDY',
+  title: 'StoryNest',
+  sub: 'The living archive — where every family holds a universe of untold stories. A platform for preserving lineage, heritage, and the stories that connect generations.',
+  stats: [
+    { value: '12,400+', label: 'People documented' },
+    { value: '340+', label: 'Family trees' },
+    { value: '18', label: 'Generations deep' },
+    { value: 'Free', label: 'To start' },
+  ],
+  challenge: [
+    "Across Africa and its diaspora, oral histories spanning centuries are at risk of being lost. Family stories — of migrations, traditions, hardship, and triumph — exist only in the memories of elders. Genealogy platforms built for Western audiences don't account for the depth and complexity of African family structures, clan systems, or oral tradition.",
+    'StoryNest needed to be something entirely different: a living archive that honours the way African families actually remember — through stories, not just names and dates. A platform where families can document lineages spanning 18 generations, connect across clan boundaries, and preserve the narratives that give meaning to heritage.',
+  ],
+  builtIntro:
+    'We designed and built StoryNest as a warm, editorial-quality platform that treats family history with the reverence it deserves — part museum, part literary magazine, part genealogy tool.',
+  archiveHeading: 'The living archive:',
+  archive: [
+    'Public and private family trees — explore documented lineages or build your own privately',
+    'Powerful search by surname, clan, region, or era with "popular searches" and discovery',
+    'Featured lineages gallery showcasing historically significant families (Sisulu, House of Moshoeshoe, House of Dlamini, House of Dalindyebo)',
+    'Long-form editorial stories with era stamps — "The woman who walked 300km to save her family" (Khumalo, c. 1913)',
+  ],
+  bridgesHeading: 'Family bridges — a unique feature:',
+  bridges: [
+    'Marriage bridges — connect trees when families join through marriage',
+    'Heritage links — connect branches that share clan identity or ceremonial ties',
+    'Collaborative research — multiple family branches working together to reconstruct shared histories',
+  ],
+  appHeading: 'Mobile app:',
+  app: [
+    "Voice-to-text story capture — record a grandmother's story over tea",
+    'Document and photo scanning — snap old photos at family gatherings',
+    'Pinch-to-zoom tree navigation — explore your entire family archive',
+    'Push notifications when family members add new content',
+  ],
+  flowIntro: 'The "Connect your roots" flow links public discovery to private family archives:',
+  flow: [
+    { n: '01', title: 'Browse public trees', desc: 'Explore documented lineages and find familiar names.' },
+    { n: '02', title: 'Claim a connection', desc: '"This is my lineage" — claim your place in a documented tree.' },
+    { n: '03', title: 'Link your roots', desc: 'Link it to your private family space — verified by family owners for authenticity.' },
+  ],
+  result: [
+    'StoryNest has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo) — alongside hundreds of everyday families building their own archives.',
+    'The largest public tree (Mahlangu) has 202 documented members. Cross-family collaboration is active — three Dlamini branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
+    'The platform\'s editorial quality — warm typography, archive-inspired design, and long-form storytelling — sets it apart from every other genealogy tool on the market. As the footer states: "Built to last generations."',
+  ],
+  resultIntro: 'The conviction behind it all:',
+  quotes: [
+    {
+      text: 'Every generation that passes without recording its stories is a library lost forever.',
+      who: 'The StoryNest founding principle',
+    },
+  ],
+  tags: ['Living Archive', 'Family Trees', 'Collaborative Research', 'Mobile App', 'Voice-to-Text', 'Heritage Bridges'],
+  finalCta: {
+    heading: 'Building something meaningful?',
+    sub: "We love projects with purpose. Let's talk.",
+    cta: 'Get a Quote',
+  },
+}
+
 export const FOOTER = {
   tag: 'Technology built right.',
   email: 'hello@tekniik.ai',
-  careersEmail: 'hr@tekniik.ai',
-  whatsapp: '+918148984627',
-  whatsappLabel: 'WhatsApp · +91 81489 84627',
-  offices: OFFICES,
+  // hrefs intentionally empty for now — Footer renders them as dead '#' links
+  socials: [
+    { key: 'linkedin', label: 'LinkedIn', href: '' },
+    { key: 'instagram', label: 'Instagram', href: '' },
+    { key: 'x', label: 'X', href: '' },
+  ],
   cols: [
     {
       label: 'Pages',
       links: [
         { label: 'Home', to: '/' },
         { label: 'Services', to: '/services' },
+        { label: 'Our Work', to: '/work' },
+        { label: 'Support', to: '/support' },
         { label: 'About', to: '/about' },
         { label: 'Contact', to: '/contact' },
       ],
@@ -760,6 +829,7 @@ export const FOOTER = {
       ],
     },
   ],
+  offices: OFFICES,
   copyright: '© 2026 Tekniik. All rights reserved.',
   madeWith: 'Made with love and code by Tekniik Team',
 }

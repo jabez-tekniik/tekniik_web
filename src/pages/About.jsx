@@ -1,23 +1,30 @@
 import Reveal from '../components/Reveal.jsx'
+import Button from '../components/Button.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
-import MaskRise from '../motion/ink/MaskRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
+import HeroBuildBoard from '../components/HeroBuildBoard.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
+import { StarredText } from '../components/Icon.jsx'
 import { ABOUT_PAGE } from '../data/content.js'
 import styles from './About.module.css'
 
 /* About — "The team sheet" (Deep Ink).
-   Hero: poster headline left, the documentary team photo right (kept per
-   user) in an ink frame; a 4-cell signals ledger closes the hero. Then:
+   Hero: poster headline left, the animated HeroBuildBoard vignette right
+   (replaced the documentary photo — user: off-style; every page hero now
+   carries a coded moving vignette); a 4-cell signals ledger closes the
+   hero. Then:
    01 story (editorial split, final paragraph as the pull statement),
    02 principles (2×2 statement cells),
    03 process (brand-navy --band-deep band, five steps with scroll-drawn teal
    rails — last dark section before FinalCta, per spec order). Tokens only. */
 
+/* real delivery numbers (consistent with MARQUEE / the homepage Numbers
+   section) — user: signals must "actually mean something" */
 const SIGNALS = [
-  { num: '1-on-1', label: 'Direct senior contact' },
-  { num: '0', label: 'Account managers' },
+  { num: '50+', label: 'Projects delivered' },
   { num: '10+', label: 'Years senior experience' },
-  { num: 'UK', label: 'Based · Available globally' },
+  { num: '98%', label: 'Client retention' },
+  { num: '4.9★', label: 'Average client rating' },
 ]
 
 export default function About() {
@@ -51,8 +58,8 @@ export default function About() {
           <div className={styles.heroSplit}>
             <div>
               <h1 className={styles.headline}>
-                <MaskRise text={line1} as="span" className={styles.hLine} />
-                <MaskRise
+                <FadeIn text={line1} as="span" className={styles.hLine} />
+                <FadeIn
                   text={line2}
                   as="span"
                   delay={120}
@@ -62,24 +69,15 @@ export default function About() {
               <Reveal delay={280}>
                 <p className={styles.sub}>{ABOUT_PAGE.sub}</p>
               </Reveal>
+              <Reveal delay={360} className={styles.heroCta}>
+                <Button to="/work" variant="primary" arrow>
+                  See our work
+                </Button>
+              </Reveal>
             </div>
 
             <Reveal className={styles.heroVisual} delay={160}>
-              <figure className={styles.photo}>
-                <img
-                  src="/img/page/about-hero.webp"
-                  alt="The Tekniik team working together around a laptop"
-                  width="1920"
-                  height="1080"
-                  loading="eager"
-                  decoding="async"
-                  className={styles.photoImg}
-                />
-                <figcaption className={styles.photoChip}>
-                  <span className={styles.chipNode} aria-hidden="true" />
-                  Chennai · London
-                </figcaption>
-              </figure>
+              <HeroBuildBoard />
             </Reveal>
           </div>
 
@@ -87,7 +85,9 @@ export default function About() {
           <Reveal className={styles.signals}>
             {SIGNALS.map((s) => (
               <div key={s.label} className={styles.signal}>
-                <span className={styles.signalNum}>{s.num}</span>
+                <span className={styles.signalNum}>
+                  <StarredText text={s.num} />
+                </span>
                 <span className={styles.signalLabel}>{s.label}</span>
               </div>
             ))}
@@ -105,6 +105,16 @@ export default function About() {
                 <span className={styles.metaEyebrow}>{story.eyebrow}</span>
               </div>
               <h2 className={styles.storyHeading}>{story.heading}</h2>
+              {/* the proof: heading asks why we exist, CTA points at the
+                  work that answers it (user: below the left-side heading) */}
+              <div className={styles.storyCta}>
+                <Button to="/work" variant="primary" arrow>
+                  See our work
+                </Button>
+                <span className={styles.storyCtaNote}>
+                  50+ projects delivered
+                </span>
+              </div>
             </Reveal>
 
             <div className={styles.storyBody}>
@@ -124,6 +134,7 @@ export default function About() {
                   </Reveal>
                 )
               })}
+
             </div>
           </div>
         </div>

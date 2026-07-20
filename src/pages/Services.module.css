@@ -98,15 +98,17 @@
 .headline {
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
-  line-height: 0.98;
+  font-size: var(--fs-page-hero);
+  line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(20px, 2.6vw, 32px);
 }
 
+/* the two copy segments flow inline so the headline wraps naturally to ≤3
+   lines at the shared hero size (the old forced 2-line split doubled to 4) */
 .hLine {
-  display: block;
+  display: inline;
 }
 
 .hAccent {
@@ -216,7 +218,9 @@
 
 .disc {
   position: relative;
-  padding-block: clamp(64px, 8vw, 120px);
+  /* tightened 120→92px max — four stacked pitches read airy, not empty
+     (user, 2026-07-20: "much white space" on desktop) */
+  padding-block: clamp(56px, 6.5vw, 92px);
   scroll-margin-top: 88px;
   overflow: hidden;
   isolation: isolate;
@@ -261,7 +265,7 @@
   display: block;
   height: 2px;
   background: var(--hairline);
-  margin-bottom: clamp(24px, 3vw, 40px);
+  margin-bottom: clamp(20px, 2.4vw, 32px);
 }
 
 .railFill {
@@ -300,7 +304,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: clamp(28px, 4vw, 48px);
+  margin-bottom: clamp(24px, 3vw, 38px);
 }
 
 .discMeta {
@@ -361,19 +365,23 @@
   position: relative;
 }
 
-/* giant outlined numeral floating behind the title */
+/* giant outlined numeral — a true backdrop BEHIND the title (the
+   ServiceShowcase ghost idiom), left-anchored so it never clips a word
+   tail. Right-anchoring it collided with the headline on wide screens
+   (user, 2026-07-20: "01/02 should be placed properly"). */
 .ghost {
   position: absolute;
-  top: clamp(-80px, -5vw, -56px);
-  right: 0;
+  top: -0.14em;
+  left: -0.05em;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(5rem, 11vw, 10rem);
+  font-size: clamp(6rem, 10.5vw, 11.5rem);
   line-height: 0.8;
   letter-spacing: -0.04em;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--border-strong);
-  opacity: 0.5;
+  opacity: 0.42;
+  z-index: 0;
   pointer-events: none;
   user-select: none;
 }
@@ -388,6 +396,7 @@
   margin: 0 0 clamp(14px, 1.8vw, 22px);
   max-width: 16ch;
   position: relative;
+  z-index: 1; /* paints over the ghost numeral backdrop */
 }
 
 .lede {

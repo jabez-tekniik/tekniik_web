@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
-import RailRise from '../motion/ink/RailRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import { WebScene, AppScene, MobileScene, AiScene } from '../sections/ServiceVignettes.jsx'
 import useStageParallax from '../hooks/useStageParallax.js'
 import NotFound from './NotFound.jsx'
@@ -60,7 +60,7 @@ export default function ServiceDetail() {
 
   return (
     <>
-      {/* —— Hero: breadcrumb meta bar, RailRise headline | vignette stage —— */}
+      {/* —— Hero: breadcrumb meta bar, FadeIn headline | vignette stage —— */}
       <section className={styles.hero}>
         <div className={`container ${styles.heroInner}`}>
           <Reveal className={styles.metaBar}>
@@ -74,7 +74,16 @@ export default function ServiceDetail() {
           </Reveal>
 
           <div className={styles.heroSplit}>
-            <RailRise text={page.headline} as="h1" className={styles.headline} />
+            {/* headline + the page's rail device fade in together as one
+                quiet block — the rail no longer draws itself (user: simple
+                fade only), it's just part of the composition */}
+            <FadeIn as="div">
+              <h1 className={styles.headline}>{page.headline}</h1>
+              <span className={styles.heroRail} aria-hidden="true">
+                <span className={styles.heroRailFill} />
+                <span className={styles.heroRailNode} />
+              </span>
+            </FadeIn>
             <Reveal className={styles.heroVisual} delay={160}>
               <div ref={stageRef} className={styles.stage} aria-hidden="true">
                 <Scene active={live} />

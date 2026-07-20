@@ -1,551 +1,234 @@
-# Tekniik — "Deep Ink" homepage rebrand (branch: feature/homepage-rebrand)
+# 2026-07-20 — Site-wide consistency pass (hero type / entrances / About vignette / ink case pages)
 
-Spec: `docs/superpowers/specs/2026-07-13-homepage-deep-ink-rebrand-design.md`
-Copy verbatim from `src/data/content.js`. Non-home routes untouched.
-Brand: navy `#202E5D` + teal `#72CCD6` from `src/images/brand/`, neutrals black/grey/white.
-(Previous round's todo was fully complete and is preserved in git @ c097b9a.)
+(Previous round — the Deep Ink homepage rebrand todo — was fully complete;
+preserved in git history.)
 
-## Phase 1 — Scaffold
-- [x] `npm i animejs`
-- [x] `src/styles/theme-ink.css` — full ink token set (`:root[data-theme='ink']`)
-- [x] `index.html` — Fontshare display face + Satoshi + JetBrains Mono
-- [x] `App.jsx` — home route sets `data-theme="ink"` (replaces `light`)
-- [x] `src/motion/ink/` — useInViewOnce, WordRise, useMagneticInk, useScrollProgressInk, riseIn/setRiseHidden
-- [x] framer-motion + ogl fully removed; framer-free `components/Reveal.jsx` for other routes
-
-## Phase 2 — Nav + Hero
-- [x] `BrandLogo.jsx` — inline new logo-icon paths (token-recolored) + wordmark; used in Nav + Footer
-- [x] Nav ink styling (transparent → glass hairline on scroll)
-- [x] Hero rebuild: mask-reveal headline + teal caret, blueprint grid + drawn signal trace, magnetic CTA, mono meta bar, proof ticker kept (full-bleed marquee)
-
-## Phase 3 — ServiceShowcase + Numbers band (REVAMPED LAYOUTS @ b77a6c1)
-- [x] ServiceShowcase → "Capability index": interactive ledger rows driving a sticky crossfading image stage
-- [x] LogoStrip → full-bleed instrument band: mono meta rail + hairline-divided giant count-up readouts
-
-## Phase 4 — Problem + Why (REVAMPED LAYOUTS @ b77a6c1)
-- [x] Problem → "The verdict": oversized WordRise statement, offset editorial paragraph column, split comparison ledger (before ✕ hatched / after ✓ teal-lit on one hairline)
-- [x] Why → "The ledger": full-width hairline rows (num / principle / reason), no cards
-
-## Phase 5 — Process + Portfolio (REVAMPED LAYOUTS @ b77a6c1)
-- [x] Process → "Chapters": sticky head + vertical scroll-drawn teal rail, node ignition (anime/rAF)
-- [x] Portfolio → giant OUTLINED ghost numerals behind rows, bigger titles, navy hover invert + cursor parallax kept
-
-## Phase 6 — Testimonial + FinalCta + Footer (REVAMPED LAYOUTS @ b77a6c1)
-- [x] Testimonial → asymmetric spread: teal glyph + attribution rail | oversized display quote
-- [x] FinalCta → left-anchored navy crescendo, brand-chevron watermark, hairline action row
-- [x] Footer ink pass + new logo
-
-## Phase 7 — Imagery
-- [x] svc-* prompts re-graded to INK style (navy-black, one teal signal), regenerated via Imagen 4 Ultra
-- [x] Compressed webp via existing pipeline
-
-## Type fix (user feedback @ b77a6c1)
-- [x] Clash Display → Cabinet Grotesk 500/700/800; all-caps headings dropped for legibility
-
-## Phase 8 — QA gate (mandatory before presenting)
-- [x] `npm run lint` + `npm run build` (both pass; bundle 396.6 KB / 127.6 KB gz)
-- [x] Breakpoint sweep 320/375/414/640/768/1024/1280 + 740×360 landscape — no h-scroll anywhere
-- [x] Reduced-motion smoke test (all headings visible, rail filled), 0 console errors
-- [x] Delete test screenshots
-- [ ] Update CLAUDE.md + ISSUES.md (after user signs off on the design)
-- [ ] User review of the revamped design — hero "more extreme" pass optional if requested
-
-## Theme toggle + light default (user request @ 7728702)
-- [x] `ink-light` theme (DEFAULT): paper canvas #f7f8fb, teal-ink accent #0e7c8c, same navy band moments
-- [x] Dark `ink` theme kept; moon/sun toggle left of Get a Quote (Nav), persisted `localStorage['tekniik-ink-mode']`, visible on mobile
-- [x] Display font → **Satoshi Black (900)**; Cabinet Grotesk dropped
-- [x] Hero pushed harder: outlined ghost "built", offset 2nd line, brand-mark watermark, theme-aware glows
-- [x] Verified: lint + build pass, both modes screenshot-checked, toggle + persistence tested, no h-scroll at 7 breakpoints
-
-## Animated ServiceShowcase vignettes (2026-07-13, user request)
-Replace the 4 static webp images in the ServiceShowcase stage with coded,
-theme-token-driven animated vignettes ("awwwards-worthy" bar, all 4 animated,
-flawless hover crossfades). Context for a fresh session:
-- Stage is `aria-hidden`, driven by `active` index from ledger hover/focus.
-- Both ink modes must work → color ONLY from tokens (`--accent`, `--text*`,
-  `--hairline`, `--bg-raise`, `--grid-line`, `--surface*`). Traffic dots exempt.
-- Pure CSS animation (keyframes gated on active class + transitions for entry
-  stagger; transform/opacity only) + one rAF-lerp pointer-parallax hook.
-  NO framer-motion (removed) — anime.js exists but CSS is the right tool here.
-- Reduced motion: blanket animation/transition kill inside the module.
-- `/img/services/*.webp` STILL used by `pages/Services.jsx` — keep files.
-- [x] Survey code (ServiceShowcase, theme-ink, motion layer, lessons)
-- [x] `src/sections/ServiceVignettes.jsx` — 4 scenes (web/app/mobile/ai),
-      metric chips from `TERMINAL_FRAMES` (parallax hook moved to
-      `src/hooks/useStageParallax.js` for the react-refresh lint rule)
-- [x] `src/sections/ServiceVignettes.module.css` — scenes, loops, entry
-      choreography, depth layers, reduced-motion kill
-- [x] Rewire `ServiceShowcase.jsx` — scenes replace `<img>` stack, parallax
-      ref, touch auto-cycle (IO-gated interval, hover:none only)
-- [x] `ServiceShowcase.module.css` — stage blueprint grid + bloom, size
-      container (cqw/cqh), token stage-index badge, dropped stageImg rules
-- [x] Verify: lint + build clean, Playwright sweep — all 4 scenes, hover
-      crossfade, parallax var check, BOTH themes, 320/375/768/1280 (no
-      h-scroll), reduced motion static render, 0 console errors
-- [x] Update CLAUDE.md + ISSUES.md + lessons.md (%-padding-on-absolute trap)
-- [x] Round 2 (user feedback): frameless stage — stage border/bg/radius
-      removed, scenes float on the page canvas and fill the column (window
-      insets 4–6%, phone 42% wide, bigger AI core); spark endpoint dot moved
-      from the stretched `preserveAspectRatio="none"` svg (rendered as an
-      ellipse) to an HTML span — always a perfect circle. Re-verified:
-      lint/build, 4 scenes both themes, 375/768, no h-scroll, 0 errors.
-
-## Decisions log
-- Direction: "Deep Ink" dark (user-picked) → 2026-07-13: user asked for LIGHT as default with dark-mode toggle in Nav. anime.js only on home (user-picked).
-- Fonts: **Satoshi** (display 900 + body) / JetBrains Mono. Clash Display and Cabinet Grotesk both dropped — user font feedback.
-- 2026-07-13 (round @ 65fb2ff): hover text-shift effects BANNED site-wide (user: "looks horrible"); no em dashes in copy ("AI slop"); full logo (chevron + wordmark) in Nav+Footer via --logo-ink; footer got Chennai/London office tabs (London = 71-75 Shelton St temp address); portfolio pills 3 distinct recipes; services imagery regenerated with STUDIO (photoreal cinematic) style.
-- 2026-07-13 (antigravity round): hero headline TYPES in char-by-char (antigravity.google-style) with teal caret riding the text edge; interactive canvas speck field w/ mouse repulsion + trailing teal glow follower (HeroParticles.jsx); 2nd headline line offset REMOVED (user: "disoriented"); body/labels font → **Inter**, headings stay Satoshi (user request).
-- User 2026-07-13: "enhancing ≠ revamping" — every section got a structurally new composition (see phases 3–6), committed @ b77a6c1.
-- framer-motion fully removed (only home used it; other routes never did).
-- Old work committed to feature/homepage-motion @ c097b9a before branching.
-
-## 2026-07-14 — Process ("How we work") total revamp + DottedSurface WebGL background
-User: section "looks bad" — entirely revamp it, and integrate the 21st.dev
-`dotted-surface` component (three.js animated dot wave) as its background.
-Adaptation notes: project is Vite+React JS (no Next/Tailwind/TS/shadcn), so the
-TSX/Tailwind/next-themes component is RECREATED in Tekniik idiom: JSX + CSS
-module, tokens from theme-ink.css, no next-themes (section lives on the navy
-`--band`, which is identical in both ink modes). `three` installed; scene is
-lazy-loaded (IO + idle gate) so the main bundle stays lean (lesson: lazy-load
-heavy WebGL deps). Skipped `next-themes` (Next-only, no consumer).
-
-Design: "Phase horizon" — full-bleed brand-navy band (matches Portfolio/
-FinalCta navy moments). Dot wave rolls behind, edge-faded via CSS mask,
-periwinkle dots + navy fog. Content: 06 | HOW WE WORK head, then 4 phases as
-an asymmetric descending staircase (desktop), each with a top hairline whose
-teal fill draws in sequentially from scroll progress (horizontal take on the
-signature rail), mono PHASE NN + duration, ghost stroke number, Satoshi title,
-dim desc. Reduced motion: no canvas (static CSS dot texture), rails filled.
-
-- [x] npm install three
-- [x] src/components/DottedSurface.jsx (gate wrapper: IO + requestIdleCallback
-      + reduced-motion skip, static dot fallback) + DottedSurfaceScene.jsx
-      (lazy three.js scene: container-sized, ResizeObserver, DPR cap 2,
-      pause offscreen, full dispose cleanup) + DottedSurface.module.css
-- [x] Rewrite src/sections/Process.jsx + Process.module.css (band section,
-      staircase grid, sequential rail fill via useScrollProgressInk,
-      hover lift pointer-fine only, ≤960 2-col / ≤640 1-col, copy verbatim)
-- [x] npm run build + npm run lint clean
-- [x] Playwright sweep: 320/375/768/1024/1280/1600, both ink modes, reduced
-      motion, console errors, no h-scroll; delete screenshots after
-- [x] Update CLAUDE.md (Process section, stack: three) + ISSUES.md + todo
-
-## FinalCta — 21st.dev "BackgroundPaths" integration (2026-07-14)
-
-User pasted 21st.dev BackgroundPaths (Tailwind + framer-motion + shadcn) and
-asked to use it as the last CTA section of the homepage. Project has NO
-Tailwind/TS/shadcn/framer-motion (removed) — recreate in-idiom instead:
-keep existing FinalCta content/heading/CTA, add the flowing-paths animated
-SVG background as a new layer (two mirrored path fans, white + teal),
-pure CSS stroke-dash animation, IO-gated (paused offscreen), reduced-motion
-static fallback. No new npm deps.
-
-- [x] FlowingPaths subcomponent in src/sections/FinalCta.jsx (path geometry
-      from the 21st.dev formula, deterministic durations/delays, pathLength=1)
-- [x] FinalCta.module.css: .flow layers, flowDash/flowFade keyframes,
-      play-state gating via useReveal(once:false), reduced-motion static
-- [x] npm run build + npm run lint clean
-- [x] Playwright visual check 375/768/1280 + reduced-motion, delete shots
-- [x] CLAUDE.md FinalCta section updated
-
-### Follow-up (2026-07-14): BackgroundPaths removed
-User: animated paths read as a glitch. Removed FlowingPaths entirely from
-FinalCta.jsx/.module.css; replaced with a pure-CSS `.section::before` teal
-bloom (multi-stop radial, bloomBreathe transform/opacity 14s, reduced-motion
-static). Build + lint + 375/1280 visual check clean.
-- [x] Remove FlowingPaths + flow CSS + useReveal wiring
-- [x] Add ::before bloom, smooth falloff (no banding)
-- [x] Build/lint/screenshots verified, shots deleted, CLAUDE.md updated
-
-# Services page — "Deep Ink" redesign (2026-07-15)
-
-Homepage (/) is the design-system reference. Redesign non-home pages one by
-one; Services first, show user before continuing to About/Contact/cases.
-Copy stays verbatim from `SERVICES_PAGE` in `src/data/content.js`.
+User brief: every page must follow the Deep Ink design system (Satoshi
+included); About's documentary photo replaced with a moving vignette; page-hero
+titles max 3 lines via ONE shared font-size (content unchanged); home hero
+keeps the typewriter, every other hero + section entrance becomes a simple,
+professional fade; nothing aggressive.
 
 ## Plan
-- [x] `scripts/generateTekniikImages.js`: replace `page-services` entry with a
-      STUDIO (navy #0A0E1A / teal #72CCD6) 3:4 portrait hero — sculptural
-      floating glass-layer stack, no text/faces → `public/img/page/services-hero.webp`
-- [x] Generate via Imagen 4 Ultra (`node scripts/generateTekniikImages.js --id page-services`)
-- [x] `App.jsx`: ink theme (ink-light/ink + Nav toggle) scoped to `/` AND `/services`
-      (INK_ROUTES set — grows as pages are redesigned)
-- [x] Rewrite `pages/Services.jsx` + `Services.module.css` in Deep Ink idiom:
-      1. Hero "index poster": mono meta bar + WordRise Satoshi headline
-         (final line accent) + sub | new studio image right (sharp frame,
-         hairline ring); below: 4-col anchor index strip (01–04, teal hover
-         sweep, scrolls to each discipline)
-      2. 4 discipline sections (ids: websites/apps/mobile/ai): scroll-drawn
-         teal top rail, ghost stroke numeral, mono `/ key` eyebrow + badge,
-         oversized title, lede, bullets as hairline spec-ledger rows, stack
-         chips, CTA; studio image w/ floating TERMINAL_FRAMES metric chip;
-         alternate image side; 04 (AI) inverted full-bleed navy band
-      3. `notSure` interlude (bg-2 band, hairline action row)
-      4. Shared FinalCta (SERVICES_PAGE.finalCta)
-- [x] Both ink modes via tokens only; reduced-motion kill; transform/opacity only
-- [x] Gates: `npm run lint` + `npm run build`, Playwright sweep
-      320/375/414/640/768/1024/1280 both modes, no h-scroll, 0 console errors
-- [ ] Delete screenshots; update CLAUDE.md/ISSUES.md after user sign-off
 
-## Result
-- Lint + build pass; Playwright sweep 320–1600 both ink modes: no h-scroll, 0 console errors; reduced-motion: all content visible, rails filled.
-- New Imagen 4 Ultra hero: floating glass-layer stack (STUDIO, 3:4) at public/img/page/services-hero.webp.
-- Awaiting user review before redesigning About/Contact/case pages.
+- [x] 1. `motion/ink/FadeIn.jsx` — shared entrance (opacity-only, ~650ms,
+      EASE_OUT, WordRise contract: text/as/className/delay; static under RM).
+      Add `--fs-page-hero: clamp(2.4rem, 4.6vw, 4rem)` to `tokens.css` and use
+      it for the hero H1 on Services / About / Contact / ServiceDetail / cases.
+      Services headline must flow naturally (inline spans, accent tail) so it
+      wraps ≤3 lines instead of the forced 2×2 split.
+- [x] 2. Swap entrances: LineWipe (Services), MaskRise (About), BlurRise
+      (Contact), RailRise (ServiceDetail — keep the static teal rail, fade it
+      with the line) → FadeIn. WordRise call sites (Problem statement, FinalCta
+      heading, Testimonial first quote, AiAccelerated heading, Services
+      discipline titles) → FadeIn. Delete LineWipe/MaskRise/BlurRise/RailRise/
+      WordRise files.
+- [x] 3. About vignette `components/HeroTeamBoard.jsx` (+module css): ink
+      console card — header node + LIVE ping, cycling build/ship activity rows,
+      Chennai↔London footer link with travelling pulse; slow float; tokens
+      only; aria-hidden; RM = complete static state. Replace `figure.photo`.
+      `about-hero.webp` becomes unused (note ISSUES.md, keep on disk).
+- [x] 4. Case pages → Deep Ink: App.jsx inks ALL routes (remove INK_ROUTES).
+      Rebuild CaseLooqz/CaseAutoScreen on an ink template: hero meta bar
+      (CASE STUDY / NAME | ← All work), FadeIn H1 at --fs-page-hero, sub,
+      stats signals ledger (StatBlock count-ups), discipline vignette stage
+      (looqz→MobileScene, autoscreen→WebScene) instead of the cinematic webp;
+      body: 01/THE CHALLENGE railed paragraphs, 02/WHAT WE BUILT specRow
+      ledgers + 3-cell flow, 03/THE RESULT + teal-railed quote + ink tag
+      pills; FinalCta. Rewrite CaseStudy.module.css in ink idiom. Delete
+      PageHeader.jsx/.module.css (now unused).
+- [x] 5. Gates: `npm run build`, `npm run lint`, browser sweep 1440/1280/768/
+      414/320 (no h-scroll, heroes ≤3 lines, Satoshi on every route),
+      reduced-motion sanity, update CLAUDE.md + ISSUES.md, delete scratch
+      files/screenshots.
 
-## Iteration 2 (user feedback, 2026-07-15)
-- [x] Hero top space removed (padding-top clamp(88px,9vw,120px))
-- [x] Duplicate CTAs merged: interlude deleted; FinalCta now carries the
-      page-specific `notSure` content (FinalCta is props-driven — each page
-      passes its own close)
-- [x] Static images dropped from content flow → homepage ServiceVignettes
-      (coded animated scenes) hosted per discipline on frameless blueprint
-      stages (IO-ignited once, pointer parallax, reduced-motion static)
-- [x] services-hero.webp moved to hero BACKGROUND plate (edge-fade scrims,
-      theme-aware overlay; 0.45 opacity wash ≤960px)
-- [x] Color pass: tinted 02 band (--bg-2), theme-aware section blooms
-      (--hero-glow-a/b), accent badge pills, spec-row teal hover sweep;
-      .discDark now RE-SCOPES semantic tokens so vignette + all children
-      adapt on the navy band
-- [x] Index anchors → pure-JS scroll, no location hash (Lenis scrollTo w/
-      -88px offset; scrollIntoView fallback under reduced motion)
-- [x] Gates re-run: lint + build pass, sweep 320–1600 both modes clean,
-      reduced-motion clean, anchor scroll verified in Playwright
-- NOTE: public/img/services/*.webp no longer referenced by any page (kept —
-      generated brand assets, prompts live in the manifest). See ISSUES.md.
+## Decisions
 
-### Iteration 3 (user feedback, 2026-07-15)
-- [x] Hero image rejected → removed entirely (webp deleted, manifest entry removed)
-- [x] Hero now runs a COMBINED vignette reel: all 4 discipline scenes on one
-      frameless stage right of the poster, rotating every 5.2s (IO-gated,
-      timer re-arms on manual change, reduced-motion → static first scene)
-- [x] Index strip tracks the live scene (tint fill + accent label = "now
-      showing"); hover/focus a row pins its scene; click still scrolls
-- [x] Removed grey blueprint gridlines behind ALL vignette stages on /services
-      (hero `.blueprint` + `.stage::before`); breathing teal bloom kept.
-      NOTE: homepage ServiceShowcase stage still has its grid — untouched,
-      ask user if it should go there too
-- [x] Button looping hover (all solid/ghost variants incl. "Discuss your
-      website"): sheen band sweeps the face on a 1.6s loop + arrow nudge loop
-      for as long as hovered; navy-tint sheen on inverse, accent tint on
-      ghost; hover:hover gated, reduced-motion killed
-- [x] Gates: lint ✓ build ✓ QA CLEAN (reel cycles verified, hover animations
-      verified attached, 8 viewports no h-scroll, 0 console errors)
+- Home hero keeps its poster scale + typewriter (user: "leave the hero
+  section"); the shared `--fs-page-hero` applies to the interior page heroes,
+  which were the 4-line offenders (Services + About measured at 4 lines @1440).
+- Simple fade = opacity only. No translate, no blur, no masks, no per-word
+  stagger anywhere outside the home typewriter. Scroll reveals stay on the
+  existing gentle `Reveal` (fade + 16px rise, 700ms).
+- Case-study visuals switch from off-palette cinematic renders to the coded
+  discipline vignettes — the same premium device every other page uses.
+- No git operations this round (uncommitted parallel work present: CLAUDE.md,
+  ISSUES.md, index.html, tokens.css, public/fonts).
 
-### Iteration 4 (user feedback, 2026-07-15)
-- [x] Hero vignette rebuilt from scratch — NOT the reused homepage scenes:
-      new `ServicesOrbit` (src/sections/ServicesOrbit.jsx + module.css),
-      a tech CONSTELLATION: 12 tech nodes (labels from real stack copy)
-      grouped by discipline around a pulsing "tekniik" core
-- [x] COLORFUL: new `--svc-{websites,apps,mobile,ai}` hue tokens in
-      theme-ink.css (both modes; deepened for light canvas) — teal /
-      periwinkle / amber / pink. color-mix derives soft/bloom shades
-- [x] Keeps changing: focus discipline rotates every 5.2s — core label +
-      hue, data beams (dash-flow SVG), ignited chips, satellite dots and
-      the index-strip row all recolor together; rings spin, chips bob
-- [x] Interactive: hover a chip → pins its discipline; hover the stage →
-      reel holds; click a chip → hashless scroll to its section; index
-      strip hover/focus pins too; pointer parallax layers
-- [x] Reduced motion: static rings/chips, no pulse/bob/flow, focused
-      state renders complete; a11y path = index strip (stage aria-hidden)
-- [x] Gates: lint ✓ build ✓ QA CLEAN (cycle verified, chip hover pin +
-      hashless chip-click scroll verified, 8 viewports no h-scroll,
-      0 console errors); chip overlap at bottom fixed (Document AI /
-      Swift·Kotlin repositioned)
+## Mid-round additions (user, 2026-07-20)
 
-### Iteration 5 (user feedback, 2026-07-15)
-User: not a mind-map chart - a moving vignette that DEMONSTRATES software,
-web apps, apps and AI automation; something creative with clear direction.
-- [x] ServicesOrbit constellation DELETED (jsx + module.css)
-- [x] New `ServicesShowreel` (src/sections/ServicesShowreel.jsx + module.css):
-      one device shell MORPHS between four live product demos, each in its
-      discipline hue (--svc-* tokens kept): 01 browser auto-scrolling a
-      finished marketing site (skeleton page ~2.4 viewports tall, scrollbar
-      thumb synced, media sheen) -> 02 web-app board whose hot card picks
-      itself up and crosses three columns -> 03 shell narrows into a phone
-      playing a chat->booking story (bubbles, typing dots, amber reply,
-      confirmation card pop) -> 04 automation console processing a queue
-      (staggered rows, hue progress fills, check pops, "auto-reply sent"
-      toast). Backdrop: crossfading hue blooms + ghost numeral 01-04;
-      floating result chips reuse TERMINAL_FRAMES copy
-- [x] Shell morph = width/height/border-radius transition on a CHILDLESS
-      div (documented exception to transform-only; the storytelling beat)
-- [x] Services.jsx: reel interval 5.2s -> 6.6s (each demo tells a story);
-      stage click scrolls hashlessly to the active section (.heroStage
-      cursor pointer, generic accent bloom off - showreel brings its own)
-- [x] Demo loops attach only under .demoOn (idle demos cost nothing);
-      reduced motion renders active demo complete + static (typing hidden)
-- [x] Gates: lint OK build OK; QA: 4 states + dark mode (localStorage value
-      is 'dark', NOT 'ink' - init-script gotcha) + 375px verified by
-      screenshot; stage-click scroll OK; 8 viewports no h-scroll; 0 console
-      errors. Chat scaled up (gap/padding/line sizes, justify center) after
-      first shots left the phone half-empty
+- [x] Satoshi: register EVERY shipped file (300-900 + italics) and use only
+      real file weights — display 800→900, Satoshi-600→700 (Button, Footer).
+      Computed-style audit across routes: zero synthesized weights.
+- [x] Geography rule: no Chennai/UK/London company references outside
+      /contact. About signal UK→Global, HeroBuildBoard footer →
+      "One team / Always shipping", Footer location column → generic
+      remote-first line + "Office details →" link (FOOTER.offices removed),
+      index.html title/meta de-UK'd. Client geography (portfolio chips,
+      case copy, testimonial attributions) intentionally kept as social
+      proof — flag to user.
+- [x] Bonus fix: 320px h-scroll on / (Testimonial nav → flex-wrap);
+      full 7-route × 7-width sweep clean.
 
-### Iteration 5b (user feedback, 2026-07-15)
-- [x] Ghost numerals 01-04 removed from the hero showreel backdrop
-      (JSX spans + .gNum CSS deleted)
-- [x] AI discipline band vs FinalCta band merged into one navy block:
-      new `--band-deep: #141d40` token (theme-ink.css, both modes) and
-      .discDark now uses it - the closing CTA keeps the brighter #202e5d
-      so the seam reads as two sections. Verified both modes by screenshot
-- [x] Gates: lint OK build OK, 0 console errors
+## Round 3 (user feedback, 2026-07-20 evening)
 
-### Iteration 5c (bug report, 2026-07-15)
-- [x] REGRESSION FIX: the Gemini-style rotating multicolor ring on the nav
-      "Get a Quote" hover disappeared - iteration 3''s Button.module.css
-      sheen added overflow:hidden + a competing ::before to every .btn,
-      which clipped the ring (it paints outside the face at inset:-2.5px).
-      Nav.module.css now opts the CTA out: a.ctaBtn { overflow: visible },
-      all ring selectors bumped to a.ctaBtn (0,1,2+) so they outrank
-      .btn/.primary, transform:none guards against the parked sheen, and
-      the RM block display:blocks the ring back (static). LESSON: adding
-      base styles to a shared component (.btn) must be checked against
-      per-instance overrides layered on top of it (nav CTA ring)
-- [x] Gates: lint OK build OK, ring verified by hover screenshot both modes
+- [x] Footer: geography rule REFINED — addresses are fine, only narrative
+      "development is UK/Chennai" copy is banned. Reverted the Location
+      column to office tabs + address + flag (FOOTER.offices restored;
+      .country at Satoshi 700). No explicit "Global/Remote-first" copy
+      either — implied, not stated. CLAUDE.md section rewritten.
+- [x] About signals → real numbers: 50+ Projects delivered / 10+ Years
+      senior experience / 98% Client retention / 4.9★ Average client
+      rating (★ via StarredText; consistent with MARQUEE).
+- [x] ServiceShowcase wide-screen bug: pinned copy column was
+      `flex-basis: clamp(340,34vw,540px)` with padding-left --edge INSIDE
+      the border-box → ~190px text at 1904px. Now
+      `calc(var(--edge) + clamp(360px,26vw,520px))`; desc reserve drops
+      6→5 lines ≥1880px. Verified 499px content @1920, 5-line desc.
+- [x] "Explore ai systems" → "Explore AI systems" (acronym survives
+      toLowerCase; saved as global memory acronyms-stay-uppercase).
+- [x] Spec review (new content/TK Website): missing pages reported to
+      user — legal ×4 (footer already links → 404!), /work, /support,
+      StoryNest case, /website-package landing. Assessment only, no build.
 
-## Iteration 6 — Mini CTA strips + About page ink redesign (2026-07-15)
-- [x] `MiniCta` component (components/MiniCta.jsx + module): slim interstitial band — hairlines, accent-tint wash, teal node + mono kicker, Satoshi statement, primary Button. Copy in content.js `MINI_CTAS`.
-- [x] Home: insert MiniCta after Problem and after Portfolio.
-- [x] Services: insert MiniCta between discipline 02 (apps) and 03 (mobile).
-- [x] About rewrite (pages/About.jsx + About.module.css from scratch, drop PageHeader/icons):
-  - Hero: metaBar + WordRise split headline left, `about-hero.webp` photo right (KEEP the image — user), ink frame + floating stat chip, teal bloom; signals as 4-cell ledger strip under the split.
-  - Story (01): sticky meta/heading left, paragraphs right, 3rd para as accent pull-quote.
-  - Process (02): navy `--band` re-scoped section, 6 steps 3×2, scroll-drawn rail fills (useScrollProgressInk p*6−i), ghost numerals, "YOU GET" win lines.
-  - Principles (03): 2×2 cells, 2px top border, hover accent + lift.
-  - FinalCta (existing, ABOUT_PAGE.finalCta).
-- [x] App.jsx: add '/about' to INK_ROUTES.
-- [x] Gates: lint, build, both ink modes screenshots, 8-viewport no-h-scroll, 0 console errors; delete QA artifacts.
+## Round 4 — missing pages via 5 parallel subagents (user-approved, 2026-07-20)
 
-Iteration 6 shipped 2026-07-15: lint/build green, 0 console errors, no h-scroll
-at 320-1440 on / /services /about, both ink modes verified. Also: nav items
-(.link/.mobileLink) forced to 'Satoshi' (user request — --f-display is only
-Satoshi on inked routes). Gotcha: Playwright full_page screenshots after
-programmatic scrolling can stitch the page with dark-looking artifacts —
-verify theme via data-theme/localStorage before diagnosing.
+- [x] Legal ×4 (`Legal.jsx` + `legal.js` + module css; verbatim locked spec,
+      no CIN, 720px column) → routes /privacy-policy /terms-of-service
+      /cookie-policy /gdpr. Footer 404s RESOLVED.
+- [x] /work (`Work.jsx`): navy featured CareGrid + 7-card grid off
+      PORTFOLIO.items; route-carrying items link case pages, others show a
+      non-interactive "View project →" (no dead links).
+- [x] /support (`Support.jsx`): clients ledger / rescue tint band /
+      3 arrangement cells / FinalCta "Get in Touch".
+- [x] /case/famili StoryNest (`CaseFamili.jsx` + CASE_FAMILI appended to
+      content.js from references/tekniik-prototype-v4.html, FamiliCloud→
+      StoryNest; sceneKey mobile). PORTFOLIO famili item got `route`.
+- [x] /website-package (`WebsitePackage.jsx`): £599 landing, specRow
+      inclusions, navy rail steps, native details FAQ. Off-nav by design.
+- [x] Integration (orchestrator): App.jsx 8 routes, Footer Pages col +
+      Our Work + Support, Work.jsx CASE_ROUTES redundancy removed.
+- [x] Bonus fixes: StatBlock "0Free" bug (raw passthrough for non-numeric
+      stats); Services ghost numeral → behind-title watermark + section
+      rhythm tightened (user: "01/02 placed properly", "much white space").
+- [x] Gates: build ✓ lint ✓; 8 new routes + / /services /work swept at
+      320–1280 (zero h-scroll, zero synthesized Satoshi weights); StoryNest
+      counters verified (12,400+/340+/18/Free); dark AI section verified.
+- [x] HeroBuildBoard footer (3 user iterations): ping-pong dot →
+      one-way arrow → icon wave → FINAL: five 24px chips
+      (Bulb/Pen/Code/Flask/Deploy — new Icon.jsx glyphs; rocket was
+      mush at size, plane read as "send", tray-arrow not deploy-y →
+      IconDeploy = canonical cloud-upload, per user) + a 2px teal line drawing start→end that ignites
+      each chip as it passes (stays lit, holds complete, resets,
+      repeats; 7.2s clock, bbStage1..5 explicit keyframes via
+      nth-child). ≤480 chips 18px, ≤380 hidden; RM = finished run
+      (line drawn, all lit). Verified live both modes + 280–640
+      iframe sweep (no overflow, breakpoints confirmed).
+- [ ] OPEN (needs user/later): cookie consent banner ships with analytics;
+      per-page titles/meta still a site-wide gap; nav does not link /work
+      or /support (footer only) — promote to nav if wanted.
 
-## Iteration 7 — Contact page ink redesign (2026-07-15)
-- [x] Contact.jsx + Contact.module.css rewritten ("The open line"): poster hero
-  (metaBar + WordRise headline + sub) + 3-cell status ledger (pulsing live dot);
-  working spread = ledger form (mono labels, Satoshi input text, teal underline
-  scaleX draw on focus-within — reset's --focus-ring box-shadow suppressed on
-  .input since the underline IS the focus signal) | direct-lines ledger
-  (Email/Careers/WhatsApp rows w/ tint sweep + arrow) + teal-railed office block;
-  "What happens next?" promoted to closing brand-navy band, 4 scroll-lit rails
-  (p*4−i). No FinalCta — the form is the page's CTA. PageHeader + icon chips
-  dropped; sent-state button kept.
-- [x] '/contact' added to INK_ROUTES.
-- [x] Gates: lint ✓ build ✓ 0 console errors, h-scroll clean 320–1440, both
-  modes + focus state screenshot-verified; QA artifacts deleted.
-- contact-hero.webp now unused by any page (About keeps about-hero.webp).
+## Round 5 — looping narrative vignettes (user, 2026-07-20 night)
 
-## Iteration 7b — Contact aside polish (2026-07-15, user feedback)
-- [x] Direct-lines values perfectly left-aligned: .lines is now a 3-col grid
-  (max-content / 1fr / 20px) and each .line uses grid-template-columns: subgrid
-  (minmax fallback declared first) — all values share one edge (verified
-  x=987.42 for all three at 1440). ≤560px the rows stack label-over-value.
-- [x] Office block → flag tabs (Chennai/London) mirroring the Footer tablist:
-  shared OFFICES const extracted in content.js (FOOTER.offices now references
-  it; CONTACT_PAGE.side.officeLines removed; UK lines lost the duplicate
-  'United Kingdom' — country renders via .officeCountry/footer region instead).
-  IconFlagIndia/IconFlagUK in 44px-min tabs, active = accent border +
-  accent-tint; address swaps with 280ms officeIn rise (keyed remount), RM inert.
-- [x] Gates: lint ✓ build ✓ 0 console errors, h-scroll 0 at 320/375, light +
-  dark + mobile screenshots verified; QA artifacts deleted.
+User brief: (1) About board list needs MORE items (not 4), each shown
+loading → shipped in sequence, repeating; (2) ALL hero vignettes must loop
+with ≥3 narrative beats depicting what clients can expect — Contact thread
+explicitly: 2 bubbles + "first reply 21 minutes", then another message, then
+addressed, then resolved, repeat; (3) home AI-accelerated section must use
+the WHOLE band, not just the right side — microchip + electron flow
+depicting AI development.
 
-## Iteration 8 — distinct hero animations + Contact hero visual (2026-07-16)
-- [x] Regression fix (user report): direct-lines hover arrow vanished — the
-  subgrid change let .line's inline padding inset the 20px arrow track to ~4px
-  and flex-squeeze the svg. Fixed: padding 14px 0 (comment in CSS), justify-self
-  end + flex-shrink 0 on the arrow svg. Values still share one edge.
-- [x] Hero headlines de-duplicated (user: "peek is boring"): Home keeps its
-  typewriter; Services → motion/ink/LineWipe.jsx (clip wipe + teal printhead
-  bar, inset() via anime proxy onUpdate); About → motion/ink/FlipWords.jsx
-  (per-word rotateX flip-up w/ perspective); Contact → motion/ink/Decode.jsx
-  (teal glyph scramble locking left→right, width-stable slot+overlay markup).
-  Same API as WordRise (text/as/className/delay); all static under RM.
-- [x] Contact hero right side filled: components/OpenLine.jsx (+ module css) —
-  dot-grid chart, LON/CHE nodes + ping rings, arc draws in (createDrawable)
-  then loops a signal-pulse segment (timeline loop). aria-hidden, ≤960 hidden,
-  RM = fully drawn static arc.
-- [x] Gates: lint ✓ build ✓ 0 console errors on all 3 routes, h-scroll clean
-  320–1440 ×3 pages, dark + mobile + reduced-motion verified; shots deleted.
+Inventory: Services hero showreel already cycles 4 scenes; discipline
+scenes (Web/App/Mobile/Ai) already loop perpetually — no change. Work/
+Support/WebsitePackage heroes have no vignette. Home hero keeps typewriter
+(user rule). Targets = About board, Contact thread, AI band.
 
-# CONTENT SPEC SYNC (2026-07-16) — align live site to finalized /content specs
+- [x] 1. HeroBuildBoard: 6 ROWS, React `phase` cycle (-1 queued → 0..5
+      in-build w/ bbLoad progress drawing over the 1.5s beat → 6 hold
+      2.6s → reset, repeat); bbStateIn verdict swaps; RM = finished
+      sprint (`shown = reduced ? ROWS.length : phase`). **Dropped
+      `aspect-ratio: 4/3`** — content sizes the card (fixed box clipped
+      rows+foot at ≤414 and ~1024, found via iframe sweep). Verified
+      live: full cycle + reset both modes; 320–1280 sweep clean.
+- [x] 2. HeroThread: two exchanges stacked in one grid cell, loop:true
+      timeline — A (enquiry → typing → reply → "First reply · 21 min")
+      fades up, B (bug report → typing → same-day fix → "Issue resolved ·
+      same day"), hold, body fade, repeat. **Fix:** t=0 resets must be
+      real explicit-from tweens, NOT .set() (sets fire once → phase A
+      invisible on loop 2+). Static/RM = phase B resolved (.phaseA
+      opacity 0 in CSS). Verified both exchanges across two loops, dark ✓.
+- [x] 3. AiAccelerated: NeuralNet → full-band `AiCircuit` (1440×520,
+      45°-step traces edge-to-edge, microchip w/ "AI" die + pin stubs +
+      breathing core; slow dim electrons IN left, fast bright doubled
+      electrons OUT right; `aib-*` ids vs hero `hc-*`). Hidden ≤900;
+      RM static. Verified light+dark, electrons moving.
+- [x] 3b. (user, same night) Card glyphs → lucide-language braces /
+      scan-check / route / shapes (old chevrons/shield/pulse/star "old
+      fashioned"); hover rebuilt: teal rail draws across top
+      (.card::before scaleX 320ms), icon chip fills accent w/ bg-raise
+      glyph + lift/scale/rotate(-4deg) pop. Verified via forced-hover
+      style (Lenis fought synthetic scroll/hover), then cleaned up.
+- [x] 4. Gates: build ✓ (3.15s) + eslint ✓; live loops watched on /,
+      /about, /contact in both themes; iframe sweep 320–1280 on all
+      three routes (no h-scroll); CLAUDE.md About/Contact/AiAccelerated
+      sections rewritten; no scratch files left (screenshots in-memory
+      only). Note: home page ignores scroll for ~8s during hero intro
+      (Lenis + entrance) — pre-existing, not a regression.
 
-Source of truth: `../content/*.md` (8 locked spec docs). Apply verbatim copy
-into `src/data/content.js`, add new sections/pages in the existing Deep Ink
-design system. User decisions (2026-07-16):
-- Portfolio countries: apply spec EXACTLY + rewrite the two case studies
-  (GlowBook France→UK, ScreenFix Germany→South Africa) so cards & case pages
-  stay consistent. Affected testimonials realigned too.
-- Services: build hub + 4 dedicated sub-pages (/services/<slug>).
-- Legal: build 4 legal pages + working cookie-consent banner (GA stubbed).
-- Sequence: HOMEPAGE FIRST (P1 this session), then new pages P2–P5.
+## Round 6 — de-slop project-card hover + Contact status ledger (user, 2026-07-21)
 
-## Phase 1 — Homepage sync + new sections — ✅ SHIPPED 2026-07-16
-Result: lint ✓ build ✓ (bundle 459 KB / 147 KB gz). Playwright verified at 1280
-+ 375, both ink modes: section order = Hero→Stats(03)→Problem(04)→What We
-Engineer(05, Custom Software first)→MiniCta→Why(06)→Process(07, 5 phases)→
-Portfolio(08, id="work", UK/South Africa tags)→MiniCta→Testimonial→
-AI-Accelerated(10)→FinalCta. "See our work" smooth-scrolls to #work (lands at
-+88px nav offset). AiAccelerated adapts both modes via tokens; no h-scroll; 0
-console errors. QA screenshots deleted. Every checkbox below done.
-Deferred to later phases (noted so not silent): CAPABILITIES `to` still → /services
-(sub-pages land P2); footer legal links wired but pages land P4.
-content.js:
-- [ ] HERO: eyebrow → "Custom Software · Web Platforms · Mobile Apps · AI Systems";
-      sub → "…design and engineer custom software, web platforms, mobile
-      applications, and AI-powered systems…"; ghostCta → "See our work" (scroll
-      to on-page #work); trust → "4.9★ · 50+ Projects · 98% Retention"
-- [ ] TERMINAL_FRAMES labels → Custom Software / Web Platforms / Mobile Apps /
-      AI Systems (FRAME_LABEL map in Hero.jsx)
-- [ ] MARQUEE: add "8+ Industries Served"; label casing per spec (4 stats)
-- [ ] PROBLEM: new blended empathy copy (2 paras)
-- [ ] CAPABILITIES → "WHAT WE ENGINEER": heading "What we / engineer.", reorder
-      Custom Software(app scene) / Web Platforms(web) / Mobile(mobile) / AI(ai),
-      new descriptions, per-item `to` (→ /services for now, sub-pages in P2)
-- [ ] WHY_TEKNIIK: copy tweaks per spec
-- [ ] PROCESS: split 4→5 phases (Listen/Plan/Build/Launch/Support & Grow);
-      heading "Predictable process. Predictable outcome."
-- [ ] PORTFOLIO: countries → UK/South Africa per spec (all 8); fix descriptions
-      that name old countries
-- [ ] CASE_LOOQZ (GlowBook) geo rewrite France→UK (cities, name/quote)
-- [ ] CASE_AUTOSCREEN (ScreenFix) geo rewrite Germany→South Africa (cities, €→R)
-- [ ] TESTIMONIALS: realign CareGrid/GlowBook attributions to new countries
-- [ ] MINI_CTAS: add homeServices (05b) + homeWork (08b) copy; keep services key
-- [ ] AI_ACCELERATED: new content block (label/heading/sub/4 points/closing)
-components:
-- [ ] Home.jsx: reorder to spec (Hero → Stats → Problem → ServiceShowcase →
-      MiniCta(05b) → Why → Process → Portfolio → MiniCta(08b) → Testimonial →
-      AiAccelerated → FinalCta); renumber indices
-- [ ] Renumber: ServiceShowcase 02→05, Why 05→06, Process 06→07, Portfolio 07→08
-- [ ] Hero: "See our work" smooth-scroll to #work (reuse getLenis pattern)
-- [ ] Portfolio section: add id="work"
-- [ ] LogoStrip.module.css: 3→4 cell grid + responsive 2×2 / 1-col
-- [ ] Process.jsx/.module.css: 5-column staircase, gentler drop, "Ongoing"
-      open-end treatment; ≤960 2-col, ≤600 1-col
-- [ ] NEW src/sections/AiAccelerated.jsx + .module.css: light teal-tinted 4-up
-      grid (keeps FinalCta the single dark crescendo), index 10, tokens only,
-      reduced-motion safe
-- [ ] Footer legal links: wire real routes + add GDPR (also relevant P4)
-- [ ] Gates: npm run lint + npm run build; Playwright sweep 320/375/414/640/768/
-      1024/1280 both ink modes, no h-scroll, 0 console errors, reduced-motion;
-      delete shots; update CLAUDE.md + ISSUES.md
-
-## Phase 2 — About / Contact / Services copy + Services sub-pages
-- [ ] ABOUT_PAGE: heading "The team behind the technology.", sub, principles
-      reworded (Honesty first / Engineering over shortcuts), process 6→5 phases
-      with "What you get" lines
-- [ ] CONTACT_PAGE: minor copy alignment to spec
-- [x] Services hub: DECISION CHANGED 2026-07-17 (user-locked) — hub STAYS the
-      immersive build-sheet; each discipline instead got a mono "Full details →"
-      link to its detail page (META[].detail in Services.jsx). No card hub.
-- [x] NEW pages /services/custom-software, /web-platforms, /mobile-apps,
-      /ai-systems — shared ServiceDetail.jsx template (hero + RailRise entrance
-      + per-discipline vignette, problem, deliverables ledger, approach,
-      conditional case-study strip, "also explore" rows, FinalCta); dynamic
-      route /services/:slug in App.jsx + 4 paths added to INK_ROUTES;
-      SERVICE_PAGES map in content.js (spec copy verbatim). Case links: only
-      routed case pages (web-platforms→/case/autoscreen,
-      mobile-apps→/case/looqz); custom-software + ai-systems have none.
-      Spec: docs/superpowers/specs/2026-07-17-services-detail-pages-design.md
-- [x] Update homepage CAPABILITIES `to` → sub-page routes
-- [x] Gates (2026-07-17): lint ✓ build ✓; qa-test.py (new routes + 1024
-      viewport added) — 4 detail routes clean at 320/414/768/1024/1280/1600,
-      0 console errors; link wiring, NotFound slug, breadcrumb, RM static
-      render, dark mode all verified; shots deleted. KNOWN: home 320px
-      h-scroll (2px) traced to the parallel LogoStrip "THE NUMBERS" revamp
-      (uncommitted, that session's scope) + pre-existing HeroCircuit issue.
-
-## Phase 3 — /work (Portfolio page) + /support
-- [ ] /work: hero, CareGrid featured full-width card, 7-card grid, bottom CTA
-- [ ] /support: hero, "for clients" / "inherited a mess" / options, CTA
-- [ ] Footer + nav wiring; routes
-- [ ] Gates
-
-## Phase 4 — Legal pages + cookie consent
-- [ ] /privacy-policy /terms-of-service /cookie-policy /gdpr (shared LegalPage
-      layout, ~720px, no hero, "Last updated: July 2026")
-- [ ] Cookie consent banner (Accept/Reject/Manage, opt-in, remembered) + footer
-      "Cookie Settings" link; GA4 gated behind consent (measurement ID stubbed)
-- [ ] Footer legal links final; base light theme (not inked)
-- [ ] Gates
-
-## Phase 5 — /website-package standalone landing
-- [ ] Not linked in nav/footer; 6 sections (hero+price, what's included, who
-      it's for, how it works, FAQ accordion, CTA); noindex optional
-- [ ] Intake form or mailto CTA; conversion event stub
-- [ ] Gates
-
-## Iteration 9 — subtle hero entrances + HeroThread (2026-07-16)
-User feedback: Decode (Contact) + FlipWords (About) hero animations "look so unprofessional";
-OpenLine hero visual "looks very bad and irrelevant".
-- [x] About hero → `motion/ink/MaskRise.jsx` (whole-line masked rise, 900ms EASE_OUT, line2 delay 120)
-- [x] Contact hero → `motion/ink/BlurRise.jsx` (opacity + y14 + blur10→0, 950ms, line2 delay 140)
-- [x] Contact hero visual → `components/HeroThread.jsx` + module.css ("first reply" chat card:
-      incoming bubble → typing dots crossfade → navy reply → "First reply · 21 minutes" stamp;
-      typing is CSS opacity:0 by default so RM render has no overlap; ping + float keep it alive)
-- [x] Deleted Decode.jsx, FlipWords.jsx, OpenLine.jsx, OpenLine.module.css (orphaned)
-- [x] CLAUDE.md hero-animations section rewritten (subtlety rule recorded) + Contact hero paragraph
-- [x] Gates: lint ✓, build ✓, 0 console errors, h-scroll 0 @320–1440, RM + dark verified, QA shots deleted
-Rule going forward: hero entrances stay distinct per page but RESTRAINED — no scramble/flip/per-char effects.
-
-## Iteration 10 — "The Numbers" (§03) revamp (2026-07-17)
-Client rejected the current flat readout band (4 equal cells on grey — reads as the
-generic "big number / small label" template). New direction: **honest instrument
-ledger** — each stat gets a true-to-data teal mark system that ignites on scroll.
-- [x] `content.js` — additive `NUMBERS_HEAD` (eyebrow kept `THE NUMBERS`, new short
-      Satoshi statement heading, accent tail)
-- [x] Rewrite `components/LogoStrip.jsx` — head (node + 03 / eyebrow + statement),
-      then a 4-row hairline ledger: mono index | count-up value (existing useCounter
-      parse) | mono label | data-mark visualization right column:
-      50+ → 50-tick meter all lit · 98% → 50-tick meter 49 lit / 1 dim ·
-      4.9★ → 5 stars, 5th clipped to 90% · 8+ → node rail, 8 igniting nodes
-- [x] Rewrite `LogoStrip.module.css` — ledger borders (2px strong top), sequential
-      tick ignition via --i transition-delays, row hover accent-tint sweep
-      (pointer:fine), both ink modes via tokens, RM = final state instantly
-- [x] Responsive: rows restack ≤820px (meta line / value / marks), marks grid uses
-      1fr tracks so 50 ticks fit 280px; sweep 320/375/414/640/768/1024/1280
-- [x] Gates: lint, build, screenshots both ink modes, RM check, delete shots
-- [x] Docs: CLAUDE.md LogoStrip section rewritten
-
-## Iteration 11 — "The Numbers" (§03) v2: "Signal Field" (2026-07-17)
-Client feedback on v1 ledger: too quiet. New direction: interactive, modern, stunning —
-full-bleed dark navy showcase band with an animated vignette + cursor-tracked light.
-
-- [x] content.js: add NUMBERS_DETAILS (one-line human detail per stat, additive)
-- [x] Rewrite LogoStrip.jsx — band-deep full-bleed section; layers: dot grid,
-      breathing pulse (animated vignette), edge vignette, cursor aura (trailing
-      translate3d), hot dot-grid + hot stat clone masked by cursor radial
-      (--sx/--sy section-relative, --bx/--by board-relative, rAF-throttled,
-      direct DOM var writes — no React state). Shared ignition progress hook
-      drives all four count-ups (setState only inside rAF).
-- [x] Rewrite LogoStrip.module.css — asymmetric 12-col editorial grid (stagger
-      offsets), stat values ink-fill entrance (stroke → solid), rules draw in,
-      hover:none → hot layers hidden + pulse stays (mobile ambience), single
-      column ≤820px, RM = static final state, band tokens only
-- [x] Gates: lint, build, both ink modes, breakpoint sweep 320–1280, RM, 0 console
-      errors, delete screenshots
-- [x] Docs: CLAUDE.md LogoStrip section updated
-- [x] Iteration 11 follow-up (user): single 4-up row, per-stat indices removed,
-      spacing tightened (band/statement/gaps); cols 4→2 (≤900) →1 (≤520);
-      re-verified lint/build/hover/768/375, no new h-scroll
-
-## Iteration 12 — ServiceShowcase split layout + Why head (2026-07-17)
-- [x] ServiceShowcase pinned panels → copy column left, tall device screen right
-      (.screen frame + .screenBar window chrome, right edge on container line,
-      near-full deck height); non-pinned keeps stacked flow with same chrome;
-      ghost word shrunk + mask-faded + clipped to the copy column; desc reserve 6 lines
-- [x] Why head: "differently." accented (heading/headingAccent split in content.js),
-      sub stacked below heading; removed stale 820px grid override
-- [x] Fixed pre-existing syntax error content.js:501 (apostrophe in single-quoted
-      string, from parallel edit) — requoted only, copy unchanged
-- [x] Gates: lint, build, pinned panels 1+3 @1440, @1024, 375 stacked (no h-scroll),
-      Why head shot; screenshots deleted, dev server stopped
-
-## Iteration 13 — Mobile vignette devices + panel-wide ghost (2026-07-17)
-- [x] MobileScene: landscape 4:3 tablet (TScreen layouts) + slim 9:19.5 iPhone,
-      width-only min(%, cqh*ratio) sizing (no aspect distortion), synced
-      screensLoop tracks = responsiveness story; phoneGhost removed; notif over phone
-- [x] Ghost word: panel-level watermark clamp(5rem,11vw,13rem), z0 behind the
-      screen (stage z1), drift ±5% own width; .pin overflow:clip guards h-scroll
-- [x] Gates: lint, build, panels 2+3 @1440, 375 stacked, no h-scroll; shots deleted
+- [x] 1. Project-card hover "AI slop" (user: homepage + /work). Homepage
+      Portfolio was already reworked by a parallel session (12:07 AM —
+      rail draw + teal wash, "ONE confident move" comment quotes the
+      complaint); /work still ran the old pile-up (lift + border +
+      shadow + rail + title underline + icon recolor). Ported the
+      approved idiom to Work.module.css: `.card::after` accent-tint
+      wash bleeds down after the rail draws, CTA nudge, `:active`
+      scale(0.99) press; removed lift/shadow/border hover, dead
+      `.titleInk` span+rules (Work.jsx too), and the no-op regionIcon
+      recolor. Also deleted leftover `.featured .titleInk::after` from
+      Portfolio.module.css. Verified via forced-hover computed styles
+      (rail scaleX(1), wash opacity 1, gap 11px) — occluded-tab rAF
+      stall blocked a visual screenshot; idiom is pixel-identical to
+      the visually-verified homepage version.
+- [x] 2. Contact hero status strip (user: "Available now… looks
+      amateur, all three points put in a professional way + enhance
+      design"). Flat mono-caps cells → signals-ledger hierarchy: mono
+      label over Satoshi-700 value — Availability / "Open for new
+      projects" (+ live dot) · First response / "Within one working
+      day" (matches metaBar promise) · Discovery call / "30 minutes,
+      no obligation"; hairline splits, first cell flush left, per-cell
+      staggered Reveals; ≤640 stacks 1-col. Verified live light+dark;
+      iframe sweep 320–1280 (1-col ≤640, 3-col ≥768, no overflow).
+- [x] 3. Gates: build ✓ (3.14s) + eslint ✓ on Work.jsx/Contact.jsx;
+      CLAUDE.md /work + Contact sections updated; no scratch files.
+- [x] 4. (user) StoryNest "View case study" missing arrow: flex crushed
+      the 13px icon to 0 in the tight small tile → `.ctaIcon
+      { flex-shrink: 0 }` (Portfolio + Work css) and `.foot
+      { flex-wrap: wrap }` so the CTA drops to its own line and the
+      card grows instead of squeezing.
+- [x] 5. (user) "Card with no case study smaller": bento spans now
+      derived from data — `cellFor(item)`: featured→big 2×2,
+      route→wide 2×1, rest→small 1×1; render order featured → routed
+      → rest so 01–08 numbering matches the dense grid's visual order.
+      Last row = two smalls + whitespace (intentional asymmetry).
+      Verified via iframe geometry 1280/1024/640/375: all routed cards
+      wide w/ 13px arrows, non-routed small, numbering sequential, no
+      h-scroll. Build ✓ (4.23s) + eslint ✓.
+- [x] 6. (user) About hero: "See our work" primary arrow Button → /work
+      under the sub (`.heroCta`, Reveal delay 360 — mirrors Contact's
+      hero CTA device; the story-section CTA stays too).
+- [x] 7. (user, 4 iterations) Build board pacing + copy: STEP 1500→2600
+      / HOLD 2600→3400 ("moves too fast"); "In build"→"Building";
+      bbLoad 2.4s→1.9s so the full bar settles ~700ms before the row
+      flips ("going to the next line is too quick"); verdicts stay
+      "Shipped" EXCEPT the last row Launch review → "Deployed" (user
+      corrected the all-Deployed first pass). Build ✓ (3.17s) +
+      eslint ✓; user verifying in browser themselves (asked for no
+      more claude-in-chrome calls).
+- [x] 8. (user) Board row chips: fake team initials (SM/AR/KV/TS/NP/DK)
+      "meaningless" → task-type glyphs: IconPen design / IconCode API /
+      IconCard payments / IconGrid admin / IconFlask QA / IconDeploy
+      launch. IconCard (credit card) + IconGrid (dashboard panels)
+      added to Icon.jsx; `.who` chip keeps the 24px circle, 13px
+      `.whoIcon` inside. Build ✓ (3.18s) + eslint ✓.

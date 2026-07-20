@@ -1,7 +1,9 @@
-/* HeroThread — Contact hero visual ("the first reply").
+/* HeroThread — Contact hero visual ("what working with us looks like").
    A floating message card: hairline frame, soft accent wash, diffusion
-   shadow. Perpetual life comes from the online dot's ping and a slow
-   ambient float; the thread itself plays once (HeroThread.jsx timeline). */
+   shadow. The thread loops through two exchanges (HeroThread.jsx timeline,
+   loop: true): enquiry → 21-minute reply, then issue → same-day fix →
+   resolved. The exchanges are stacked in one grid cell (.phases) so the
+   card height never jumps between them. */
 
 .wrap {
   position: relative;
@@ -69,9 +71,29 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(16px, 2vw, 22px);
   flex: 1;
   padding: clamp(20px, 2.6vw, 30px) clamp(18px, 2.4vw, 28px);
+}
+
+/* both exchanges share one grid cell — the taller one sizes the card, the
+   timeline crossfades between them so the frame never jumps */
+.phases {
+  display: grid;
+}
+
+.phase {
+  grid-area: 1 / 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(16px, 2vw, 22px);
+}
+
+/* static / reduced-motion render = the resolved second exchange; the
+   timeline flips visibility for the animated pass */
+.phaseA {
+  opacity: 0;
 }
 
 .rowIn {

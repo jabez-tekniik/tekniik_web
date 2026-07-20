@@ -1,5 +1,5 @@
 import Reveal from '../components/Reveal.jsx'
-import WordRise from '../motion/ink/WordRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import useReveal from '../hooks/useReveal.js'
 import { IconClose, IconCheck } from '../components/Icon.jsx'
 import { PROBLEM } from '../data/content.js'
@@ -59,10 +59,9 @@ export default function Problem() {
           <span className={styles.eyebrow}>{PROBLEM.eyebrow}</span>
         </Reveal>
 
-        <WordRise
+        <FadeIn
           text={PROBLEM.heading}
           as="h2"
-          staggerMs={40}
           className={styles.statement}
         />
 

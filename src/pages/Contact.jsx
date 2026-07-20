@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
 import Button from '../components/Button.jsx'
-import BlurRise from '../motion/ink/BlurRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import HeroThread from '../components/HeroThread.jsx'
+import { getLenis } from '../motion/SmoothScroll.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
 import { IconCheck, IconFlagIndia, IconFlagUK } from '../components/Icon.jsx'
 import { CONTACT_PAGE, OFFICES } from '../data/content.js'
@@ -72,6 +73,20 @@ export default function Contact() {
   const office = OFFICES.find((o) => o.key === officeKey) ?? OFFICES[0]
 
   const update = (key) => (e) => setForm((s) => ({ ...s, [key]: e.target.value }))
+
+  /* hero CTA → the form spread. Lenis owns the scroll when active, so route
+     through it (native scrollIntoView gets cancelled by its rAF loop);
+     mirrors the homepage Hero / Services index. */
+  const scrollToForm = (e) => {
+    const el = document.getElementById('contact-form')
+    if (!el) return
+    e.preventDefault()
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = getLenis()
+    if (lenis && !reduced) lenis.scrollTo(el, { offset: -84 })
+    else el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setSent(true)
@@ -103,8 +118,8 @@ export default function Contact() {
           <div className={styles.heroSplit}>
             <div>
               <h1 className={styles.headline}>
-                <BlurRise text={line1} as="span" className={styles.hLine} />
-                <BlurRise
+                <FadeIn text={line1} as="span" className={styles.hLine} />
+                <FadeIn
                   text={line2}
                   as="span"
                   delay={140}
@@ -114,6 +129,11 @@ export default function Contact() {
               <Reveal delay={280}>
                 <p className={styles.sub}>{CONTACT_PAGE.sub}</p>
               </Reveal>
+              <Reveal delay={360} className={styles.heroCta}>
+                <Button href="#contact-form" variant="primary" arrow onClick={scrollToForm}>
+                  Send us a message
+                </Button>
+              </Reveal>
             </div>
 
             <Reveal delay={200} className={styles.heroVisual}>
@@ -121,20 +141,30 @@ export default function Contact() {
             </Reveal>
           </div>
 
-          {/* status strip — availability facts as a hairline ledger */}
-          <Reveal className={styles.status} delay={200}>
-            <span className={styles.statusCell}>
-              <span className={styles.liveDot} aria-hidden="true" />
-              Available now
-            </span>
-            <span className={styles.statusCell}>Replies within 24 hours</span>
-            <span className={styles.statusCell}>Discovery call · 30 min</span>
-          </Reveal>
+          {/* status strip — availability ledger: mono label over a confident
+             Satoshi value (the About-signals hierarchy), staggered in */}
+          <div className={styles.status}>
+            <Reveal className={styles.statusCell} delay={200}>
+              <span className={styles.statusLabel}>Availability</span>
+              <span className={styles.statusValue}>
+                <span className={styles.liveDot} aria-hidden="true" />
+                Open for new projects
+              </span>
+            </Reveal>
+            <Reveal className={styles.statusCell} delay={280}>
+              <span className={styles.statusLabel}>First response</span>
+              <span className={styles.statusValue}>Within one working day</span>
+            </Reveal>
+            <Reveal className={styles.statusCell} delay={360}>
+              <span className={styles.statusLabel}>Discovery call</span>
+              <span className={styles.statusValue}>30 minutes, no obligation</span>
+            </Reveal>
+          </div>
         </div>
       </section>
 
       {/* —— The working spread: form | direct lines ————————— */}
-      <section className={styles.spread}>
+      <section id="contact-form" className={styles.spread}>
         <div className="container">
           <div className={styles.grid}>
             <Reveal>

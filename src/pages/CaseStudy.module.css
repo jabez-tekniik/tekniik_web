@@ -1,225 +1,456 @@
-.section {
-  border-top: 1px solid var(--border);
-}
+/* Case studies — shared Deep Ink template (CaseStudy.jsx).
+   Mirrors the ServiceDetail spec-sheet idiom: node + mono meta bar, the
+   shared --fs-page-hero headline, frameless vignette stage, stats signals
+   ledger, NN / EYEBROW section heads, hairline spec ledgers, teal-railed
+   pull quotes. Tokens only — both ink modes adapt. Satoshi call sites use
+   real file weights only (400/500/700/900). */
 
-.heroFrame {
+/* —— Hero ——————————————————————————————————— */
+.hero {
   position: relative;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--border);
-  border-radius: var(--r-2xl);
+  padding-top: clamp(88px, 9vw, 120px);
   overflow: hidden;
-  background: var(--bg-2);
-  margin-bottom: clamp(48px, 6vw, 80px);
-  box-shadow:
-    0 0 0 1px rgba(10, 15, 28, 0.02),
-    0 24px 60px -28px rgba(91, 91, 255, 0.18),
-    0 8px 28px -16px rgba(10, 15, 28, 0.08);
+  isolation: isolate;
 }
 
-.heroFrame::after {
+.hero::after {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  top: -14%;
+  right: -12%;
+  width: min(640px, 58vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hero-glow-a) 0%,
+    var(--hero-glow-b) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  z-index: -1;
   pointer-events: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.heroFrame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.heroInner {
+  position: relative;
+  z-index: 1;
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  margin-bottom: 64px;
-}
-
-.statCell {
-  background: var(--surface);
-  padding: 28px 24px;
+.metaBar {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(32px, 4.4vw, 56px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
   gap: 10px;
-}
-
-.statValue {
-  font-family: var(--f-display);
-  font-weight: 800;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  color: var(--ink);
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.statLabel {
   font-family: var(--f-mono);
-  font-size: 0.6875rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--text);
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-bloom);
+  flex-shrink: 0;
+}
+
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 200ms var(--ease-out);
+}
+
+.crumb > span {
+  transition: transform 240ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .crumb:hover {
+    color: var(--accent);
+  }
+  .crumb:hover > span {
+    transform: translateX(-3px);
+  }
+}
+
+.heroSplit {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(40px, 6vw, 88px);
+  align-items: center;
+  margin-bottom: clamp(40px, 5.4vw, 72px);
+}
+
+.headline {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: var(--fs-page-hero);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 clamp(18px, 2.4vw, 28px);
+}
+
+.sub {
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 46ch;
+  margin: 0;
+}
+
+.heroVisual {
+  min-width: 0;
+}
+
+/* frameless vignette stage — size container so scenes scale via cqw/cqh */
+.stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  isolation: isolate;
+  container-type: size;
+}
+
+.stage::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 6%;
+  top: 10%;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-bloom), transparent 72%);
+  opacity: 0.3;
+  filter: blur(28px);
+  animation: bloomDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes bloomDrift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(10%, 8%, 0) scale(1.12);
+  }
+}
+
+/* signals ledger — the launch numbers closing the hero (StatBlock inside) */
+.signals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0 clamp(16px, 2.4vw, 32px);
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+
+.signal {
+  min-width: 0;
+}
+
+/* —— Sections ————————————————————————————————— */
+.section {
+  padding-block: clamp(60px, 7.5vw, 104px);
+}
+
+.sectionTint {
+  background: var(--bg-2);
+  border-block: 1px solid var(--hairline);
+}
+
+.secHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: clamp(26px, 3.5vw, 44px);
+}
+
+.secIndex {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color: var(--accent);
 }
 
-.body {
-  max-width: 880px;
-  margin-inline: auto;
+.secEyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-.h2 {
-  margin-block: 64px 18px;
-  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-  letter-spacing: -0.035em;
-}
-
-.h2:first-of-type {
-  margin-top: 0;
-}
-
-.headRule {
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-deep));
-  border-radius: 2px;
-  margin-bottom: 22px;
+/* hairline-railed editorial column (challenge / result prose) */
+.proseCol {
+  border-left: 1px solid var(--hairline);
+  padding-left: clamp(20px, 3vw, 36px);
+  max-width: 62ch;
 }
 
 .para {
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--body);
-  margin-bottom: 16px;
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin: 0;
 }
 
-.subHead {
+.para + .para,
+.para + .quoteIntro {
+  margin-top: 1.2em;
+}
+
+/* —— 02 · what we built ——————————————————————— */
+.lede {
+  font-family: var(--f-body);
+  font-size: clamp(1.08rem, 1.5vw, 1.28rem);
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 62ch;
+  margin: 0 0 clamp(28px, 3.6vw, 44px);
+}
+
+.group + .group {
+  margin-top: clamp(28px, 3.6vw, 44px);
+}
+
+.groupHead {
   font-family: var(--f-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 14px;
+}
+
+.specs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 780px;
+  border-top: 1px solid var(--hairline);
+}
+
+.specRow {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.specRow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .specRow:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.specNum {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
   color: var(--accent);
-  margin-block: 32px 14px;
 }
 
-.bullets {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 18px;
+.specText {
+  font-family: var(--f-body);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--text);
 }
 
-.bullets li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 0.9375rem;
-  color: var(--body);
-  line-height: 1.6;
+/* the user flow — hairline cells on a strong top border */
+.flowIntro {
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin: clamp(36px, 4.6vw, 56px) 0 clamp(20px, 2.6vw, 28px);
+  max-width: 62ch;
 }
 
-.bulletDot {
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  margin-top: 9px;
-}
-
-.flowGrid {
+.flow {
   display: grid;
-  gap: 14px;
-  margin-block: 24px 48px;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
 }
 
-.flowGrid[data-cols='3'] {
-  grid-template-columns: repeat(3, 1fr);
+.flowCell {
+  border-top: 2px solid var(--border-strong);
+  padding-top: clamp(14px, 1.8vw, 20px);
+  transition:
+    border-color var(--d-base) var(--ease),
+    transform 320ms var(--ease-out);
 }
 
-.flowGrid[data-cols='4'] {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.flowCard {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 24px 22px;
-  transition: border-color 180ms var(--ease-out), transform 180ms var(--ease-out);
-}
-
-.flowCard:hover {
-  border-color: rgba(91, 91, 255, 0.24);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .flowCell:hover {
+    border-top-color: var(--accent);
+    transform: translateY(-4px);
+  }
 }
 
 .flowNum {
-  font-family: var(--f-display);
-  font-weight: 800;
-  font-size: 1.5rem;
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   color: var(--accent);
-  letter-spacing: -0.04em;
-  margin-bottom: 12px;
-  line-height: 1;
+  margin-bottom: 10px;
 }
 
 .flowTitle {
   font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--ink);
-  margin-bottom: 6px;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0 0 8px;
 }
 
 .flowDesc {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  line-height: 1.55;
+  font-family: var(--f-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+  max-width: 30ch;
 }
 
+/* —— 03 · the result ——————————————————————————— */
+.quoteIntro {
+  font-family: var(--f-body);
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.quotes {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6vw, 28px);
+  margin: clamp(24px, 3vw, 36px) 0 clamp(28px, 3.6vw, 44px);
+  max-width: 720px;
+}
+
+/* teal-railed pull quote — the site's statement device */
 .quote {
-  border-left: 2px solid var(--accent);
-  padding: 14px 0 14px 22px;
-  margin-bottom: 16px;
-  font-style: italic;
-  color: var(--body);
-  font-size: 0.9375rem;
+  margin: 0;
+  border-left: 3px solid var(--accent);
+  padding-left: clamp(20px, 2.5vw, 32px);
 }
 
-.quote span {
-  display: block;
-  font-style: normal;
-  font-size: 0.8125rem;
-  color: var(--muted);
-  margin-top: 8px;
+.quoteText {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.9vw, 1.6rem);
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.quoteWho {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .tagsRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-block: 32px 8px;
+  gap: 10px;
 }
 
-@media (max-width: 880px) {
-  .statsGrid,
-  .flowGrid[data-cols='3'],
-  .flowGrid[data-cols='4'] {
-    grid-template-columns: repeat(2, 1fr);
+/* ————————————————————————— responsive ————————————————————————— */
+
+@media (max-width: 960px) {
+  .heroSplit {
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 5vw, 44px);
+  }
+  .flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 480px) {
-  .statsGrid,
-  .flowGrid[data-cols='3'],
-  .flowGrid[data-cols='4'] {
+@media (max-width: 900px) {
+  .signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: clamp(20px, 4vw, 32px);
+  }
+}
+
+@media (max-width: 560px) {
+  .metaBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .flow {
     grid-template-columns: 1fr;
+  }
+  .signals {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* —— reduced motion: hovers and the stage bloom go inert —— */
+@media (prefers-reduced-motion: reduce) {
+  .stage::after {
+    animation: none;
+  }
+  .specRow::after {
+    transition: none;
+  }
+  .flowCell {
+    transition: none;
   }
 }

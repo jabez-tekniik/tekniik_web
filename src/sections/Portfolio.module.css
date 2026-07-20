@@ -1,7 +1,7 @@
 /* Portfolio — "Work index" (Deep Ink): a three-column card grid. CareGrid
    (featured) is a permanent navy card spanning two columns; the rest are
-   raised cards that lift off the canvas. Routed items carry a case-study
-   CTA + accent draw. Transform/opacity/color only; pointer-fine hover. */
+   raised cards. Hover = the accent rail draws + its teal wash bleeds down
+   (no lift/shadow pile-up). Transform/opacity only; pointer-fine hover. */
 
 .section {
   position: relative;
@@ -40,7 +40,7 @@
 
 .heading {
   font-family: var(--f-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: clamp(2.2rem, 5.6vw, 4.6rem);
   line-height: 1;
   letter-spacing: -0.025em;
@@ -102,10 +102,18 @@
   text-decoration: none;
   overflow: hidden;
   isolation: isolate;
-  transition:
-    transform 380ms cubic-bezier(0.32, 0.72, 0, 1),
-    border-color 380ms cubic-bezier(0.32, 0.72, 0, 1),
-    box-shadow 380ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* hover wash — a faint teal tint bleeding down from the drawn rail (the
+   site's row-sweep device, not a generic card lift) */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--accent-tint), transparent 70%);
+  opacity: 0;
+  transition: opacity 320ms var(--ease);
 }
 
 /* accent bar drawn across the card top on hover (interactive only) */
@@ -168,24 +176,6 @@
   margin: 0;
 }
 
-.titleInk {
-  position: relative;
-  display: inline;
-}
-
-.titleInk::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 380ms cubic-bezier(0.32, 0.72, 0, 1);
-}
-
 .desc {
   font-family: var(--f-body);
   font-size: 0.9375rem;
@@ -219,7 +209,10 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 14px;
+  /* tight tiles: rather than squeezing result + CTA onto one row, let the
+     CTA wrap to its own line and the card grow (auto grid rows) */
+  flex-wrap: wrap;
+  gap: 10px 14px;
   padding-top: 16px;
   border-top: 1px solid var(--hairline);
 }
@@ -248,6 +241,9 @@
 .ctaIcon {
   width: 13px;
   height: 13px;
+  /* tight small tiles must squeeze the wrapping result text, not the arrow
+     (flex crushed it to 0 width on the StoryNest tile) */
+  flex-shrink: 0;
   transition: transform 260ms var(--ease);
 }
 
@@ -277,10 +273,6 @@
   font-size: clamp(1.9rem, 3vw, 2.8rem);
 }
 
-.featured .titleInk::after {
-  background: var(--accent-on-band);
-}
-
 .featured .foot {
   border-top-color: var(--band-hairline);
 }
@@ -301,37 +293,27 @@
   background: var(--accent-on-band);
 }
 
+/* the light-theme tint is invisible on navy — the anchor gets its own wash */
+.featured::after {
+  background: linear-gradient(180deg, rgba(114, 204, 214, 0.09), transparent 70%);
+}
+
 .featured .regionIcon {
   color: var(--accent-on-band);
 }
 
-/* —— hover — same effect on EVERY card (pointer-fine only) —— */
+/* —— hover — ONE confident move on every card (pointer-fine only): the
+   accent rail draws across the top and its teal wash bleeds down after it.
+   No lift/shadow/border/underline pile-up (user: the old stacked effect
+   read as AI slop — don't reintroduce it). Routed cards add a CTA nudge. */
 @media (hover: hover) and (pointer: fine) {
-  /* lift + accent border + shadow for all cards */
-  .card:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent-border);
-    box-shadow: var(--shadow-card-hover);
-  }
-  /* accent top-line draws + title underline draws — all cards */
   .card:hover .accentLine,
   .card:focus-visible .accentLine {
     transform: scaleX(1);
   }
-  .card:hover .titleInk::after,
-  .card:focus-visible .titleInk::after {
-    transform: scaleX(1);
-  }
-  /* the region chip pin brightens as a subtle extra cue */
-  .card:hover .regionIcon {
-    color: var(--accent);
-  }
-  .featured:hover .regionIcon {
-    color: var(--accent-on-band);
-  }
-  /* the navy anchor keeps its borderless face while still lifting + drawing */
-  .featured:hover {
-    border-color: transparent;
+  .card:hover::after,
+  .card:focus-visible::after {
+    opacity: 1;
   }
   /* routed cards additionally animate their CTA */
   .interactive:hover .cta {
@@ -340,6 +322,15 @@
   .interactive:hover .ctaIcon {
     transform: translateX(3px);
   }
+}
+
+/* press feedback on the routed cards — they're links */
+.interactive {
+  transition: transform 160ms var(--ease-out);
+}
+
+.interactive:active {
+  transform: scale(0.99);
 }
 
 /* small tiles run tighter so their content clears the shorter cell */
@@ -386,14 +377,14 @@
 
 /* —— reduced motion —— */
 @media (prefers-reduced-motion: reduce) {
-  .card,
+  .card::after,
   .accentLine,
-  .titleInk::after,
   .cta,
-  .ctaIcon {
+  .ctaIcon,
+  .interactive {
     transition: none;
   }
-  .card:hover {
+  .interactive:active {
     transform: none;
   }
 }

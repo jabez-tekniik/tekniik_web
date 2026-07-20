@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
-import WordRise from '../motion/ink/WordRise.jsx'
+import FadeIn from '../motion/ink/FadeIn.jsx'
 import useReducedMotion from '../hooks/useReducedMotion.js'
 import { TESTIMONIALS } from '../data/content.js'
 import styles from './Testimonial.module.css'
@@ -14,7 +14,7 @@ const EXIT_MS = 300
    Quotes rotate: auto-advance every 5s (paused on focus-within + offscreen,
    never under reduced motion — NO hover pause: the cursor parks on the
    section after scrolling and froze it); the outgoing quote fades up while the
-   incoming one fades in (the WordRise mask reveal runs only on the very
+   incoming one fades in (the FadeIn entrance runs only on the very
    first scroll-in — replaying it per swap read as a glitch). Hidden sizer
    copies of every quote lock the section height to the tallest. */
 export default function Testimonial() {
@@ -124,10 +124,9 @@ export default function Testimonial() {
                   {active.text}
                 </blockquote>
               ) : (
-                <WordRise
+                <FadeIn
                   text={active.text}
                   as="blockquote"
-                  staggerMs={30}
                   className={styles.quote}
                 />
               )}

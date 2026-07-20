@@ -1,108 +1,21 @@
-import PageHeader from '../components/PageHeader.jsx'
-import Reveal from '../components/Reveal.jsx'
-import Tag from '../components/Tag.jsx'
-import StatBlock from '../components/StatBlock.jsx'
-import FinalCta from '../sections/FinalCta.jsx'
+import CaseStudy from './CaseStudy.jsx'
 import { CASE_AUTOSCREEN } from '../data/content.js'
-import styles from './CaseStudy.module.css'
 
+/* ScreenFix — live dispatch platform, so the hero runs the AppScene
+   dashboard vignette (the closest visual metaphor for on-demand job
+   tracking). Copy verbatim from CASE_AUTOSCREEN. */
 export default function CaseAutoScreen() {
   const c = CASE_AUTOSCREEN
   return (
-    <>
-      <PageHeader
-        eyebrow={c.eyebrow}
-        heading={c.title}
-        sub={c.sub}
-        back={{ label: 'Back to projects', to: '/' }}
-        media={{
-          src: '/img/case/autoscreen-hero.webp',
-          alt: 'A single sweeping curved glass form orbited by translucent shards in indigo and pink — an abstract representation of ScreenFix’s automotive quote flow',
-          width: 1600,
-          height: 1600,
-        }}
-      />
-
-      <section className={`section ${styles.section}`}>
-        <div className="container">
-          <Reveal className={styles.statsGrid}>
-            {c.stats.map((s) => (
-              <div key={s.label} className={styles.statCell}>
-                <StatBlock value={s.value} label={s.label} />
-              </div>
-            ))}
-          </Reveal>
-
-          <div className={styles.body}>
-            <Reveal>
-              <span className={styles.headRule} />
-              <h2 className={styles.h2}>The Challenge</h2>
-              {c.challenge.map((p, i) => (
-                <p key={i} className={styles.para}>{p}</p>
-              ))}
-            </Reveal>
-
-            <Reveal>
-              <span className={styles.headRule} />
-              <h2 className={styles.h2}>What We Built</h2>
-              <p className={styles.para}>{c.builtIntro}</p>
-
-              <h3 className={styles.subHead}>{c.coreHeading}</h3>
-              <ul className={styles.bullets}>
-                {c.core.map((b) => (
-                  <li key={b}>
-                    <span className={styles.bulletDot} aria-hidden="true" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-
-              <h3 className={styles.subHead}>{c.coverageHeading}</h3>
-              <ul className={styles.bullets}>
-                {c.coverage.map((b) => (
-                  <li key={b}>
-                    <span className={styles.bulletDot} aria-hidden="true" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-
-              <p className={styles.para}>{c.flowIntro}</p>
-              <div className={styles.flowGrid} data-cols="4">
-                {c.flow.map((f) => (
-                  <div key={f.n} className={styles.flowCard}>
-                    <div className={styles.flowNum}>{f.n}</div>
-                    <div className={styles.flowTitle}>{f.title}</div>
-                    <div className={styles.flowDesc}>{f.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-
-            <Reveal>
-              <span className={styles.headRule} />
-              <h2 className={styles.h2}>The Result</h2>
-              {c.result.map((p, i) => (
-                <p key={i} className={styles.para}>{p}</p>
-              ))}
-              <p className={styles.para}>{c.resultIntro}</p>
-              {c.quotes.map((q, i) => (
-                <p key={i} className={styles.quote}>
-                  “{q.text}”<span>— {q.who}</span>
-                </p>
-              ))}
-
-              <div className={styles.tagsRow}>
-                {c.tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <FinalCta heading={c.finalCta.heading} sub={c.finalCta.sub} ctaLabel={c.finalCta.cta} />
-    </>
+    <CaseStudy
+      content={c}
+      sceneKey="app"
+      flowCols={4}
+      groups={[
+        { heading: c.coreHeading, items: c.core },
+        { heading: c.coverageHeading, items: c.coverage },
+      ]}
+      quotes={c.quotes}
+    />
   )
 }
