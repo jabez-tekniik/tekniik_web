@@ -35,6 +35,7 @@ function ChevronWatermark() {
    under a hairline: sub left, CTA + email right. */
 export default function FinalCta({
   heading,
+  accent,
   sub,
   ctaLabel = 'Get a Quote',
   ctaTo = '/contact',
@@ -44,25 +45,36 @@ export default function FinalCta({
   const lines = Array.isArray(heading) ? heading : [heading]
   const magneticRef = useMagneticInk(0.3)
 
+  /* Only the significant words carry the teal (user, 2026-07-22: a
+     single-line heading was going teal end to end). Multi-line headings
+     accent their whole closing line; single-line ones split off `accent`,
+     which must be the tail of the heading. */
+  const last = lines.length - 1
+  const splitAccent = lines.length === 1 && accent && lines[0].endsWith(accent)
+  const lead = splitAccent ? lines[0].slice(0, lines[0].length - accent.length) : null
+
   return (
     <section className={styles.section}>
       <ChevronWatermark />
 
       <div className={`container ${styles.inner}`}>
         <h2 className={styles.heading}>
-          {lines.map((line, i) => (
-            <FadeIn
-              key={i}
-              text={line}
-              as="span"
-              delay={i * 120}
-              className={
-                i === lines.length - 1
-                  ? `${styles.line} ${styles.lineAccent}`
-                  : styles.line
-              }
-            />
-          ))}
+          {splitAccent ? (
+            <FadeIn as="span" className={styles.line}>
+              {lead}
+              <span className={styles.lineAccent}>{accent}</span>
+            </FadeIn>
+          ) : (
+            lines.map((line, i) => (
+              <FadeIn
+                key={i}
+                text={line}
+                as="span"
+                delay={i * 120}
+                className={i === last ? `${styles.line} ${styles.lineAccent}` : styles.line}
+              />
+            ))
+          )}
         </h2>
 
         <Reveal className={styles.footerRow} delay={200}>

@@ -9,6 +9,7 @@ export default function CaseAutoScreen() {
   return (
     <CaseStudy
       content={c}
+      slug="autoscreen"
       sceneKey="app"
       flowCols={4}
       groups={[

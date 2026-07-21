@@ -96,7 +96,10 @@ export default function Portfolio() {
             <span className={styles.metaIndex}>08</span>
             <span className={styles.metaEyebrow}>{PORTFOLIO.eyebrow}</span>
           </div>
-          <h2 className={styles.heading}>{PORTFOLIO.heading}</h2>
+          <h2 className={styles.heading}>
+            {PORTFOLIO.heading}{' '}
+            <span className={styles.headingAccent}>{PORTFOLIO.headingAccent}</span>
+          </h2>
           <p className={styles.sub}>{PORTFOLIO.sub}</p>
         </Reveal>
 

@@ -79,6 +79,48 @@
   font-display: swap;
 }
 
+/* —— Satoshi, one FAMILY per weight (user rule, 2026-07-22) ——
+   Every Satoshi call site picks its face through font-family and never
+   declares font-weight, so no rule can synthesize a face or drift a weight.
+   The composite 'Satoshi' family above stays registered for legacy fallback
+   chains; new rules use these single-face families via the --f-display-*
+   tokens below. */
+@font-face {
+  font-family: 'Satoshi Light';
+  src: url('/fonts/satoshi/Satoshi-Light.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi Regular';
+  src: url('/fonts/satoshi/Satoshi-Regular.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi Medium';
+  src: url('/fonts/satoshi/Satoshi-Medium.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi Bold';
+  src: url('/fonts/satoshi/Satoshi-Bold.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi Black';
+  src: url('/fonts/satoshi/Satoshi-Black.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* —— color —— */
   --bg: #f7f8fa;
@@ -117,6 +159,15 @@
   /* —— type —— */
   --f-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
   --f-body: 'Inter', system-ui, sans-serif;
+  /* Satoshi display slots — the WEIGHT is the family; never pair these with
+     font-weight (user rule, 2026-07-22). Inter Tight is the fallback face. */
+  --f-display-light: 'Satoshi Light', 'Inter Tight', system-ui, sans-serif;
+  --f-display-reg: 'Satoshi Regular', 'Inter Tight', system-ui, sans-serif;
+  --f-display-med: 'Satoshi Medium', 'Inter Tight', system-ui, sans-serif;
+  --f-display-bold: 'Satoshi Bold', 'Inter Tight', system-ui, sans-serif;
+  --f-display-black: 'Satoshi Black', 'Inter Tight', system-ui, sans-serif;
+  /* header nav slot */
+  --f-nav: var(--f-display-med);
   /* ONE hero-headline size for every interior page (Services hub + details,
      About, Contact, case studies) — sized so the longest headline holds ≤3
      lines in a split-hero column (user rule, 2026-07-20). The home poster

@@ -138,11 +138,10 @@ export default function AiAccelerated() {
             <span className={styles.index}>10</span>
             <span className={styles.eyebrow}>{AI_ACCELERATED.eyebrow}</span>
           </div>
-          <FadeIn
-            text={AI_ACCELERATED.heading}
-            as="h2"
-            className={styles.heading}
-          />
+          <FadeIn as="h2" className={styles.heading}>
+            <span className={styles.headingAccent}>{AI_ACCELERATED.heading[0]}</span>{' '}
+            {AI_ACCELERATED.heading[1]}
+          </FadeIn>
           <p className={styles.sub}>{AI_ACCELERATED.sub}</p>
         </Reveal>
 

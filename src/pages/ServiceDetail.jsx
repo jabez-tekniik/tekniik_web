@@ -189,7 +189,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <FinalCta heading={page.cta.text} ctaLabel={page.cta.button} />
+      <FinalCta heading={page.cta.text} accent={page.cta.accent} ctaLabel={page.cta.button} />
     </>
   )
 }

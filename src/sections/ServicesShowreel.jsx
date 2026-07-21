@@ -188,7 +188,7 @@ function OpsDemo({ on }) {
     <div className={`${styles.demo} ${styles.opsDemo} ${on ? styles.demoOn : ''}`}>
       <div className={styles.chrome}>
         <span className={styles.liveDot} />
-        <span className={styles.opsLabel}>AUTOMATION — LIVE</span>
+        <span className={styles.opsLabel}>AUTOMATION &middot; LIVE</span>
       </div>
       <div className={styles.opsBody}>
         {[0, 1, 2, 3].map((i) => (

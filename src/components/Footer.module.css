@@ -2,9 +2,38 @@
   position: relative;
   border-top: 1px solid var(--border);
   background: var(--bg-2);
-  padding-block: 64px 24px;
+  /* the bottom pad is deep enough to hold the ghost wordmark below the
+     copyright row, so the two never sit on the same band */
+  padding-block: 64px clamp(56px, 6vw, 92px);
   margin-top: 0;
   overflow: hidden;
+}
+
+/* ghost wordmark — the studio name at poster scale, edge to edge across the
+   very bottom, its lower third clipped by the footer's own edge and faded
+   from the top so it dissolves upward. Texture only: it must always read
+   WEAKER than the copyright line above it, so keep the opacity in the low
+   hundredths. Full bleed by design (user, 2026-07-22) — no gutters, no max
+   width, and the baseline sits below the viewBox so nothing shows under it. */
+.wordmark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: var(--ink);
+  opacity: 0.055;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 62%);
+  mask-image: linear-gradient(to bottom, transparent, #000 62%);
+}
+
+.wordmarkText {
+  font-family: var(--f-display-black);
+  font-size: 100px;
 }
 
 .glow {
@@ -18,6 +47,23 @@
   pointer-events: none;
 }
 
+/* floor bloom — one wide wash rising off the bottom edge plus a tighter
+   pool in each bottom corner, so the page closes on light instead of a
+   hard stop (2026-07-22, user) */
+.glowFloor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 340px;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 130% at 50% 118%, var(--accent-bloom), transparent 70%),
+    radial-gradient(38% 100% at 0% 108%, var(--accent-soft), transparent 72%),
+    radial-gradient(38% 100% at 100% 108%, var(--accent-soft), transparent 72%);
+  opacity: 0.55;
+}
+
 .inner {
   position: relative;
   width: 100%;
@@ -25,13 +71,17 @@
   margin-inline: auto;
   padding-inline: var(--gutter);
   display: grid;
-  grid-template-columns: 1.6fr 0.9fr 0.9fr 1.4fr;
+  /* three columns since the Location column was removed (2026-07-22) —
+     the link columns stretch so the row still spans the full width */
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 48px;
   margin-bottom: 48px;
 }
 
 .brand {
-  max-width: 280px;
+  /* widened 2026-07-22 for the three-line studio blurb — 280px set it in a
+     narrow ribbon beside two link columns that have room to spare */
+  max-width: 460px;
 }
 
 .logoRow {
@@ -47,57 +97,130 @@
 }
 
 .logoText {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: 1rem;
   color: var(--ink);
   letter-spacing: -0.02em;
 }
 
+/* lead line — the brand crux, set in Satoshi over the three support lines */
+.tagLead {
+  margin-top: 16px;
+  font-family: var(--f-display-bold);
+  font-size: 1.0625rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
 .tag {
-  margin-top: 14px;
+  margin-top: 8px;
   font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.6;
+  max-width: 44ch;
 }
 
-.contacts {
-  list-style: none;
-  margin: 14px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.tagLead + .tag {
+  margin-top: 12px;
 }
 
-.contactRow {
+/* mail card — a hairline-bound row so the address reads as an invitation,
+   not as a fourth line of company copy */
+.mailCard {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--f-mono);
-  font-size: 0.875rem;
-  color: var(--body);
-  padding: 4px 0;
-  transition: color 200ms var(--ease);
-  min-height: 28px;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 10px 14px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--accent-tint);
+  color: var(--ink);
+  transition:
+    border-color 220ms var(--ease),
+    background 220ms var(--ease);
 }
 
-.contactRow svg {
-  color: var(--muted-2);
+.mailIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
-  transition: color 200ms var(--ease);
-}
-
-.contactRow:hover {
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
   color: var(--accent);
+  transition:
+    background 220ms var(--ease),
+    color 220ms var(--ease);
 }
 
-.contactRow:hover svg {
+.mailText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mailLabel {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.mailValue {
+  font-family: var(--f-display-med);
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.mailArrow {
+  flex-shrink: 0;
   color: var(--accent);
+  transition: transform 240ms var(--ease-out);
 }
 
-/* social row — hairline squares matching the office-tab device; links are
-   dead ('#') until the profile URLs land */
+@media (hover: hover) and (pointer: fine) {
+  .mailCard:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
+  }
+
+  .mailCard:hover .mailIcon {
+    background: var(--accent);
+    color: var(--bg-raise, var(--bg));
+  }
+
+  .mailCard:hover .mailArrow {
+    transform: translateX(4px);
+  }
+}
+
+.mailCard:active {
+  transform: scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mailCard,
+  .mailIcon,
+  .mailArrow {
+    transition: none;
+  }
+
+  .mailCard:hover .mailArrow {
+    transform: none;
+  }
+}
+
+/* social row — hairline squares; links are dead ('#') until the profile
+   URLs land */
 .socials {
   display: flex;
   gap: 8px;
@@ -133,129 +256,15 @@
   box-shadow: var(--focus-ring);
 }
 
-.officeTabs {
-  display: inline-flex;
-  gap: 4px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 3px;
-}
-
-.officeTab {
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted-2);
-  background: transparent;
-  border: none;
-  border-radius: 999px;
-  padding: 5px 12px;
-  min-height: 26px;
-  cursor: pointer;
-  transition:
-    color 200ms var(--ease),
-    background 200ms var(--ease);
-}
-
-.officeTab:hover {
-  color: var(--ink);
-}
-
-.officeTabActive,
-.officeTab.officeTabActive:hover {
-  color: var(--ink);
-  background: var(--surface-2);
-}
-
-.officeTab:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.address {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-style: normal;
-  font-size: 0.9375rem;
-  color: var(--body);
-  line-height: 1.7;
-  margin-bottom: 16px;
-  padding-left: 14px;
-  border-left: 2px solid var(--accent);
-  animation: regionIn 360ms var(--ease-out) backwards;
-}
-
-.region {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px 10px;
-  font-size: 0.875rem;
-  color: var(--body);
-  margin-bottom: 6px;
-  animation: regionIn 360ms var(--ease-out) backwards;
-}
-
-/* flag badge art brings its own corner radius + inset border — no ring/clip
-   here, and align-items:center on .region lines it up with the country name */
-.flag {
-  display: inline-flex;
-  line-height: 0;
-  animation: flagIn 420ms var(--ease-out) 60ms backwards;
-}
-
-.flag svg {
-  display: block;
-}
-
-/* Satoshi has no 600 file — 700 is the nearest real weight */
-.country {
-  font-family: var(--f-display);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
-@keyframes regionIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes flagIn {
-  from {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .region,
-  .flag,
-  .address {
-    animation: none;
-  }
   .socialLink:active {
     transform: none;
   }
 }
 
 .colHead {
-  font-family: var(--f-mono);
+  /* PAGES / LEGAL headings run Satoshi (user, 2026-07-22) */
+  font-family: var(--f-display-med);
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -285,19 +294,34 @@
   width: 100%;
   max-width: var(--max);
   margin-inline: auto;
-  padding: 20px var(--gutter) 0;
+  padding-inline: var(--gutter);
+}
+
+/* the rule lives here so it starts and ends on the copy's own edges */
+.bottomInner {
+  padding-top: 20px;
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--f-mono);
+  gap: 16px;
+  font-family: var(--f-display-reg);
   font-size: 0.875rem;
   color: var(--muted);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.005em;
 }
 
 .made {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--muted);
+}
+
+.heart {
+  font-size: 0.8125rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 @media (max-width: 900px) {

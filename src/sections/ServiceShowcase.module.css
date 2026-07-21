@@ -80,10 +80,9 @@
 }
 
 .heading {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(2.3rem, 6.2vw, 5.4rem);
-  line-height: 1.02;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0;
@@ -251,8 +250,7 @@
   z-index: 0;
   left: 2%;
   top: 50%;
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(5rem, 11vw, 13rem);
   line-height: 0.9;
   letter-spacing: -0.05em;
@@ -384,9 +382,8 @@
 
 /* —— title: rises out of the stage word-by-word —— */
 .title {
-  font-family: var(--f-display);
-  font-weight: 900;
-  line-height: 0.98;
+  font-family: var(--f-display-black);
+  line-height: 1.06;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0;
@@ -457,8 +454,7 @@
   align-items: center;
   gap: 9px;
   margin-top: 4px;
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: 0.95rem;
   color: var(--accent);
   text-decoration: none;
@@ -674,8 +670,7 @@
 }
 
 .svcName {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: 0.82rem;
   letter-spacing: 0.01em;
   color: var(--text-faint);

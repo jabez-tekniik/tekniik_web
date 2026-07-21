@@ -13,8 +13,7 @@
 }
 
 .value {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(1.875rem, 3.6vw, 2.875rem);
   letter-spacing: -0.04em;
   line-height: 1;

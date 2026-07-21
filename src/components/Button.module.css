@@ -8,8 +8,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: var(--fs);
   letter-spacing: -0.005em;
   padding: var(--pad-y) var(--pad-x);

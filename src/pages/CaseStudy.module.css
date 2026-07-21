@@ -59,13 +59,25 @@
   color: var(--text);
 }
 
-.node {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 12px var(--accent-bloom);
+/* the eyebrow marker is a rail, not a dot (user, 2026-07-22) — it echoes
+   the teal rails on the pull quotes and the prose column, and it draws
+   itself in once the meta bar reveals */
+.rail {
+  width: 26px;
+  height: 2px;
   flex-shrink: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-border));
+  transform-origin: left center;
+  animation: railDraw 620ms var(--ease-out) both;
+}
+
+@keyframes railDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .crumb {
@@ -105,10 +117,9 @@
 }
 
 .headline {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: var(--fs-page-hero);
-  line-height: 1.02;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(18px, 2.4vw, 28px);
@@ -343,8 +354,7 @@
 }
 
 .flowTitle {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(1.1rem, 1.5vw, 1.3rem);
   letter-spacing: -0.015em;
   color: var(--text);
@@ -385,8 +395,7 @@
 }
 
 .quoteText {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(1.2rem, 1.9vw, 1.6rem);
   line-height: 1.5;
   letter-spacing: -0.015em;
@@ -409,6 +418,114 @@
   gap: 10px;
 }
 
+/* —— 04 · more work — the other case studies ————————— */
+.related {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.relCard {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-top: 2px solid var(--border-strong);
+  padding: clamp(16px, 2vw, 22px) 0 clamp(18px, 2.2vw, 24px);
+  text-decoration: none;
+  transition:
+    border-top-color var(--d-base) var(--ease),
+    transform 320ms var(--ease-out);
+}
+
+.relCard::after {
+  content: '';
+  position: absolute;
+  /* the wash sits exactly under the rule and inside the card's own edges —
+     it used to bleed 12px left, which made the top rule look too short
+     (user, 2026-07-22) */
+  inset: -2px 0 0 0;
+  z-index: -1;
+  background: var(--accent-tint);
+  opacity: 0;
+  transition: opacity 280ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relCard:hover {
+    border-top-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  .relCard:hover::after {
+    opacity: 1;
+  }
+  .relCard:hover .relArrow {
+    transform: translateX(4px);
+  }
+}
+
+.relCard:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.relMeta {
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.relTitle {
+  font-family: var(--f-display-bold);
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.relDesc {
+  font-family: var(--f-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0 0 clamp(16px, 2vw, 22px);
+  max-width: 32ch;
+}
+
+/* the CTA line pins to the bottom so all three cards close on one baseline */
+.relCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  min-height: 24px;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.relArrow {
+  transition: transform 240ms var(--ease-out);
+}
+
+/* the last cell is the catch-all back to /work — dimmer rail so the two
+   real case studies lead */
+.relAll {
+  border-top-color: var(--hairline);
+}
+
+.relAll .relMeta {
+  color: var(--text-faint);
+}
+
 /* ————————————————————————— responsive ————————————————————————— */
 
 @media (max-width: 960px) {
@@ -417,6 +534,9 @@
     gap: clamp(28px, 5vw, 44px);
   }
   .flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .related {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -440,6 +560,12 @@
   .signals {
     grid-template-columns: 1fr;
   }
+  .related {
+    grid-template-columns: 1fr;
+  }
+  .relDesc {
+    max-width: 44ch;
+  }
 }
 
 /* —— reduced motion: hovers and the stage bloom go inert —— */
@@ -451,6 +577,14 @@
     transition: none;
   }
   .flowCell {
+    transition: none;
+  }
+  .rail {
+    animation: none;
+  }
+  .relCard,
+  .relCard::after,
+  .relArrow {
     transition: none;
   }
 }

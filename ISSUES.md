@@ -1,5 +1,17 @@
 # Issues
 
+## Resolved 2026-07-22
+
+### All office addresses removed site-wide (user request)
+Every trace of the physical addresses (Chennai WeWork + London Shelton Street)
+was stripped: Footer Location column deleted (grid rebalanced to 3 columns),
+Contact office card + flag tabs deleted, `OFFICE`/`OFFICES` removed from
+`content.js`, `IconFlagIndia`/`IconFlagUK` deleted from `Icon.jsx`, the Contact
+hero meta bar and availability line de-located, and the content specs annotated
+so a future copy-sync can't re-import the address. Legal pages never carried a
+physical address. This supersedes the 2026-07-20 "addresses stay" revert.
+`hosting/staging` was rebuilt from the clean bundle.
+
 ## Open
 
 ### svcIndex kicker can collide with the "Explore …" link on short viewports (low, pre-existing)

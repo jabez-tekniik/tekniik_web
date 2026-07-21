@@ -314,6 +314,7 @@ export default function Services() {
          generic sales line (two back-to-back CTAs read as duplicates). */}
       <FinalCta
         heading={SERVICES_PAGE.notSure.heading}
+        accent={SERVICES_PAGE.notSure.headingAccent}
         sub={SERVICES_PAGE.notSure.sub}
         ctaLabel={SERVICES_PAGE.notSure.cta}
       />

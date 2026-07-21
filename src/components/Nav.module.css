@@ -52,12 +52,10 @@
 }
 
 .link {
-  /* Satoshi on every route (user request) — --f-display is only Satoshi
-     on inked routes, so name the face directly */
-  font-family: 'Satoshi', var(--f-display);
-  /* Satoshi ships 400/500/700/900 here — 600 would be synthesized */
+  /* Weight comes from the FAMILY, not font-weight (user rule, 2026-07-22):
+     'Satoshi Medium' is its own @font-face in tokens.css. */
+  font-family: var(--f-nav);
   font-size: 0.9375rem;
-  font-weight: 700;
   color: var(--body);
   padding: 8px 12px;
   border-radius: var(--r-md);
@@ -390,9 +388,8 @@ a.ctaBtn:focus-visible::after {
   display: flex;
   align-items: baseline;
   gap: 18px;
-  font-family: 'Satoshi', var(--f-display);
+  font-family: var(--f-display-bold);
   font-size: clamp(2rem, 8vw, 2.75rem);
-  font-weight: 700;
   letter-spacing: -0.04em;
   color: var(--ink);
   padding: 14px 0;

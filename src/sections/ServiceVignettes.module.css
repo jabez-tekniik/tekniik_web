@@ -811,8 +811,7 @@
 }
 
 .kValue {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(0.72rem, 2.2cqw, 0.95rem);
   line-height: 1;
   letter-spacing: -0.01em;

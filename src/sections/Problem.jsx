@@ -59,11 +59,10 @@ export default function Problem() {
           <span className={styles.eyebrow}>{PROBLEM.eyebrow}</span>
         </Reveal>
 
-        <FadeIn
-          text={PROBLEM.heading}
-          as="h2"
-          className={styles.statement}
-        />
+        <FadeIn as="h2" className={styles.statement}>
+          {PROBLEM.heading}{' '}
+          <span className={styles.statementAccent}>{PROBLEM.headingAccent}</span>
+        </FadeIn>
 
         <div className={styles.paraRow}>
           <div className={styles.paraCol}>

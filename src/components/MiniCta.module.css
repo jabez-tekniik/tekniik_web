@@ -44,8 +44,7 @@
 }
 
 .line {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(1.3rem, 2.6vw, 2rem);
   line-height: 1.08;
   letter-spacing: -0.02em;

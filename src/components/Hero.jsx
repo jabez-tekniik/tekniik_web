@@ -12,6 +12,7 @@ import {
   EASE_OUT,
 } from '../motion/ink/index.js'
 import { getLenis } from '../motion/SmoothScroll.jsx'
+import { whenPreloaderDone } from '../motion/preloader.js'
 import { HERO, TERMINAL_FRAMES } from '../data/content.js'
 import styles from './Hero.module.css'
 
@@ -143,6 +144,7 @@ export default function Hero() {
       let timer = 0
       let raf = 0
       let typed = -1
+      let unsubPreloader = () => {}
 
       // measure every char rect ONCE (per layout) so the type loop never
       // forces sync layout — reading rects mid-type is what causes jank
@@ -269,11 +271,16 @@ export default function Hero() {
               runType()
             }, START_PAUSE)
           }
-          if (document.fonts?.ready) document.fonts.ready.then(start)
-          else start()
+          // hold the typewriter until the boot preloader has fully left
+          // the screen (user rule) — resolves at once if it never mounted
+          unsubPreloader = whenPreloaderDone(() => {
+            if (document.fonts?.ready) document.fonts.ready.then(start)
+            else start()
+          })
         },
         cleanup() {
           cancelled = true
+          unsubPreloader()
           clearTimeout(timer)
           cancelAnimationFrame(raf)
           window.removeEventListener('resize', onResize)

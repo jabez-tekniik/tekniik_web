@@ -96,10 +96,9 @@
 }
 
 .headline {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: var(--fs-page-hero);
-  line-height: 1.02;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(20px, 2.6vw, 32px);
@@ -174,8 +173,7 @@
 }
 
 .indexLabel {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
   letter-spacing: -0.01em;
   color: var(--text);
@@ -373,8 +371,7 @@
   position: absolute;
   top: -0.14em;
   left: -0.05em;
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(6rem, 10.5vw, 11.5rem);
   line-height: 0.8;
   letter-spacing: -0.04em;
@@ -387,8 +384,7 @@
 }
 
 .discTitle {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(2rem, 4.2vw, 3.5rem);
   line-height: 1;
   letter-spacing: -0.025em;

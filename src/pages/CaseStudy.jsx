@@ -6,6 +6,7 @@ import StatBlock from '../components/StatBlock.jsx'
 import Tag from '../components/Tag.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
 import { MobileScene, AppScene } from '../sections/ServiceVignettes.jsx'
+import { PORTFOLIO } from '../data/content.js'
 import styles from './CaseStudy.module.css'
 
 /* Shared Deep Ink case-study template (CaseLooqz / CaseAutoScreen are thin
@@ -17,8 +18,12 @@ import styles from './CaseStudy.module.css'
 
 const SCENES = { mobile: MobileScene, app: AppScene }
 
-export default function CaseStudy({ content: c, sceneKey, groups, quotes, flowCols = 3 }) {
+export default function CaseStudy({ content: c, slug, sceneKey, groups, quotes, flowCols = 3 }) {
   const Scene = SCENES[sceneKey]
+
+  // the other written-up projects — only PORTFOLIO items that own a case
+  // study route qualify, so the rail never links to a page that doesn't exist
+  const related = PORTFOLIO.items.filter((p) => p.route && p.slug !== slug)
 
   // vignette ignites once its stage scrolls into view (one-shot, like the
   // services pages)
@@ -47,10 +52,12 @@ export default function CaseStudy({ content: c, sceneKey, groups, quotes, flowCo
         <div className={`container ${styles.heroInner}`}>
           <Reveal className={styles.metaBar}>
             <span className={styles.eyebrow}>
-              <span className={styles.node} aria-hidden="true" />
+              {/* accent rail, not a dot (user, 2026-07-22) — same rail
+                  language as the pull quotes and spec ledgers */}
+              <span className={styles.rail} aria-hidden="true" />
               {c.eyebrow} / {c.title}
             </span>
-            <Link className={styles.crumb} to="/">
+            <Link className={styles.crumb} to="/work">
               <span aria-hidden="true">←</span> All work
             </Link>
           </Reveal>
@@ -163,7 +170,7 @@ export default function CaseStudy({ content: c, sceneKey, groups, quotes, flowCo
             {quotes.map((q) => (
               <Reveal as="blockquote" key={q.who} delay={120} className={styles.quote}>
                 <p className={styles.quoteText}>&ldquo;{q.text}&rdquo;</p>
-                <footer className={styles.quoteWho}>&mdash; {q.who}</footer>
+                <footer className={styles.quoteWho}>{q.who}</footer>
               </Reveal>
             ))}
           </div>
@@ -176,7 +183,59 @@ export default function CaseStudy({ content: c, sceneKey, groups, quotes, flowCo
         </div>
       </section>
 
-      <FinalCta heading={c.finalCta.heading} sub={c.finalCta.sub} ctaLabel={c.finalCta.cta} />
+      {/* —— 04 / More work — the other case studies —————————— */}
+      {related.length > 0 && (
+        <section className={`${styles.section} ${styles.sectionTint}`}>
+          <div className="container">
+            <Reveal className={styles.secHead}>
+              <span className={styles.secIndex}>04</span>
+              <span className={styles.secEyebrow}>/ More work</span>
+            </Reveal>
+
+            <div className={styles.related}>
+              {related.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 90}>
+                  <Link className={styles.relCard} to={p.route}>
+                    {/* two tags only — the third (country) wrapped the meta
+                        line and knocked the card titles off one baseline */}
+                    <span className={styles.relMeta}>{p.tags.slice(0, 2).join(' · ')}</span>
+                    <h3 className={styles.relTitle}>{p.title}</h3>
+                    <p className={styles.relDesc}>{p.result}</p>
+                    <span className={styles.relCta}>
+                      Read case study
+                      <span className={styles.relArrow} aria-hidden="true">
+                        →
+                      </span>
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+              <Reveal delay={related.length * 90}>
+                <Link className={`${styles.relCard} ${styles.relAll}`} to="/work">
+                  <span className={styles.relMeta}>Full portfolio</span>
+                  <h3 className={styles.relTitle}>See all work</h3>
+                  <p className={styles.relDesc}>
+                    Every project we&rsquo;ve designed, engineered, and still support.
+                  </p>
+                  <span className={styles.relCta}>
+                    Browse work
+                    <span className={styles.relArrow} aria-hidden="true">
+                      →
+                    </span>
+                  </span>
+                </Link>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <FinalCta
+        heading={c.finalCta.heading}
+        accent={c.finalCta.headingAccent}
+        sub={c.finalCta.sub}
+        ctaLabel={c.finalCta.cta}
+      />
     </>
   )
 }

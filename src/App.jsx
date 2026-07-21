@@ -1,8 +1,10 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
+import Preloader from './components/Preloader.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
+import BackToTop from './components/BackToTop.jsx'
 import Home from './pages/Home.jsx'
 import Services from './pages/Services.jsx'
 import ServiceDetail from './pages/ServiceDetail.jsx'
@@ -51,6 +53,7 @@ export default function App() {
 
   return (
     <>
+      <Preloader />
       <a className="skip-link" href="#main">Skip to content</a>
       <Nav
         themeMode={mode}
@@ -80,6 +83,7 @@ export default function App() {
         </div>
       </main>
       <Footer />
+      <BackToTop />
     </>
   )
 }

@@ -35,14 +35,17 @@
 
 /* —— full-width statement —— */
 .statement {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(2.4rem, 6.4vw, 5.6rem);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--text);
   margin: 0 0 clamp(28px, 4vw, 48px);
   max-width: 18ch;
+}
+
+.statementAccent {
+  color: var(--accent);
 }
 
 /* —— paragraphs: left-aligned editorial column —— */
@@ -152,8 +155,7 @@
 }
 
 .halfBody {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(1.2rem, 2vw, 1.65rem);
   line-height: 1.25;
   letter-spacing: -0.015em;

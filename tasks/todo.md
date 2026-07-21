@@ -253,3 +253,25 @@ Support/WebsitePackage heroes have no vignette. Home hero keeps typewriter
       Gates: build ✓ lint ✓ sweep 320-1600 no h-scroll ✓ 2×2 border bug
       fixed (sibling selector specificity) ✓ dark ink ✓ RM ✓ console clean ✓.
       CLAUDE.md Contact section updated. Screenshots deleted, preview killed.
+
+## 2026-07-22 — Back-to-top, footer, Satoshi families, preloader
+- [x] 1. `BackToTop` control: glass disc + scroll-progress ring, Lenis scroll,
+      RM-safe, 44px on mobile. Verified hidden→visible, ring offset, click → 0.
+- [x] 2. Nav links use a font FAMILY, not `font-weight` ('Satoshi Medium').
+- [x] 3. Footer brand blurb: crux lead line + 3 studio lines (no em dashes),
+      `.brand` 280→460px; email restyled as `.mailCard`; bottom divider moved
+      to `.bottomInner` so it matches the copy's guardrail exactly; ❤️ emoji
+      in the made-with line; copyright/made-with + column heads in Satoshi;
+      `.glowFloor` bottom + corner bloom.
+- [x] 4. Satoshi weight sweep: 5 single-face families (`font-weight: 100 900`),
+      `--f-display-{light,reg,med,bold,black}` tokens, 85 call sites + reset.css
+      converted, zero Satoshi `font-weight` declarations left.
+- [x] 5. Preloader `TEKNIIK / LOADING` + `NNN%` readout deleted (logo fill only).
+- [x] 6. `/support` headings accented per the site rule.
+- Gates: `npm run lint` ✓ `npm run build` ✓ · 7 routes × 320/375/768/1280 no
+  h-scroll ✓ · light + dark ink ✓ · console clean ✓ · all 5 Satoshi faces load ✓.
+- [ ] FOLLOW-UP (user: "Satoshi now, Inter later"): self-host Inter + Inter Tight
+      as per-weight families (400/500/600/700/800/900), drop the Google Fonts
+      link in `index.html`, and strip the remaining ~126 `font-weight`
+      declarations (all `--f-mono` / `--f-body` call sites). Needs a full visual
+      re-sweep — Inter 600 has no Satoshi equivalent, so map faces deliberately.

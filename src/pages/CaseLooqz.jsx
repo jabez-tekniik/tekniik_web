@@ -9,6 +9,7 @@ export default function CaseLooqz() {
   return (
     <CaseStudy
       content={c}
+      slug="looqz"
       sceneKey="mobile"
       flowCols={3}
       groups={[

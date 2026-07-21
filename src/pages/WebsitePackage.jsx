@@ -72,7 +72,7 @@ const PAGE = {
   },
   audience: {
     eyebrow: '/ Who this is for',
-    heading: 'Perfect for businesses that need to get online — fast.',
+    heading: 'Perfect for businesses that need to get online, fast.',
     items: [
       'Local businesses launching their first website',
       'Businesses replacing an outdated or broken site',
@@ -120,7 +120,7 @@ const PAGE = {
       },
       {
         q: 'What if I need something more complex?',
-        a: "If you need custom functionality, a booking system, e-commerce, or a web application — we do that too. We'll recommend the right solution for your needs.",
+        a: "If you need custom functionality, a booking system, e-commerce, or a web application, we do that too. We'll recommend the right solution for your needs.",
       },
       {
         q: 'How long does it take?',
@@ -130,6 +130,7 @@ const PAGE = {
   },
   cta: {
     heading: 'Ready to get your business online?',
+    headingAccent: 'online?',
     sub: '£599 + VAT. No hidden costs. No ongoing commitments.',
     cta: 'Get Started',
     emailNote: 'Have questions? Email us at',
@@ -361,6 +362,7 @@ export default function WebsitePackage() {
       <div id="get-started">
         <FinalCta
           heading={cta.heading}
+          accent={cta.headingAccent}
           sub={cta.sub}
           ctaLabel={cta.cta}
           emailNote={cta.emailNote}

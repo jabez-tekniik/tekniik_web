@@ -22,7 +22,7 @@ import styles from './About.module.css'
    section) — user: signals must "actually mean something" */
 const SIGNALS = [
   { num: '50+', label: 'Projects delivered' },
-  { num: '10+', label: 'Years senior experience' },
+  { num: '5+', label: 'Years in the tech industry' },
   { num: '98%', label: 'Client retention' },
   { num: '4.9★', label: 'Average client rating' },
 ]
@@ -207,6 +207,7 @@ export default function About() {
 
       <FinalCta
         heading={ABOUT_PAGE.finalCta.heading}
+        accent={ABOUT_PAGE.finalCta.headingAccent}
         sub={ABOUT_PAGE.finalCta.sub}
         ctaLabel={ABOUT_PAGE.finalCta.cta}
       />

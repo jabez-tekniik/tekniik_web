@@ -11,6 +11,7 @@ export default function CaseFamili() {
   return (
     <CaseStudy
       content={c}
+      slug="famili"
       sceneKey="mobile"
       flowCols={3}
       groups={[

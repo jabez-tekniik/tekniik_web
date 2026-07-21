@@ -14,13 +14,15 @@ import styles from './Support.module.css'
 const SUPPORT = {
   eyebrow: 'Support',
   metaRight: 'Maintenance · Improvement · Rescue',
-  headline: "We don't disappear after launch.",
-  sub: "Ongoing support, maintenance, and improvement for software we've built — and software we haven't.",
+  headline: "We don't disappear",
+  headlineAccent: 'after launch.',
+  sub: "Ongoing support, maintenance, and improvement for software we've built, and software we haven't.",
 
   clients: {
     eyebrow: '/ For Tekniik clients',
-    heading: 'Built by us. Supported by us.',
-    copy: "Every project we deliver comes with the option of ongoing support. We don't hand over the code and wish you luck — we stay on as your technology partner, keeping your software secure, up-to-date, and evolving as your business grows.",
+    heading: 'Built by us.',
+    headingAccent: 'Supported by us.',
+    copy: "Every project we deliver comes with the option of ongoing support. We don't hand over the code and wish you luck. We stay on as your technology partner, keeping your software secure, up-to-date, and evolving as your business grows.",
     listLabel: "What's included",
     items: [
       'Bug fixes and issue resolution',
@@ -34,10 +36,11 @@ const SUPPORT = {
 
   rescue: {
     eyebrow: '/ For everyone else',
-    heading: 'Inherited a mess? We can help.',
+    heading: 'Inherited a mess?',
+    headingAccent: 'We can help.',
     copy: [
-      'Maybe your previous agency disappeared. Maybe the developer who built your system moved on and nobody understands the code anymore. Maybe the software works — just not the way it should.',
-      "We take on rescue projects. We'll audit what you have, identify what's broken, and either fix it or rebuild it properly — whichever makes more sense for your business.",
+      'Maybe your previous agency disappeared. Maybe the developer who built your system moved on and nobody understands the code anymore. Maybe the software works, just not the way it should.',
+      "We take on rescue projects. We'll audit what you have, identify what's broken, and either fix it or rebuild it properly, whichever makes more sense for your business.",
     ],
     listLabel: 'What we can do',
     items: [
@@ -53,8 +56,9 @@ const SUPPORT = {
 
   how: {
     eyebrow: '/ How it works',
-    heading: 'Flexible support, no lock-in.',
-    copy: "We don't force you into rigid contracts or tiers. Every business has different needs — some want a monthly retainer with guaranteed hours, others want on-call support they use as needed. We'll find an arrangement that works for you.",
+    heading: 'Flexible support,',
+    headingAccent: 'no lock-in.',
+    copy: "We don't force you into rigid contracts or tiers. Every business has different needs. Some want a monthly retainer with guaranteed hours, others want on-call support they use as needed. We'll find an arrangement that works for you.",
     options: [
       {
         title: 'Monthly retainer',
@@ -69,12 +73,13 @@ const SUPPORT = {
         desc: 'Defined scope for audits, rescues, or specific improvements.',
       },
     ],
-    closing: 'All arrangements start with a conversation — no commitment required.',
+    closing: 'All arrangements start with a conversation. No commitment required.',
   },
 
   finalCta: {
     heading: 'Need support for your software?',
-    sub: "Whether we built it or not — let's talk about keeping it running properly.",
+    headingAccent: 'software?',
+    sub: "Whether we built it or not, let's talk about keeping it running properly.",
     cta: 'Get in Touch',
   },
 }
@@ -95,7 +100,10 @@ export default function Support() {
             <span className={styles.metaRight}>{SUPPORT.metaRight}</span>
           </Reveal>
 
-          <FadeIn as="h1" className={styles.headline} text={SUPPORT.headline} />
+          <FadeIn as="h1" className={styles.headline}>
+            {SUPPORT.headline}{' '}
+            <span className={styles.headlineAccent}>{SUPPORT.headlineAccent}</span>
+          </FadeIn>
           <Reveal delay={200}>
             <p className={styles.sub}>{SUPPORT.sub}</p>
           </Reveal>
@@ -110,7 +118,10 @@ export default function Support() {
             <span className={styles.secEyebrow}>{clients.eyebrow}</span>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className={styles.secHeading}>{clients.heading}</h2>
+            <h2 className={styles.secHeading}>
+              {clients.heading}{' '}
+              <span className={styles.headingAccent}>{clients.headingAccent}</span>
+            </h2>
           </Reveal>
           <Reveal as="p" delay={140} className={styles.lede}>
             {clients.copy}
@@ -140,7 +151,10 @@ export default function Support() {
             <span className={styles.secEyebrow}>{rescue.eyebrow}</span>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className={styles.secHeading}>{rescue.heading}</h2>
+            <h2 className={styles.secHeading}>
+              {rescue.heading}{' '}
+              <span className={styles.headingAccent}>{rescue.headingAccent}</span>
+            </h2>
           </Reveal>
           <div className={styles.ledeCol}>
             {rescue.copy.map((para, i) => (
@@ -174,7 +188,10 @@ export default function Support() {
             <span className={styles.secEyebrow}>{how.eyebrow}</span>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className={styles.secHeading}>{how.heading}</h2>
+            <h2 className={styles.secHeading}>
+              {how.heading}{' '}
+              <span className={styles.headingAccent}>{how.headingAccent}</span>
+            </h2>
           </Reveal>
           <Reveal as="p" delay={140} className={styles.lede}>
             {how.copy}
@@ -200,6 +217,7 @@ export default function Support() {
 
       <FinalCta
         heading={SUPPORT.finalCta.heading}
+        accent={SUPPORT.finalCta.headingAccent}
         sub={SUPPORT.finalCta.sub}
         ctaLabel={SUPPORT.finalCta.cta}
       />

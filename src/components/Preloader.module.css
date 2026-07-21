@@ -1,0 +1,126 @@
+/* Boot preloader — light canvas (semantic tokens, so it follows the
+   active ink mode: paper white by default, navy-black under dark ink)
+   with brand navy + teal accents. The chevron mark is the loading
+   indicator: ghost outline below, a progress-clipped full-color logo
+   above rising through it. Unmounts entirely once the exit completes. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 10);
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* faceted mosaic frame (user: spread across the entire walls of the
+   screen, centre left white) — triangle/diamond facet lattice in navy
+   #202E5D + teal #72CCD6 + white hairlines covering the full viewport,
+   with an inverted radial mask keeping the centre clear for the mark.
+   The facet layer drifts one tile sideways seamlessly, sparkles pulse. */
+.mosaic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.facetDrift {
+  animation: plMosaic 40s linear infinite;
+}
+
+/* one 180px tile (120 × the 1.5 patternTransform) per loop — seamless */
+@keyframes plMosaic {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-180px, 0, 0);
+  }
+}
+
+.spark {
+  opacity: 0.15;
+  animation: plSpark 4s ease-in-out infinite;
+}
+
+@keyframes plSpark {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(26px, 4.5vh, 42px);
+  padding: 0 24px;
+}
+
+/* ghost outline + clipped fill stacked in one cell */
+.markStack {
+  display: grid;
+  transition: filter 400ms var(--ease-out, ease-out);
+}
+
+.markStack > * {
+  grid-area: 1 / 1;
+}
+
+.mark {
+  width: clamp(110px, 15vw, 168px);
+  height: auto;
+  overflow: visible;
+}
+
+.ghostTeal {
+  fill: var(--accent);
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.ghostInk {
+  fill: var(--logo-ink);
+  stroke: var(--logo-ink);
+  stroke-width: 2.5;
+}
+
+/* the rising fill — true brand logo colors (matches BrandLogo.jsx) */
+.fillTeal {
+  fill: #72ccd6;
+}
+
+.fillInk {
+  fill: var(--logo-ink);
+}
+
+/* full mark lit at 100% — one soft teal bloom before the exit */
+.markLit {
+  filter: drop-shadow(0 0 16px var(--accent-bloom));
+}
+
+/* current riding the teal chevron's outline while the site loads */
+.electron {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(114, 204, 214, 0.9));
+}
+
+/* belt-and-braces — the component never mounts under reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .facetDrift,
+  .spark {
+    animation: none;
+  }
+
+  .markStack {
+    transition: none;
+  }
+}

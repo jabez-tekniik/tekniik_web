@@ -6,19 +6,10 @@ import FadeIn from '../motion/ink/FadeIn.jsx'
 import HeroThread from '../components/HeroThread.jsx'
 import { getLenis } from '../motion/SmoothScroll.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
-import {
-  IconCheck,
-  IconFlagIndia,
-  IconFlagUK,
-  IconMail,
-  IconPhone,
-  IconReply,
-} from '../components/Icon.jsx'
-import { CONTACT_PAGE, OFFICES } from '../data/content.js'
+import { IconCheck, IconMail, IconPhone, IconReply } from '../components/Icon.jsx'
+import { CONTACT_PAGE } from '../data/content.js'
 import { EMAILJS } from '../config/emailjs.js'
 import styles from './Contact.module.css'
-
-const FLAGS = { chennai: IconFlagIndia, uk: IconFlagUK }
 
 /* "What happens next" step glyphs — read / reply / call / no strings.
    IconHandshake was tried for step 4 and is mush at 20px — keep the
@@ -27,8 +18,8 @@ const STEP_ICONS = [IconMail, IconReply, IconPhone, IconCheck]
 
 /* Contact — "The open line" (Deep Ink).
    Lean poster hero with a live status strip, then the working spread:
-   ledger form left (teal underline draws on focus), direct-lines ledger +
-   office right. "What happens next?" closes as a compact brand-navy
+   ledger form left (teal underline draws on focus), direct-lines ledger
+   right. "What happens next?" closes as a compact brand-navy
    band: four hairline-split columns (icon chip / mono stamp / Satoshi
    statement) — chips fill teal bottom-up in sequence on scroll. */
 
@@ -103,7 +94,7 @@ function SentPanel({ onReset }) {
       <p className={styles.sentStamp}>Message sent</p>
       <h2 className={styles.sentHeading}>It’s with us.</h2>
       <p className={styles.sentCopy}>
-        A real person reads every message. You’ll hear back within one working day — usually
+        A real person reads every message. You’ll hear back within one working day, usually
         sooner.
       </p>
       <button type="button" className={styles.sentAgain} onClick={onReset}>
@@ -145,8 +136,6 @@ export default function Contact() {
   const [errors, setErrors] = useState({})
   /* 'idle' | 'sending' | 'sent' | 'error' — one state, no boolean soup */
   const [status, setStatus] = useState('idle')
-  const [officeKey, setOfficeKey] = useState(OFFICES[0].key)
-  const office = OFFICES.find((o) => o.key === officeKey) ?? OFFICES[0]
 
   /* A field only re-validates once it has already failed — errors clear as
      you fix them, but typing a fresh field never scolds you mid-word. */
@@ -240,7 +229,7 @@ export default function Contact() {
               <span className={styles.node} aria-hidden="true" />
               {CONTACT_PAGE.eyebrow}
             </span>
-            <span className={styles.metaRight}>UK · Chennai / one working day</span>
+            <span className={styles.metaRight}>Real replies / one working day</span>
           </Reveal>
 
           <div className={styles.heroSplit}>
@@ -382,38 +371,6 @@ export default function Contact() {
               </div>
 
               <p className={styles.availability}>{side.availability}</p>
-
-              <div className={styles.office}>
-                <span className={styles.officeEyebrow}>{side.officeHeading}</span>
-                <div className={styles.officeTabs} role="tablist" aria-label="Office locations">
-                  {OFFICES.map((o) => {
-                    const Flag = FLAGS[o.key]
-                    return (
-                      <button
-                        key={o.key}
-                        type="button"
-                        role="tab"
-                        aria-selected={o.key === office.key}
-                        className={`${styles.officeTab} ${o.key === office.key ? styles.officeTabActive : ''}`}
-                        onClick={() => setOfficeKey(o.key)}
-                      >
-                        {Flag && (
-                          <span className={styles.flag} aria-hidden="true">
-                            <Flag />
-                          </span>
-                        )}
-                        {o.label}
-                      </button>
-                    )
-                  })}
-                </div>
-                <address className={styles.officeAddress} key={office.key}>
-                  {office.lines.map((line) => (
-                    <span key={line}>{line}</span>
-                  ))}
-                  <span className={styles.officeCountry}>{office.country}</span>
-                </address>
-              </div>
             </Reveal>
           </div>
         </div>

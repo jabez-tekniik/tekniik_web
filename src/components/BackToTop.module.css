@@ -1,0 +1,126 @@
+/* BackToTop — glass disc + scroll-progress ring.
+   Sits below the nav in stacking order; tokens only, so it flips with both
+   ink modes. Hidden state keeps it out of the tab order (JSX handles that). */
+
+.btn {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: calc(var(--z-nav) - 1);
+
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--ink) 40%, transparent);
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  pointer-events: none;
+  transition:
+    opacity var(--d-base) var(--ease),
+    transform var(--d-slow) var(--ease),
+    border-color var(--d-base) var(--ease),
+    box-shadow var(--d-base) var(--ease);
+}
+
+.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.btn:hover {
+  border-color: var(--accent-border);
+  box-shadow:
+    0 14px 34px -12px color-mix(in srgb, var(--ink) 46%, transparent),
+    0 0 0 4px var(--accent-tint);
+}
+
+.visible:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* —— progress ring —— */
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.track {
+  fill: none;
+  stroke: var(--border-soft);
+  stroke-width: 1.5;
+}
+
+.progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+/* —— arrow: current one exits up, a fresh one rises in —— */
+.glyph {
+  display: block;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.glyph svg {
+  display: block;
+  transition: transform var(--d-slow) var(--ease);
+}
+
+.btn:hover .glyph svg,
+.btn:focus-visible .glyph svg {
+  transform: translateY(-16px);
+}
+
+@media (max-width: 640px) {
+  .btn {
+    width: 44px;
+    height: 44px;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .glyph svg {
+    transition: opacity var(--d-base) linear;
+  }
+
+  .btn:hover .glyph svg,
+  .btn:focus-visible .glyph svg {
+    transform: none;
+  }
+
+  .visible:hover {
+    transform: none;
+  }
+}

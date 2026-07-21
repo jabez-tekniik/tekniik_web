@@ -57,7 +57,10 @@ export const MARQUEE = [
 
 export const PROBLEM = {
   eyebrow: 'THE PROBLEM',
-  heading: "You've probably been here before.",
+  /* Heading splits so the tail carries the accent (2026-07-22 sweep —
+     every section statement highlights its significant word). */
+  heading: "You've probably been here",
+  headingAccent: 'before.',
   paragraphs: [
     "You hired a team to build your website or software. They talked about bespoke solutions, agile sprints, and scalable architecture. Then deadlines slipped. Budgets ballooned. The junior developer who actually built your project had never spoken to you. And the thing they delivered? It didn't quite work.",
     "We hear this story constantly. It's the reason Tekniik exists. Software development deserves better than this.",
@@ -141,7 +144,8 @@ export const WHY_TEKNIIK = {
 
 export const PROCESS = {
   eyebrow: 'HOW WE WORK',
-  heading: 'Predictable process. Predictable outcome.',
+  heading: 'Predictable process.',
+  headingAccent: 'Predictable outcome.',
   sub: 'Every step structured so you always know what’s next.',
   steps: [
     { n: '01', title: 'Listen', duration: '~1 week', desc: "We understand your business first. What you're trying to achieve." },
@@ -154,7 +158,8 @@ export const PROCESS = {
 
 export const PORTFOLIO = {
   eyebrow: 'OUR WORK',
-  heading: 'Real results. Real businesses.',
+  heading: 'Real results.',
+  headingAccent: 'Real businesses.',
   sub: "A selection of projects we've designed, engineered, and continue to support.",
   items: [
     {
@@ -256,20 +261,6 @@ export const TESTIMONIALS = [
   },
 ]
 
-export const OFFICE = {
-  label: 'Chennai Office',
-  lines: [
-    'WeWork Block 10, DLF Cybercity',
-    '124, Mount Poonamallee Rd',
-    'Manapakkam, Chennai',
-    'Tamil Nadu 600089, India',
-  ],
-  emails: [
-    { label: 'General', address: 'hello@tekniik.ai' },
-    { label: 'Careers', address: 'hr@tekniik.ai' },
-  ],
-}
-
 export const FINAL_CTA = {
   heading: ['Ready to build something', 'that actually works?'],
   sub: 'No sales pitch. No commitment. Just an honest conversation.',
@@ -303,7 +294,8 @@ export const MINI_CTAS = {
 /* Homepage §10 — "AI-Accelerated Development" (new section) */
 export const AI_ACCELERATED = {
   eyebrow: 'AI-ACCELERATED',
-  heading: 'AI-accelerated development.',
+  /* First segment carries the accent — the significant word leads here. */
+  heading: ['AI-accelerated', 'development.'],
   sub: "We don't just build AI for clients, we use it to engineer better software, faster.",
   points: [
     {
@@ -334,14 +326,14 @@ export const AI_ACCELERATED = {
 export const SERVICES_PAGE = {
   eyebrow: 'SERVICES',
   heading: ['We build the technology', 'your business runs on.'],
-  sub: 'Websites, web applications, mobile apps, and AI-powered systems — designed for reliability, built for growth.',
+  sub: 'Websites, web applications, mobile apps, and AI-powered systems, designed for reliability and built for growth.',
   items: [
     {
       key: 'websites',
       title: 'Websites that earn their keep.',
       lede: 'Your website is your most important salesperson. We build sites that look exceptional and perform even better.',
       bullets: [
-        'Custom design — no templates',
+        'Custom design, no templates',
         'Mobile-first, responsive on every device',
         'SEO foundations from day one',
         'CMS so you can update independently',
@@ -353,7 +345,7 @@ export const SERVICES_PAGE = {
     {
       key: 'apps',
       title: 'Software that replaces chaos with clarity.',
-      lede: "If your team runs on spreadsheets and email chains — there's a better way.",
+      lede: "If your team runs on spreadsheets and email chains, there's a better way.",
       bullets: [
         'Portals, dashboards, internal tools',
         'Real-time data and reporting',
@@ -367,7 +359,7 @@ export const SERVICES_PAGE = {
     {
       key: 'mobile',
       title: 'Mobile apps people actually keep.',
-      lede: 'Designed around real user behaviour — intuitive, fast, genuinely useful.',
+      lede: 'Designed around real user behaviour. Intuitive, fast, genuinely useful.',
       bullets: [
         'iOS, Android, or cross-platform',
         'UX research and prototyping first',
@@ -395,11 +387,13 @@ export const SERVICES_PAGE = {
   ],
   notSure: {
     heading: 'Not sure what you need?',
+    headingAccent: 'what you need?',
     sub: 'Most clients come with a problem, not a spec.',
     cta: 'Get a Quote',
   },
   finalCta: {
     heading: "Let's build something great.",
+    headingAccent: 'something great.',
     sub: 'No sales pitch. Just an honest conversation.',
     cta: 'Get a Quote',
   },
@@ -414,7 +408,7 @@ export const SERVICE_PAGES = {
     name: 'Custom Software',
     headline: 'Custom software that runs your business.',
     problem: [
-      "Off-the-shelf tools force your team into someone else's workflow. Spreadsheets, disconnected apps, and manual processes fill the gaps — until the gaps become the system. You need software built around how your business actually works.",
+      "Off-the-shelf tools force your team into someone else's workflow. Spreadsheets, disconnected apps, and manual processes fill the gaps. Then the gaps become the system. You need software built around how your business actually works.",
     ],
     deliver: [
       'Customer portals and client-facing platforms',
@@ -427,7 +421,7 @@ export const SERVICE_PAGES = {
     ],
     approach:
       'We start with your business logic, not a tech stack. Every system is architected for your specific workflows, built in iterative sprints with weekly visibility, and engineered to scale as your business grows. No templates. No shortcuts.',
-    cta: { text: "Let's discuss your software project.", button: 'Get a Quote' },
+    cta: { text: "Let's discuss your software project.", accent: 'software project.', button: 'Get a Quote' },
     sceneKey: 'app',
     caseStudy: null,
   },
@@ -435,7 +429,7 @@ export const SERVICE_PAGES = {
     name: 'Web Platforms',
     headline: 'Web platforms that earn their keep.',
     problem: [
-      "Your website is often the first conversation a customer has with your business. If it's slow, outdated, or built on a template that looks like everyone else's — you're losing credibility and customers before they even speak to you.",
+      "Your website is often the first conversation a customer has with your business. If it's slow, outdated, or built on a template that looks like everyone else's, you're losing credibility and customers before they even speak to you.",
     ],
     deliver: [
       'Corporate and brand websites',
@@ -448,12 +442,12 @@ export const SERVICE_PAGES = {
     ],
     approach:
       "We don't use off-the-shelf themes. Every web platform is custom-designed for your brand and audience, built on modern frameworks like React and Next.js, and optimised for speed, accessibility, and search visibility. Mobile-first as standard.",
-    cta: { text: "Let's discuss your web platform.", button: 'Get a Quote' },
+    cta: { text: "Let's discuss your web platform.", accent: 'web platform.', button: 'Get a Quote' },
     sceneKey: 'web',
     caseStudy: {
       kicker: 'Case study',
       title: 'ScreenFix',
-      desc: "A professional service website for South Africa's auto glass repair specialists — built for fast quote requests and seamless customer booking.",
+      desc: "A professional service website for South Africa's auto glass repair specialists, built for fast quote requests and seamless customer booking.",
       result: 'Streamlined customer booking and quote requests',
       to: '/case/autoscreen',
     },
@@ -462,7 +456,7 @@ export const SERVICE_PAGES = {
     name: 'Mobile Apps',
     headline: 'Mobile apps people actually keep.',
     problem: [
-      "Most apps get downloaded once and forgotten. The problem is rarely the idea — it's the execution. Clunky interfaces, slow performance, and features nobody asked for. Your app needs to solve a real problem so well that users can't imagine going back to life without it.",
+      "Most apps get downloaded once and forgotten. The problem is rarely the idea. It's the execution. Clunky interfaces, slow performance, and features nobody asked for. Your app needs to solve a real problem so well that users can't imagine going back to life without it.",
     ],
     deliver: [
       'iOS and Android applications',
@@ -475,8 +469,8 @@ export const SERVICE_PAGES = {
       'Post-launch monitoring, updates, and iteration',
     ],
     approach:
-      'Every app starts with user research and prototyping — we validate the experience before writing a line of code. We build in short cycles with real device testing throughout, so what launches is what users actually need, not what a spec document assumed three months ago.',
-    cta: { text: "Let's discuss your mobile app.", button: 'Get a Quote' },
+      'Every app starts with user research and prototyping, so we validate the experience before writing a line of code. We build in short cycles with real device testing throughout, so what launches is what users actually need, not what a spec document assumed three months ago.',
+    cta: { text: "Let's discuss your mobile app.", accent: 'mobile app.', button: 'Get a Quote' },
     sceneKey: 'mobile',
     caseStudy: {
       kicker: 'Case study',
@@ -490,7 +484,7 @@ export const SERVICE_PAGES = {
     name: 'AI Systems',
     headline: 'AI that solves problems, not just talks about them.',
     problem: [
-      "AI is everywhere right now — and most of it is noise. Agencies slap \"AI-powered\" on everything without explaining what it actually does for your business. You don't need a chatbot for the sake of having one. You need to know: what time does it save, what cost does it reduce, what decision does it improve? If the answer isn't clear, it's not worth building.",
+      "AI is everywhere right now, and most of it is noise. Agencies slap \"AI-powered\" on everything without explaining what it actually does for your business. You don't need a chatbot for the sake of having one. You need to know: what time does it save, what cost does it reduce, what decision does it improve? If the answer isn't clear, it's not worth building.",
     ],
     deliver: [
       'Intelligent document processing and data extraction',
@@ -500,11 +494,11 @@ export const SERVICE_PAGES = {
       'Machine learning integrations with existing business systems',
       'Natural language processing for search, classification, and summarisation',
       'Computer vision for image recognition and quality inspection',
-      "AI strategy consulting — honest assessment of where AI fits and where it doesn't",
+      "AI strategy consulting: honest assessment of where AI fits and where it doesn't",
     ],
     approach:
-      "Every AI implementation starts with a business case, not a technology demo. We identify the specific process that's costing you time or money, prove the AI solution works with a focused pilot, then scale it into production. If AI isn't the right answer, we'll tell you — and recommend a simpler solution instead.",
-    cta: { text: "Let's discuss your AI project.", button: 'Get a Quote' },
+      "Every AI implementation starts with a business case, not a technology demo. We identify the specific process that's costing you time or money, prove the AI solution works with a focused pilot, then scale it into production. If AI isn't the right answer, we'll tell you, and recommend a simpler solution instead.",
+    cta: { text: "Let's discuss your AI project.", accent: 'AI project.', button: 'Get a Quote' },
     sceneKey: 'ai',
     caseStudy: null,
   },
@@ -519,8 +513,8 @@ export const ABOUT_PAGE = {
     eyebrow: 'OUR STORY',
     heading: 'Why Tekniik exists.',
     paragraphs: [
-      "We've spent years inside agencies — and we've seen the same problems. Talented people stuck in bloated processes. Clients treated like tickets. Projects sold by people who'd never build them.",
-      "Tekniik exists because we believe it can be better. We keep our team small and senior on purpose. There's no gap between promise and delivery — because the same people do both.",
+      "We've spent years inside agencies, and we've seen the same problems. Talented people stuck in bloated processes. Clients treated like tickets. Projects sold by people who'd never build them.",
+      "Tekniik exists because we believe it can be better. We keep our team small and senior on purpose. There's no gap between promise and delivery, because the same people do both.",
       "We're not trying to become a 50-person agency. We're trying to be the best small team you've ever worked with.",
     ],
   },
@@ -529,9 +523,9 @@ export const ABOUT_PAGE = {
     heading: 'Designed around clarity.',
     sub: "Here's exactly what happens. No mysteries.",
     steps: [
-      { n: '1', title: 'Listen', body: 'A 30-minute conversation about your business — what works, what doesn’t, what you’re trying to achieve.', win: 'You get: an honest assessment of whether we can help.' },
-      { n: '2', title: 'Plan', body: 'A clear proposal in plain English — what we’ll build, how long, and what it costs.', win: 'You get: a proposal you can actually read, with no hidden costs.' },
-      { n: '3', title: 'Build', body: '1–2 week cycles. At the end of each, real working software you can test — not a status report.', win: 'You get: working software you can see and test every week.' },
+      { n: '1', title: 'Listen', body: 'A 30-minute conversation about your business: what works, what doesn’t, what you’re trying to achieve.', win: 'You get: an honest assessment of whether we can help.' },
+      { n: '2', title: 'Plan', body: 'A clear proposal in plain English: what we’ll build, how long, and what it costs.', win: 'You get: a proposal you can actually read, with no hidden costs.' },
+      { n: '3', title: 'Build', body: '1–2 week cycles. At the end of each, real working software you can test, not a status report.', win: 'You get: working software you can see and test every week.' },
       { n: '4', title: 'Launch', body: 'Final testing, deployment, and launch-day support. We launch with you, not over the fence.', win: 'You get: a smooth, stress-free launch with our team beside you.' },
       { n: '5', title: 'Support & Grow', body: 'Ongoing support, proactive maintenance, and regular check-ins as your business evolves.', win: 'You get: a long-term partner, not a one-off vendor.' },
     ],
@@ -543,42 +537,22 @@ export const ABOUT_PAGE = {
       { title: 'Honesty first.', desc: "If your idea needs rethinking, we'll say so. Even if it means a smaller project." },
       { title: 'Clarity over cleverness.', desc: 'Every decision communicated in language you understand.' },
       { title: 'Engineering over shortcuts.', desc: 'No templates or copy-paste. Every system architected from the ground up for your needs.' },
-      { title: 'Partnership over transactions.', desc: 'We want the right clients — where we can make a real difference.' },
+      { title: 'Partnership over transactions.', desc: 'We want the right clients, the ones where we can make a real difference.' },
     ],
   },
   finalCta: {
     heading: 'Like what you see?',
+    headingAccent: 'what you see?',
     sub: "If we're not the right fit, we'll say so. No hard feelings.",
     cta: 'Get a Quote',
   },
 }
 
-/* OFFICES — shared by the Footer location tabs and the Contact office card */
-export const OFFICES = [
-  {
-    key: 'chennai',
-    label: 'Chennai',
-    country: 'India',
-    lines: [
-      'WeWork Block 10, DLF Cybercity',
-      '124, Mount Poonamallee Rd',
-      'Manapakkam, Chennai',
-      'Tamil Nadu 600089',
-    ],
-  },
-  {
-    key: 'uk',
-    label: 'London',
-    country: 'United Kingdom',
-    lines: ['71-75 Shelton Street', 'Covent Garden', 'London WC2H 9JQ'],
-  },
-]
-
 /* CONTACT */
 export const CONTACT_PAGE = {
   eyebrow: 'CONTACT',
   heading: ["Let's talk about", 'your project.'],
-  sub: "We'll respond within one working day — a real reply from a real person.",
+  sub: "We'll respond within one working day, a real reply from a real person.",
   form: {
     nameLabel: 'Your name',
     namePlaceholder: 'Jane Smith',
@@ -597,8 +571,7 @@ export const CONTACT_PAGE = {
     phone: '+91 81489 84627',
     phoneRaw: '+918148984627',
     whatsappLabel: 'WhatsApp',
-    availability: 'Available for meetings across the UK and at our Chennai office.',
-    officeHeading: 'Visit our offices',
+    availability: 'Available for calls and video meetings. We fit around your time zone.',
     nextHeading: 'What happens next?',
     /* open-line ledger rows: bold statement + mono timing stamp.
        Restructured 2026-07-21 from four plain sentences — the timing
@@ -622,7 +595,7 @@ export const CONTACT_PAGE = {
 export const CASE_LOOQZ = {
   eyebrow: 'CASE STUDY',
   title: 'GlowBook',
-  sub: 'The modern marketplace for beauty and self-care — find and book verified beauty & wellness professionals near you.',
+  sub: 'The modern marketplace for beauty and self-care. Find and book verified beauty & wellness professionals near you.',
   stats: [
     { value: '2,100+', label: 'Verified professionals' },
     { value: '10,000+', label: 'Happy clients' },
@@ -630,19 +603,19 @@ export const CASE_LOOQZ = {
     { value: '8', label: 'Service categories' },
   ],
   challenge: [
-    "The UK beauty and wellness industry is fragmented. Customers searching for hair salons, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly — especially outside business hours.",
+    "The UK beauty and wellness industry is fragmented. Customers searching for hair salons, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly, especially outside business hours.",
     'For salon owners and independent beauty professionals, the problem is equally frustrating. Missed calls mean missed bookings. Manual scheduling leads to double-bookings and no-shows. And without a discoverable online presence, talented professionals struggle to attract new clients beyond their immediate circle.',
   ],
   builtIntro:
-    'We designed and built GlowBook as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories — Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa — with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
+    'We designed and built GlowBook as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories (Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa) with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
   customerHeading: 'For customers:',
   customer: [
     'Location-aware search with filters for service type, price, availability, and ratings',
     'Verified professional profiles with real client reviews, star ratings, and transparent "from" pricing',
-    '"Open now" live availability filter — see salons ready for walk-ins or same-day bookings',
-    'Instant booking with no phone calls — pick a stylist, choose a time, confirm in seconds',
+    '"Open now" live availability filter: see salons ready for walk-ins or same-day bookings',
+    'Instant booking with no phone calls: pick a stylist, choose a time, confirm in seconds',
     'Inspiration gallery with style browsing across Hair, Nails, Lashes, Barber, Makeup, and Spa categories',
-    'Mobile app (iOS + Android) for booking on the go — free, no subscription',
+    'Mobile app (iOS + Android) for booking on the go, free, with no subscription',
   ],
   proHeading: 'For beauty professionals:',
   pro: [
@@ -658,8 +631,8 @@ export const CASE_LOOQZ = {
     { n: '03', title: 'Show up and glow', desc: 'Arrive, relax, enjoy. Share your experience to help the community.' },
   ],
   result: [
-    'GlowBook launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews — a strong signal that the product genuinely works for both sides of the marketplace.',
-    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+) — with verified salons across major UK cities maintaining consistently high ratings.',
+    'GlowBook launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews, a strong signal that the product genuinely works for both sides of the marketplace.',
+    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+), with verified salons across major UK cities maintaining consistently high ratings.',
   ],
   resultIntro: 'As one verified client put it:',
   quote: {
@@ -669,6 +642,7 @@ export const CASE_LOOQZ = {
   tags: ['Marketplace', 'Real-time Booking', 'Verified Profiles', 'Mobile App', 'City Pages', 'Pro Dashboard'],
   finalCta: {
     heading: 'Building a marketplace or booking platform?',
+    headingAccent: 'booking platform?',
     sub: "We've done it before. Let's talk about yours.",
     cta: 'Get a Quote',
   },
@@ -678,7 +652,7 @@ export const CASE_LOOQZ = {
 export const CASE_AUTOSCREEN = {
   eyebrow: 'CASE STUDY',
   title: 'ScreenFix',
-  sub: 'Auto glass repair & replacement — dispatched to you on demand. A platform connecting vehicle owners with verified fitters across South Africa.',
+  sub: 'Auto glass repair and replacement, dispatched to you on demand. A platform connecting vehicle owners with verified fitters across South Africa.',
   stats: [
     { value: '15,000+', label: 'Jobs completed' },
     { value: '500+', label: 'Verified fitters' },
@@ -686,29 +660,29 @@ export const CASE_AUTOSCREEN = {
     { value: '98%', label: 'Customer satisfaction' },
   ],
   challenge: [
-    'When your windscreen cracks, you need it fixed fast. But the traditional auto glass experience in South Africa is fragmented — customers call around for quotes, struggle to verify quality, and have no visibility into when a fitter will actually arrive. Pricing is opaque, and there’s no guarantee the glass meets safety standards.',
-    'ScreenFix needed more than a website. They needed a service platform — an on-demand dispatch system that works like Uber for auto glass, connecting vehicle owners with nearby verified fitters in real time.',
+    'When your windscreen cracks, you need it fixed fast. But the traditional auto glass experience in South Africa is fragmented. Customers call around for quotes, struggle to verify quality, and have no visibility into when a fitter will actually arrive. Pricing is opaque, and there’s no guarantee the glass meets safety standards.',
+    'ScreenFix needed more than a website. They needed a service platform: an on-demand dispatch system that works like Uber for auto glass, connecting vehicle owners with nearby verified fitters in real time.',
   ],
   builtIntro:
     'We designed and built ScreenFix as a full-service marketplace platform with on-demand dispatch, live job tracking, and an instant quoting engine:',
   coreHeading: 'Core platform:',
   core: [
-    'Instant quote tool — select vehicle make, model, and year to get pricing in minutes',
-    "On-demand fitter dispatch — requests broadcast to verified fitters in the customer's area",
-    'Live status tracking — Requested → Accepted → On the way → Completed',
+    'Instant quote tool: select vehicle make, model, and year to get pricing in minutes',
+    "On-demand fitter dispatch: requests broadcast to verified fitters in the customer's area",
+    'Live status tracking: Requested → Accepted → On the way → Completed',
     'Transparent pricing from R500 (chip repair) to R2,600+ (full windscreen replacement)',
-    'Secure payment — pay only after accepting a quote, no upfront cost',
+    'Secure payment: pay only after accepting a quote, no upfront cost',
     'Insurance claim documentation and assistance',
   ],
   coverageHeading: 'Service coverage:',
   coverage: [
-    'Windscreen Replacement (from R2,600) — OE-quality glass, mobile or workshop',
-    'Side Window Replacement (from R1,300) — driver, passenger, or rear side',
-    'Rear Glass Replacement (from R2,000) — including defogger reconnection',
-    'Chip & Crack Repair (from R500) — prevent full replacement',
+    'Windscreen Replacement (from R2,600): OE-quality glass, mobile or workshop',
+    'Side Window Replacement (from R1,300): driver, passenger, or rear side',
+    'Rear Glass Replacement (from R2,000): including defogger reconnection',
+    'Chip and Crack Repair (from R500): prevent full replacement',
   ],
   flowIntro:
-    "The four-step flow is designed for urgency — because a cracked windscreen isn't something you schedule for next month:",
+    "The four-step flow is designed for urgency, because a cracked windscreen isn't something you schedule for next month:",
   flow: [
     { n: '01', title: 'Request service', desc: 'Select your vehicle, describe the issue, confirm location.' },
     { n: '02', title: 'Fitters notified', desc: 'Request broadcast to verified fitters nearby.' },
@@ -716,8 +690,8 @@ export const CASE_AUTOSCREEN = {
     { n: '04', title: 'Get it done', desc: 'Service at your location. Pay when satisfied.' },
   ],
   result: [
-    'ScreenFix has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ suburbs across Johannesburg, Cape Town, Durban, Pretoria, and Gqeberha — with same-day service available in high-demand areas.',
-    'The on-demand dispatch model transformed ScreenFix from a traditional service business into a technology-driven marketplace — giving them a structural advantage over competitors still operating on phone calls and manual coordination.',
+    'ScreenFix has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ suburbs across Johannesburg, Cape Town, Durban, Pretoria, and Gqeberha, with same-day service available in high-demand areas.',
+    'The on-demand dispatch model transformed ScreenFix from a traditional service business into a technology-driven marketplace, giving them a structural advantage over competitors still operating on phone calls and manual coordination.',
   ],
   resultIntro: 'What customers say:',
   quotes: [
@@ -733,6 +707,7 @@ export const CASE_AUTOSCREEN = {
   tags: ['On-demand Dispatch', 'Live Tracking', 'Instant Quoting', 'Marketplace', 'WhatsApp Integration'],
   finalCta: {
     heading: 'Building a service marketplace?',
+    headingAccent: 'service marketplace?',
     sub: "We've built dispatch platforms that scale. Let's talk.",
     cta: 'Get a Quote',
   },
@@ -742,7 +717,7 @@ export const CASE_AUTOSCREEN = {
 export const CASE_FAMILI = {
   eyebrow: 'CASE STUDY',
   title: 'StoryNest',
-  sub: 'The living archive — where every family holds a universe of untold stories. A platform for preserving lineage, heritage, and the stories that connect generations.',
+  sub: 'The living archive where every family holds a universe of untold stories. A platform for preserving lineage, heritage, and the stories that connect generations.',
   stats: [
     { value: '12,400+', label: 'People documented' },
     { value: '340+', label: 'Family trees' },
@@ -750,41 +725,41 @@ export const CASE_FAMILI = {
     { value: 'Free', label: 'To start' },
   ],
   challenge: [
-    "Across Africa and its diaspora, oral histories spanning centuries are at risk of being lost. Family stories — of migrations, traditions, hardship, and triumph — exist only in the memories of elders. Genealogy platforms built for Western audiences don't account for the depth and complexity of African family structures, clan systems, or oral tradition.",
-    'StoryNest needed to be something entirely different: a living archive that honours the way African families actually remember — through stories, not just names and dates. A platform where families can document lineages spanning 18 generations, connect across clan boundaries, and preserve the narratives that give meaning to heritage.',
+    "Across Africa and its diaspora, oral histories spanning centuries are at risk of being lost. Family stories of migrations, traditions, hardship, and triumph exist only in the memories of elders. Genealogy platforms built for Western audiences don't account for the depth and complexity of African family structures, clan systems, or oral tradition.",
+    'StoryNest needed to be something entirely different: a living archive that honours the way African families actually remember, through stories, not just names and dates. A platform where families can document lineages spanning 18 generations, connect across clan boundaries, and preserve the narratives that give meaning to heritage.',
   ],
   builtIntro:
-    'We designed and built StoryNest as a warm, editorial-quality platform that treats family history with the reverence it deserves — part museum, part literary magazine, part genealogy tool.',
+    'We designed and built StoryNest as a warm, editorial-quality platform that treats family history with the reverence it deserves. Part museum, part literary magazine, part genealogy tool.',
   archiveHeading: 'The living archive:',
   archive: [
-    'Public and private family trees — explore documented lineages or build your own privately',
+    'Public and private family trees: explore documented lineages or build your own privately',
     'Powerful search by surname, clan, region, or era with "popular searches" and discovery',
     'Featured lineages gallery showcasing historically significant families (Sisulu, House of Moshoeshoe, House of Dlamini, House of Dalindyebo)',
-    'Long-form editorial stories with era stamps — "The woman who walked 300km to save her family" (Khumalo, c. 1913)',
+    'Long-form editorial stories with era stamps: "The woman who walked 300km to save her family" (Khumalo, c. 1913)',
   ],
-  bridgesHeading: 'Family bridges — a unique feature:',
+  bridgesHeading: 'Family bridges, a unique feature:',
   bridges: [
-    'Marriage bridges — connect trees when families join through marriage',
-    'Heritage links — connect branches that share clan identity or ceremonial ties',
-    'Collaborative research — multiple family branches working together to reconstruct shared histories',
+    'Marriage bridges: connect trees when families join through marriage',
+    'Heritage links: connect branches that share clan identity or ceremonial ties',
+    'Collaborative research: multiple family branches working together to reconstruct shared histories',
   ],
   appHeading: 'Mobile app:',
   app: [
-    "Voice-to-text story capture — record a grandmother's story over tea",
-    'Document and photo scanning — snap old photos at family gatherings',
-    'Pinch-to-zoom tree navigation — explore your entire family archive',
+    "Voice-to-text story capture: record a grandmother's story over tea",
+    'Document and photo scanning: snap old photos at family gatherings',
+    'Pinch-to-zoom tree navigation: explore your entire family archive',
     'Push notifications when family members add new content',
   ],
   flowIntro: 'The "Connect your roots" flow links public discovery to private family archives:',
   flow: [
     { n: '01', title: 'Browse public trees', desc: 'Explore documented lineages and find familiar names.' },
-    { n: '02', title: 'Claim a connection', desc: '"This is my lineage" — claim your place in a documented tree.' },
-    { n: '03', title: 'Link your roots', desc: 'Link it to your private family space — verified by family owners for authenticity.' },
+    { n: '02', title: 'Claim a connection', desc: '"This is my lineage." Claim your place in a documented tree.' },
+    { n: '03', title: 'Link your roots', desc: 'Link it to your private family space, verified by family owners for authenticity.' },
   ],
   result: [
-    'StoryNest has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo) — alongside hundreds of everyday families building their own archives.',
-    'The largest public tree (Mahlangu) has 202 documented members. Cross-family collaboration is active — three Dlamini branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
-    'The platform\'s editorial quality — warm typography, archive-inspired design, and long-form storytelling — sets it apart from every other genealogy tool on the market. As the footer states: "Built to last generations."',
+    'StoryNest has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo), alongside hundreds of everyday families building their own archives.',
+    'The largest public tree (Mahlangu) has 202 documented members. Cross-family collaboration is active: three Dlamini branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
+    'The platform\'s editorial quality (warm typography, archive-inspired design, and long-form storytelling) sets it apart from every other genealogy tool on the market. As the footer states: "Built to last generations."',
   ],
   resultIntro: 'The conviction behind it all:',
   quotes: [
@@ -796,13 +771,21 @@ export const CASE_FAMILI = {
   tags: ['Living Archive', 'Family Trees', 'Collaborative Research', 'Mobile App', 'Voice-to-Text', 'Heritage Bridges'],
   finalCta: {
     heading: 'Building something meaningful?',
+    headingAccent: 'something meaningful?',
     sub: "We love projects with purpose. Let's talk.",
     cta: 'Get a Quote',
   },
 }
 
 export const FOOTER = {
+  // Brand-column blurb (2026-07-22, user): the crux line stays the lead, then
+  // two lines that spell out what "built right" means for an AI software studio.
   tag: 'Technology built right.',
+  tagLines: [
+    'An AI software studio building custom software, web platforms, mobile apps and AI systems.',
+    'Senior engineers on every project. No handoffs, no juniors learning on your budget.',
+    'AI-accelerated delivery, documented and tested, so the build still holds up years later.',
+  ],
   email: 'hello@tekniik.ai',
   // hrefs intentionally empty for now — Footer renders them as dead '#' links
   socials: [
@@ -832,7 +815,7 @@ export const FOOTER = {
       ],
     },
   ],
-  offices: OFFICES,
   copyright: '© 2026 Tekniik. All rights reserved.',
-  madeWith: 'Made with love and code by Tekniik Team',
+  // rendered as: Made with <heart icon> and code by Tekniik Team
+  madeWith: { pre: 'Made with', post: 'and code by Tekniik Team' },
 }

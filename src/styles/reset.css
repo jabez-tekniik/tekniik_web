@@ -70,36 +70,34 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--f-display);
+  font-family: var(--f-display-black);
   color: var(--ink);
   letter-spacing: -0.03em;
   line-height: 1.0;
-  font-weight: 900;
 }
 
 h1 {
   font-size: clamp(3.25rem, 8vw, 7rem);
-  font-weight: 900;
   letter-spacing: -0.05em;
-  line-height: 0.94;
+  line-height: 1.08;
 }
 
 h2 {
   font-size: clamp(2.25rem, 5vw, 4rem);
-  font-weight: 900;
   letter-spacing: -0.045em;
-  line-height: 0.98;
+  line-height: 1.1;
 }
 
+/* h3/h4 step DOWN a face rather than a weight (user rule, 2026-07-22) */
 h3 {
+  font-family: var(--f-display-bold);
   font-size: clamp(1.3rem, 2vw, 1.75rem);
-  font-weight: 700;
   letter-spacing: -0.025em;
 }
 
 h4 {
+  font-family: var(--f-display-med);
   font-size: 1.0625rem;
-  font-weight: 600;
   letter-spacing: -0.015em;
 }
 

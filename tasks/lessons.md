@@ -135,3 +135,33 @@ adding a sibling below silently moves it.
 User feedback on the Contact form: an extra full-width 2px danger rail under
 the invalid message "looks bad". Invalid state = mono danger text + the
 input's own hairline recoloured. Don't stack a second line under the message.
+
+## Single-face font families need `font-weight: 100 900` (2026-07-22)
+
+Splitting Satoshi into one @font-face per weight (`'Satoshi Black'` etc.) and
+removing every `font-weight` looked complete — but `h1` still computed
+`font-weight: 700` from the **UA stylesheet**. A face declared
+`font-weight: normal` doesn't match 700, so the browser is free to synthesize a
+faux-bold on top of the Black file. Declaring each single-face family as
+`font-weight: 100 900` makes any inherited/UA weight resolve to that one real
+file. Check with `getComputedStyle(h1).fontWeight` after the sweep — the family
+name alone is not proof.
+
+## Em dashes are banned in shipped copy (2026-07-22)
+
+The user reads em dashes as AI slop. Fixing them one flag at a time was wrong:
+the right move was a full sweep of `content.js`, `legal.js`, JSX literals and
+`index.html` meta (~100 occurrences). Rewrite the sentence, never swap in a
+shorter dash. Colon for definition-style list rows, period for two clauses,
+parentheses for a genuine aside. Grep must cover both `—` and `&mdash;`, and
+must mask comments first or the results are 60% dev-facing noise.
+
+## Never accent a whole heading, and never run a display heading under 1.08
+
+Two related polish traps in the same review:
+- `FinalCta` coloured its LAST heading line teal. For a single-line heading
+  that painted the entire statement teal, which kills the accent's job. Accent
+  the significant tail only.
+- Display headings at line-height 0.94–1.06 let a `?` or apostrophe collide
+  with the `p`/`y` descenders on the line above at large sizes. 1.08 is the
+  floor for anything that can wrap; 1.1–1.12 for smaller card titles.

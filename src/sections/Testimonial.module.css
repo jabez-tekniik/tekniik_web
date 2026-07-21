@@ -26,8 +26,7 @@
 }
 
 .glyph {
-  font-family: var(--f-display);
-  font-weight: 900;
+  font-family: var(--f-display-black);
   font-size: clamp(5rem, 11vw, 9.5rem);
   line-height: 0.55;
   color: var(--accent);
@@ -65,8 +64,7 @@
 }
 
 .name {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: 1.05rem;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -159,8 +157,7 @@
 
 /* —— quote —— */
 .quote {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display-bold);
   font-size: clamp(1.55rem, 3.3vw, 2.9rem);
   line-height: 1.2;
   letter-spacing: -0.02em;

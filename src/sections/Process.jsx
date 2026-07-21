@@ -30,7 +30,10 @@ export default function Process() {
               <span className={styles.index}>07</span>
               <span className={styles.eyebrow}>{PROCESS.eyebrow}</span>
             </div>
-            <h2 className={styles.heading}>{PROCESS.heading}</h2>
+            <h2 className={styles.heading}>
+              {PROCESS.heading}{' '}
+              <span className={styles.headingAccent}>{PROCESS.headingAccent}</span>
+            </h2>
           </div>
           <p className={styles.sub}>{PROCESS.sub}</p>
         </Reveal>

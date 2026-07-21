@@ -81,8 +81,8 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              '**Legitimate interest** — to respond to your enquiry and to analyse website usage for improving our services',
-              '**Consent** — for the use of analytics cookies (collected via our cookie consent banner)',
+              '**Legitimate interest**: to respond to your enquiry and to analyse website usage for improving our services',
+              '**Consent**: for the use of analytics cookies (collected via our cookie consent banner)',
             ],
           },
         ],
@@ -97,9 +97,9 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              "**Google Analytics 4** — website traffic analysis. Google may process data on servers outside the UK/EEA. Google's privacy policy: https://policies.google.com/privacy",
-              '**Google Search Console** — search performance monitoring (no personal data collected from visitors)',
-              '**Firebase** — contact form submission processing',
+              "**Google Analytics 4**: website traffic analysis. Google may process data on servers outside the UK/EEA. Google's privacy policy: https://policies.google.com/privacy",
+              '**Google Search Console**: search performance monitoring (no personal data collected from visitors)',
+              '**Firebase**: contact form submission processing',
             ],
           },
         ],
@@ -126,12 +126,12 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              '**Access** — request a copy of the personal data we hold about you',
-              '**Rectification** — request correction of inaccurate data',
-              '**Erasure** — request deletion of your data ("right to be forgotten")',
-              '**Restriction** — request we limit how we use your data',
-              '**Portability** — request your data in a portable format',
-              '**Objection** — object to processing based on legitimate interest',
+              '**Access**: request a copy of the personal data we hold about you',
+              '**Rectification**: request correction of inaccurate data',
+              '**Erasure**: request deletion of your data ("right to be forgotten")',
+              '**Restriction**: request we limit how we use your data',
+              '**Portability**: request your data in a portable format',
+              '**Objection**: object to processing based on legitimate interest',
             ],
           },
           {
@@ -182,7 +182,7 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              "**UK:** Information Commissioner's Office (ICO) — https://ico.org.uk",
+              "**UK:** Information Commissioner's Office (ICO): https://ico.org.uk",
               '**EU:** Your local data protection authority',
             ],
           },
@@ -244,7 +244,7 @@ export const LEGAL_PAGES = {
         blocks: [
           {
             type: 'p',
-            text: 'All content on this Website — including but not limited to text, graphics, logos, icons, images, code, and design — is the property of Tekniik AI Studio Private Limited and is protected by applicable intellectual property laws.',
+            text: 'All content on this Website, including but not limited to text, graphics, logos, icons, images, code, and design, is the property of Tekniik AI Studio Private Limited and is protected by applicable intellectual property laws.',
           },
           {
             type: 'p',
@@ -385,9 +385,9 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              '**Accept all cookies** — enables analytics cookies',
-              '**Reject non-essential cookies** — only strictly necessary cookies are used',
-              '**Manage preferences** — choose which categories to enable',
+              '**Accept all cookies**: enables analytics cookies',
+              '**Reject non-essential cookies**: only strictly necessary cookies are used',
+              '**Manage preferences**: choose which categories to enable',
             ],
           },
           {
@@ -523,12 +523,12 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              '**Access** your data — ask us what we hold about you',
-              "**Correct** your data — ask us to fix anything that's wrong",
-              '**Delete** your data — ask us to erase it ("right to be forgotten")',
-              '**Restrict** processing — ask us to limit how we use your data',
-              '**Port** your data — receive your data in a standard format',
-              '**Object** — tell us to stop processing your data',
+              '**Access** your data: ask us what we hold about you',
+              "**Correct** your data: ask us to fix anything that's wrong",
+              '**Delete** your data: ask us to erase it ("right to be forgotten")',
+              '**Restrict** processing: ask us to limit how we use your data',
+              '**Port** your data: receive your data in a standard format',
+              '**Object**: tell us to stop processing your data',
             ],
           },
           {
@@ -589,7 +589,7 @@ export const LEGAL_PAGES = {
           {
             type: 'list',
             items: [
-              "**UK:** Information Commissioner's Office (ICO) — ico.org.uk",
+              "**UK:** Information Commissioner's Office (ICO): ico.org.uk",
               '**EU:** Your local data protection authority',
             ],
           },

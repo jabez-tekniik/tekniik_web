@@ -92,7 +92,7 @@ export default function HeroThread() {
           <div className={`${styles.phase} ${styles.phaseA}`} data-phase-a="">
             <div className={styles.rowIn} data-step="">
               <p className={styles.inMsg}>
-                We&rsquo;re planning a web app for our ops team &mdash; where do we start?
+                We&rsquo;re planning a web app for our ops team. Where do we start?
               </p>
               <span className={styles.time}>09:42</span>
             </div>
@@ -105,7 +105,7 @@ export default function HeroThread() {
               </span>
               <div data-step="">
                 <p className={styles.outMsg}>
-                  Morning &mdash; good timing. Send over what you have and we&rsquo;ll map the
+                  Morning, good timing. Send over what you have and we&rsquo;ll map the
                   build on a 30-minute call.
                 </p>
                 <span className={`${styles.time} ${styles.timeOut}`}>10:03</span>
@@ -123,7 +123,7 @@ export default function HeroThread() {
           <div className={`${styles.phase} ${styles.phaseB}`} data-phase-b="">
             <div className={styles.rowIn} data-step="">
               <p className={styles.inMsg}>
-                Launch week &mdash; we&rsquo;ve spotted a checkout bug on iPad. Can your team
+                Launch week and we&rsquo;ve spotted a checkout bug on iPad. Can your team
                 take a look?
               </p>
               <span className={styles.time}>11:38</span>
@@ -137,7 +137,7 @@ export default function HeroThread() {
               </span>
               <div data-step="">
                 <p className={styles.outMsg}>
-                  Found it &mdash; a payment-redirect edge case. Fix is live and checked on
+                  Found it. A payment-redirect edge case. Fix is live and checked on
                   every device.
                 </p>
                 <span className={`${styles.time} ${styles.timeOut}`}>12:02</span>
