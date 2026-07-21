@@ -506,6 +506,227 @@
   transition-delay: 400ms;
 }
 
+/* —— service index (pinned only) — the always-visible list of all four
+   services, bottom-left of the stage. Ledger idiom: mono number + Satoshi
+   name over a hairline; the hairline is the progress rail — done rows hold
+   a dim teal fill, the active row's fill tracks the scroll via --p (set on
+   .deck each frame, inherited here), future rows sit empty. */
+.svcIndex {
+  display: none;
+}
+
+.section[data-pinned='true'] .svcIndex {
+  position: absolute;
+  z-index: 3;
+  left: var(--edge);
+  bottom: clamp(14px, 3vh, 36px);
+  display: flex;
+  flex-direction: column;
+  width: clamp(220px, 16vw, 300px);
+}
+
+.svcKicker {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-bottom: 8px;
+}
+
+.svcRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 33px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 160ms var(--ease-out);
+}
+
+.svcRow:active {
+  transform: scale(0.98);
+}
+
+.svcRow:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+/* the teal fill drawn over the row's hairline */
+.svcRow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* active: fill tracks the scroll frame-for-frame — no transition, same
+   contract as the other --p consumers. Non-active rails MAY transition
+   (hover preview below); the live rail must not, or it would lag the wheel. */
+.svcRow:not(.rowOn)::after {
+  transition:
+    transform 240ms var(--ease-out),
+    opacity 240ms var(--ease-out);
+}
+
+.rowOn::after {
+  transform: scaleX(var(--p, 0));
+}
+
+/* done: full fill, dimmed so the live rail stays the brightest thing */
+.rowDone::after {
+  transform: scaleX(1);
+  opacity: 0.35;
+}
+
+/* —— the traveling node: a small teal dot just outside the row that scales
+   in on the active row — the positional cue that walks down the index as
+   the user scrolls through the services */
+.svcDot {
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-50%) scale(0);
+  transition: transform 220ms var(--ease-out);
+}
+
+.rowOn .svcDot {
+  transform: translateY(-50%) scale(1);
+}
+
+/* —— "Next ↓" cue on the row after the active one — tells a non-scroller
+   that more is queued below, and that scrolling brings it up */
+.nextTag {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(-3px);
+  transition:
+    opacity 240ms var(--ease-out),
+    transform 240ms var(--ease-out);
+}
+
+.rowNext .nextTag {
+  opacity: 1;
+  transform: none;
+}
+
+/* the little arrow breathes downward — a gentle, persistent "keep going" */
+.nextTag svg {
+  animation: nextNudge 2s ease-in-out infinite;
+}
+
+@keyframes nextNudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+/* —— hover jump affordance on non-active rows (arrow slides in) —— */
+.rowGo {
+  margin-left: auto;
+  display: inline-flex;
+  color: var(--text-faint);
+  opacity: 0;
+  transform: translateX(-5px);
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+.svcNum {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  transition: color 200ms var(--ease-out);
+}
+
+.svcName {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: var(--text-faint);
+  transition:
+    color 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.rowOn .svcNum {
+  color: var(--accent);
+}
+
+.rowOn .svcName {
+  color: var(--text);
+}
+
+.rowDone .svcName {
+  color: var(--text-dim);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .svcRow:hover .svcName {
+    color: var(--text);
+    transform: translateX(3px);
+  }
+  .svcRow:hover .svcNum {
+    color: var(--accent);
+  }
+  .svcRow:hover .rowGo {
+    opacity: 1;
+    transform: none;
+    color: var(--accent);
+  }
+  /* future rows preview their rail on hover — a faint full fill, hinting at
+     the progress that scrolling (or clicking) will draw for real */
+  .svcRow:hover:not(.rowOn):not(.rowDone)::after {
+    transform: scaleX(1);
+    opacity: 0.14;
+  }
+}
+
+/* short viewports: compress the index so it can't ride up into the copy */
+@media (max-height: 720px) {
+  .section[data-pinned='true'] .svcKicker {
+    display: none;
+  }
+  .section[data-pinned='true'] .svcRow {
+    min-height: 28px;
+  }
+}
+
 /* —— responsive (non-pinned layouts) —— */
 @media (max-width: 640px) {
   .stage {
@@ -524,8 +745,17 @@
   .titleWord,
   .desc,
   .link,
-  .linkIcon {
+  .linkIcon,
+  .svcRow,
+  .svcNum,
+  .svcName,
+  .svcDot,
+  .nextTag,
+  .rowGo {
     transition: none;
+  }
+  .nextTag svg {
+    animation: none;
   }
   .titleWord {
     transform: none;

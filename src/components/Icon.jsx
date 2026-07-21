@@ -138,6 +138,15 @@ export function IconMail(props) {
   )
 }
 
+export function IconReply(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M9 15L4 10l5-5" />
+      <path d="M4 10h9.5a6 6 0 0 1 6 6v3" />
+    </svg>
+  )
+}
+
 export function IconPhone(props) {
   return (
     <svg {...base} {...props}>

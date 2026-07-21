@@ -8,6 +8,34 @@ import styles from './ServiceShowcase.module.css'
 
 const VIGNETTES = { web: WebScene, app: AppScene, mobile: MobileScene, ai: AiScene }
 
+function DownGlyph() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M8 3v10M3.5 8.5L8 13l4.5-4.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function JumpGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M3 8h10M8.5 3.5L13 8l-4.5 4.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 function ArrowGlyph() {
   return (
     <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -89,6 +117,20 @@ export default function ServiceShowcase() {
       window.removeEventListener('resize', onScroll)
     }
   }, [pinned, items.length])
+
+  /* pinned: jump the page to the middle of a service's scroll band —
+     rides Lenis so the glide matches the section's own smooth scroll */
+  const jumpTo = (i) => {
+    const el = pinRef.current
+    if (!el) return
+    const travel = el.offsetHeight - window.innerHeight
+    if (travel <= 0) return
+    const top = window.scrollY + el.getBoundingClientRect().top
+    const target = top + travel * ((i + 0.5) / items.length)
+    const lenis = getLenis()
+    if (lenis) lenis.scrollTo(target)
+    else window.scrollTo({ top: target, behavior: 'smooth' })
+  }
 
   /* not pinned: light up whichever stacked panel is most in view, so its
      vignette animates while the rest sit quiet */
@@ -204,6 +246,53 @@ export default function ServiceShowcase() {
                 </article>
               )
             })}
+
+            {/* service index — the whole capability list stays on screen while
+                the deck pins, so a non-scroller still sees all four services.
+                Past rails hold a dim fill, the active rail fills live with the
+                scroll (--p), future rails wait empty. Rows jump on click. */}
+            <nav className={styles.svcIndex} aria-label="Services in this section">
+              <span className={styles.svcKicker}>
+                Services · {String(items.length).padStart(2, '0')}
+              </span>
+              {items.map((item, i) => {
+                const isOn = i === active
+                const isNext = i === active + 1
+                const cls = [
+                  styles.svcRow,
+                  isOn && styles.rowOn,
+                  i < active && styles.rowDone,
+                  isNext && styles.rowNext,
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    className={cls}
+                    aria-current={isOn ? 'true' : undefined}
+                    onClick={() => jumpTo(i)}
+                  >
+                    <span className={styles.svcDot} aria-hidden="true" />
+                    <span className={styles.svcNum}>{String(i + 1).padStart(2, '0')}</span>
+                    <span className={styles.svcName}>{item.title}</span>
+                    {isNext ? (
+                      <span className={styles.nextTag} aria-hidden="true">
+                        Next
+                        <DownGlyph />
+                      </span>
+                    ) : (
+                      !isOn && (
+                        <span className={styles.rowGo} aria-hidden="true">
+                          <JumpGlyph />
+                        </span>
+                      )
+                    )}
+                  </button>
+                )
+              })}
+            </nav>
           </div>
         </div>
       </div>

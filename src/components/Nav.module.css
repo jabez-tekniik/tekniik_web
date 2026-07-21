@@ -159,7 +159,7 @@
   position: relative;
 }
 
-/* —— Gemini-style hover: rotating multicolor border + soft bloom —— */
+/* —— hover: rotating two-tone brand ring (teal ↔ navy) + soft bloom —— */
 @property --gq-angle {
   syntax: '<angle>';
   inherits: false;
@@ -185,10 +185,7 @@ a.ctaBtn::after {
   background: conic-gradient(
     from var(--gq-angle),
     #72ccd6,
-    #4c7df0,
-    #9b72cb,
-    #d96570,
-    #f2a33c,
+    #202e5d 50%,
     #72ccd6
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);

@@ -232,3 +232,24 @@ Support/WebsitePackage heroes have no vignette. Home hero keeps typewriter
       launch. IconCard (credit card) + IconGrid (dashboard panels)
       added to Icon.jsx; `.who` chip keeps the 24px circle, 13px
       `.whoIcon` inside. Build ✓ (3.18s) + eslint ✓.
+
+## 2026-07-21 — Contact "What happens next" redesign (client: lines look bad)
+- [ ] 1. Replace the 4-column scroll-lit dash rails with a vertical
+      "open line" ledger: single teal thread draws DOWN with scroll,
+      full-width hairline rows, ghost stroke numeral + Satoshi statement
+      + mono timing stamp per row, node ignites as the thread tip passes.
+- [ ] 2. content.js: `CONTACT_PAGE.side.next` strings → {text, stamp}
+      (timing pulled out of the sentences into mono stamps).
+- [ ] 3. Responsive sweep 320–1280 + RM check, build + lint gates.
+- [ ] 4. Update CLAUDE.md Contact section.
+- [x] 1-4 done (2 pivots, all user-driven same-turn):
+      v1 vertical "open line" thread ledger → user: too big, wants 4 cols.
+      v2 compact 4-col status-ledger cells (ghost 0N / stamp / statement,
+      vertical hairlines, sequential ignition) → user: icons over numerals,
+      fill icon backgrounds on scroll.
+      v3 FINAL: 46px icon chips (Mail/Reply/Phone/Check — IconReply added;
+      Handshake mush at 20px) with teal scaleY liquid-fill tracking scroll,
+      glyph flips navy at 0.55. content.js next → {text, stamp}.
+      Gates: build ✓ lint ✓ sweep 320-1600 no h-scroll ✓ 2×2 border bug
+      fixed (sibling selector specificity) ✓ dark ink ✓ RM ✓ console clean ✓.
+      CLAUDE.md Contact section updated. Screenshots deleted, preview killed.

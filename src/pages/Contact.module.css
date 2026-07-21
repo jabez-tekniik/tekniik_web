@@ -1,7 +1,8 @@
 /* Contact — "The open line" (Deep Ink).
    Poster hero + status ledger, working spread (ledger form | direct
-   lines), and a brand-navy "what happens next" band with scroll-lit
-   rails. Tokens only — both ink modes adapt. Transform/opacity motion;
+   lines), and a compact brand-navy "what happens next" band: four
+   hairline-split columns igniting in sequence on scroll.
+   Tokens only — both ink modes adapt. Transform/opacity motion;
    the form underline draw (scaleX) is the focus signal. */
 
 /* ————————————————————————————— hero ————————————————————————————— */
@@ -537,7 +538,7 @@ textarea.input {
    so this band is the closing dark beat. */
 .next {
   position: relative;
-  padding-block: clamp(64px, 8vw, 120px);
+  padding-block: clamp(52px, 6.5vw, 92px);
   overflow: hidden;
   background: var(--band);
 
@@ -582,7 +583,7 @@ textarea.input {
 }
 
 .nextHead {
-  margin-bottom: clamp(32px, 4.4vw, 56px);
+  margin-bottom: clamp(26px, 3.5vw, 44px);
 }
 
 .nextHeading {
@@ -595,74 +596,112 @@ textarea.input {
   margin: 0;
 }
 
+/* Four hairline-split columns in the hero status-ledger idiom:
+   icon chip, mono timing stamp, Satoshi statement. As the band scrolls
+   through, each chip fills teal bottom-up (scaleY tracks scroll) and
+   the column ignites left→right. */
 .nextSteps {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(24px, 3vw, 48px);
 }
 
-.nextStep {
+.nextStep + .nextStep {
+  border-left: 1px solid var(--hairline);
+}
+
+.stepCell {
+  height: 100%;
+  padding-inline: clamp(20px, 2.6vw, 36px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nextStep:first-child .stepCell {
+  padding-left: 0;
+}
+
+.nextStep:last-child .stepCell {
+  padding-right: 0;
+}
+
+/* the glyph chip — teal rises from the bottom as you scroll, then the
+   glyph flips to band navy once the chip is (mostly) full */
+.stepChip {
   position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-raise);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 18px;
+  transition:
+    border-color 420ms var(--ease),
+    box-shadow 420ms var(--ease);
 }
 
-.rail {
-  position: relative;
-  display: block;
-  height: 2px;
-  background: var(--hairline);
-  margin-bottom: clamp(16px, 2vw, 22px);
-}
-
-.railFill {
+.chipFill {
   position: absolute;
   inset: 0;
   background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
+  transform: scaleY(0);
+  transform-origin: bottom center;
   will-change: transform;
 }
 
-.railNode {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--text-faint);
-  transform: translate(-1px, -50%) scale(0.55);
-  transition:
-    background var(--d-base) var(--ease),
-    box-shadow var(--d-base) var(--ease),
-    transform var(--d-base) var(--ease-out);
-}
-
-.rail.lit .railNode {
-  background: var(--accent);
-  box-shadow: 0 0 14px var(--accent-bloom);
-  transform: translate(-1px, -50%) scale(1);
-}
-
-.nextNum {
+.chipIcon {
+  position: relative;
   display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--text-dim);
+  transition: color 420ms var(--ease);
+}
+
+.stepStamp {
   font-family: var(--f-mono);
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--accent);
+  text-transform: uppercase;
+  color: var(--text-faint);
+  transition: color 420ms var(--ease);
   margin-bottom: 10px;
 }
 
-.nextText {
-  font-family: var(--f-body);
-  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
-  line-height: 1.6;
+.stepText {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.02rem, 1.25vw, 1.15rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
   color: var(--text-dim);
   margin: 0;
-  max-width: 26ch;
+  transition: color 420ms var(--ease);
+}
+
+/* the scroll sweep has reached this column */
+.stepLit .stepChip {
+  border-color: transparent;
+  box-shadow: 0 0 18px var(--accent-bloom);
+}
+
+.stepLit .chipIcon {
+  color: var(--bg);
+}
+
+.stepLit .stepStamp {
+  color: var(--accent);
+}
+
+.stepLit .stepText {
+  color: var(--text);
 }
 
 /* ————————————————————————— responsive ————————————————————————— */
@@ -679,8 +718,24 @@ textarea.input {
     grid-template-columns: 1fr;
     gap: clamp(40px, 6vw, 64px);
   }
+  /* steps: 2×2 — hairlines re-derived for the wrap */
   .nextSteps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .nextStep:nth-child(odd) {
+    border-left: none;
+  }
+  .nextStep:nth-child(odd) .stepCell {
+    padding-left: 0;
+  }
+  .nextStep:nth-child(n + 3) {
+    border-top: 1px solid var(--hairline);
+  }
+  .nextStep:nth-child(n + 3) .stepCell {
+    padding-top: 24px;
+  }
+  .nextStep:nth-child(-n + 2) .stepCell {
+    padding-bottom: 24px;
   }
 }
 
@@ -695,6 +750,34 @@ textarea.input {
   .statusCell {
     padding-block: 14px 16px;
   }
+  /* steps stack: hairline rows, numeral tightens */
+  .nextSteps {
+    grid-template-columns: 1fr;
+  }
+  .nextStep:nth-child(n + 3) {
+    border-top: none;
+  }
+  .nextStep + .nextStep {
+    border-left: none;
+    border-top: 1px solid var(--hairline);
+  }
+  .stepCell,
+  .nextStep:nth-child(odd) .stepCell,
+  .nextStep:nth-child(n + 3) .stepCell {
+    padding-inline: 0;
+    padding-block: 18px;
+  }
+  .nextStep:first-child .stepCell {
+    padding-top: 0;
+  }
+  .nextStep:last-child .stepCell {
+    padding-bottom: 0;
+  }
+  .stepChip {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 14px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -705,9 +788,6 @@ textarea.input {
   }
   .metaRight {
     text-align: left;
-  }
-  .nextSteps {
-    grid-template-columns: 1fr;
   }
   /* stack label over value — shared column no longer fits */
   .lines {
@@ -732,8 +812,8 @@ textarea.input {
   }
 }
 
-/* —— reduced motion: rails render filled (hook fires once with p=1),
-      underline snaps, hovers and the live pulse go inert —— */
+/* —— reduced motion: every column renders lit (the hook fires once
+      with p=1), underline snaps, hovers and the live pulse go inert —— */
 @media (prefers-reduced-motion: reduce) {
   .underline,
   .line::before,
@@ -741,7 +821,10 @@ textarea.input {
   .lineValue,
   .lineArrow,
   .officeTab,
-  .railNode {
+  .stepChip,
+  .chipIcon,
+  .stepText,
+  .stepStamp {
     transition: none;
   }
   .liveDot {
@@ -749,9 +832,5 @@ textarea.input {
   }
   .officeAddress {
     animation: none;
-  }
-  .railNode {
-    background: var(--accent);
-    transform: translate(-1px, -50%) scale(1);
   }
 }

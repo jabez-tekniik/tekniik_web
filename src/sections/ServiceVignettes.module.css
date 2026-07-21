@@ -59,12 +59,13 @@
 }
 
 /* entry-rise base: hidden until the scene is active */
-.browser,
-.appWin,
+.laptop,
+.monitor,
 .phone,
 .tablet,
 .docNode,
 .core,
+.aiCpu,
 .chipWrap,
 .outChip,
 .bNav > *,
@@ -164,26 +165,87 @@
   border: 1px solid var(--hairline);
 }
 
-.browser {
+/* laptop shell — navy bezel screen over a slim base deck; the browser
+   window fills the screen. Same band-token idiom as the mobile devices. */
+.laptop {
   position: absolute;
   left: 4%;
   right: 4%;
-  top: 6%;
-  bottom: 9%;
+  top: 3%;
+  bottom: 3%;
   display: flex;
   flex-direction: column;
-  background: var(--bg-raise);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-glass);
-  overflow: hidden;
+  align-items: center;
   opacity: 0;
   transform: translateY(16px);
 }
 
-.on .browser {
+.on .laptop {
   opacity: 1;
   transform: none;
+}
+
+.lapScreen {
+  position: relative;
+  display: flex;
+  width: 88%;
+  flex: 1;
+  min-height: 0;
+  background: linear-gradient(150deg, var(--band-raise), var(--band) 45%, var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: clamp(10px, 2cqw, 16px) clamp(10px, 2cqw, 16px) clamp(4px, 0.8cqw, 6px)
+    clamp(4px, 0.8cqw, 6px);
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  padding: clamp(8px, 1.6cqw, 14px);
+  padding-top: clamp(11px, 2.2cqw, 18px);
+}
+
+/* webcam centred in the top bezel */
+.lapCam {
+  position: absolute;
+  top: calc(clamp(11px, 2.2cqw, 18px) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(3px, 0.6cqw, 5px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--band-2);
+  box-shadow: 0 0 0 1.5px var(--band-raise);
+}
+
+/* base deck with a trackpad-notch thumb scoop */
+.lapBase {
+  position: relative;
+  width: 100%;
+  height: clamp(7px, 1.9cqh, 12px);
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--band-raise), var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: 3px 3px clamp(8px, 1.8cqw, 14px) clamp(8px, 1.8cqw, 14px);
+}
+
+.lapPad {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12%;
+  height: 45%;
+  border-radius: 0 0 5px 5px;
+  background: var(--band-2);
+}
+
+.browser {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raise);
+  border-radius: clamp(5px, 1cqw, 8px);
+  overflow: hidden;
 }
 
 .chrome {
@@ -505,9 +567,11 @@
 }
 
 .cursor {
+  /* base position = the click point: keep the tip on the hero CTA, which
+     sits deeper inside the stage now that the site lives on the laptop */
   position: absolute;
-  left: 34%;
-  top: 56%;
+  left: 19%;
+  top: 58%;
   width: 20px;
   height: 20px;
   opacity: 0;
@@ -556,25 +620,79 @@
 /* ============================================================
    02 · WEB APPS
    ============================================================ */
-.appWin {
+/* desktop monitor shell — navy bezel + power LED over a neck/foot stand;
+   the dashboard fills the screen. Same band-token idiom as the devices. */
+.monitor {
   position: absolute;
   left: 4%;
   right: 4%;
-  top: 6%;
-  bottom: 9%;
+  top: 3%;
+  bottom: 3%;
   display: flex;
-  background: var(--bg-raise);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-glass);
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
   opacity: 0;
   transform: translateY(16px);
 }
 
-.on .appWin {
+.on .monitor {
   opacity: 1;
   transform: none;
+}
+
+.monScreen {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background: linear-gradient(150deg, var(--band-raise), var(--band) 45%, var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: clamp(9px, 1.8cqw, 15px);
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  padding: clamp(7px, 1.5cqw, 13px);
+  padding-bottom: clamp(9px, 1.9cqw, 16px);
+}
+
+/* power LED in the bottom bezel */
+.monLed {
+  position: absolute;
+  bottom: calc(clamp(9px, 1.9cqw, 16px) / 2);
+  right: 5%;
+  transform: translateY(50%);
+  width: 3px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.monNeck {
+  width: 7%;
+  height: clamp(7px, 2.6cqh, 16px);
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--band-2), var(--band-raise));
+}
+
+.monFoot {
+  width: 26%;
+  height: clamp(4px, 1.2cqh, 7px);
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(180deg, var(--band-raise), var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+}
+
+.appWin {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  background: var(--bg-raise);
+  border-radius: clamp(5px, 1cqw, 8px);
+  overflow: hidden;
 }
 
 .side {
@@ -863,7 +981,9 @@
 /* ============================================================
    03 · MOBILE APPS
    ============================================================ */
-/* iPad, landscape — behind-left, showing the tablet layout of the same app */
+/* iPad, landscape — behind-left, showing the tablet layout of the same app.
+   Device shell = brand-navy bezel (band tokens are identical in both ink
+   modes) with camera dot, edge buttons and an inset screen. */
 .tablet {
   position: absolute;
   left: 2%;
@@ -871,13 +991,51 @@
   width: min(67%, 90cqh * 4 / 3);
   aspect-ratio: 4 / 3;
   display: flex;
-  background: var(--bg-raise);
-  border: 1px solid var(--border-strong);
-  border-radius: clamp(12px, 2.6cqw, 22px);
-  box-shadow: var(--shadow-glass);
-  padding: clamp(8px, 1.6cqw, 14px);
+  background: linear-gradient(150deg, var(--band-raise), var(--band) 45%, var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: clamp(14px, 3cqw, 26px);
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  padding: clamp(9px, 1.9cqw, 17px);
   opacity: 0;
   transform: translateY(-50%) translateY(18px);
+}
+
+/* power button on the top edge + volume rocker on the right edge */
+.tablet::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: 11%;
+  width: 8%;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: var(--band-raise);
+}
+
+.tablet::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 12%;
+  width: 3px;
+  height: 14%;
+  border-radius: 0 2px 2px 0;
+  background: var(--band-raise);
+}
+
+/* front camera, centred in the top bezel (landscape long edge) */
+.tCam {
+  position: absolute;
+  top: calc(clamp(9px, 1.9cqw, 17px) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(3px, 0.7cqw, 5px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--band-2);
+  box-shadow: 0 0 0 1.5px var(--band-raise);
 }
 
 .on .tablet {
@@ -887,10 +1045,31 @@
 }
 
 .tViewport {
+  position: relative;
   flex: 1;
   overflow: hidden;
   min-width: 0;
-  border-radius: clamp(6px, 1.2cqw, 10px);
+  border-radius: clamp(7px, 1.4cqw, 11px);
+  background: var(--bg-raise);
+}
+
+/* glass sheen across all device screens */
+.tViewport::after,
+.pScreen::after,
+.browser::after,
+.appWin::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0.02) 30%,
+    transparent 46%
+  );
 }
 
 /* iPhone, portrait 9:19.5 — in front, overlapping the tablet's right edge.
@@ -903,12 +1082,13 @@
   width: min(26%, 44cqh);
   aspect-ratio: 9 / 19.5;
   display: flex;
-  flex-direction: column;
-  background: var(--bg-raise);
-  border: 1px solid var(--border-strong);
-  border-radius: clamp(14px, 3cqw, 26px);
-  box-shadow: var(--shadow-glass);
-  padding: clamp(14px, 5cqh, 24px) clamp(7px, 1.6cqw, 11px) clamp(7px, 1.8cqh, 10px);
+  background: linear-gradient(160deg, var(--band-raise), var(--band) 40%, var(--band-2));
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: clamp(16px, 3.4cqw, 30px);
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  padding: clamp(3px, 0.8cqw, 6px);
   opacity: 0;
   transform: translateY(-50%) translateY(18px);
 }
@@ -918,15 +1098,124 @@
   transform: translateY(-50%);
 }
 
+/* side buttons hang off the bezel — two volumes left, power right */
+.pBtn {
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--band-raise);
+}
+
+.pBtnVolA {
+  left: -3px;
+  top: 19%;
+  height: 6%;
+}
+
+.pBtnVolB {
+  left: -3px;
+  top: 27%;
+  height: 6%;
+}
+
+.pBtnPower {
+  right: -3px;
+  top: 23%;
+  height: 9%;
+}
+
+/* the screen — inset panel carrying island, status strip, app, tab bar,
+   home indicator; the shell around it is the bezel */
+.pScreen {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raise);
+  border-radius: clamp(13px, 2.8cqw, 25px);
+  padding: clamp(14px, 5cqh, 24px) clamp(7px, 1.6cqw, 11px) clamp(5px, 1.2cqh, 8px);
+  overflow: hidden;
+}
+
 .island {
   position: absolute;
-  top: 3.5%;
+  top: 2.2%;
   left: 50%;
-  width: 32%;
-  height: 2.6%;
+  width: 30%;
+  height: 2.4%;
   transform: translateX(-50%);
   border-radius: var(--r-full);
+  background: var(--band);
+}
+
+/* camera lens inside the island */
+.island::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--band-raise);
+}
+
+/* status strip flanking the island — time dash left, signal bars right */
+.pStatus {
+  position: absolute;
+  top: 2%;
+  left: 8%;
+  right: 8%;
+  height: 2.8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.pTime {
+  width: 15%;
+  height: 45%;
+  border-radius: 2px;
   background: var(--border-strong);
+}
+
+.pSignal {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 60%;
+}
+
+.pSignal > span {
+  width: 2px;
+  border-radius: 1px;
+  background: var(--border-strong);
+}
+
+.pSignal > span:nth-child(1) {
+  height: 45%;
+}
+
+.pSignal > span:nth-child(2) {
+  height: 70%;
+}
+
+.pSignal > span:nth-child(3) {
+  height: 100%;
+}
+
+/* gesture home indicator under the tab bar */
+.homeBar {
+  flex-shrink: 0;
+  width: 34%;
+  height: 3px;
+  border-radius: var(--r-full);
+  background: var(--border-strong);
+  margin: clamp(4px, 1.1cqh, 7px) auto 0;
+  opacity: 0.7;
 }
 
 .mViewport {
@@ -1301,6 +1590,73 @@
 
 .on .coreOrb {
   animation: orbPulse 2.6s ease-in-out infinite;
+}
+
+/* microchip node below the core — navy die, teal pin legs, "AI" label;
+   wired into the pipeline (AI_PATHS.cpu) with a packet feeding the core */
+.aiCpu {
+  position: absolute;
+  left: 54.5%;
+  top: 82%;
+  width: clamp(30px, 10.5cqw, 52px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: clamp(5px, 1.4cqw, 8px);
+  background: linear-gradient(145deg, var(--band-raise), var(--band-2));
+  border: 1px solid var(--accent-border);
+  box-shadow: var(--glow);
+  opacity: 0;
+}
+
+.on .aiCpu {
+  opacity: 1;
+  transition-delay: 320ms;
+}
+
+/* pin rows: stripes masked to the outer 14% so they read as legs
+   sticking out of the left/right (::before) and top/bottom (::after) edges */
+.aiCpu::before,
+.aiCpu::after {
+  content: '';
+  position: absolute;
+  opacity: 0.75;
+}
+
+.aiCpu::before {
+  inset: 24% -13%;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--accent) 0 2px,
+    transparent 2px 7px
+  );
+  -webkit-mask: linear-gradient(to right, #000 14%, transparent 14% 86%, #000 86%);
+  mask: linear-gradient(to right, #000 14%, transparent 14% 86%, #000 86%);
+}
+
+.aiCpu::after {
+  inset: -13% 24%;
+  background: repeating-linear-gradient(
+    to right,
+    var(--accent) 0 2px,
+    transparent 2px 7px
+  );
+  -webkit-mask: linear-gradient(to bottom, #000 14%, transparent 14% 86%, #000 86%);
+  mask: linear-gradient(to bottom, #000 14%, transparent 14% 86%, #000 86%);
+}
+
+.cpuDie {
+  font-family: var(--f-mono);
+  font-size: clamp(0.5rem, 2.2cqw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
+  color: var(--accent-on-band); /* teal that reads on the navy die in both modes */
+  padding: 6% 12%;
+  border: 1px solid var(--band-hairline-strong);
+  border-radius: 4px;
 }
 
 @keyframes orbPulse {

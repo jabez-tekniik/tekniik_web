@@ -2,6 +2,14 @@
 
 ## Open
 
+### svcIndex kicker can collide with the "Explore …" link on short viewports (low, pre-existing)
+Observed 2026-07-21 during the vignette-detailing pass, unrelated to it: at a
+~744px-tall viewport the pinned ServiceShowcase index ledger rides up enough
+that `SERVICES · 04` overlaps the "Explore …" link above it (seen in the ink
+dark screenshots). The `@media (max-height: 720px)` compression that hides the
+kicker doesn't kick in until 720px — consider raising that breakpoint or adding
+a min-gap between the overlay copy block and `.svcIndex`.
+
 ### Satoshi is served as `.otf`, not `.woff2` (low)
 `public/fonts/satoshi/` holds OpenType files (~45–52 KB each; ~195 KB for the four
 weights in use). Converting to woff2 would roughly halve that and is the standard

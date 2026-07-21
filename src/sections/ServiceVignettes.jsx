@@ -35,38 +35,48 @@ export function WebScene({ active }) {
         <span className={styles.ghostRing} />
       </div>
       <div className={styles.mid}>
-        <div className={styles.browser}>
-          <div className={styles.chrome}>
-            <span className={styles.tDot} data-c="r" />
-            <span className={styles.tDot} data-c="y" />
-            <span className={styles.tDot} data-c="g" />
-            <span className={styles.urlPill}>tekniik.ai</span>
-            <span className={styles.loadBar} />
-          </div>
-          <div className={styles.bBody}>
-            <div className={styles.bNav}>
-              <span className={styles.bLogo} />
-              <span className={styles.bLink} />
-              <span className={styles.bLink} />
-              <span className={styles.bLink} />
-              <span className={styles.bNavBtn} />
-            </div>
-            <div className={styles.bHero}>
-              <div className={styles.bCopy}>
-                <span className={`${styles.skel} ${styles.h1a}`} />
-                <span className={`${styles.skel} ${styles.h1b}`} />
-                <span className={`${styles.skel} ${styles.hSub}`} />
-                <span className={styles.bCta}>
-                  <span className={styles.ripple} />
-                </span>
+        {/* laptop shell — navy bezel + camera, slim base deck with trackpad
+            notch; the assembling site lives on its screen */}
+        <div className={styles.laptop}>
+          <div className={styles.lapScreen}>
+            <span className={styles.lapCam} />
+            <div className={styles.browser}>
+              <div className={styles.chrome}>
+                <span className={styles.tDot} data-c="r" />
+                <span className={styles.tDot} data-c="y" />
+                <span className={styles.tDot} data-c="g" />
+                <span className={styles.urlPill}>tekniik.ai</span>
+                <span className={styles.loadBar} />
               </div>
-              <div className={styles.bMedia} />
+              <div className={styles.bBody}>
+                <div className={styles.bNav}>
+                  <span className={styles.bLogo} />
+                  <span className={styles.bLink} />
+                  <span className={styles.bLink} />
+                  <span className={styles.bLink} />
+                  <span className={styles.bNavBtn} />
+                </div>
+                <div className={styles.bHero}>
+                  <div className={styles.bCopy}>
+                    <span className={`${styles.skel} ${styles.h1a}`} />
+                    <span className={`${styles.skel} ${styles.h1b}`} />
+                    <span className={`${styles.skel} ${styles.hSub}`} />
+                    <span className={styles.bCta}>
+                      <span className={styles.ripple} />
+                    </span>
+                  </div>
+                  <div className={styles.bMedia} />
+                </div>
+                <div className={styles.bCards}>
+                  <span className={styles.bCard} />
+                  <span className={styles.bCard} />
+                  <span className={styles.bCard} />
+                </div>
+              </div>
             </div>
-            <div className={styles.bCards}>
-              <span className={styles.bCard} />
-              <span className={styles.bCard} />
-              <span className={styles.bCard} />
-            </div>
+          </div>
+          <div className={styles.lapBase}>
+            <span className={styles.lapPad} />
           </div>
         </div>
       </div>
@@ -101,53 +111,66 @@ export function AppScene({ active }) {
   return (
     <Scene active={active} metric={METRIC.app} chipClass={styles.appChip}>
       <div className={styles.mid}>
-        <div className={styles.appWin}>
-          <div className={styles.side}>
-            <span className={styles.sLogo} />
-            <span className={styles.sInd} />
-            <span className={styles.sItem} />
-            <span className={styles.sItem} />
-            <span className={styles.sItem} />
-            <span className={styles.sItem} />
-            <span className={styles.sItem} />
-          </div>
-          <div className={styles.appMain}>
-            <div className={styles.kpis}>
-              <span className={styles.kpi}>
-                <span className={`${styles.skel} ${styles.kLabel}`} />
-                <span className={styles.kValue}>48.2k</span>
-              </span>
-              <span className={styles.kpi}>
-                <span className={`${styles.skel} ${styles.kLabel}`} />
-                <span className={styles.kValue}>+18.4%</span>
-              </span>
-              <span className={styles.kpi}>
-                <span className={`${styles.skel} ${styles.kLabel}`} />
-                <span className={styles.kValue}>99.9%</span>
+        {/* desktop monitor shell — navy bezel + power LED, neck + foot stand;
+            the live dashboard runs on its screen */}
+        <div className={styles.monitor}>
+          <div className={styles.monScreen}>
+            <div className={styles.appWin}>
+              <div className={styles.side}>
+                <span className={styles.sLogo} />
+                <span className={styles.sInd} />
+                <span className={styles.sItem} />
+                <span className={styles.sItem} />
+                <span className={styles.sItem} />
+                <span className={styles.sItem} />
+                <span className={styles.sItem} />
+              </div>
+              <div className={styles.appMain}>
+                <div className={styles.kpis}>
+                  <span className={styles.kpi}>
+                    <span className={`${styles.skel} ${styles.kLabel}`} />
+                    <span className={styles.kValue}>48.2k</span>
+                  </span>
+                  <span className={styles.kpi}>
+                    <span className={`${styles.skel} ${styles.kLabel}`} />
+                    <span className={styles.kValue}>+18.4%</span>
+                  </span>
+                  <span className={styles.kpi}>
+                    <span className={`${styles.skel} ${styles.kLabel}`} />
+                    <span className={styles.kValue}>99.9%</span>
+                  </span>
+                </div>
+                <div className={styles.chart}>
+                  {BARS.map((b, i) => (
+                    <span
+                      key={i}
+                      className={styles.bar}
+                      style={{ '--h': b.h, '--m': b.m, '--i': i }}
+                    />
+                  ))}
+                  <svg
+                    className={styles.spark}
+                    viewBox="0 0 220 80"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      className={styles.sparkLine}
+                      d="M2 64 L34 50 L66 56 L98 34 L130 42 L162 20 L194 28 L218 12"
+                    />
+                  </svg>
+                  {/* HTML dot: the stretched svg would render a circle as an ellipse */}
+                  <span className={styles.sparkDot} />
+                </div>
+              </div>
+              <span className={styles.liveTag}>
+                <span className={styles.liveDot} />
+                LIVE
               </span>
             </div>
-            <div className={styles.chart}>
-              {BARS.map((b, i) => (
-                <span
-                  key={i}
-                  className={styles.bar}
-                  style={{ '--h': b.h, '--m': b.m, '--i': i }}
-                />
-              ))}
-              <svg className={styles.spark} viewBox="0 0 220 80" preserveAspectRatio="none">
-                <path
-                  className={styles.sparkLine}
-                  d="M2 64 L34 50 L66 56 L98 34 L130 42 L162 20 L194 28 L218 12"
-                />
-              </svg>
-              {/* HTML dot: the stretched svg would render a circle as an ellipse */}
-              <span className={styles.sparkDot} />
-            </div>
+            <span className={styles.monLed} />
           </div>
-          <span className={styles.liveTag}>
-            <span className={styles.liveDot} />
-            LIVE
-          </span>
+          <span className={styles.monNeck} />
+          <span className={styles.monFoot} />
         </div>
       </div>
     </Scene>
@@ -247,8 +270,10 @@ export function MobileScene({ active }) {
   return (
     <Scene active={active} metric={METRIC.mobile} chipClass={styles.mobileChip}>
       <div className={styles.mid}>
-        {/* iPad in landscape — same app, tablet layout */}
+        {/* iPad in landscape — navy shell, camera in the top bezel, edge
+            buttons via the shell's pseudos; same app, tablet layout */}
         <div className={styles.tablet}>
+          <span className={styles.tCam} />
           <div className={styles.tViewport}>
             <div className={styles.mTrack}>
               <TScreen v={1} />
@@ -258,22 +283,38 @@ export function MobileScene({ active }) {
             </div>
           </div>
         </div>
-        {/* iPhone in front — slim 9:19.5, scrolls in sync with the tablet */}
+        {/* iPhone in front — slim 9:19.5, scrolls in sync with the tablet.
+            Shell = navy bezel + side buttons; screen = island, status strip,
+            app viewport, tab bar, home indicator */}
         <div className={styles.phone}>
-          <span className={styles.island} />
-          <div className={styles.mViewport}>
-            <div className={styles.mTrack}>
-              <MScreen v={1} />
-              <MScreen v={2} />
-              <MScreen v={3} />
-              <MScreen v={1} />
+          <span className={`${styles.pBtn} ${styles.pBtnVolA}`} />
+          <span className={`${styles.pBtn} ${styles.pBtnVolB}`} />
+          <span className={`${styles.pBtn} ${styles.pBtnPower}`} />
+          <div className={styles.pScreen}>
+            <span className={styles.island} />
+            <div className={styles.pStatus}>
+              <span className={styles.pTime} />
+              <span className={styles.pSignal}>
+                <span />
+                <span />
+                <span />
+              </span>
             </div>
-          </div>
-          <div className={styles.mTabs}>
-            <span className={styles.mInd} />
-            <span className={styles.mTab} />
-            <span className={styles.mTab} />
-            <span className={styles.mTab} />
+            <div className={styles.mViewport}>
+              <div className={styles.mTrack}>
+                <MScreen v={1} />
+                <MScreen v={2} />
+                <MScreen v={3} />
+                <MScreen v={1} />
+              </div>
+            </div>
+            <div className={styles.mTabs}>
+              <span className={styles.mInd} />
+              <span className={styles.mTab} />
+              <span className={styles.mTab} />
+              <span className={styles.mTab} />
+            </div>
+            <span className={styles.homeBar} />
           </div>
         </div>
       </div>
@@ -297,6 +338,8 @@ const AI_PATHS = {
   a: 'M240 150 C 280 150, 284 84, 324 84',
   b: 'M240 150 L 324 150',
   c: 'M240 150 C 280 150, 284 216, 324 216',
+  /* microchip → core feed: the AI engine powering the pipeline */
+  cpu: 'M218 234 L218 194',
 }
 
 export function AiScene({ active }) {
@@ -322,6 +365,9 @@ export function AiScene({ active }) {
           <circle className={styles.packet} r="3">
             <animateMotion dur="2.2s" begin="1.7s" repeatCount="indefinite" path={AI_PATHS.c} />
           </circle>
+          <circle className={styles.packet} r="3">
+            <animateMotion dur="1.8s" begin="0.9s" repeatCount="indefinite" path={AI_PATHS.cpu} />
+          </circle>
         </svg>
       </div>
       <div className={styles.mid}>
@@ -335,6 +381,11 @@ export function AiScene({ active }) {
           <span className={styles.corePulse} />
           <span className={styles.corePulse} data-late="" />
           <span className={styles.coreOrb} />
+        </span>
+        {/* microchip node below the core, wired in via AI_PATHS.cpu —
+            the engine feeding the pipeline (AI-powered development) */}
+        <span className={styles.aiCpu}>
+          <span className={styles.cpuDie}>AI</span>
         </span>
       </div>
       <div className={styles.front}>

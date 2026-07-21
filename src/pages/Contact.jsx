@@ -5,17 +5,30 @@ import FadeIn from '../motion/ink/FadeIn.jsx'
 import HeroThread from '../components/HeroThread.jsx'
 import { getLenis } from '../motion/SmoothScroll.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
-import { IconCheck, IconFlagIndia, IconFlagUK } from '../components/Icon.jsx'
+import {
+  IconCheck,
+  IconFlagIndia,
+  IconFlagUK,
+  IconMail,
+  IconPhone,
+  IconReply,
+} from '../components/Icon.jsx'
 import { CONTACT_PAGE, OFFICES } from '../data/content.js'
 import styles from './Contact.module.css'
 
 const FLAGS = { chennai: IconFlagIndia, uk: IconFlagUK }
 
+/* "What happens next" step glyphs — read / reply / call / no strings.
+   IconHandshake was tried for step 4 and is mush at 20px — keep the
+   simple check. */
+const STEP_ICONS = [IconMail, IconReply, IconPhone, IconCheck]
+
 /* Contact — "The open line" (Deep Ink).
    Lean poster hero with a live status strip, then the working spread:
    ledger form left (teal underline draws on focus), direct-lines ledger +
-   office right. "What happens next?" closes as a brand-navy band with
-   four scroll-lit rail steps — the page's dark beat. Tokens only. */
+   office right. "What happens next?" closes as a compact brand-navy
+   band: four hairline-split columns (icon chip / mono stamp / Satoshi
+   statement) — chips fill teal bottom-up in sequence on scroll. */
 
 function Field({ id, label, type = 'text', textarea, placeholder, value, onChange, required }) {
   const inputProps = {
@@ -93,12 +106,17 @@ export default function Contact() {
     setTimeout(() => setSent(false), 4000)
   }
 
+  /* columns ignite left→right as the band scrolls through: each icon
+     chip fills bottom-up with teal (scaleY tracks local progress), then
+     the glyph flips dark and stamp/statement brighten. Reduced motion →
+     the hook fires once with p=1, everything renders filled + lit. */
   const total = side.next.length
   const nextRef = useScrollProgressInk((p, grid) => {
-    grid.querySelectorAll('[data-rail]').forEach((rail, i) => {
+    grid.querySelectorAll('[data-step]').forEach((li, i) => {
       const local = Math.min(1, Math.max(0, p * total - i))
-      rail.firstElementChild.style.transform = `scaleX(${local})`
-      rail.classList.toggle(styles.lit, local > 0.02)
+      const fill = li.querySelector('[data-fill]')
+      if (fill) fill.style.transform = `scaleY(${local})`
+      li.classList.toggle(styles.stepLit, local > 0.55)
     })
   })
 
@@ -267,7 +285,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* —— What happens next — navy band, four scroll-lit steps ——— */}
+      {/* —— What happens next — navy band, four igniting columns ——— */}
       <section className={styles.next}>
         <div className="container">
           <Reveal className={styles.nextHead}>
@@ -279,18 +297,21 @@ export default function Contact() {
           </Reveal>
 
           <ol ref={nextRef} className={styles.nextSteps}>
-            {side.next.map((step, i) => (
-              <li key={step} className={styles.nextStep}>
-                <span className={styles.rail} data-rail="" aria-hidden="true">
-                  <span className={styles.railFill} />
-                  <span className={styles.railNode} />
-                </span>
-                <Reveal delay={i * 90} className={styles.nextBody}>
-                  <span className={styles.nextNum}>0{i + 1}</span>
-                  <p className={styles.nextText}>{step}</p>
-                </Reveal>
-              </li>
-            ))}
+            {side.next.map((step, i) => {
+              const Glyph = STEP_ICONS[i % STEP_ICONS.length]
+              return (
+                <li key={step.text} className={styles.nextStep} data-step="">
+                  <Reveal delay={i * 90} className={styles.stepCell}>
+                    <span className={styles.stepChip} aria-hidden="true">
+                      <span className={styles.chipFill} data-fill="" />
+                      <Glyph className={styles.chipIcon} />
+                    </span>
+                    <span className={styles.stepStamp}>{step.stamp}</span>
+                    <p className={styles.stepText}>{step.text}</p>
+                  </Reveal>
+                </li>
+              )
+            })}
           </ol>
         </div>
       </section>

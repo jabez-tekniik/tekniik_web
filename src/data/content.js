@@ -600,11 +600,14 @@ export const CONTACT_PAGE = {
     availability: 'Available for meetings across the UK and at our Chennai office.',
     officeHeading: 'Visit our offices',
     nextHeading: 'What happens next?',
+    /* open-line ledger rows: bold statement + mono timing stamp.
+       Restructured 2026-07-21 from four plain sentences — the timing
+       moved out of each sentence into its stamp; no facts changed. */
     next: [
-      'We read your message (same day).',
-      'We reply within one working day.',
-      "If there's a fit, we suggest a free 30-minute call.",
-      'No pressure. No obligation.',
+      { text: 'We read your message.', stamp: 'Same day' },
+      { text: 'We reply.', stamp: 'Within one working day' },
+      { text: "If there's a fit, we suggest a call.", stamp: 'Free · 30 minutes' },
+      { text: 'No pressure. No obligation.', stamp: 'Always' },
     ],
   },
   finalCta: {
