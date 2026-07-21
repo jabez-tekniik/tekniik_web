@@ -31,6 +31,14 @@
 
 /* looping hover life: a soft sheen band that sweeps the button face for as
    long as the pointer stays (animation only attaches on :hover) */
+/* in-flight / unavailable: dim it, kill the hover affordances */
+.btn:disabled {
+  opacity: 0.62;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
 .btn::before {
   content: '';
   position: absolute;

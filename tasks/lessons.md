@@ -120,3 +120,18 @@ Elements report rects past the viewport even when an ancestor clips them.
 The long-blamed HeroCircuit overflow was actually the Testimonial nav (five
 44px hit areas in a narrow rail). Walk parents checking computed overflowX
 before accusing a child; fix was `flex-wrap: wrap` on the nav row.
+
+## Absolutely-positioned focus rails need their own control wrapper
+
+The Contact form's teal focus underline was `position: absolute; bottom: 0`
+on `.field`. The moment a validation message was added inside `.field`, the
+rail rendered under the *message*, not the input. Fix: wrap the input (and
+only the input) in a `position: relative` `.control` span and anchor the rail
+there. Same trap applies to any decoration anchored to a field's bottom edge —
+adding a sibling below silently moves it.
+
+## Error styling: the message is enough
+
+User feedback on the Contact form: an extra full-width 2px danger rail under
+the invalid message "looks bad". Invalid state = mono danger text + the
+input's own hairline recoloured. Don't stack a second line under the message.

@@ -235,6 +235,9 @@
 
 .input {
   appearance: none;
+  /* block, so the control box hugs the field and the focus rail sits exactly
+     on its hairline (inline-block leaves a baseline gap below a textarea) */
+  display: block;
   width: 100%;
   background: transparent;
   border: 0;
@@ -251,7 +254,7 @@
 }
 
 textarea.input {
-  resize: vertical;
+  resize: none;
   min-height: 120px;
 }
 
@@ -282,7 +285,7 @@ textarea.input {
   pointer-events: none;
 }
 
-.field:focus-within .underline {
+.control:focus-within .underline {
   transform: scaleX(1);
 }
 
@@ -294,12 +297,6 @@ textarea.input {
   margin-top: 4px;
 }
 
-.sentInner {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .note {
   font-family: var(--f-mono);
   font-size: 0.7rem;
@@ -308,6 +305,259 @@ textarea.input {
   color: var(--text-faint);
   margin: 0;
   max-width: 32ch;
+}
+
+/* — validation: the input's own hairline turns danger and the message
+     stamps in. Deliberately NO drawn 2px rail on error (user: the full-width
+     line under the message "looks bad") — the text alone carries it. — */
+.control {
+  position: relative;
+  display: block;
+}
+
+.fieldError .input {
+  border-bottom-color: var(--danger);
+}
+
+.error {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--danger);
+}
+
+/* the span is always rendered (a stable aria-describedby target) — it just
+   takes no room, and no `.field` gap, until it has something to say */
+.error:empty {
+  display: none;
+}
+
+.error:not(:empty) {
+  animation: errIn 260ms var(--ease-out) backwards;
+}
+
+@keyframes errIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* — in-flight: the CTA holds a small orbiting tick — */
+.sendingInner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.85;
+  animation: spin 720ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sendError {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: var(--danger);
+  margin: -8px 0 0;
+  animation: errIn 260ms var(--ease-out) backwards;
+}
+
+.sendError a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* — sent: the form's reward. Ring draws, check draws inside it, copy
+     lifts in behind a slow teal bloom — */
+.formCell {
+  min-height: 0;
+}
+
+.sent {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(38px, 5vw, 60px) clamp(24px, 4vw, 48px) clamp(32px, 4vw, 48px);
+  background: var(--bg-raise);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-card-hover);
+  animation: cardIn 620ms var(--ease-out) backwards;
+}
+
+/* teal rail draws across the card's top edge — the site's arrival device */
+.sent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: railDraw 720ms var(--ease-out) 160ms forwards;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+
+@keyframes railDraw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.sentBloom {
+  position: absolute;
+  z-index: -1;
+  top: -34%;
+  left: 50%;
+  width: min(440px, 120%);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-tint), transparent 68%);
+  opacity: 0;
+  animation: bloomIn 1400ms var(--ease-out) 240ms forwards;
+}
+
+@keyframes bloomIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.sentMark {
+  display: inline-flex;
+  width: clamp(56px, 6vw, 68px);
+  color: var(--accent);
+}
+
+.sentMark svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.markRing,
+.markCheck {
+  fill: none;
+  stroke: currentColor;
+}
+
+.markRing {
+  stroke-dasharray: 183;
+  stroke-dashoffset: 183;
+  animation: drawRing 720ms var(--ease-out) forwards;
+}
+
+.markCheck {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: drawCheck 420ms var(--ease-out) 520ms forwards;
+}
+
+@keyframes drawRing {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.sentStamp {
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: clamp(22px, 2.6vw, 30px) 0 0;
+  animation: sentIn 620ms var(--ease-out) 700ms backwards;
+}
+
+.sentHeading {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text);
+  margin: 10px 0 0;
+  animation: sentIn 620ms var(--ease-out) 800ms backwards;
+}
+
+.sentCopy {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 38ch;
+  margin: 14px auto 0;
+  animation: sentIn 620ms var(--ease-out) 900ms backwards;
+}
+
+.sentAgain {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  padding: 10px 0;
+  margin-top: clamp(22px, 2.6vw, 30px);
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition:
+    color var(--d-base) var(--ease),
+    border-color var(--d-base) var(--ease);
+  animation: sentIn 620ms var(--ease-out) 1000ms backwards;
+}
+
+.sentAgain:hover {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+@keyframes sentIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 /* — aside: direct lines ledger — */
@@ -824,11 +1074,37 @@ textarea.input {
   .stepChip,
   .chipIcon,
   .stepText,
-  .stepStamp {
+  .stepStamp,
+  .sentAgain {
     transition: none;
   }
   .liveDot {
     animation: none;
+  }
+  /* the sent panel renders complete: mark drawn, copy in place, no spin —
+     every draw keyframe ends where the static state already is */
+  .error:not(:empty),
+  .sendError,
+  .sentStamp,
+  .sentHeading,
+  .sentCopy,
+  .sentAgain,
+  .spinner,
+  .sent {
+    animation: none;
+  }
+  .sent::before {
+    animation: none;
+    transform: scaleX(1);
+  }
+  .sentBloom {
+    animation: none;
+    opacity: 1;
+  }
+  .markRing,
+  .markCheck {
+    animation: none;
+    stroke-dashoffset: 0;
   }
   .officeAddress {
     animation: none;
