@@ -11,14 +11,19 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.glow} aria-hidden="true" />
       <div className={styles.glowFloor} aria-hidden="true" />
-      {/* ghost wordmark — the studio name edge to edge along the bottom, half
-          submerged. SVG rather than a text node because `textLength` makes it
-          span the full width EXACTLY at every viewport, with no gap at either
-          end (user, 2026-07-22); a font-size in vw can only ever approximate
-          it. Sits before the content so every relative block paints over it. */}
+      {/* ghost wordmark — the studio name in plain grey Satoshi, edge to edge
+          along the bottom edge (user, 2026-07-22: no outline, no accent).
+          SVG rather than a text node because `textLength` makes it span the
+          full width EXACTLY at every viewport, with no gap at either end; a
+          font-size in vw can only ever approximate it. `lengthAdjust` is
+          "spacing", NOT "spacingAndGlyphs" — the latter stretches the
+          letterforms themselves and stops reading as Satoshi. Sits before the
+          content so every relative block paints over it, and the viewBox
+          min-y is negative for headroom because round caps (the O) overshoot
+          the cap line and would clip against a min-y of 0. */}
       <svg
         className={styles.wordmark}
-        viewBox="0 0 1000 74"
+        viewBox="0 -5 1000 81"
         preserveAspectRatio="xMidYMax meet"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +31,9 @@ export default function Footer() {
         <text
           className={styles.wordmarkText}
           x="0"
-          y="95"
+          y="74"
           textLength="1000"
-          lengthAdjust="spacingAndGlyphs"
+          lengthAdjust="spacing"
         >
           TEKNIIK AI STUDIO
         </text>
@@ -42,6 +47,29 @@ export default function Footer() {
           {FOOTER.tagLines.map((line) => (
             <p key={line} className={styles.tag}>{line}</p>
           ))}
+        </div>
+
+        {FOOTER.cols.map((col) => (
+          <div key={col.label}>
+            <div className={styles.colHead}>{col.label}</div>
+            <ul className={styles.colLinks}>
+              {col.links.map((l) => (
+                <li key={l.label}>
+                  {l.to.startsWith('/') ? (
+                    <Link to={l.to}>{l.label}</Link>
+                  ) : (
+                    <a href={l.to}>{l.label}</a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        {/* Connect — the contact card and social row live in their own column
+            beside Legal (user, 2026-07-22), not under the company blurb */}
+        <div className={styles.connect}>
+          <div className={styles.colHead}>Connect</div>
           {/* the mail line reads as a contact CARD, not another blurb line
               (2026-07-22, user: it blended into the company copy) */}
           <a href={`mailto:${FOOTER.email}`} className={styles.mailCard}>
@@ -71,23 +99,6 @@ export default function Footer() {
             })}
           </div>
         </div>
-
-        {FOOTER.cols.map((col) => (
-          <div key={col.label}>
-            <div className={styles.colHead}>{col.label}</div>
-            <ul className={styles.colLinks}>
-              {col.links.map((l) => (
-                <li key={l.label}>
-                  {l.to.startsWith('/') ? (
-                    <Link to={l.to}>{l.label}</Link>
-                  ) : (
-                    <a href={l.to}>{l.label}</a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
       </div>
       {/* the divider sits on the inner row so it spans exactly the content
           width, never the gutters (2026-07-22, user) */}

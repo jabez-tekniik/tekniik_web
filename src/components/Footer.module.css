@@ -2,9 +2,9 @@
   position: relative;
   border-top: 1px solid var(--border);
   background: var(--bg-2);
-  /* the bottom pad is deep enough to hold the ghost wordmark below the
-     copyright row, so the two never sit on the same band */
-  padding-block: 64px clamp(56px, 6vw, 92px);
+  /* unchanged by the ghost wordmark — that is a pure overlay and must never
+     add footer height (user, 2026-07-22) */
+  padding-block: 64px 24px;
   margin-top: 0;
   overflow: hidden;
 }
@@ -23,17 +23,18 @@
   display: block;
   width: 100%;
   height: auto;
-  fill: var(--ink);
-  opacity: 0.055;
   pointer-events: none;
   user-select: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 62%);
-  mask-image: linear-gradient(to bottom, transparent, #000 62%);
 }
 
+/* plain grey Satoshi, no outline and no accent colour (user, 2026-07-22) */
 .wordmarkText {
   font-family: var(--f-display-black);
   font-size: 100px;
+  fill: var(--muted-2);
+  /* keep it faint — a filled wordmark at this scale goes heavy fast, and it
+     must always sit under the copy, never compete with it (user, 2026-07-22) */
+  opacity: 0.08;
 }
 
 .glow {
@@ -71,9 +72,9 @@
   margin-inline: auto;
   padding-inline: var(--gutter);
   display: grid;
-  /* three columns since the Location column was removed (2026-07-22) —
-     the link columns stretch so the row still spans the full width */
-  grid-template-columns: 2fr 1fr 1fr;
+  /* brand blurb, Pages, Legal, Connect (2026-07-22) — Connect is widest of
+     the three columns because it carries the mail card */
+  grid-template-columns: 1.7fr 0.9fr 0.9fr 1.2fr;
   gap: 48px;
   margin-bottom: 48px;
 }
@@ -82,6 +83,18 @@
   /* widened 2026-07-22 for the three-line studio blurb — 280px set it in a
      narrow ribbon beside two link columns that have room to spare */
   max-width: 460px;
+}
+
+/* Connect column — same head as the link columns, then the mail card and the
+   social row (user, 2026-07-22: both moved out of the brand block) */
+.connect {
+  min-width: 0;
+}
+
+/* the card's 22px top margin exists for the brand blurb it used to follow —
+   in this column the section head already provides that gap */
+.connect .mailCard {
+  margin-top: 0;
 }
 
 .logoRow {
@@ -172,6 +185,9 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted-2);
+  /* the label must never wrap — a two-line "START A / CONVERSATION" throws the
+     whole card out of proportion (2026-07-22) */
+  white-space: nowrap;
 }
 
 .mailValue {
@@ -297,10 +313,10 @@
   padding-inline: var(--gutter);
 }
 
-/* the rule lives here so it starts and ends on the copy's own edges */
+/* no rule above the copyright line (user, 2026-07-22) — the wordmark already
+   separates it from the columns */
 .bottomInner {
   padding-top: 20px;
-  border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -324,7 +340,9 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 900px) {
+/* four columns need more room than three did — below this the Connect column
+   squeezes the mail card until its label wraps, so drop to 2x2 early */
+@media (max-width: 1160px) {
   .inner {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
