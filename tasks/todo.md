@@ -275,3 +275,86 @@ Support/WebsitePackage heroes have no vignette. Home hero keeps typewriter
       link in `index.html`, and strip the remaining ~126 `font-weight`
       declarations (all `--f-mono` / `--f-body` call sites). Needs a full visual
       re-sweep — Inter 600 has no Satoshi equivalent, so map faces deliberately.
+
+# 2026-07-25 — "What we engineer" redesign (client feedback)
+
+Branch: feature/content-spec-sync. Client feedback: (1) all 4 services must be
+visible AT ONCE (the pinned one-at-a-time deck hides three of them), (2) the
+vignette mockups read as "just boxes" — need real detailing.
+
+## Plan
+
+- [x] 1. `ServiceShowcase.jsx` rewrite: drop the pin/deck/cross-fade/svcIndex
+      machinery entirely. Header unchanged. Body = 2×2 card grid (1-col
+      ≤760px), each card a full-card `<Link>` to the service page: blueprint
+      stage with the vignette on top, body below (mono 0N index, Satoshi
+      title, verbatim desc, "Explore …" CTA pinned with margin-top:auto).
+      Per-card `useReveal` lights the scene (sticky on). Hover = ONE move:
+      accentLine top rail draw + arrow nudge + press scale (Portfolio idiom).
+- [x] 2. `ServiceShowcase.module.css` rewrite: header kept, add grid/card/
+      stage styles, delete pin/panel/ghost/svcIndex CSS. RM block.
+- [x] 3. `ServiceVignettes` detail pass (all 4 scenes, real micro-copy, cq
+      units, tokens only): web = real nav labels/headline/sub/CTA text +
+      floating conversion stat card + labeled feature cards; app = labeled
+      sidebar + KPI labels + donut w/ legend + mini payments table w/ status
+      pills; mobile = balance hero card, avatar list rows w/ amounts, stat
+      tiles, real notification text, 9:41 time; ai = doc fold + filename,
+      processing log ticker lines, labeled pipeline. RM additions for new
+      animated bits. Scenes also render on ServiceDetail/CaseStudy/Services
+      heroes — API unchanged, verify those still compose.
+- [x] 4. Gates: npm run lint + build, Playwright sweep of home §05 at
+      320/414/768/1024/1280 + both ink modes; delete screenshots after.
+- [x] 5. Update CLAUDE.md (ServiceShowcase section) + ISSUES.md.
+
+Done 2026-07-25. Second-round user feedback applied same session: copy above /
+vignette below in each card; density pass so no big empty blocks (product card,
+stat-tile label/value/delta, hero-card mini bars, 2-line feature cards). QA ran
+via playwright-core + system Chrome (no Python on this machine): 320-1280 sweep,
+no h-scroll, both ink modes.
+
+Third-round feedback 2026-07-25 (same day): "cards look so tall… no website has
+such long cards" — stage letterboxed 16/10 → 2/1 (3/2 ≤640), copy ledger
+paddings/gaps tightened, title clamp reduced. Scenes adapt per aspect: laptop
+width-capped at min(92%, 160cqh) + centred; appChip moved to the monitor's
+bottom-right foot corner at ALL aspects; @container (min-aspect-ratio: 9/5)
+re-anchors webChip/bStat/cursor for wide stages and hides bStat on the cramped
+760-1000px 2-col cards. Container-query overrides live at the FILE END (source
+order beats nothing — same specificity). Section height 1920px: ~2050 → 1714.
+Gates re-run: lint + build pass; sweep 320/375/768/1024/1280/1920 light+dark,
+no h-scroll; /services/custom-software shared-scene spot check passed.
+
+Fourth-round feedback 2026-07-25: (a) preloader unlock jitter - reset.css html
+gets overflow-y: scroll fallback + @supports scrollbar-gutter: stable upgrade
+(no vendor prefixes exist for scrollbar-gutter); verified clientWidth identical
+during/after preloader lock. (b) Insights screen cards "unusually tall" - the
+screen split into only two flex bands (~50/50), stretching tiles and rows into
+towers. Now three bands on both devices: tablet = .tTiles (flex 1.25) + two
+full-width MRows as direct children; phone = .mTiles flex 2 -> 1.4 + two rows.
+Verified via frozen mTrack screenshot; lint + build pass.
+
+Fifth-round feedback 2026-07-25: app scene (custom software) "no movement at
+all" - its loops were micro-scale (2px sInd, subtle barBreathe). Added three
+visible loops, all .on-gated, transform/opacity only, theme tokens: .appCursor
+works the sidebar (press dips lead each sIndSlide jump), .sHl accent-soft pill
+rides the same stops as .sInd, .scan tint band sweeps the chart 7s, and the
+Active-users KPI odometer-ticks 12,940<->12,957 (.kTick stacked spans). Sidebar
+rhythm is fixed-px so cursor geometry holds on shared consumers. Verified via
+3 timed screenshots (cursor at Reports/Overview/Orders, tick flipping, scan
+mid-sweep); appCursor added to the RM opacity-0 kill list; lint + build pass.
+
+Sixth-round feedback 2026-07-25: card hover "looks like AI slop" - replaced
+rail-only hover with the ink flood: .accentLine draws (240ms), .card::before
+(accent, scaleY from top, 400ms/50ms delay) pours down flooding the copy
+ledger; copy flips to --bg-raise (80ms delay), desc/metaRule at 0.85/0.45
+opacity; opaque .stage masks the flood at the stage border; .body relative
+z-1 above the flood; focus-visible parity; RM list extended. Contrast checked
+both modes (5:1 light / 9:1 dark). Verified hover mid/end/off screenshots in
+both ink modes; lint + build pass.
+
+Seventh-round feedback 2026-07-25: flood color -> brand navy, scoped to
+content only. Flood moved .card::before -> .body::before (z -1 in the body
+stacking context) so it structurally never extends behind the vignette;
+background var(--band) with the on-band palette (title --on-band, desc
+--on-band-dim, num/CTA --accent-on-band, metaRule --band-hairline) - the
+Portfolio/FinalCta inverted-band idiom, same tokens both modes. Opacity
+hacks removed. Verified hover screenshots light+dark; lint + build pass.

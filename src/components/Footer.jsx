@@ -44,9 +44,22 @@ export default function Footer() {
             <BrandLogo size={30} />
           </div>
           <p className={styles.tagLead}>{FOOTER.tag}</p>
-          {FOOTER.tagLines.map((line) => (
-            <p key={line} className={styles.tag}>{line}</p>
-          ))}
+          {/* social profile URLs pending — dead '#' links until content lands */}
+          <div className={styles.socials}>
+            {FOOTER.socials.map((s) => {
+              const SocialIcon = SOCIAL_ICONS[s.key]
+              return (
+                <a
+                  key={s.key}
+                  href={s.href || '#'}
+                  className={styles.socialLink}
+                  aria-label={s.label}
+                >
+                  <SocialIcon width="16" height="16" />
+                </a>
+              )
+            })}
+          </div>
         </div>
 
         {FOOTER.cols.map((col) => (
@@ -82,22 +95,6 @@ export default function Footer() {
             </span>
             <IconArrow className={styles.mailArrow} width="16" height="16" aria-hidden="true" />
           </a>
-          {/* social profile URLs pending — dead '#' links until content lands */}
-          <div className={styles.socials}>
-            {FOOTER.socials.map((s) => {
-              const SocialIcon = SOCIAL_ICONS[s.key]
-              return (
-                <a
-                  key={s.key}
-                  href={s.href || '#'}
-                  className={styles.socialLink}
-                  aria-label={s.label}
-                >
-                  <SocialIcon width="16" height="16" />
-                </a>
-              )
-            })}
-          </div>
         </div>
       </div>
       {/* the divider sits on the inner row so it spans exactly the content

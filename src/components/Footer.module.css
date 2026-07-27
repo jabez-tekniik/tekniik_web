@@ -80,13 +80,11 @@
 }
 
 .brand {
-  /* widened 2026-07-22 for the three-line studio blurb — 280px set it in a
-     narrow ribbon beside two link columns that have room to spare */
   max-width: 460px;
 }
 
-/* Connect column — same head as the link columns, then the mail card and the
-   social row (user, 2026-07-22: both moved out of the brand block) */
+/* Connect column — same head as the link columns, then the mail card. The
+   social row moved back under the brand tagline (user, 2026-07-27) */
 .connect {
   min-width: 0;
 }
@@ -116,7 +114,7 @@
   letter-spacing: -0.02em;
 }
 
-/* lead line — the brand crux, set in Satoshi over the three support lines */
+/* lead line — the brand crux, the only copy in the brand column */
 .tagLead {
   margin-top: 16px;
   font-family: var(--f-display-bold);
@@ -124,18 +122,6 @@
   letter-spacing: -0.015em;
   color: var(--ink);
   line-height: 1.35;
-}
-
-.tag {
-  margin-top: 8px;
-  font-size: 0.875rem;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 44ch;
-}
-
-.tagLead + .tag {
-  margin-top: 12px;
 }
 
 /* mail card — a hairline-bound row so the address reads as an invitation,
@@ -237,10 +223,11 @@
 
 /* social row — hairline squares; links are dead ('#') until the profile
    URLs land */
+/* sits in the brand column under the tagline (2026-07-27, user) */
 .socials {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .socialLink {

@@ -778,14 +778,9 @@ export const CASE_FAMILI = {
 }
 
 export const FOOTER = {
-  // Brand-column blurb (2026-07-22, user): the crux line stays the lead, then
-  // two lines that spell out what "built right" means for an AI software studio.
+  // Brand-column blurb (2026-07-27, user): the crux line alone. The three
+  // supporting studio lines under it were removed.
   tag: 'Technology built right.',
-  tagLines: [
-    'An AI software studio building custom software, web platforms, mobile apps and AI systems.',
-    'Senior engineers on every project. No handoffs, no juniors learning on your budget.',
-    'AI-accelerated delivery, documented and tested, so the build still holds up years later.',
-  ],
   email: 'hello@tekniik.ai',
   // hrefs intentionally empty for now — Footer renders them as dead '#' links
   socials: [
@@ -795,7 +790,7 @@ export const FOOTER = {
   ],
   cols: [
     {
-      label: 'Pages',
+      label: 'Quick Links',
       links: [
         { label: 'Home', to: '/' },
         { label: 'Services', to: '/services' },

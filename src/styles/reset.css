@@ -12,6 +12,19 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   text-size-adjust: 100%;
+  /* the preloader locks scroll with overflow: hidden — without a reserved
+     gutter the scrollbar pops in on unlock and the whole page jitters.
+     scrollbar-gutter has no vendor-prefixed forms; the cross-browser story
+     is this fallback (always show the track, pre-gutter engines like
+     Safari < 18.2) upgraded via @supports below. */
+  overflow-y: scroll;
+}
+
+@supports (scrollbar-gutter: stable) {
+  html {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

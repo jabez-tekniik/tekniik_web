@@ -1,5 +1,16 @@
 # Issues
 
+## Resolved 2026-07-25
+
+### ServiceShowcase svcIndex/short-viewport collision — gone with the pinned deck (client redesign)
+The homepage "What we engineer" section was rebuilt as a 2×2 all-visible card
+grid (client: all four services must be on screen at once; vignettes needed real
+detail). The pinned deck, cross-fade panels, ghost watermark, and `.svcIndex`
+ledger were deleted, which also removes the "svcIndex kicker can collide with
+the Explore link on short viewports" issue logged 2026-07-21 — there is no
+pinned index anymore. Vignettes got a realistic-dummy-data detail pass (see
+CLAUDE.md ServiceShowcase section).
+
 ## Resolved 2026-07-22
 
 ### All office addresses removed site-wide (user request)
@@ -13,14 +24,6 @@ physical address. This supersedes the 2026-07-20 "addresses stay" revert.
 `hosting/staging` was rebuilt from the clean bundle.
 
 ## Open
-
-### svcIndex kicker can collide with the "Explore …" link on short viewports (low, pre-existing)
-Observed 2026-07-21 during the vignette-detailing pass, unrelated to it: at a
-~744px-tall viewport the pinned ServiceShowcase index ledger rides up enough
-that `SERVICES · 04` overlaps the "Explore …" link above it (seen in the ink
-dark screenshots). The `@media (max-height: 720px)` compression that hides the
-kicker doesn't kick in until 720px — consider raising that breakpoint or adding
-a min-gap between the overlay copy block and `.svcIndex`.
 
 ### Satoshi is served as `.otf`, not `.woff2` (low)
 `public/fonts/satoshi/` holds OpenType files (~45–52 KB each; ~195 KB for the four

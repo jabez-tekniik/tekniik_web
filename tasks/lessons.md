@@ -165,3 +165,31 @@ Two related polish traps in the same review:
 - Display headings at line-height 0.94–1.06 let a `?` or apostrophe collide
   with the `p`/`y` descenders on the line above at large sizes. 1.08 is the
   floor for anything that can wrap; 1.1–1.12 for smaller card titles.
+
+## QA screenshots on this machine: playwright-core + system Chrome
+
+There is no usable Python here (only the Microsoft Store alias), so
+`tasks/qa-test.py` cannot run. Working recipe: `npm i playwright-core` in a
+scratch dir and `chromium.launch({ channel: 'chrome' })` — drives the installed
+Chrome with full scripting (viewport, scroll, clip screenshots), no browser
+download. The Claude-in-Chrome extension also works, but its window cannot be
+resized below the OS window size and, when the tab is hidden, the boot
+preloader's visibilitychange defer keeps the overlay up forever — remove the
+overlay node manually or use playwright-core for anything below desktop width.
+
+## Reveal-gated content is invisible to naive full-page screenshots
+
+`Reveal`/`useReveal` content below the fold has `opacity: 0` until its IO
+fires. A clip screenshot of a section further down the page captures blank
+cards unless the script first scrolls THROUGH the section step-by-step (500px
+steps, ~700ms settle each) so every reveal and scene ignition has fired.
+
+## Media-above/below cards: letterbox the mockup, don't stack a 16:10 slab
+
+Client rejected the 2×2 service cards as "so tall… no website has such long
+cards". A copy block stacked on a 16:10 vignette makes a ~650px tower; real
+media cards run ~2:1 media. When a coded scene must survive multiple stage
+aspects (shared across pages), make devices aspect-adaptive (width capped in
+cqh, centred) and re-anchor floating chips/cursors via @container
+(min-aspect-ratio) blocks — placed AFTER all base rules, or equal-specificity
+base rules silently win.

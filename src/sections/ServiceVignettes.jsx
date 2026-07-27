@@ -50,27 +50,64 @@ export function WebScene({ active }) {
               </div>
               <div className={styles.bBody}>
                 <div className={styles.bNav}>
-                  <span className={styles.bLogo} />
-                  <span className={styles.bLink} />
-                  <span className={styles.bLink} />
-                  <span className={styles.bLink} />
-                  <span className={styles.bNavBtn} />
+                  <span className={styles.bBrand}>
+                    <span className={styles.bLogo} />
+                    tekniik
+                  </span>
+                  <span className={styles.bNavLink}>Work</span>
+                  <span className={styles.bNavLink}>Services</span>
+                  <span className={styles.bNavLink}>About</span>
+                  <span className={styles.bNavBtn}>Contact</span>
                 </div>
                 <div className={styles.bHero}>
                   <div className={styles.bCopy}>
-                    <span className={`${styles.skel} ${styles.h1a}`} />
-                    <span className={`${styles.skel} ${styles.h1b}`} />
-                    <span className={`${styles.skel} ${styles.hSub}`} />
+                    <span className={styles.bH1}>Websites that</span>
+                    <span className={`${styles.bH1} ${styles.bH1Accent}`}>win customers.</span>
+                    <span className={styles.bSub}>Fast, accessible, built to convert.</span>
                     <span className={styles.bCta}>
+                      Get started
                       <span className={styles.ripple} />
                     </span>
                   </div>
-                  <div className={styles.bMedia} />
+                  {/* product card — the e-commerce side of the story */}
+                  <div className={styles.bMedia}>
+                    <span className={styles.bShotImg}>
+                      <span className={styles.bShotOrb} />
+                    </span>
+                    <span className={styles.bShotName}>Studio chair</span>
+                    <span className={styles.bShotFoot}>
+                      <span className={styles.bShotPrice}>£249</span>
+                      <span className={styles.bShotTag}>In stock</span>
+                    </span>
+                  </div>
+                  {/* floating proof card overlapping the media panel */}
+                  <span className={styles.bStat}>
+                    <span className={styles.bStatVal}>+64%</span>
+                    <span className={styles.bStatLbl}>conversions</span>
+                  </span>
                 </div>
                 <div className={styles.bCards}>
-                  <span className={styles.bCard} />
-                  <span className={styles.bCard} />
-                  <span className={styles.bCard} />
+                  <span className={styles.bCard}>
+                    <span className={styles.bCardDot} />
+                    <span className={styles.bCardTxt}>
+                      <span className={styles.bCardTitle}>Design</span>
+                      <span className={styles.bCardSub}>UX and UI</span>
+                    </span>
+                  </span>
+                  <span className={styles.bCard}>
+                    <span className={styles.bCardDot} />
+                    <span className={styles.bCardTxt}>
+                      <span className={styles.bCardTitle}>Develop</span>
+                      <span className={styles.bCardSub}>React, Node, APIs</span>
+                    </span>
+                  </span>
+                  <span className={styles.bCard}>
+                    <span className={styles.bCardDot} />
+                    <span className={styles.bCardTxt}>
+                      <span className={styles.bCardTitle}>Launch</span>
+                      <span className={styles.bCardSub}>SEO and hosting</span>
+                    </span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -95,8 +132,8 @@ export function WebScene({ active }) {
   )
 }
 
-/* —— 02 · Web Apps — a live dashboard: bars breathe, the trend line
-      draws itself, the sidebar signal wanders —— */
+/* —— 02 · Web Apps — a live dashboard: KPIs, breathing bars, a
+      self-drawing trend line, donut split, payments ledger —— */
 const BARS = [
   { h: '38%', m: 0.72 },
   { h: '58%', m: 0.85 },
@@ -105,6 +142,14 @@ const BARS = [
   { h: '56%', m: 0.7 },
   { h: '88%', m: 0.78 },
   { h: '66%', m: 0.9 },
+]
+
+const SIDE_NAV = ['Overview', 'Orders', 'Billing', 'Reports', 'Settings']
+
+const LEDGER = [
+  { s: 'ok', name: 'Looqz Ltd', amt: '£4,200', pill: 'Paid' },
+  { s: 'mid', name: 'Novabank', amt: '£1,850', pill: 'Sent' },
+  { s: 'due', name: 'Atlas Co', amt: '£920', pill: 'Due' },
 ]
 
 export function AppScene({ active }) {
@@ -118,48 +163,101 @@ export function AppScene({ active }) {
             <div className={styles.appWin}>
               <div className={styles.side}>
                 <span className={styles.sLogo} />
+                <span className={styles.sHl} />
                 <span className={styles.sInd} />
-                <span className={styles.sItem} />
-                <span className={styles.sItem} />
-                <span className={styles.sItem} />
-                <span className={styles.sItem} />
-                <span className={styles.sItem} />
+                {SIDE_NAV.map((t) => (
+                  <span key={t} className={styles.sItem}>
+                    <span className={styles.sIco} />
+                    {t}
+                  </span>
+                ))}
+                {/* pointer working the nav — its clicks drive .sInd/.sHl */}
+                <svg className={styles.appCursor} viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M3.5 2.2 16.6 9.4l-6 1.7-2.6 5.7L3.5 2.2Z"
+                    fill="var(--text)"
+                    stroke="var(--bg-raise)"
+                    strokeWidth="1.4"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
               <div className={styles.appMain}>
                 <div className={styles.kpis}>
                   <span className={styles.kpi}>
-                    <span className={`${styles.skel} ${styles.kLabel}`} />
-                    <span className={styles.kValue}>48.2k</span>
+                    <span className={styles.kLabel}>Revenue</span>
+                    <span className={styles.kValue}>£48.2k</span>
+                    <span className={styles.kTrend}>+8.1%</span>
                   </span>
                   <span className={styles.kpi}>
-                    <span className={`${styles.skel} ${styles.kLabel}`} />
-                    <span className={styles.kValue}>+18.4%</span>
+                    <span className={styles.kLabel}>Active users</span>
+                    {/* live tick: the count rolls up while you watch */}
+                    <span className={`${styles.kValue} ${styles.kTick}`}>
+                      <span>12,940</span>
+                      <span>12,957</span>
+                    </span>
+                    <span className={styles.kTrend}>+18.4%</span>
                   </span>
                   <span className={styles.kpi}>
-                    <span className={`${styles.skel} ${styles.kLabel}`} />
+                    <span className={styles.kLabel}>Uptime</span>
                     <span className={styles.kValue}>99.9%</span>
+                    <span className={styles.kTrend} data-flat="">
+                      SLA met
+                    </span>
                   </span>
                 </div>
-                <div className={styles.chart}>
-                  {BARS.map((b, i) => (
-                    <span
-                      key={i}
-                      className={styles.bar}
-                      style={{ '--h': b.h, '--m': b.m, '--i': i }}
-                    />
+                <div className={styles.chartRow}>
+                  <div className={styles.chart}>
+                    {BARS.map((b, i) => (
+                      <span
+                        key={i}
+                        className={styles.bar}
+                        style={{ '--h': b.h, '--m': b.m, '--i': i }}
+                      />
+                    ))}
+                    <svg
+                      className={styles.spark}
+                      viewBox="0 0 220 80"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        className={styles.sparkLine}
+                        d="M2 64 L34 50 L66 56 L98 34 L130 42 L162 20 L194 28 L218 12"
+                      />
+                    </svg>
+                    {/* HTML dot: the stretched svg would render a circle as an ellipse */}
+                    <span className={styles.sparkDot} />
+                    <span className={styles.scan} />
+                  </div>
+                  <div className={styles.donutBox}>
+                    <span className={styles.donut}>
+                      <span className={styles.donutVal}>64%</span>
+                    </span>
+                    <span className={styles.legend}>
+                      <span className={styles.legRow}>
+                        <span className={styles.legDot} />
+                        Web
+                        <span className={styles.legVal}>64%</span>
+                      </span>
+                      <span className={styles.legRow}>
+                        <span className={styles.legDot} data-dim="" />
+                        App
+                        <span className={styles.legVal}>36%</span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div className={styles.tbl}>
+                  {LEDGER.map((r) => (
+                    <span key={r.name} className={styles.tbRow}>
+                      <span className={styles.tbDot} data-s={r.s} />
+                      <span className={styles.tbName}>{r.name}</span>
+                      <span className={styles.tbAmt}>{r.amt}</span>
+                      <span className={styles.tbPill} data-s={r.s}>
+                        {r.pill}
+                      </span>
+                    </span>
                   ))}
-                  <svg
-                    className={styles.spark}
-                    viewBox="0 0 220 80"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      className={styles.sparkLine}
-                      d="M2 64 L34 50 L66 56 L98 34 L130 42 L162 20 L194 28 L218 12"
-                    />
-                  </svg>
-                  {/* HTML dot: the stretched svg would render a circle as an ellipse */}
-                  <span className={styles.sparkDot} />
                 </div>
               </div>
               <span className={styles.liveTag}>
@@ -179,39 +277,87 @@ export function AppScene({ active }) {
 
 /* —— 03 · Mobile Apps — a phone scrolls through screens in sync with
       its tab bar; a notification drops in with an overshoot —— */
+const M_ROWS = [
+  { a: 'S', n: 'Sarah M.', s: 'Order #1042', v: '£86' },
+  { a: 'J', n: 'James K.', s: 'Order #1041', v: '£124' },
+  { a: 'P', n: 'Priya N.', s: 'Order #1039', v: '£58' },
+  { a: 'T', n: 'Tom W.', s: 'Order #1038', v: '£212' },
+]
+
+function MRow({ r }) {
+  return (
+    <span className={styles.mListRow}>
+      <span className={styles.mAva}>{r.a}</span>
+      <span className={styles.mRowTxt}>
+        <span className={styles.mRowName}>{r.n}</span>
+        <span className={styles.mRowSub}>{r.s}</span>
+      </span>
+      <span className={styles.mRowVal}>{r.v}</span>
+    </span>
+  )
+}
+
+/* stat tile — label / value / delta, left-aligned like a real dashboard
+   card so bigger tablet tiles never read as empty boxes */
+function MTile({ v, l, d, hot }) {
+  return (
+    <span className={styles.mTile} data-hot={hot ? '' : undefined}>
+      <span className={styles.mTileLbl}>{l}</span>
+      <span className={styles.mTileVal}>{v}</span>
+      <span className={styles.mTileDelta}>{d}</span>
+    </span>
+  )
+}
+
+function HeroCard({ className = '' }) {
+  return (
+    <span className={`${styles.mHeroCard} ${className}`}>
+      <span className={styles.mCardTxt}>
+        <span className={styles.mCardLabel}>Total revenue</span>
+        <span className={styles.mCardValue}>£2,480</span>
+        <span className={styles.mCardTrend}>+12% this week</span>
+      </span>
+      <span className={styles.mCardBars}>
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
+      </span>
+    </span>
+  )
+}
+
 function MScreen({ v }) {
   if (v === 2) {
     return (
       <div className={styles.mScreen}>
-        <span className={`${styles.skel} ${styles.mHead}`} />
-        <span className={styles.mRow} />
-        <span className={styles.mRow} />
-        <span className={styles.mRow} />
-        <span className={styles.mRow} />
+        <span className={styles.mHead}>Activity</span>
+        {M_ROWS.map((r) => (
+          <MRow key={r.n} r={r} />
+        ))}
       </div>
     )
   }
   if (v === 3) {
     return (
       <div className={styles.mScreen}>
-        <span className={`${styles.skel} ${styles.mHead}`} />
+        <span className={styles.mHead}>Insights</span>
         <span className={styles.mTiles}>
-          <span className={styles.mTile} />
-          <span className={styles.mTile} />
+          <MTile v="128" l="Orders" d="+18% this week" hot />
+          <MTile v="4.9" l="Rating" d="1,204 reviews" />
         </span>
-        <span className={styles.mRow} />
+        <MRow r={M_ROWS[0]} />
+        <MRow r={M_ROWS[1]} />
       </div>
     )
   }
   return (
     <div className={styles.mScreen}>
-      <span className={`${styles.skel} ${styles.mHead}`} />
-      <span className={styles.mHeroCard}>
-        <span className={`${styles.skel} ${styles.mCardLine}`} />
-        <span className={`${styles.skel} ${styles.mCardLineShort}`} />
-      </span>
-      <span className={styles.mRow} />
-      <span className={styles.mRow} />
+      <span className={styles.mHead}>Home</span>
+      <HeroCard />
+      <MRow r={M_ROWS[0]} />
+      <MRow r={M_ROWS[1]} />
     </div>
   )
 }
@@ -223,15 +369,15 @@ function TScreen({ v }) {
   if (v === 2) {
     return (
       <div className={styles.tScreen}>
-        <span className={`${styles.skel} ${styles.mHead}`} />
+        <span className={styles.mHead}>Activity</span>
         <span className={styles.tCols}>
           <span className={styles.tStack}>
-            <span className={styles.mRow} />
-            <span className={styles.mRow} />
+            <MRow r={M_ROWS[0]} />
+            <MRow r={M_ROWS[1]} />
           </span>
           <span className={styles.tStack}>
-            <span className={styles.mRow} />
-            <span className={styles.mRow} />
+            <MRow r={M_ROWS[2]} />
+            <MRow r={M_ROWS[3]} />
           </span>
         </span>
       </div>
@@ -240,26 +386,27 @@ function TScreen({ v }) {
   if (v === 3) {
     return (
       <div className={styles.tScreen}>
-        <span className={`${styles.skel} ${styles.mHead}`} />
-        <span className={styles.tCols}>
-          <span className={styles.mTile} />
-          <span className={styles.mTile} />
-          <span className={styles.mTile} />
+        <span className={styles.mHead}>Insights</span>
+        {/* three bands (tiles + two full-width rows) — two bands split a
+            tall screen into towers, three keep every card compact */}
+        <span className={`${styles.tCols} ${styles.tTiles}`}>
+          <MTile v="128" l="Orders" d="+18% this week" hot />
+          <MTile v="4.9" l="Rating" d="1,204 reviews" />
+          <MTile v="96%" l="On time" d="+4% vs last month" />
         </span>
+        <MRow r={M_ROWS[2]} />
+        <MRow r={M_ROWS[3]} />
       </div>
     )
   }
   return (
     <div className={styles.tScreen}>
-      <span className={`${styles.skel} ${styles.mHead}`} />
+      <span className={styles.mHead}>Home</span>
       <span className={styles.tCols}>
-        <span className={`${styles.mHeroCard} ${styles.tHero}`}>
-          <span className={`${styles.skel} ${styles.mCardLine}`} />
-          <span className={`${styles.skel} ${styles.mCardLineShort}`} />
-        </span>
+        <HeroCard className={styles.tHero} />
         <span className={styles.tStack}>
-          <span className={styles.mRow} />
-          <span className={styles.mRow} />
+          <MRow r={M_ROWS[0]} />
+          <MRow r={M_ROWS[1]} />
         </span>
       </span>
     </div>
@@ -293,7 +440,7 @@ export function MobileScene({ active }) {
           <div className={styles.pScreen}>
             <span className={styles.island} />
             <div className={styles.pStatus}>
-              <span className={styles.pTime} />
+              <span className={styles.pTime}>9:41</span>
               <span className={styles.pSignal}>
                 <span />
                 <span />
@@ -322,8 +469,8 @@ export function MobileScene({ active }) {
         <span className={styles.notif}>
           <span className={styles.nIcon} />
           <span className={styles.nLines}>
-            <span className={`${styles.skel} ${styles.nLineA}`} />
-            <span className={`${styles.skel} ${styles.nLineB}`} />
+            <span className={styles.nTitle}>New order received</span>
+            <span className={styles.nSub}>Sarah M. · just now</span>
           </span>
         </span>
       </div>
@@ -332,7 +479,7 @@ export function MobileScene({ active }) {
 }
 
 /* —— 04 · AI & Automation — a pipeline: document in, thinking core,
-      packets flowing to three outcomes —— */
+      packets flowing to three outcomes; a live processing log narrates —— */
 const AI_PATHS = {
   in: 'M84 150 C 128 150, 152 150, 196 150',
   a: 'M240 150 C 280 150, 284 84, 324 84',
@@ -375,6 +522,7 @@ export function AiScene({ active }) {
           <span className={`${styles.skel} ${styles.docLine}`} />
           <span className={`${styles.skel} ${styles.docLine}`} />
           <span className={`${styles.skel} ${styles.docLineShort}`} />
+          <span className={styles.docName}>invoice.pdf</span>
         </span>
         <span className={styles.core}>
           <span className={styles.coreRing} />
@@ -389,9 +537,18 @@ export function AiScene({ active }) {
         </span>
       </div>
       <div className={styles.front}>
+        {/* live processing log — narrates what the pipeline is doing */}
+        <span className={styles.logCard}>
+          <span className={styles.logLine}>→ parsing invoice.pdf</span>
+          <span className={styles.logLine}>→ extracting 12 fields</span>
+          <span className={`${styles.logLine} ${styles.logLineHot}`}>→ routed to accounts</span>
+        </span>
         <span className={`${styles.outChip} ${styles.outA}`}>EXTRACT</span>
         <span className={`${styles.outChip} ${styles.outB}`}>DECIDE</span>
         <span className={`${styles.outChip} ${styles.outC}`}>AUTOMATE</span>
+        <span className={`${styles.outVal} ${styles.outValA}`}>99.2% accurate</span>
+        <span className={`${styles.outVal} ${styles.outValB}`}>0.8s each</span>
+        <span className={`${styles.outVal} ${styles.outValC}`}>24/7</span>
       </div>
     </Scene>
   )

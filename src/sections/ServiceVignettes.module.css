@@ -132,25 +132,33 @@
   }
 }
 
+/* over the laptop shell's bottom-left corner — must not cover the
+   feature-card row inside the browser */
 .webChip {
-  left: 6%;
-  bottom: 8%;
+  left: 3.5%;
+  bottom: 2.5%;
 }
 
+/* bottom-right, over the monitor's foot corner — the dashboard's KPI row
+   hugs the screen top at every aspect, so the chip lives down where only
+   the stand is */
 .appChip {
-  right: 5%;
-  top: 3.5%;
+  right: 4%;
+  bottom: 5%;
 }
 
+/* over the tablet's bottom-left shell corner — keeps the phone's list
+   rows and tab bar clear */
 .mobileChip {
-  right: 7%;
-  bottom: 14%;
+  left: 4%;
+  bottom: 5%;
 }
 
 .aiChip {
   left: 6%;
   bottom: 8%;
 }
+
 
 /* ============================================================
    01 · WEBSITES
@@ -166,13 +174,18 @@
 }
 
 /* laptop shell — navy bezel screen over a slim base deck; the browser
-   window fills the screen. Same band-token idiom as the mobile devices. */
+   window fills the screen. Same band-token idiom as the mobile devices.
+   Width is capped against the stage HEIGHT (160cqh ≈ a 16:10 screen) so a
+   short letterboxed stage centres a believable laptop instead of
+   stretching it ultrawide. */
 .laptop {
   position: absolute;
-  left: 4%;
-  right: 4%;
+  left: 0;
+  right: 0;
   top: 3%;
   bottom: 3%;
+  width: min(92%, 160cqh);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -331,7 +344,7 @@
 .bNav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 2cqw, 12px);
 }
 
 .bNav > * {
@@ -345,30 +358,43 @@
   transition-delay: 180ms;
 }
 
-.bLogo {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  background: var(--accent);
+/* brand mark: logo square + wordmark, pushed left of the links */
+.bBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   margin-right: auto;
+  font-family: var(--f-display-bold);
+  font-size: clamp(5px, 1.4cqw, 9px);
+  letter-spacing: 0.02em;
+  color: var(--text);
 }
 
-.bLink {
-  width: 8%;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--hairline);
+.bLogo {
+  width: clamp(7px, 1.7cqw, 11px);
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.bNavLink {
+  font-family: var(--f-body);
+  font-size: clamp(4px, 1.1cqw, 7px);
+  color: var(--text-dim);
 }
 
 .bNavBtn {
-  width: 11%;
-  height: 10px;
-  border-radius: var(--r-sm);
+  font-family: var(--f-display-bold);
+  font-size: clamp(4px, 1.1cqw, 7px);
+  color: var(--accent);
+  padding: clamp(2px, 0.6cqw, 4px) clamp(4px, 1.2cqw, 8px);
+  border-radius: var(--r-full);
   border: 1px solid var(--accent-border);
   background: var(--accent-soft);
 }
 
 .bHero {
+  position: relative; /* anchors the floating .bStat proof card */
   flex: 1;
   display: flex;
   gap: 8%;
@@ -394,48 +420,51 @@
   transform: none;
 }
 
-.on .h1a {
+.on .bCopy > :nth-child(1) {
   transition-delay: 260ms;
 }
-.on .h1b {
+.on .bCopy > :nth-child(2) {
   transition-delay: 330ms;
 }
-.on .hSub {
+.on .bCopy > :nth-child(3) {
   transition-delay: 400ms;
 }
-.on .bCta {
+.on .bCopy > :nth-child(4) {
   transition-delay: 470ms;
 }
 
-.h1a {
-  width: 88%;
-  height: 11%;
-  min-height: 8px;
-  background: var(--text);
-  opacity: 0;
-  border-radius: 3px;
+/* real display type at mockup scale — the "site" reads as a site, not bars */
+.bH1 {
+  font-family: var(--f-display-black);
+  font-size: clamp(9px, 3cqw, 19px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 
-.h1b {
-  width: 62%;
-  height: 11%;
-  min-height: 8px;
-  background: var(--accent);
-  border-radius: 3px;
+.bH1Accent {
+  color: var(--accent);
 }
 
-/* .skel base gives the sub/label bars their fill */
-.hSub {
-  width: 74%;
-  height: 5px;
+.bSub {
+  font-family: var(--f-body);
+  font-size: clamp(4.5px, 1.25cqw, 8px);
+  line-height: 1.4;
+  color: var(--text-faint);
 }
 
 .bCta {
   position: relative;
-  width: 34%;
-  min-width: 44px;
-  height: 14%;
-  min-height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  font-family: var(--f-display-bold);
+  font-size: clamp(4.5px, 1.2cqw, 7.5px);
+  letter-spacing: 0.02em;
+  /* white on the light-ink dark teal, dark navy on the dark-ink light teal */
+  color: var(--bg-raise);
+  padding: clamp(3px, 1cqw, 6px) clamp(6px, 2cqw, 12px);
   border-radius: var(--r-sm);
   background: var(--accent);
 }
@@ -488,17 +517,115 @@
   }
 }
 
+/* product card — image, name, price row: a real shop tile, not a box */
 .bMedia {
   position: relative;
   flex: 0.85;
   align-self: stretch;
   margin-block: 4%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 1cqh, 6px);
+  padding: clamp(3px, 1.2cqw, 8px);
   border-radius: var(--r-sm);
-  background: linear-gradient(135deg, var(--accent-soft), var(--surface));
+  background: var(--surface);
   border: 1px solid var(--border-soft);
   overflow: hidden;
   opacity: 0;
   transform: translateY(10px);
+}
+
+.bShotImg {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--accent-soft), var(--surface));
+}
+
+.bShotOrb {
+  width: clamp(10px, 4.2cqw, 26px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--accent), var(--accent-deep));
+  opacity: 0.85;
+}
+
+.bShotName {
+  font-family: var(--f-display-med);
+  font-size: clamp(4px, 1.15cqw, 7px);
+  line-height: 1.1;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bShotFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.bShotPrice {
+  font-family: var(--f-display-bold);
+  font-size: clamp(4.5px, 1.25cqw, 8px);
+  line-height: 1;
+  color: var(--text);
+}
+
+.bShotTag {
+  font-family: var(--f-mono);
+  font-size: clamp(3px, 0.85cqw, 5.5px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+/* floating proof card overlapping the media panel's bottom-left corner */
+.bStat {
+  position: absolute;
+  left: 50%;
+  bottom: 24%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: clamp(3px, 1.2cqw, 8px) clamp(5px, 1.6cqw, 10px);
+  background: var(--bg-raise);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card-hover);
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.on .bStat {
+  opacity: 1;
+  transform: none;
+  transition-delay: 620ms;
+  animation: chipFloat 5.2s ease-in-out 1.6s infinite alternate;
+}
+
+.bStatVal {
+  font-family: var(--f-display-black);
+  font-size: clamp(6px, 1.9cqw, 12px);
+  line-height: 1;
+  color: var(--accent);
+}
+
+.bStatLbl {
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 0.95cqw, 6px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .on .bMedia {
@@ -537,18 +664,56 @@
 .bCards {
   display: flex;
   gap: 6%;
-  height: 16%;
-  min-height: 14px;
+  height: 17%;
+  min-height: 19px;
   flex-shrink: 0;
 }
 
 .bCard {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(3px, 1cqw, 6px);
+  padding-inline: clamp(4px, 1.6cqw, 10px);
   border-radius: var(--r-sm);
   border: 1px solid var(--hairline);
   background: var(--surface);
   opacity: 0;
   transform: translateY(10px);
+}
+
+.bCardDot {
+  width: clamp(4px, 1.1cqw, 7px);
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.bCardTxt {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.bCardTitle {
+  font-family: var(--f-display-med);
+  font-size: clamp(4px, 1.1cqw, 7px);
+  line-height: 1.1;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bCardSub {
+  font-family: var(--f-mono);
+  font-size: clamp(3px, 0.85cqw, 5.5px);
+  line-height: 1.1;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .on .bCard {
@@ -571,7 +736,7 @@
      sits deeper inside the stage now that the site lives on the laptop */
   position: absolute;
   left: 19%;
-  top: 58%;
+  top: 61%;
   width: 20px;
   height: 20px;
   opacity: 0;
@@ -697,8 +862,8 @@
 
 .side {
   position: relative;
-  width: 15%;
-  min-width: 40px;
+  width: 17%;
+  min-width: 44px;
   border-right: 1px solid var(--hairline);
   padding: 12px 10px;
   display: flex;
@@ -715,11 +880,34 @@
   margin-bottom: 8px;
 }
 
+/* labeled nav rows — icon square + real word; relative so the text paints
+   above the sliding .sHl highlight */
 .sItem {
-  width: 100%;
-  height: 5px;
-  border-radius: 2px;
-  background: var(--hairline);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 1cqw, 6px);
+  height: 7px;
+  font-family: var(--f-body);
+  font-size: clamp(4px, 1.05cqw, 6.5px);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.sItem:first-of-type {
+  color: var(--text);
+}
+
+.sIco {
+  width: clamp(4px, 1.05cqw, 6px);
+  aspect-ratio: 1;
+  border-radius: 1.5px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.sItem:first-of-type .sIco {
+  background: var(--accent);
 }
 
 .sInd {
@@ -736,6 +924,111 @@
   animation: sIndSlide 10s var(--ease) 1s infinite;
 }
 
+/* soft pill riding the same stops as .sInd — the visible "active row" the
+   cursor's clicks move around */
+.sHl {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 41px;
+  height: 11px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+}
+
+.on .sHl {
+  animation: sIndSlide 10s var(--ease) 1s infinite;
+}
+
+/* pointer working the sidebar: glides row to row and presses just before
+   each .sInd/.sHl jump, so the nav visibly responds to its clicks */
+.appCursor {
+  position: absolute;
+  left: 46%;
+  top: 41px;
+  width: 13px;
+  height: 13px;
+  opacity: 0;
+}
+
+.on .appCursor {
+  animation: appCursorPath 10s var(--ease) 1s infinite;
+}
+
+/* stops mirror sIndSlide (jumps at 16/38/58/78/94%); press dips lead each
+   jump by ~1% */
+@keyframes appCursorPath {
+  0% {
+    transform: translate(9px, 40px) scale(1);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  12%,
+  14% {
+    transform: translate(0, 19px) scale(1);
+    opacity: 1;
+  }
+  15.5% {
+    transform: translate(0, 19px) scale(0.78);
+  }
+  17%,
+  30% {
+    transform: translate(0, 19px) scale(1);
+  }
+  34%,
+  36% {
+    transform: translate(0, 38px) scale(1);
+  }
+  37.5% {
+    transform: translate(0, 38px) scale(0.78);
+  }
+  39%,
+  50% {
+    transform: translate(0, 38px) scale(1);
+  }
+  54%,
+  56% {
+    transform: translate(0, 57px) scale(1);
+  }
+  57.5% {
+    transform: translate(0, 57px) scale(0.78);
+  }
+  59%,
+  70% {
+    transform: translate(0, 57px) scale(1);
+  }
+  74%,
+  76% {
+    transform: translate(0, 76px) scale(1);
+  }
+  77.5% {
+    transform: translate(0, 76px) scale(0.78);
+  }
+  79%,
+  86% {
+    transform: translate(0, 76px) scale(1);
+  }
+  91%,
+  92.5% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  93.5% {
+    transform: translate(0, 0) scale(0.78);
+  }
+  95% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(6px, 12px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* steps match the nav rhythm: 7px row + 12px gap = 19px per stop */
 @keyframes sIndSlide {
   0%,
   16% {
@@ -743,19 +1036,19 @@
   }
   22%,
   38% {
-    transform: translateY(17px);
+    transform: translateY(19px);
   }
   44%,
   58% {
-    transform: translateY(34px);
+    transform: translateY(38px);
   }
   64%,
   78% {
-    transform: translateY(51px);
+    transform: translateY(57px);
   }
   84%,
   94% {
-    transform: translateY(68px);
+    transform: translateY(76px);
   }
   100% {
     transform: translateY(0);
@@ -806,8 +1099,13 @@
 }
 
 .kLabel {
-  width: 55%;
-  height: 4px;
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 1cqw, 6.5px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
 }
 
 .kValue {
@@ -822,15 +1120,181 @@
   color: var(--accent);
 }
 
+/* live-ticking KPI: two stacked values odometer-roll into each other */
+.kTick {
+  display: grid;
+}
+
+.kTick > span {
+  grid-area: 1 / 1;
+}
+
+.kTick > span:last-child {
+  opacity: 0;
+}
+
+.on .kTick > span:first-child {
+  animation: tickOut 7s var(--ease) 2.4s infinite;
+}
+
+.on .kTick > span:last-child {
+  animation: tickIn 7s var(--ease) 2.4s infinite;
+}
+
+@keyframes tickOut {
+  0%,
+  44% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  49%,
+  93% {
+    opacity: 0;
+    transform: translateY(-45%);
+  }
+  98%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tickIn {
+  0%,
+  44% {
+    opacity: 0;
+    transform: translateY(45%);
+  }
+  49%,
+  93% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  98%,
+  100% {
+    opacity: 0;
+    transform: translateY(45%);
+  }
+}
+
+.kTrend {
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 0.95cqw, 6px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.kTrend[data-flat] {
+  color: var(--text-faint);
+}
+
+/* chart + donut share the middle band */
+.chartRow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 5%;
+  border-top: 1px solid var(--border-soft);
+}
+
 .chart {
   position: relative;
-  flex: 1;
+  flex: 1.55;
   display: flex;
   align-items: flex-end;
   gap: 4.5%;
-  padding-top: 4%;
-  border-top: 1px solid var(--border-soft);
+  padding-top: 5%;
   min-height: 0;
+  min-width: 0;
+}
+
+.donutBox {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9%;
+  padding-top: 3%;
+  border-left: 1px solid var(--border-soft);
+  padding-left: 5%;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 460ms var(--ease),
+    transform 620ms var(--ease-out);
+}
+
+.on .donutBox {
+  opacity: 1;
+  transform: none;
+  transition-delay: 480ms;
+}
+
+.donut {
+  position: relative;
+  height: 62%;
+  max-height: 64px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* the ring itself — conic split, masked to a band */
+.donut::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) 0 64%, var(--accent-soft) 64% 100%);
+  -webkit-mask: radial-gradient(closest-side, transparent 60%, #000 62%);
+  mask: radial-gradient(closest-side, transparent 60%, #000 62%);
+}
+
+.donutVal {
+  font-family: var(--f-display-bold);
+  font-size: clamp(5px, 1.5cqw, 10px);
+  line-height: 1;
+  color: var(--text);
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px, 1.4cqh, 8px);
+  min-width: 0;
+}
+
+.legRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.8cqw, 5px);
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 1cqw, 6.5px);
+  font-weight: 500;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.legDot {
+  width: clamp(3px, 0.9cqw, 5px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.legDot[data-dim] {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+.legVal {
+  color: var(--text-faint);
 }
 
 .bar {
@@ -930,6 +1394,52 @@
   }
 }
 
+/* live time-cursor sweeping the chart — a soft tint band with a hairline
+   leading edge, the scene's always-on pulse */
+.scan {
+  position: absolute;
+  inset: 6% 0 0 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, var(--accent-soft));
+  border-right: 1px solid var(--accent-border);
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.on .scan::after {
+  animation: scanSweep 7s linear 1.8s infinite;
+}
+
+/* width is 34% of the chart, so translateX(300%) parks it fully past the
+   right edge; the 60-100% hold is the rest beat between sweeps */
+@keyframes scanSweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.7;
+  }
+  52% {
+    opacity: 0.7;
+  }
+  60%,
+  100% {
+    transform: translateX(300%);
+    opacity: 0;
+  }
+}
+
 .liveTag {
   position: absolute;
   top: 10px;
@@ -975,6 +1485,93 @@
     transform: scale(2);
     opacity: 0;
   }
+}
+
+/* —— payments ledger under the charts —— */
+.tbl {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 1cqh, 6px);
+  border-top: 1px solid var(--border-soft);
+  padding-top: clamp(3px, 1.4cqh, 8px);
+}
+
+.tbRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 1cqw, 7px);
+  font-family: var(--f-mono);
+  font-size: clamp(4px, 1.05cqw, 7px);
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 460ms var(--ease),
+    transform 620ms var(--ease-out);
+}
+
+.on .tbRow {
+  opacity: 1;
+  transform: none;
+}
+
+.on .tbRow:nth-child(1) {
+  transition-delay: 520ms;
+}
+.on .tbRow:nth-child(2) {
+  transition-delay: 600ms;
+}
+.on .tbRow:nth-child(3) {
+  transition-delay: 680ms;
+}
+
+.tbDot {
+  width: clamp(3px, 0.9cqw, 5px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--text-faint);
+}
+
+.tbDot[data-s='ok'] {
+  background: var(--success);
+}
+
+.tbDot[data-s='mid'] {
+  background: var(--accent);
+}
+
+.tbName {
+  flex: 1;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tbAmt {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.tbPill {
+  padding: clamp(1px, 0.4cqh, 2px) clamp(4px, 1.2cqw, 8px);
+  border-radius: var(--r-full);
+  border: 1px solid var(--hairline);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.tbPill[data-s='ok'] {
+  color: var(--success);
+  border-color: transparent;
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+}
+
+.tbPill[data-s='mid'] {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
 }
 
 /* ============================================================
@@ -1175,10 +1772,11 @@
 }
 
 .pTime {
-  width: 15%;
-  height: 45%;
-  border-radius: 2px;
-  background: var(--border-strong);
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 1cqw, 6.5px);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-dim);
 }
 
 .pSignal {
@@ -1281,6 +1879,12 @@
   flex: 1.5;
 }
 
+/* Insights tile band above two full-width rows — a hair taller than a
+   row (three text lines vs two), never a half-screen stretch */
+.tTiles {
+  flex: 1.25;
+}
+
 .tStack {
   flex: 1;
   display: flex;
@@ -1289,59 +1893,215 @@
 }
 
 .mHead {
-  width: 46%;
-  height: 6px;
-  background: var(--text);
-  opacity: 0.85;
+  font-family: var(--f-display-bold);
+  font-size: clamp(5px, 1.55cqw, 10px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .mHeroCard {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6%;
   flex: 1.4;
   border-radius: var(--r-md);
   background: var(--accent-soft);
   border: 1px solid var(--accent-border);
-  padding: 8%;
+  padding: 6% 8%;
 }
 
-.mCardLine {
-  width: 70%;
-  height: 5px;
+.mCardTxt {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2px, 0.9cqh, 5px);
+  min-width: 0;
+}
+
+/* mini bar chart filling the hero card's right side */
+.mCardBars {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(2px, 0.7cqw, 4px);
+  padding-block: 6%;
+  flex-shrink: 0;
+}
+
+.mCardBars > span {
+  width: clamp(3px, 1cqw, 6px);
+  border-radius: 1.5px 1.5px 0 0;
   background: var(--accent);
-  opacity: 0.75;
+  opacity: 0.55;
 }
 
-.mCardLineShort {
-  width: 44%;
-  height: 4px;
+.mCardBars > span:nth-child(1) {
+  height: 38%;
+}
+.mCardBars > span:nth-child(2) {
+  height: 56%;
+}
+.mCardBars > span:nth-child(3) {
+  height: 44%;
+}
+.mCardBars > span:nth-child(4) {
+  height: 72%;
+}
+.mCardBars > span:nth-child(5) {
+  height: 100%;
+  opacity: 0.9;
 }
 
-.mRow {
+.mCardLabel {
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 0.95cqw, 6px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.mCardValue {
+  font-family: var(--f-display-black);
+  font-size: clamp(8px, 2.5cqw, 16px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.mCardTrend {
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 0.95cqw, 6px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* list row — avatar initial + name/order + amount */
+.mListRow {
   flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 1.1cqw, 7px);
+  padding-inline: clamp(3px, 1.3cqw, 8px);
   border-radius: var(--r-sm);
   border: 1px solid var(--hairline);
   background: var(--surface);
 }
 
+.mAva {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(8px, 2.3cqw, 14px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 1cqw, 6.5px);
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.mRowTxt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.mRowName {
+  font-family: var(--f-display-med);
+  font-size: clamp(4px, 1.15cqw, 7px);
+  line-height: 1.1;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mRowSub {
+  font-family: var(--f-mono);
+  font-size: clamp(3px, 0.85cqw, 5.5px);
+  line-height: 1.1;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mRowVal {
+  font-family: var(--f-display-bold);
+  font-size: clamp(4px, 1.15cqw, 7px);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* phone tile band: barely taller than a list row — KPI tiles at 2× row
+   height read as tall empty cards */
 .mTiles {
-  flex: 2;
+  flex: 1.4;
   display: flex;
   gap: 8%;
 }
 
+/* dashboard-style stat tile: label / value / delta, left-aligned so a big
+   tablet tile still reads as a designed card, never an empty box */
 .mTile {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(2px, 1cqh, 6px);
+  padding: 6% 8%;
   border-radius: var(--r-md);
   border: 1px solid var(--hairline);
   background: var(--surface);
 }
 
-.mTiles .mTile:first-child {
+.mTile[data-hot] {
   background: var(--accent-soft);
   border-color: var(--accent-border);
+}
+
+.mTileVal {
+  font-family: var(--f-display-black);
+  font-size: clamp(8px, 2.4cqw, 15px);
+  line-height: 1;
+  color: var(--text);
+}
+
+.mTile[data-hot] .mTileVal {
+  color: var(--accent);
+}
+
+.mTileLbl {
+  font-family: var(--f-mono);
+  font-size: clamp(3px, 0.9cqw, 5.5px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.mTileDelta {
+  font-family: var(--f-mono);
+  font-size: clamp(3px, 0.85cqw, 5.5px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--success);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .mTabs {
@@ -1464,15 +2224,22 @@
   gap: 4px;
 }
 
-.nLineA {
-  width: 80%;
-  height: 4px;
-  background: var(--text-dim);
+.nTitle {
+  font-family: var(--f-display-med);
+  font-size: clamp(5px, 1.3cqw, 8.5px);
+  line-height: 1.2;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.nLineB {
-  width: 55%;
-  height: 4px;
+.nSub {
+  font-family: var(--f-mono);
+  font-size: clamp(4px, 1cqw, 6.5px);
+  line-height: 1.2;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* ============================================================
@@ -1547,6 +2314,18 @@
   transition-delay: 120ms;
 }
 
+/* folded page corner, top-right */
+.docNode::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 0 clamp(8px, 2.4cqw, 14px) clamp(8px, 2.4cqw, 14px) 0;
+  border-color: var(--surface-2) transparent;
+  border-top-right-radius: var(--r-md);
+}
+
 .docLine {
   width: 100%;
   height: 4px;
@@ -1558,6 +2337,97 @@
   height: 4px;
   background: var(--accent);
   opacity: 0.7;
+}
+
+.docName {
+  font-family: var(--f-mono);
+  font-size: clamp(4px, 1.05cqw, 7px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-top: clamp(2px, 1cqh, 5px);
+  white-space: nowrap;
+}
+
+/* —— live processing log, top-left — narrates the pipeline —— */
+.logCard {
+  position: absolute;
+  left: 6%;
+  top: 8%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 1cqh, 5px);
+  padding: clamp(5px, 1.6cqw, 10px) clamp(7px, 2cqw, 12px);
+  background: var(--bg-raise);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card-hover);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 460ms var(--ease),
+    transform 620ms var(--ease-out);
+}
+
+.on .logCard {
+  opacity: 1;
+  transform: none;
+  transition-delay: 640ms;
+}
+
+.logLine {
+  font-family: var(--f-mono);
+  font-size: clamp(4px, 1.05cqw, 7px);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(3px);
+  transition:
+    opacity 380ms var(--ease),
+    transform 480ms var(--ease-out);
+}
+
+.on .logLine {
+  opacity: 1;
+  transform: none;
+}
+
+.on .logLine:nth-child(1) {
+  transition-delay: 780ms;
+}
+.on .logLine:nth-child(2) {
+  transition-delay: 1020ms;
+}
+.on .logLine:nth-child(3) {
+  transition-delay: 1260ms;
+}
+
+.logLineHot {
+  color: var(--accent);
+}
+
+/* blinking caret on the last log line */
+.logLineHot::after {
+  content: '';
+  display: inline-block;
+  width: clamp(2px, 0.5cqw, 3px);
+  height: 0.9em;
+  margin-left: clamp(2px, 0.6cqw, 4px);
+  vertical-align: text-bottom;
+  background: var(--accent);
+}
+
+.on .logLineHot::after {
+  animation: caretBlink 1.1s steps(1) 1.4s infinite;
+}
+
+@keyframes caretBlink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .core {
@@ -1762,6 +2632,81 @@
   transition-delay: 720ms;
 }
 
+/* mono stamps under each outcome chip */
+.outVal {
+  position: absolute;
+  left: 84%;
+  transform: translate(-50%, -50%);
+  font-family: var(--f-mono);
+  font-size: clamp(3.5px, 0.95cqw, 6px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 460ms var(--ease);
+}
+
+.on .outVal {
+  opacity: 1;
+}
+
+.outValA {
+  top: 35.5%;
+}
+
+.outValB {
+  top: 57.5%;
+}
+
+.outValC {
+  top: 79.5%;
+}
+
+.on .outValA {
+  transition-delay: 640ms;
+}
+.on .outValB {
+  transition-delay: 760ms;
+}
+.on .outValC {
+  transition-delay: 880ms;
+}
+
+/* ============================================================
+   wide letterboxed stages (the 2:1 ServiceShowcase cards) re-anchor the
+   floating pieces: the laptop centres narrower (its left edge sits at
+   ~10%), the ultrawide dashboard pushes its KPIs under the old chip spot,
+   and the web hero's proof card + click point move. Taller 4:3 stages
+   keep the base values. This block must stay LAST (before reduced motion)
+   — the base rules share its specificity, so source order decides.
+   ============================================================ */
+@container (min-aspect-ratio: 9/5) {
+  .webChip {
+    left: 8%;
+  }
+
+  /* straddle the product card's top-left corner — never its name/price */
+  .bStat {
+    left: 48%;
+    bottom: 72%;
+  }
+
+  .cursor {
+    left: 24%;
+    top: 66%;
+  }
+}
+
+/* small AND wide (the 2-col grid between ~760-1000px viewports): the hero
+   is too cramped for a floating proof card — drop it, keep the story */
+@container (min-aspect-ratio: 9/5) and (max-width: 430px) {
+  .bStat {
+    display: none;
+  }
+}
+
 /* ============================================================
    reduced motion — everything static, active scene fully rendered
    ============================================================ */
@@ -1781,6 +2726,7 @@
   }
 
   .cursor,
+  .appCursor,
   .notif {
     opacity: 0 !important;
   }
