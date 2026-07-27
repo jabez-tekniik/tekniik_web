@@ -1,5 +1,33 @@
 # Issues
 
+## Resolved 2026-07-27
+
+### Mobile menu rendered with no background on iOS (client, iPhone 16 Pro Max)
+The drawer's links floated over the live page: menu text on top of the footer /
+service cards, no panel behind it. Android Chrome was unaffected.
+
+Cause: `.mobile` is `position: fixed` and it lived **inside** `<header class="nav
+scrolled">`, which carried `backdrop-filter: blur(18px)`. A non-`none`
+`backdrop-filter` makes that element the containing block for fixed
+descendants — Safari/WebKit implements this, Blink does not. So on iOS the
+drawer resolved `inset: 68px 0 0 0` against the 68px-tall header instead of the
+viewport, computing to **height 0**: the background painted nothing while the
+children overflowed and stayed visible.
+
+Fix: the drawer is now a sibling of `<header>` inside a fragment (Nav.jsx), so
+no filtered ancestor can ever contain it, and the scrolled header is opaque
+(`background: var(--bg)`, no backdrop-filter) per the client's second request.
+Also: `.nav.menuOpen` gets the same solid bar so an open menu at scroll 0 doesn't
+show the hero through the header; the drawer got `overflow-y: auto` +
+`overscroll-behavior: contain` + `env(safe-area-inset-bottom)` padding (short
+landscape phones and the iOS URL bar were clipping the "Get a Quote" row); and
+`BackToTop` dropped to `--z-nav - 2` — it tied with the drawer at 99 and, being
+later in the DOM, floated over the open menu.
+
+Verified in real WebKit (Playwright) at 280×653, 430×932, 844×390, 768×1024 in
+both ink modes: drawer height = viewport − 68 everywhere, opaque background, no
+horizontal scroll, no console errors.
+
 ## Resolved 2026-07-25
 
 ### ServiceShowcase svcIndex/short-viewport collision — gone with the pinned deck (client redesign)

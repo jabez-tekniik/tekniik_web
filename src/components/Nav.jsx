@@ -55,67 +55,78 @@ export default function Nav({ themeMode = null, onToggleTheme }) {
   }, [open])
 
   return (
-    <header className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
-      <div className={styles.inner}>
-        <Logo />
-        <nav className={styles.links} aria-label="Primary">
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              end={link.to === '/'}
-              className={({ isActive }) =>
-                `${styles.link} ${isActive ? styles.active : ''}`
-              }
-            >
-              {/* text roll: label slides up, ink duplicate slides in */}
-              <span className={styles.roll}>
-                <span className={styles.rollTop}>{link.label}</span>
-                <span className={styles.rollBottom} aria-hidden="true">
-                  {link.label}
+    <>
+      <header
+        className={`${styles.nav} ${scrolled ? styles.scrolled : ''} ${
+          open ? styles.menuOpen : ''
+        }`}
+      >
+        <div className={styles.inner}>
+          <Logo />
+          <nav className={styles.links} aria-label="Primary">
+            {NAV_LINKS.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === '/'}
+                className={({ isActive }) =>
+                  `${styles.link} ${isActive ? styles.active : ''}`
+                }
+              >
+                {/* text roll: label slides up, ink duplicate slides in */}
+                <span className={styles.roll}>
+                  <span className={styles.rollTop}>{link.label}</span>
+                  <span className={styles.rollBottom} aria-hidden="true">
+                    {link.label}
+                  </span>
                 </span>
-              </span>
-              {/* active marker: dash with curved top corners */}
-              <span className={styles.marker} aria-hidden="true" />
-            </NavLink>
-          ))}
-        </nav>
+                {/* active marker: dash with curved top corners */}
+                <span className={styles.marker} aria-hidden="true" />
+              </NavLink>
+            ))}
+          </nav>
 
-        <div className={styles.right}>
-          {themeMode && (
+          <div className={styles.right}>
+            {themeMode && (
+              <button
+                type="button"
+                className={`${styles.themeToggle} ${
+                  themeMode === 'dark' ? styles.toggleDark : ''
+                }`}
+                onClick={onToggleTheme}
+                aria-label={
+                  themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+                }
+              >
+                {/* both icons stay mounted so the swap can rotate/crossfade */}
+                <span className={styles.toggleIcons} aria-hidden="true">
+                  <IconSun className={styles.iconSun} />
+                  <IconMoon className={styles.iconMoon} />
+                </span>
+              </button>
+            )}
+            <Button to="/contact" variant="primary" className={styles.ctaBtn}>
+              Get a Quote
+            </Button>
             <button
               type="button"
-              className={`${styles.themeToggle} ${
-                themeMode === 'dark' ? styles.toggleDark : ''
-              }`}
-              onClick={onToggleTheme}
-              aria-label={
-                themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-              }
+              className={styles.hamburger}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((v) => !v)}
             >
-              {/* both icons stay mounted so the swap can rotate/crossfade */}
-              <span className={styles.toggleIcons} aria-hidden="true">
-                <IconSun className={styles.iconSun} />
-                <IconMoon className={styles.iconMoon} />
-              </span>
+              {open ? <IconClose /> : <IconMenu />}
             </button>
-          )}
-          <Button to="/contact" variant="primary" className={styles.ctaBtn}>
-            Get a Quote
-          </Button>
-          <button
-            type="button"
-            className={styles.hamburger}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <IconClose /> : <IconMenu />}
-          </button>
+          </div>
         </div>
-      </div>
+      </header>
 
+      {/* The drawer is a SIBLING of <header>, never a child: the scrolled nav
+          can carry a backdrop-filter, and a filtered ancestor becomes the
+          containing block for position:fixed descendants (Safari/iOS honours
+          this, Chrome does not) — inside the 68px header the drawer collapsed
+          to zero height on iPhone and its links spilled over the page. */}
       <div
         id="mobile-menu"
         className={`${styles.mobile} ${open ? styles.mobileOpen : ''}`}
@@ -147,6 +158,6 @@ export default function Nav({ themeMode = null, onToggleTheme }) {
           </a>
         </div>
       </div>
-    </header>
+    </>
   )
 }

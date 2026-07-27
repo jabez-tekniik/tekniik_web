@@ -6,7 +6,9 @@
   position: fixed;
   right: max(20px, env(safe-area-inset-right));
   bottom: max(20px, env(safe-area-inset-bottom));
-  z-index: calc(var(--z-nav) - 1);
+  /* below the nav (100) AND below the mobile drawer (99) — the disc used to
+     tie with the drawer and, being later in the DOM, floated over the menu */
+  z-index: calc(var(--z-nav) - 2);
 
   width: 48px;
   height: 48px;
