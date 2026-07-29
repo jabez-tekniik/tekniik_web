@@ -1,5 +1,6 @@
 import Button from './Button.jsx'
 import HeroCircuit from './HeroCircuit.jsx'
+import HeroFluid from './HeroFluid.jsx'
 import { StarredText } from './Icon.jsx'
 import {
   useInViewOnce,
@@ -358,6 +359,9 @@ export default function Hero() {
           <TickerGroup />
         </div>
       </div>
+
+      {/* cursor fluid dye — last child so it paints over the whole hero */}
+      <HeroFluid />
     </section>
   )
 }

@@ -1,0 +1,16 @@
+/* Fluid dye overlay for the home hero — paints above the poster content
+   (the reference effect flows across the letterforms) but never catches
+   the pointer, so CTAs, ticker hover-pause and text selection all work. */
+
+.fluid {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
