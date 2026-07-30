@@ -940,9 +940,21 @@ export default function HeroFluidScene() {
       return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
     }
 
+    /* Hovering a hero control (the CTA buttons and any link) must NOT paint
+       dye — the trail smears over the thing you are about to click. The
+       layer is pointer-events:none, so the window event's target is the real
+       element underneath. Treated exactly like leaving the hero, so moving
+       back off the button resets the position instead of tearing a streak. */
+    function overControl(target) {
+      return (
+        target instanceof Element &&
+        target.closest('a, button, [role="button"]') !== null
+      )
+    }
+
     function onPointerMove(e) {
       const rect = canvas.getBoundingClientRect()
-      if (!inside(rect, e.clientX, e.clientY)) {
+      if (!inside(rect, e.clientX, e.clientY) || overControl(e.target)) {
         hasPointer = false
         return
       }
@@ -976,7 +988,7 @@ export default function HeroFluidScene() {
 
     function onPointerDown(e) {
       const rect = canvas.getBoundingClientRect()
-      if (!inside(rect, e.clientX, e.clientY)) return
+      if (!inside(rect, e.clientX, e.clientY) || overControl(e.target)) return
       const x = scale(e.clientX - rect.left)
       const y = scale(e.clientY - rect.top)
       pointer.texcoordX = x / canvas.width
