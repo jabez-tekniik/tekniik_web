@@ -166,7 +166,7 @@ export const PORTFOLIO = {
     {
       slug: 'tcc',
       title: 'Bright Care Services',
-      tags: ['Healthcare', 'Web Platform', 'UK'],
+      tags: ['Healthcare', 'Web Platform', 'United Kingdom'],
       desc: 'We developed a comprehensive all-in-one management platform for Bright Care Services, a leader in the healthcare industry. The application streamlines operations for both clients and staff, supporting efficient management and seamless service delivery across the organisation.',
       result: 'Serving 1,000+ clients with streamlined operations',
       featured: true,
@@ -175,7 +175,7 @@ export const PORTFOLIO = {
     {
       slug: 'looqz',
       title: 'Glow & Co',
-      tags: ['Beauty & Wellness', 'Booking Platform', 'Mobile App', 'UK'],
+      tags: ['Beauty & Wellness', 'Booking Platform', 'Mobile App', 'United Kingdom'],
       desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings seamlessly online.',
       result: 'End-to-end booking with real-time availability',
       route: '/case/looqz',
@@ -218,7 +218,7 @@ export const PORTFOLIO = {
     {
       slug: 'refurnish',
       title: 'Doncaster Refurnish',
-      tags: ['Retail & Warehouse', 'Driver + Shopping App', 'Web + POS System', 'UK'],
+      tags: ['Retail & Warehouse', 'Driver + Shopping App', 'Web + POS System', 'United Kingdom'],
       desc: 'A new website and POS application for Doncaster Refurnish to digitise warehouse operations, facilitate online sale of refurbished products, and enhance in-store sales management.',
       result: 'Digitised warehouse operations and online sales',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -787,6 +787,17 @@ export const FOOTER = {
       links: [
         { label: 'Home', to: '/' },
         { label: 'Services', to: '/services' },
+        // the site packages page, branded "Business Website Packages"
+        // (renamed 2026-08-04 when it went from one £599 package to three
+        // tiers — Starter is now one of them, so it can't be the umbrella
+        // name; the URL stays /website-package). Footer entry is
+        // user-requested, overriding the spec's "not linked from the main
+        // site" note, and it sits directly under Services (user 2026-08-04)
+        // — it reads as an offer, not a utility link, so it belongs with
+        // the commercial pages, not at the end of the column.
+        // newTab: the standalone pitch page opens in its own tab (user
+        // 2026-08-03)
+        { label: 'Website Packages', to: '/website-package', newTab: true },
         // Our Work hidden from the footer for now (user, 2026-08-03) — uncomment to restore
         // { label: 'Our Work', to: '/work' },
         { label: 'Support', to: '/support' },

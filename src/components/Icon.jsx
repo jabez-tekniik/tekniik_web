@@ -322,6 +322,86 @@ export function IconGrid(props) {
   )
 }
 
+export function IconServer(props) {
+  // stacked hosting racks — domain & hosting
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="3.5" width="18" height="7.5" rx="1.5" />
+      <rect x="3" y="13" width="18" height="7.5" rx="1.5" />
+      <path d="M6.5 7.25h.01M6.5 16.75h.01M17.5 7.25h-3M17.5 16.75h-3" />
+    </svg>
+  )
+}
+
+export function IconSearch(props) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M15.8 15.8l4.7 4.7" />
+    </svg>
+  )
+}
+
+export function IconShieldCheck(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3l7 2.8v5.3c0 4.5-3 8.2-7 9.9-4-1.7-7-5.4-7-9.9V5.8L12 3z" />
+      <path d="M9 11.8l2.2 2.2 4-4.4" />
+    </svg>
+  )
+}
+
+export function IconStore(props) {
+  // storefront with scalloped awning — local business
+  return (
+    <svg {...base} {...props}>
+      <path d="M2.5 7l3.2-4.4a2 2 0 0 1 1.6-.8h9.4a2 2 0 0 1 1.6.8L21.5 7" />
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <path d="M14.5 22v-4a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v4" />
+      <path d="M2.5 7h19M21.5 7v3a2 2 0 0 1-2 2 2.6 2.6 0 0 1-1.9-.8 2.6 2.6 0 0 1-3.8 0 2.6 2.6 0 0 1-3.6 0 2.6 2.6 0 0 1-3.8 0A2.6 2.6 0 0 1 4.5 12a2 2 0 0 1-2-2V7" />
+    </svg>
+  )
+}
+
+export function IconRefresh(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.9 1 6.7 2.7L21 8" />
+      <path d="M21 3v5h-5" />
+    </svg>
+  )
+}
+
+export function IconBriefcase(props) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M8.5 7V5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v2" />
+      <path d="M3 12.5h18" />
+    </svg>
+  )
+}
+
+export function IconTrendUp(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 17l5.5-5.5 4 4L20.5 7" />
+      <path d="M15 7h5.5v5.5" />
+    </svg>
+  )
+}
+
+export function IconGlobe(props) {
+  // lucide globe: sphere + equator + meridian (custom-domain glyph)
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a13.6 13.6 0 0 1 0 18 13.6 13.6 0 0 1 0-18z" />
+    </svg>
+  )
+}
+
 export function IconSparkle(props) {
   return (
     <svg {...base} {...props}>

@@ -130,9 +130,7 @@
   color: var(--text);
   margin: 0;
   min-width: 0;
-  transition:
-    color 240ms var(--ease),
-    transform 320ms var(--ease-out);
+  transition: color 240ms var(--ease);
 }
 
 /* routed rows carry a quiet arrow beside the name (desktop split only —
@@ -466,15 +464,20 @@
     display: block;
   }
 
-  /* names rest dim; the active one inks in, nudges, and gets the node */
+  .row {
+    cursor: pointer;
+  }
+
+  /* names rest faint so the active one inks in with real contrast — no
+     translate nudge, the color swap + node dot carry the highlight
+     (user, 2026-08-03: the left-shift hover read badly) */
   .rowTitle {
     font-size: clamp(1.7rem, 2.3vw, 2.35rem);
-    color: var(--text-dim);
+    color: var(--text-faint);
   }
 
   .rowActive .rowTitle {
     color: var(--text);
-    transform: translateX(6px);
   }
 
   .rowActive .rowDot {
@@ -524,9 +527,6 @@
   .panelCta,
   .rowLink {
     transition: none;
-  }
-  .rowActive .rowTitle {
-    transform: none;
   }
   .rowLink:active {
     transform: none;

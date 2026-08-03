@@ -1,8 +1,11 @@
-/* Website Package — standalone conversion landing page (Deep Ink).
-   Simpler register than the main site, same system: node + mono meta bar,
-   NN / EYEBROW section heads, numbered specRow ledgers, statement cells,
-   brand-navy process band with scroll-lit rails, hairline <details> FAQ.
-   Tokens only — both ink modes adapt. Transform/opacity motion only. */
+/* Website Package — conversion landing page (Deep Ink).
+   Signature devices: HeroPackageSite (the site-going-live vignette) in the
+   hero, the PACKAGE EXPLORER (tab ledger + navy dossier panel with a coded
+   mini-scene per inclusion group) for What's Included, icon-chip statement
+   cells, dual-primary gradient process band with glass step cards +
+   igniting step
+   chips, numbered hairline <details> FAQ. Tokens only — both ink modes
+   adapt. Transform/opacity motion (+ cheap color/shadow paints on chips). */
 
 /* —— Hero ——————————————————————————————————— */
 .hero {
@@ -32,7 +35,7 @@
 }
 
 .heroInner {
-  padding-bottom: clamp(56px, 7vw, 96px);
+  padding-bottom: clamp(64px, 7.5vw, 104px);
 }
 
 .metaBar {
@@ -48,13 +51,23 @@
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   font-family: var(--f-mono);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text);
+}
+
+.eyebrowDot {
+  color: var(--accent);
+}
+
+/* the four audience situations, riding the eyebrow as quiet meta */
+.eyebrowMeta {
+  color: var(--text-faint);
 }
 
 .node {
@@ -79,7 +92,7 @@
 
 .heroSplit {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(40px, 6vw, 88px);
   align-items: center;
 }
@@ -91,11 +104,42 @@
   letter-spacing: -0.025em;
   color: var(--text);
   margin: 0 0 clamp(20px, 2.6vw, 32px);
-  max-width: 22ch;
+  /* 26ch, not the 22ch this started at: the headline became a full
+     sentence with the price on the end (2026-08-04) and 22ch broke it
+     over FOUR lines with "Build your" stranded on the first. The site
+     rule is max three. */
+  max-width: 26ch;
 }
 
+/* headline: "website" runs the logo's LIGHT primary (teal), the price
+   the dark primary via .hlPrice; section accents use .hlDeep and follow
+   the same system — see the --primary-heading-* tokens */
 .headlineAccent {
-  color: var(--accent-heading);
+  color: var(--primary-heading-lift);
+}
+
+.hlDeep {
+  color: var(--primary-heading-deep);
+}
+
+.hlBand {
+  color: var(--primary-heading-band);
+}
+
+/* the hero's price. It takes the LIGHT primary — the loudest of the two,
+   and the reason "website" moved to the dark one: on the light canvas the
+   navy sits only a shade off the body text, so a navy price read as
+   ordinary words (user 2026-08-04 wanted the figure to carry the line).
+   COLOUR ONLY — no marker stroke, no clipped gradient, nothing painted
+   under, behind or through the numerals. Three attempts have been
+   rejected: a background rule, a thicker ::after stroke ("the underline
+   in the 599 looks really bad"), and a `background-clip: text` shimmer,
+   which clipped the glyphs themselves ("599 in the hero gets cut off a
+   bit") — the clip paints only inside the background box, and this
+   headline's 1.08 line-height is tighter than the font's content area,
+   so the figure loses its edges. Leave the price as plain text. */
+.hlPrice {
+  color: var(--primary-heading-lift);
 }
 
 .sub {
@@ -111,67 +155,106 @@
   margin-top: clamp(24px, 3vw, 36px);
 }
 
-/* fixed-price stat card — mono kicker, oversized figure, trust-line foot.
-   The ink ledger treatment (surface + hairlines + strong top rule), not a
-   pricing badge. */
-.priceCard {
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-top: 2px solid var(--border-strong);
-  padding: clamp(24px, 3.5vw, 44px);
-}
-
-.priceKicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--f-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.priceFigure {
+/* —— price comparison strip ——
+   struck agency anchor → the package price, plus the turnaround pill
+   (relocated from the hero card). Sits under a hairline below the CTA. */
+.valueStrip {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin: clamp(14px, 1.8vw, 22px) 0 clamp(18px, 2.4vw, 28px);
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px clamp(16px, 2vw, 26px);
+  margin-top: clamp(24px, 3vw, 34px);
+  padding-top: clamp(18px, 2.4vw, 26px);
+  border-top: 1px solid var(--hairline);
 }
 
-.priceValue {
-  font-family: var(--f-display-black);
-  font-size: clamp(3.6rem, 6.5vw, 5.6rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--text);
+.compare {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.priceVat {
+.compareLabel {
   font-family: var(--f-mono);
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-faint);
+  white-space: nowrap;
 }
 
-.priceFoot {
-  border-top: 1px solid var(--hairline);
-  padding-top: 16px;
-  margin: 0;
+.compareWas {
+  font-family: var(--f-display-bold);
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--text-faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--accent);
+}
+
+.compareArrow {
+  flex-shrink: 0;
+  color: var(--accent);
+  /* optically align with the numbers, not the labels */
+  align-self: flex-end;
+  margin-bottom: 3px;
+}
+
+.compareNow {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-family: var(--f-display-black);
+  font-size: clamp(1.3rem, 1.9vw, 1.65rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  /* matches the headline's lighter-primary price accent */
+  color: var(--primary-heading-lift);
+}
+
+/* turnaround pill — lives here now, not floating on the hero card */
+.turnPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 9px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-tint);
   font-family: var(--f-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 1.7;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.turnPillIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 /* —— Sections ————————————————————————————————— */
 .section {
   padding-block: clamp(60px, 7.5vw, 104px);
+}
+
+/* heading row with the section CTA in line with the title — every section
+   except the FAQ carries a /contact button up here, not below the content */
+.headRow {
+  display: flex;
+  /* the CTA rides the heading's FIRST line, not its baseline */
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px 32px;
 }
 
 .sectionTint {
@@ -212,163 +295,648 @@
   margin: 0;
 }
 
-/* —— 01 · What's included — grouped spec ledgers ——————— */
-.inclHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px 32px;
-  margin-bottom: clamp(28px, 3.6vw, 44px);
+/* screen-reader-only text (the chart's included / not-included cells) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.inclPrice {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 0;
+/* —— 01 · Packages — the tier comparison chart —————————
+   Three packages compared line by line (2026-08-04). Desktop is a REAL
+   <table>: the feature column sits on the plain canvas and each tier is a
+   full-height tinted column running the whole chart (rounded at both
+   ends, hairline row rules across). Growth is the highlighted column —
+   accent tint + accent side borders + "Most Popular" badge — and its
+   styling must never be interrupted, which is why the group label rows
+   span only the feature column instead of the full width. ≤900px the
+   table is swapped in JS for stacked tier cards (see .tierCards). */
+.packages {
+  padding-block: clamp(60px, 7.5vw, 104px);
+  /* the hero above is the same canvas — this keeps the two apart without
+     adding another tinted band next to the explorer's */
+  border-top: 1px solid var(--hairline);
+
+  /* the highlighted tier's edge and fill, shared by the desktop column
+     and the mobile card. The raw --accent-border / --accent-tint tokens
+     are tuned for small chips (0.22 / 0.045 alpha) and vanish across a
+     full-height card, so both are mixed from --accent here — still the
+     light logo primary, just readable at this scale. The fills sit on
+     --bg-raise, the same white the other two cards use. */
+  --chart-edge: color-mix(in srgb, var(--accent) 42%, transparent);
+  --chart-fill: color-mix(in srgb, var(--accent) 6%, var(--bg-raise));
+  --chart-fill-hover: color-mix(in srgb, var(--accent) 11%, var(--bg-raise));
 }
 
-.inclPriceNum {
+/* sits where the other sections put their CTA — the chart carries its
+   own buttons, so the heading row gets the promise instead */
+.pkgNote {
+  font-family: var(--f-body);
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 58ch;
+  margin: 6px 0 0;
+}
+
+.chartWrap {
+  /* the padding-top is the badge overhang: .tierBadge rides 12px above
+     the table and overflow-x would clip anything outside the padding box.
+     The margin gives the same distance back. */
+  margin-top: calc(clamp(28px, 4vw, 48px) - 16px);
+  /* 901-1000px only: the chart scrolls rather than crushing the cards */
+  overflow-x: auto;
+  padding-top: 16px;
+  padding-bottom: 1px;
+}
+
+.chart {
+  min-width: 820px;
+  table-layout: fixed;
+  /* separate, NOT collapse — collapsed borders can't carry the card
+     radii. border-spacing is 0: the three cards sit FLUSH against each
+     other as one block (user 2026-08-04), so the vertical rules are
+     drawn once per boundary (see .colFirst / .colHot / .colLast). */
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.colFeature {
+  width: 34%;
+}
+
+.colTier {
+  width: 22%;
+}
+
+.chartCorner {
+  text-align: left;
+  vertical-align: bottom;
+  padding: 0 clamp(16px, 2vw, 28px) 18px 0;
+}
+
+.cornerLabel {
+  display: block;
+  font-family: var(--f-display-bold);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin-bottom: 7px;
+}
+
+.cornerMeta {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* —— the three tier cards ——
+   Each tier column is a PROPER CARD (user 2026-08-04: the side-lines-only
+   treatment read unfinished) — white surface, hairline all round, rounded
+   at the block's outer corners. The three sit FLUSH, no gap between them
+   (user 2026-08-04), so each boundary must be drawn by exactly ONE cell
+   or it doubles to 2px: the outer edges come from .colFirst / .colLast
+   and BOTH inner rules come from Growth's own accent sides. */
+.tierCol {
+  background: var(--bg-raise);
+}
+
+.colFirst {
+  border-left: 1px solid var(--hairline);
+}
+
+.colLast {
+  border-right: 1px solid var(--hairline);
+}
+
+/* Growth: same card, accent edge + a whisper of the light primary so it
+   still reads as the recommended one. Its two sides are also the only
+   dividers in the block. */
+.colHot {
+  background: var(--chart-fill);
+  border-left: 1px solid var(--chart-edge);
+  border-right: 1px solid var(--chart-edge);
+}
+
+/* the tier cells beside a group label — empty on purpose, they exist so
+   each card runs unbroken past the group headings */
+.groupPad {
+  padding: 0;
+}
+
+/* the card head. No badge gutter (user 2026-08-04: reserving a row for
+   the "Most Popular" tag pushed all three names down for nothing) — the
+   badge is positioned against this cell instead, so every tier name
+   starts on the card's first line. */
+.tierTop {
+  position: relative;
+  text-align: left;
+  vertical-align: top;
+  padding: clamp(18px, 2vw, 24px);
+  padding-bottom: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.tierTop.colFirst {
+  border-top-left-radius: var(--r-xl);
+}
+
+.tierTop.colLast {
+  border-top-right-radius: var(--r-xl);
+}
+
+.tierTop.colHot {
+  border-top-color: var(--chart-edge);
+}
+
+/* rides the card's top edge, half in and half out. SOLID accent, not a
+   tint — over Growth's teal fill a tinted chip disappeared (user
+   2026-08-04). --bg is the mode's page colour, so the label stays legible
+   in both: near-white on the light mode's deep teal, near-black on the
+   dark mode's bright teal. */
+.tierBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  font-family: var(--f-mono);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  white-space: nowrap;
+}
+
+.tierName {
+  display: block;
   font-family: var(--f-display-black);
-  font-size: clamp(1.7rem, 3vw, 2.5rem);
-  line-height: 1;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
   letter-spacing: -0.02em;
   color: var(--text);
 }
 
-.inclPriceVat {
+.tierTag {
+  display: block;
+  margin-top: 5px;
   font-family: var(--f-mono);
-  font-size: 0.72rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.tierPrice {
+  display: block;
+  margin-top: clamp(14px, 1.8vw, 18px);
+  font-family: var(--f-display-black);
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  /* the dark logo primary, like every other price on a light canvas */
+  color: var(--primary-heading-deep);
+}
+
+.tierDesc {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--f-body);
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--text-dim);
 }
 
-.group + .group {
-  margin-top: clamp(28px, 3.6vw, 44px);
+.tierCta {
+  width: 100%;
+  --pad-x: 16px;
+  --pad-y: 12px;
+  --fs: 0.82rem;
 }
 
-.groupHead {
-  font-family: var(--f-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 14px;
+/* —— the tier CTAs ——
+   NO idle animation on these. A staggered gradient glint plus a drifting
+   wash under Professional's label was tried and rejected (user
+   2026-08-04: "Get started animation in the pack cards looks horrible") —
+   six buttons shimmering under a dense comparison chart read as cheap,
+   and the wash made Professional look disabled rather than important.
+   The only motion is the shared hover sheen every Button already ships,
+   which fires when the pointer is actually on the button.
+
+   Professional is lifted STATICALLY instead: accent border + accent
+   label, so it reads as the serious pack next to Growth's filled button
+   without competing with it. Both selectors carry :hover because the
+   themed `.ghost:hover` rules in Button.module.css are more specific
+   than a bare `.tierCta.ctaPro`. */
+.tierCta.ctaPro,
+.tierCta.ctaPro:hover,
+:global(:root[data-theme='ink']) .tierCta.ctaPro,
+:global(:root[data-theme='ink']) .tierCta.ctaPro:hover {
+  border-color: var(--chart-edge);
+  color: var(--primary-heading-lift);
 }
 
-.specs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-width: 780px;
-  border-top: 1px solid var(--hairline);
+/* the CTAs sit in their OWN header row (user 2026-08-04) — that is what
+   keeps all three buttons on one line however the descriptions above
+   them wrap. vertical-align: bottom pins them to the row's baseline. */
+.ctaCell {
+  vertical-align: bottom;
+  padding: clamp(16px, 2vw, 20px) clamp(18px, 2vw, 24px) clamp(18px, 2vw, 24px);
 }
 
-.specRow {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  align-items: baseline;
-  gap: 12px;
-  padding: 14px 6px;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.specRow::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--accent-tint);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 340ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .specRow:hover::after {
-    transform: scaleX(1);
-  }
-}
-
-.specNum {
+/* —— group label rows (feature column only) —— */
+.groupCell {
+  text-align: left;
+  vertical-align: bottom;
+  padding: clamp(24px, 3vw, 34px) clamp(16px, 2vw, 28px) 12px 0;
   font-family: var(--f-mono);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* the first group sits right under the CTA row, which already carries its
+   own bottom padding — the full group gap left a hollow band inside the
+   cards */
+.chart tbody:first-of-type .groupCell {
+  padding-top: clamp(14px, 1.6vw, 20px);
+}
+
+.groupChip {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hairline);
+  background: var(--bg-2);
   color: var(--accent);
 }
 
-.specText {
+/* —— feature rows —— */
+.featLabel {
+  text-align: left;
   font-family: var(--f-body);
-  font-size: 1.02rem;
-  line-height: 1.55;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+  padding: 13px clamp(16px, 2vw, 28px) 13px 0;
+  border-bottom: 1px solid var(--hairline);
+  transition: color 200ms var(--ease-out);
+}
+
+.cell {
+  text-align: center;
+  vertical-align: middle;
+  padding: 13px clamp(10px, 1.4vw, 18px);
+  border-bottom: 1px solid var(--hairline);
+  transition: background 200ms var(--ease-out);
+}
+
+/* inline-block, NOT block — a block-level svg ignores the cell's
+   text-align and the ticks sit left of centre */
+.cellCheck {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--accent);
+}
+
+.cellNo {
+  font-family: var(--f-display-med);
+  font-size: 1rem;
+  color: var(--text-faint);
+}
+
+.cellValue {
+  font-family: var(--f-display-med);
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
   color: var(--text);
-  /* guard for long unbroken tokens ("you@yourbusiness.co.uk") at 320px */
-  overflow-wrap: break-word;
 }
 
-/* —— 02 · Who this is for — statement cells ————————— */
-.audHeading {
-  max-width: 24ch;
-}
-
-.audGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 4vw, 56px);
-  margin-top: clamp(28px, 4vw, 48px);
-}
-
-.audCell {
-  border-top: 2px solid var(--border-strong);
-  padding-top: clamp(16px, 2vw, 24px);
-  transition:
-    border-color var(--d-base) var(--ease),
-    transform 320ms var(--ease-out);
-}
-
+/* row scan highlight — highlight only, nothing moves (page rule) */
 @media (hover: hover) and (pointer: fine) {
-  .audCell:hover {
-    border-top-color: var(--accent);
-    transform: translateY(-4px);
+  .featRow:hover .featLabel {
+    color: var(--text);
+  }
+
+  .featRow:hover .cell {
+    background: var(--bg-2);
+  }
+
+  .featRow:hover .cell.colHot {
+    background: var(--chart-fill-hover);
   }
 }
 
-.audNum {
-  display: block;
-  font-family: var(--f-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-.audText {
-  font-family: var(--f-display-med);
-  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  margin: 0;
+/* —— chart foot: the CTA repeat —— */
+.footNote {
+  vertical-align: top;
+  padding: clamp(18px, 2.2vw, 24px) clamp(16px, 2vw, 28px) 0 0;
+  font-family: var(--f-body);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-faint);
   max-width: 34ch;
 }
 
-/* —— 03 · How it works — brand-navy band, scroll-lit rails ——— */
-/* Semantic tokens re-scoped so every child adapts (same device as the About
-   process band). --band here, not --band-deep: the light FAQ section sits
-   between this band and FinalCta, so they never touch. */
-.process {
+.footCell {
+  text-align: center;
+  padding: clamp(16px, 2vw, 22px) clamp(12px, 1.6vw, 18px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.footCell.colFirst {
+  border-bottom-left-radius: var(--r-xl);
+}
+
+.footCell.colLast {
+  border-bottom-right-radius: var(--r-xl);
+}
+
+.footCell.colHot {
+  border-bottom-color: var(--chart-edge);
+}
+
+.footTier {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* —— ≤900px: stacked tier cards instead of the table ——
+   Rendered by JS (useMediaQuery), never both — each card lists only what
+   that package actually includes, and Growth leads (spec). */
+.tierCards {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vw, 22px);
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+.tierCard {
+  /* anchors the badge, which rides this card's top edge too */
   position: relative;
-  padding-block: clamp(64px, 8vw, 120px);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  background: var(--bg-2);
+  padding: clamp(20px, 3.2vw, 26px);
+}
+
+/* Growth leads on mobile (spec) and carries the same accent edge + fill
+   as its column in the desktop chart */
+.tierCard.hot {
+  order: -1;
+  background: var(--chart-fill);
+  border-color: var(--chart-edge);
+}
+
+.tierCardHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: clamp(18px, 2.6vw, 22px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* on the desktop chart the button has its own row and its own padding;
+   in the stacked card it just follows the description */
+.tierCardHead .tierCta {
+  margin-top: clamp(16px, 2.4vw, 20px);
+}
+
+.cardGroup {
+  padding-top: clamp(16px, 2.4vw, 20px);
+}
+
+.cardGroupName {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  font-family: var(--f-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.cardList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+
+.cardItem {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  gap: 10px;
+  font-family: var(--f-body);
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.cardItem .cellCheck {
+  margin-top: 4px;
+}
+
+/* the tier-specific figure riding its feature line ("Up to 10") */
+.cardValue {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--bg-raise);
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* —— 02 · What's included — the package explorer ——————— */
+.inclHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 22px 32px;
+  margin-bottom: clamp(28px, 3.6vw, 44px);
+}
+
+/* the CTA holds the title line's right slot — margin-left: auto keeps it
+   on the right edge even when the heading pushes it onto its own line.
+   The separate FROM £599 block that used to sit here is gone (2026-08-04):
+   the price is part of the heading sentence now. */
+.inclHeadRight {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+  gap: 14px clamp(18px, 2.2vw, 28px);
+}
+
+/* the price tail gets its own line — this heading is deliberately two
+   lines, "…in every package." then "Starts from £599." */
+.inclHead .hlDeep {
+  display: block;
+}
+
+.explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: stretch;
+}
+
+/* —— tab ledger (left) —— */
+.selRows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.selRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  /* highlight only — no translate nudge on hover/active (user 2026-08-03:
+     nothing on this page may move on hover/click) */
+  transition:
+    border-color 260ms var(--ease-out),
+    background 260ms var(--ease-out);
+}
+
+.selActive {
+  border-color: var(--accent-border);
+  background: var(--bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .selRow:not(.selActive):hover {
+    border-color: var(--border-strong);
+    background: var(--bg);
+  }
+}
+
+.selChip {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hairline);
+  background: var(--bg-raise);
+  color: var(--accent);
+  transition:
+    background 280ms var(--ease-out),
+    border-color 280ms var(--ease-out),
+    color 280ms var(--ease-out);
+}
+
+.selActive .selChip {
+  background: var(--accent);
+  border-color: transparent;
+  /* on-accent glyph: --bg-raise, never hardcoded white */
+  color: var(--bg-raise);
+}
+
+.selText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.selHeading {
+  font-family: var(--f-display-bold);
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+  letter-spacing: -0.01em;
+  color: var(--text-dim);
+  transition: color 260ms var(--ease-out);
+}
+
+.selActive .selHeading {
+  color: var(--text);
+}
+
+.selMeta {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.selArrow {
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.selActive .selArrow {
+  opacity: 1;
+}
+
+/* —— navy dossier panel (right) ——
+   Semantic tokens re-scoped to the band palette (the Portfolio dossier /
+   process-band device) so the scenes and check rows adapt in both modes.
+   Keyed remount per tab replays the entrance + scene choreography. */
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 22px);
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: var(--r-xl);
   overflow: hidden;
   background: var(--band);
+  /* constant height across tabs — the scene flexes to absorb the difference
+     between 5-item and 1-item groups, so auto-advance never jumps layout */
+  min-height: clamp(460px, 36vw, 520px);
+  animation: wpPanelIn 420ms var(--ease-out) both;
 
   --bg: var(--band);
   --bg-2: var(--band-2);
@@ -381,6 +949,861 @@
   --hairline: var(--band-hairline);
   --border: var(--band-hairline);
   --border-soft: rgba(255, 255, 255, 0.07);
+  --border-strong: var(--band-hairline-strong);
+  --accent: var(--accent-on-band);
+  --accent-soft: rgba(114, 204, 214, 0.12);
+  --accent-tint: rgba(114, 204, 214, 0.07);
+  --accent-border: rgba(114, 204, 214, 0.28);
+  --accent-bloom: rgba(114, 204, 214, 0.2);
+}
+
+/* soft teal bloom pooling top-right, behind everything */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 60% 45% at 88% 0%,
+    rgba(114, 204, 214, 0.12),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* accent rail draws across the panel top on every swap */
+.panelRail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 85%);
+  transform-origin: left center;
+  animation: wpRailDraw 600ms var(--ease-out) both;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panelChip {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.panelHeading {
+  font-family: var(--f-display-bold);
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+}
+
+.panelIndex {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+/* check rows — stagger in after the scene */
+.panelChecks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.panelRow {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  gap: 10px;
+  animation: wpRowIn 400ms var(--ease-out) both;
+  animation-delay: calc(260ms + var(--i) * 70ms);
+}
+
+.panelCheck {
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.panelItem {
+  font-family: var(--f-body);
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  /* guard for long unbroken tokens ("you@yourbusiness.co.uk") at 320px */
+  overflow-wrap: break-word;
+}
+
+/* —— mini-scenes (shared shell) ——
+   a LIGHT "screen" card on the navy dossier (user 2026-08-03, second
+   darkness complaint: a solid-primary vignette background read too
+   heavy). The panel is band navy in BOTH ink modes, so these are the
+   fixed light-canvas expressions of the two brand colors: navy-ink text
+   and surfaces, teal-ink signal (rgb(14,124,140) = the light theme's
+   --accent). */
+.vg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: clamp(168px, 19vw, 196px);
+  padding: 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: var(--on-band);
+  overflow: hidden;
+  animation: wpRowIn 420ms var(--ease-out) both;
+  animation-delay: 120ms;
+
+  --bg: var(--on-band);
+  --surface: rgba(32, 46, 93, 0.05);
+  --surface-2: rgba(32, 46, 93, 0.08);
+  --hairline: rgba(32, 46, 93, 0.16);
+  --border-soft: rgba(32, 46, 93, 0.1);
+  --text: var(--band);
+  --text-dim: rgba(32, 46, 93, 0.75);
+  --text-faint: rgba(32, 46, 93, 0.52);
+  --accent: rgb(14, 124, 140);
+  --accent-border: rgba(14, 124, 140, 0.28);
+  --accent-tint: rgba(14, 124, 140, 0.07);
+  --accent-soft: rgba(14, 124, 140, 0.12);
+  --accent-bloom: rgba(14, 124, 140, 0.25);
+}
+
+/* shared micro-chip (SSL secure / 5 inboxes) */
+.vgTag {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-tint);
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* —— scene 1: your website (browser + phone + page chips) —— */
+.vgDevices {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.vgBrowser {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.vgBrowserHead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.vgBrowserHead i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hairline);
+}
+
+.vgBrowserHead span {
+  margin-left: 6px;
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+.vgBrowserBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px;
+}
+
+.vgSiteH {
+  font-family: var(--f-display-bold);
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.vgSiteH em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.vgSiteLine {
+  width: 62%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--hairline);
+}
+
+.vgSiteBtn {
+  font-family: var(--f-display-med);
+  font-size: 0.56rem;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.vgPhone {
+  width: 64px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 8px 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.vgPhoneNotch {
+  align-self: center;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hairline);
+}
+
+.vgPhoneH {
+  font-family: var(--f-display-med);
+  font-size: 0.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.vgPhoneBlock {
+  height: 24px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+}
+
+.vgPhoneBar {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hairline);
+}
+
+.vgPages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.vgPage {
+  font-family: var(--f-mono);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 4px 10px;
+  animation: wpPop 380ms var(--ease-out) both;
+  animation-delay: calc(260ms + var(--i) * 80ms);
+}
+
+/* —— scene 2: domain & hosting (address + rack + backup ring) —— */
+.vgAddr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.vgAddr svg {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.vgAddr em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.vgHostRow {
+  display: flex;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+
+.vgRack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.vgRackRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: wpRowIn 380ms var(--ease-out) both;
+  animation-delay: calc(220ms + var(--i) * 110ms);
+}
+
+.vgLed {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-bloom);
+  animation: wpBlink 2.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.55s);
+}
+
+.vgRackBar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hairline);
+}
+
+.vgRackLabel {
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.vgRing {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 96px;
+}
+
+.vgRingSvg {
+  width: 52px;
+  height: 52px;
+  transform: rotate(-90deg);
+}
+
+.vgRingTrack,
+.vgRingFill {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.vgRingTrack {
+  stroke: var(--hairline);
+}
+
+/* 2π·17 ≈ 106.8; settles at ~80% drawn */
+.vgRingFill {
+  stroke: var(--accent);
+  stroke-dasharray: 106.8;
+  stroke-dashoffset: 21;
+  animation: wpRing 1.6s var(--ease-out) both;
+  animation-delay: 300ms;
+}
+
+.vgRingLabel {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* —— scene 3: email (live inbox) —— */
+.vgInbox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.vgInboxHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.vgInboxIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.vgMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  animation: wpRowIn 380ms var(--ease-out) both;
+  animation-delay: calc(240ms + var(--i) * 150ms);
+}
+
+.vgMsg + .vgMsg {
+  border-top: 1px solid var(--border-soft);
+}
+
+.vgMsgDot,
+.vgMsgDotNew {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--hairline);
+}
+
+.vgMsgDotNew {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-bloom);
+}
+
+.vgMsgSubject {
+  font-family: var(--f-display-med);
+  font-size: 0.68rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vgMsgWhen {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.vgInboxFoot {
+  margin-top: auto;
+  padding: 7px 12px;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* —— scene 4: visibility (search result + analytics bars) —— */
+.vgSearchBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+
+.vgSearchIcon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.vgSeoRow {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+}
+
+.vgResult {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+}
+
+.vgResultTitle {
+  font-family: var(--f-display-med);
+  font-size: 0.7rem;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vgResultUrl {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+.vgResultLine {
+  width: 90%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hairline);
+}
+
+.vgResultLineShort {
+  width: 58%;
+}
+
+.vgBars {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  width: 92px;
+  height: 58px;
+}
+
+.vgBars i {
+  flex: 1;
+  height: calc(var(--h) * 58px);
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, var(--accent), rgba(114, 204, 214, 0.35));
+  transform-origin: bottom center;
+  animation: wpGrow 600ms var(--ease-out) both;
+  animation-delay: calc(260ms + var(--i) * 90ms);
+}
+
+.vgLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.vgLive i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: wpBlink 2.2s ease-in-out infinite;
+}
+
+/* —— scene 5: peace of mind (shield + 30-day rail) —— */
+.vgCare {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.vgShield {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  animation:
+    wpPop 500ms var(--ease-out) both,
+    wpShieldPulse 3.2s ease-in-out 900ms infinite;
+}
+
+.vgShieldIcon {
+  width: 25px;
+  height: 25px;
+}
+
+.vgDays {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vgDaysHead {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.vgDaysRail {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.vgDaysRail i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(114, 204, 214, 0.4), var(--accent));
+  transform-origin: left center;
+  animation: wpFillX 1.4s var(--ease-out) both;
+  animation-delay: 300ms;
+}
+
+.vgDaysNote {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* —— 02 · Who this is for — full-width ledger rows —————
+   Editorial ledger: ghost numeral | icon chip | oversized statement |
+   mono situation tag, hairline-separated, edge to edge. Hover ignites
+   the row: an accent bar draws down the left edge, the row slides, the
+   chip floods teal, the ghost numeral strokes accent. */
+.audHeading {
+  /* wide enough that the explicit <br> owns the break — line two
+     ("that need to get online, fast.") must not re-wrap */
+  max-width: 32ch;
+}
+
+.audList {
+  margin-top: clamp(28px, 4vw, 48px);
+  border-top: 1px solid var(--hairline);
+}
+
+.audRowWrap {
+  display: block;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* Reveal wraps, row is the child — stagger delay must not leak onto hover.
+   Highlight only on hover: no translate/scale nudges anywhere on this page
+   (user 2026-08-03). */
+.audRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(16px, 2.6vw, 32px);
+  padding: clamp(20px, 2.8vw, 32px) clamp(4px, 1.2vw, 14px);
+}
+
+/* accent ignition bar, drawn down the row's left edge on hover */
+.audRow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-bloom);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 340ms var(--ease-out);
+}
+
+.audGhost {
+  font-family: var(--f-display-black);
+  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.25px var(--border-strong);
+  opacity: 0.6;
+  user-select: none;
+  /* each row is its own grid, so an auto column would size to its own
+     digits ("01" vs "04" differ) and push the chip/text start around —
+     fixed em width keeps all four rows on the same columns */
+  width: 1.35em;
+  transition: opacity 300ms var(--ease-out);
+}
+
+.audChip {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--bg-raise);
+  color: var(--accent);
+  transition:
+    background 300ms var(--ease-out),
+    border-color 300ms var(--ease-out),
+    color 300ms var(--ease-out);
+}
+
+.audText {
+  font-family: var(--f-display-med);
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+  max-width: 44ch;
+}
+
+.audTag {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 6px 13px;
+  white-space: nowrap;
+  transition:
+    color 300ms var(--ease-out),
+    border-color 300ms var(--ease-out),
+    background 300ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .audRow:hover::before {
+    transform: scaleY(1);
+  }
+
+  .audRow:hover .audGhost {
+    opacity: 1;
+    -webkit-text-stroke-color: var(--accent);
+  }
+
+  .audRow:hover .audChip {
+    background: var(--accent);
+    border-color: transparent;
+    /* on-accent glyph: --bg-raise, never hardcoded white */
+    color: var(--bg-raise);
+  }
+
+  .audRow:hover .audTag {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    background: var(--accent-tint);
+  }
+}
+
+/* —— 03 · How it works — navy band with a HINT of teal ————— */
+/* Settled 2026-08-03 after three takes (solid teal: "looks really bad";
+   strong navy→teal gradient: "overpowering, visibility goes away"):
+   the band is brand navy with only a whisper of the light primary — a
+   faint teal tint easing in toward the bottom-right plus a soft corner
+   bloom. Text is the stock on-band set on near-navy everywhere, so
+   legibility never degrades. Identical in both ink modes. */
+.process {
+  position: relative;
+  padding-block: clamp(64px, 8vw, 120px);
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 55% 50% at 94% 110%,
+      rgba(114, 204, 214, 0.14),
+      transparent 65%
+    ),
+    linear-gradient(
+      150deg,
+      var(--band) 0%,
+      var(--band) 55%,
+      color-mix(in srgb, var(--band) 86%, var(--band-teal)) 100%
+    );
+
+  --bg: var(--band);
+  --bg-2: var(--band-2);
+  --bg-raise: var(--band-raise);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --text: var(--on-band);
+  --text-dim: var(--on-band-dim);
+  --text-faint: var(--on-band-faint);
+  --hairline: var(--band-hairline);
+  --border: var(--band-hairline);
+  --border-soft: rgba(255, 255, 255, 0.08);
   --border-strong: var(--band-hairline-strong);
   --accent: var(--accent-on-band);
   --accent-soft: rgba(114, 204, 214, 0.12);
@@ -407,51 +1830,46 @@
   row-gap: clamp(36px, 4.4vw, 56px);
 }
 
+/* each step is a quiet surface card on the band (user 2026-08-03: bare
+   columns read cramped) */
 .step {
   position: relative;
-}
-
-/* scroll-drawn rail: hairline that fills teal in step order */
-.rail {
-  position: relative;
-  display: block;
-  height: 2px;
-  background: var(--hairline);
-  margin-bottom: clamp(16px, 2vw, 22px);
-}
-
-.railFill {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
-}
-
-.railNode {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--text-faint);
-  transform: translate(-1px, -50%) scale(0.55);
-  transition:
-    background var(--d-base) var(--ease),
-    box-shadow var(--d-base) var(--ease),
-    transform var(--d-base) var(--ease-out);
-}
-
-.rail.lit .railNode {
-  background: var(--accent);
-  box-shadow: 0 0 14px var(--accent-bloom);
-  transform: translate(-1px, -50%) scale(1);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  padding: clamp(22px, 2.6vw, 30px);
 }
 
 .stepBody {
   position: relative;
+}
+
+/* step icon chip — ignites with its rail (Contact next-steps idiom) */
+.stepChip {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  color: var(--accent);
+  margin-bottom: 18px;
+  transition:
+    background 420ms var(--ease-out),
+    border-color 420ms var(--ease-out),
+    color 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out);
+}
+
+/* chips flood in step order as the band scrolls (no rails — the filling
+   icons ARE the progress indicator, user 2026-08-03) */
+.step.lit .stepChip {
+  background: var(--accent);
+  border-color: transparent;
+  /* glyph flips to the band navy (--bg is re-scoped to --band here) */
+  color: var(--bg);
+  box-shadow: 0 0 22px var(--accent-bloom);
 }
 
 .stepLabel {
@@ -462,13 +1880,13 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 /* outlined numeral floating behind each step title */
 .ghost {
   position: absolute;
-  top: -10px;
+  top: -6px;
   right: 0;
   font-family: var(--f-display-black);
   font-size: clamp(2.6rem, 4.6vw, 4rem);
@@ -486,7 +1904,8 @@
   font-size: clamp(1.15rem, 1.6vw, 1.4rem);
   letter-spacing: -0.015em;
   color: var(--text);
-  margin: 0 0 8px;
+  /* clear air between title and description (user: read cramped) */
+  margin: 0 0 clamp(12px, 1.5vw, 16px);
 }
 
 .stepDesc {
@@ -498,35 +1917,102 @@
   max-width: 34ch;
 }
 
-/* —— 04 · Common questions — hairline <details> rows ——————— */
+/* —— 04 · Common questions — full-width two-column FAQ cards ——
+   Controlled accordion cards (no native <details> — its open/close
+   snaps). The answer wrapper tweens grid-template-rows 0fr → 1fr both
+   ways; the copy fades in a beat behind. Two independent column stacks
+   so an opening card only reflows its own column. */
+.faqHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: clamp(26px, 3.5vw, 44px);
+}
+
+.faqHead .secHead {
+  margin-bottom: 0;
+}
+
+.faqMeta {
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
 .faq {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 20px);
   margin-top: clamp(28px, 4vw, 48px);
-  max-width: 780px;
-  border-top: 1px solid var(--hairline);
+}
+
+.faqCol {
+  display: grid;
+  gap: clamp(14px, 1.8vw, 20px);
+  align-content: start;
 }
 
 .faqItem {
-  border-bottom: 1px solid var(--hairline);
+  position: relative;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: var(--bg-raise);
+  overflow: hidden;
+  transition:
+    border-color 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out);
+}
+
+/* accent rail drawn across the card top while open */
+.faqItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 80%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 480ms var(--ease-out);
+}
+
+.faqOpen {
+  border-color: var(--accent-border);
+  box-shadow: 0 18px 40px -28px var(--accent-bloom);
+}
+
+.faqOpen::before {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faqItem:not(.faqOpen):hover {
+    border-color: var(--border-strong);
+  }
 }
 
 .faqQ {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
+  width: 100%;
   min-height: 44px;
-  padding: 18px 6px;
+  padding: clamp(16px, 2vw, 21px) clamp(16px, 2vw, 22px);
+  border: none;
+  background: transparent;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
   font-family: var(--f-display-bold);
-  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  font-size: clamp(1rem, 1.3vw, 1.14rem);
   letter-spacing: -0.01em;
   color: var(--text);
   transition: color 200ms var(--ease-out);
-}
-
-.faqQ::-webkit-details-marker {
-  display: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -535,56 +2021,226 @@
   }
 }
 
-.faqIcon {
+.faqNum {
   flex-shrink: 0;
-  color: var(--text-dim);
-  transition:
-    transform 240ms var(--ease-out),
-    color 200ms var(--ease-out);
-}
-
-.faqItem[open] .faqIcon {
-  transform: rotate(45deg);
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   color: var(--accent);
 }
 
+.faqQText {
+  flex: 1;
+  min-width: 0;
+}
+
+/* plus chip — rotates to × and floods accent while open */
+.faqToggle {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--bg);
+  color: var(--text-dim);
+  transition:
+    background 300ms var(--ease-out),
+    border-color 300ms var(--ease-out),
+    color 300ms var(--ease-out),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faqOpen .faqToggle {
+  background: var(--accent);
+  border-color: transparent;
+  /* on-accent glyph: --bg-raise, never hardcoded white */
+  color: var(--bg-raise);
+  transform: rotate(135deg);
+}
+
+.faqIcon {
+  display: block;
+}
+
+/* the smooth part: 0fr → 1fr height tween, both directions */
+.faqAWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 480ms var(--ease-out);
+}
+
+.faqOpen .faqAWrap {
+  grid-template-rows: 1fr;
+}
+
 .faqA {
-  padding: 0 6px 22px;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .faqA p {
+  /* answers align under the question text, past the mono index */
+  margin: 0;
+  padding: 0 clamp(16px, 2vw, 22px) clamp(18px, 2.2vw, 24px)
+    calc(clamp(16px, 2vw, 22px) + 0.66rem * 2 + 14px);
   font-family: var(--f-body);
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.65;
   color: var(--text-dim);
-  max-width: 62ch;
-  margin: 0;
+  max-width: 58ch;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 280ms var(--ease-out),
+    transform 280ms var(--ease-out);
 }
 
-.faqItem[open] .faqA {
-  animation: faqIn 300ms var(--ease-out) backwards;
+.faqOpen .faqA p {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 140ms;
 }
 
-@keyframes faqIn {
+@keyframes wpPanelIn {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(10px);
   }
-  to {
+}
+
+@keyframes wpRailDraw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes wpRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes wpPop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes wpGrow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes wpFillX {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes wpRing {
+  from {
+    stroke-dashoffset: 106.8;
+  }
+}
+
+@keyframes wpBlink {
+  0%,
+  100% {
     opacity: 1;
-    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes wpShieldPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 22px var(--accent-bloom);
   }
 }
 
 /* —— Responsive ———————————————————————————————— */
 @media (max-width: 960px) {
   .heroSplit {
-    grid-template-columns: 1fr;
-    gap: clamp(32px, 6vw, 48px);
+    /* minmax(0, …), NOT bare 1fr — bare 1fr's auto min-size lets the hero
+       card's min-content (~400px) widen the track past small viewports,
+       silently clipped by the hero's overflow: hidden */
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(44px, 7vw, 56px);
   }
 
-  .priceCard {
+  .heroVisual {
     max-width: 560px;
+  }
+
+  /* explorer stacks: the tab ledger becomes a compact chip wrap */
+  .explorer {
+    grid-template-columns: 1fr;
+  }
+
+  .selRows {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .selRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-radius: 999px;
+  }
+
+  .selRow .selChip {
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+  }
+
+  .selActive .selChip {
+    background: transparent;
+    color: inherit;
+  }
+
+  .selRow .selChip svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .selActive {
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  .selActive .selHeading,
+  .selActive .selChip {
+    /* on-accent text/glyph: --bg-raise, never hardcoded white */
+    color: var(--bg-raise);
+  }
+
+  .selMeta,
+  .selArrow {
+    display: none;
+  }
+
+  .selHeading {
+    font-size: 0.9rem;
+  }
+
+  .panel {
+    min-height: 0;
   }
 }
 
@@ -598,14 +2254,35 @@
   }
 }
 
-@media (max-width: 640px) {
-  .audGrid {
+@media (max-width: 860px) {
+  /* FAQ collapses to a single stack */
+  .faq {
     grid-template-columns: 1fr;
-    gap: clamp(24px, 5vw, 32px);
+  }
+}
+
+@media (max-width: 700px) {
+  .audTag {
+    display: none;
+  }
+
+  .audRow {
+    grid-template-columns: auto auto minmax(0, 1fr);
   }
 
   .audText {
     max-width: none;
+  }
+}
+
+@media (max-width: 460px) {
+  .audGhost {
+    display: none;
+  }
+
+  .audRow {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
   }
 }
 
@@ -619,24 +2296,80 @@
   .metaRight {
     text-align: left;
   }
+
+  /* the pill joins the wrap flow instead of pushing right */
+  .turnPill {
+    margin-left: 0;
+  }
+
+  .vgSeoRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .vgBars {
+    width: 100%;
+    height: 44px;
+  }
+
+  .vgBars i {
+    height: calc(var(--h) * 44px);
+  }
+
+  .vgHostRow {
+    flex-wrap: wrap;
+  }
+
+  .vgCare {
+    gap: 14px;
+  }
 }
 
-/* —— Reduced motion: static, complete render ———————————— */
+/* —— Reduced motion: static, complete render ————————————
+   Every keyframe animates FROM a hidden state to the element's static
+   default, so killing the animation renders everything finished. */
 @media (prefers-reduced-motion: reduce) {
-  .specRow::after,
-  .audCell,
-  .faqQ,
-  .faqIcon,
-  .railNode {
-    transition: none;
-  }
-
-  .railNode {
-    background: var(--accent);
-    transform: translate(-1px, -50%) scale(1);
-  }
-
-  .faqItem[open] .faqA {
+  /* the price marker still has to be THERE — only the draw and the glint
+     go, so it renders as the finished stroke */
+  .hlPrice::after {
     animation: none;
+    transform: scaleX(1);
+    background-image: none;
+  }
+
+  .panel,
+  .panelRail,
+  .panelRow,
+  .vg,
+  .vgPage,
+  .vgRackRow,
+  .vgLed,
+  .vgRingFill,
+  .vgMsg,
+  .vgBars i,
+  .vgLive i,
+  .vgShield,
+  .vgDaysRail i {
+    animation: none;
+  }
+
+  .selRow,
+  .selChip,
+  .selHeading,
+  .selArrow,
+  .audRow,
+  .audRow::before,
+  .audGhost,
+  .audChip,
+  .audTag,
+  .stepChip,
+  .faqItem,
+  .faqItem::before,
+  .faqQ,
+  .faqToggle,
+  .faqAWrap,
+  .faqA p {
+    transition: none;
   }
 }

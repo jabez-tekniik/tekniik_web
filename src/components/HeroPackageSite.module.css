@@ -1,0 +1,584 @@
+/* HeroPackageSite — Website Package hero visual ("your site going live").
+   The build-board family: hairline ink frame, soft accent wash, diffusion
+   shadow, slow ambient float. The JSX phase clock reveals the mock site's
+   layers (nav → copy/media → tiles → https → live); this file animates the
+   swaps, the padlock ignition, the foot's labelled deliverables marquee,
+   and the floating £599 stamp. Color from theme tokens; transform/opacity
+   only (+ cheap color/shadow paints on small chips). */
+
+.wrap {
+  position: relative;
+}
+
+.frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 82% 8%, var(--accent-tint), transparent 55%),
+    var(--bg-raise);
+  box-shadow: 0 28px 56px -36px color-mix(in srgb, var(--navy) 45%, transparent);
+  overflow: hidden;
+  animation: wpsFloat 8s ease-in-out infinite;
+}
+
+/* —— browser chrome ————————————————————————— */
+/* right padding reserves the corner the floating £599 stamp overlaps, so
+   the status chip always stays visible left of it */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 112px 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.dots {
+  display: inline-flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.addr {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: var(--surface);
+  font-family: var(--f-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.lock {
+  flex-shrink: 0;
+  color: var(--text-faint);
+  transition: color 400ms var(--ease-out);
+}
+
+.lock.on {
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px var(--accent-bloom));
+}
+
+/* "https://" fades in when the certificate lands */
+.https {
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out);
+}
+
+.https.on {
+  opacity: 1;
+}
+
+/* build status chip — fresh mount per label replays the fade */
+.status,
+.statusLive {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: wpsStateIn 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.status {
+  color: var(--text-faint);
+}
+
+.statusLive {
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-tint);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.statusDot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.statusDot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: wpsPing 2.4s var(--ease-out, ease-out) infinite;
+}
+
+/* —— the mock site ————————————————————————— */
+.canvas {
+  flex: 1;
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 2.2vw, 26px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6vw, 18px);
+}
+
+/* every layer hides below its phase and rises in when the clock reaches it */
+.sNav,
+.sCopy,
+.sMedia,
+.sTiles {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 480ms var(--ease-out),
+    transform 480ms var(--ease-out);
+}
+
+.sNav.on,
+.sCopy.on,
+.sMedia.on,
+.sTiles.on {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* the media panel trails its copy by a beat */
+.sMedia {
+  transition-delay: 140ms;
+}
+
+.sNav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.sBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-display-bold);
+  font-size: 0.72rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.sBrandDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.sLinks {
+  display: inline-flex;
+  gap: 10px;
+  margin-left: auto;
+  font-family: var(--f-body);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.sCta {
+  font-family: var(--f-display-med);
+  font-size: 0.58rem;
+  color: var(--bg-raise);
+  background: var(--navy);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.sHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.sCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.sH {
+  font-family: var(--f-display-black);
+  font-size: clamp(0.92rem, 1.4vw, 1.12rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.sH em {
+  font-style: normal;
+  color: var(--accent-heading);
+}
+
+.sSub {
+  width: 72%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.sBtn {
+  margin-top: 2px;
+  font-family: var(--f-display-med);
+  font-size: 0.6rem;
+  color: var(--bg-raise);
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* media panel — a product-ish still (gradient + orb + caption chip) */
+.sMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(114, 204, 214, 0.35), transparent 55%),
+    linear-gradient(150deg, var(--accent-soft), var(--surface-2, var(--surface)));
+  overflow: hidden;
+}
+
+.sOrb {
+  position: absolute;
+  right: 12%;
+  bottom: 14%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, var(--accent), var(--navy) 78%);
+  opacity: 0.85;
+}
+
+.sMediaTag {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg-raise);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
+.sTiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* tiles stagger via transition-delay on the shared .on swap */
+.sTile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 11px;
+  border: 1px solid var(--border-soft);
+  border-top: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 420ms var(--ease-out),
+    transform 420ms var(--ease-out);
+}
+
+.sTiles.on .sTile {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sTiles.on .sTile:nth-child(2) {
+  transition-delay: 110ms;
+}
+
+.sTiles.on .sTile:nth-child(3) {
+  transition-delay: 220ms;
+}
+
+.sTileName {
+  font-family: var(--f-display-bold);
+  font-size: 0.66rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.sTileSub {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* —— foot: the deliverables ticker ————————————————
+   a seamless marquee of labelled chips (icon + name) so the six
+   deliverables are READ, not guessed from icons — duplicated sequence,
+   translateX(-50%) loop, faded edges via mask. */
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.footTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.footDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.ticker {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  /* black here is mask alpha, not a paint color */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.tickerTrack {
+  display: flex;
+  width: max-content;
+  animation: wpsTicker 26s linear infinite;
+}
+
+/* two identical sequences; -50% wraps seamlessly */
+.tickerSeq {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.tickerChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: var(--surface);
+  font-family: var(--f-mono);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tickerIcon {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* —— floating price stamp ———————————————————
+   navy stamp over the frame's top-right corner (band tokens, identical in
+   both ink modes); drifts on its own clock, offset from the frame's float. */
+.stamp {
+  position: absolute;
+  top: -20px;
+  right: -14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 18px 13px;
+  border-radius: var(--r-lg);
+  background: var(--band);
+  border: 1px solid var(--band-hairline);
+  box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--navy) 65%, transparent);
+  transform: rotate(2deg);
+  animation: wpsStampFloat 7s ease-in-out infinite;
+  transition: box-shadow 500ms var(--ease-out);
+}
+
+.stampLive {
+  box-shadow:
+    0 18px 40px -22px color-mix(in srgb, var(--navy) 65%, transparent),
+    0 0 26px var(--accent-bloom);
+}
+
+.stampLabel {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-on-band);
+}
+
+.stampValue {
+  font-family: var(--f-display-black);
+  font-size: 1.9rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--on-band);
+}
+
+.stampFoot {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-band-dim);
+}
+
+/* —— keyframes ———————————————————————————— */
+@keyframes wpsFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes wpsStampFloat {
+  0%,
+  100% {
+    transform: rotate(2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(2deg) translateY(-5px);
+  }
+}
+
+@keyframes wpsPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes wpsStateIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wpsTicker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* —— tight cards ————————————————————————— */
+@media (max-width: 480px) {
+  .sLinks {
+    display: none;
+  }
+
+  .foot {
+    gap: 8px;
+  }
+
+  /* the "One price" tag can't shrink (nowrap) — drop it so the ticker
+     gets the narrow card's full width */
+  .footTag {
+    display: none;
+  }
+
+  .head {
+    padding-right: 88px;
+  }
+
+  .stamp {
+    top: -14px;
+    right: -6px;
+    padding: 9px 14px 10px;
+  }
+
+  .stampValue {
+    font-size: 1.5rem;
+  }
+}
+
+/* —— reduced motion: the finished site, statics only ——————— */
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .stamp,
+  .tickerTrack,
+  .statusDot::after,
+  .status,
+  .statusLive {
+    animation: none;
+  }
+
+  .sNav,
+  .sCopy,
+  .sMedia,
+  .sTiles,
+  .sTile,
+  .lock,
+  .https,
+  .stamp {
+    transition: none;
+  }
+}

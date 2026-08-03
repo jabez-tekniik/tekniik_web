@@ -41,6 +41,10 @@ export default function FinalCta({
   ctaTo = '/contact',
   emailNote,
   email,
+  /* lighter-navy variant (Website Package): the band lifts toward
+     --band-raise from the top-left and a soft lighter-primary bloom pools
+     bottom-left, opposite the teal one */
+  tintPrimary = false,
 }) {
   const lines = Array.isArray(heading) ? heading : [heading]
   const magneticRef = useMagneticInk(0.3)
@@ -54,7 +58,7 @@ export default function FinalCta({
   const lead = splitAccent ? lines[0].slice(0, lines[0].length - accent.length) : null
 
   return (
-    <section className={styles.section}>
+    <section className={tintPrimary ? `${styles.section} ${styles.tintPrimary}` : styles.section}>
       <ChevronWatermark />
 
       <div className={`container ${styles.inner}`}>

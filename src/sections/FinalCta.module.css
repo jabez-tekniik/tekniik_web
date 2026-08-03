@@ -46,6 +46,36 @@
   }
 }
 
+/* —— tintPrimary variant (Website Package) ——
+   a hint of the lighter primary shade: the band lifts toward --band-raise
+   from the top-left, and a lighter-navy bloom pools bottom-left as a slow
+   counterweight to the teal one top-right. */
+.tintPrimary {
+  background: linear-gradient(150deg, var(--band-raise) 0%, var(--band) 52%);
+}
+
+.tintPrimary::after {
+  content: '';
+  position: absolute;
+  left: -14%;
+  bottom: -32%;
+  width: clamp(380px, 46vw, 760px);
+  aspect-ratio: 1;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  /* lighter shade of the brand navy #202E5D */
+  background: radial-gradient(
+    circle at center,
+    rgba(101, 124, 199, 0.22),
+    rgba(101, 124, 199, 0.11) 40%,
+    rgba(101, 124, 199, 0.04) 60%,
+    transparent 76%
+  );
+  animation: bloomBreathe 17s ease-in-out infinite alternate-reverse;
+  will-change: transform, opacity;
+}
+
 /* —— chevron watermark —— */
 .watermark {
   position: absolute;
@@ -196,7 +226,8 @@
   .emailText::after {
     transition: none;
   }
-  .section::before {
+  .section::before,
+  .tintPrimary::after {
     animation: none;
   }
 }

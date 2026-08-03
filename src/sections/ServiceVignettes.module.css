@@ -1582,7 +1582,10 @@
    modes) with camera dot, edge buttons and an inset screen. */
 .tablet {
   position: absolute;
-  left: 2%;
+  /* 8% (not 2%) — the cqh caps on both device widths end the group near
+     92%, so 8% balances the margins and centers the composition (user,
+     2026-08-03: it sat visibly left of center) */
+  left: 8%;
   top: 50%;
   width: min(67%, 90cqh * 4 / 3);
   aspect-ratio: 4 / 3;
@@ -1673,7 +1676,8 @@
    into a squat tablet-ish slab. */
 .phone {
   position: absolute;
-  left: 64%;
+  /* keeps its 62% offset from the tablet's left edge — see .tablet */
+  left: 70%;
   top: 50%;
   width: min(26%, 44cqh);
   aspect-ratio: 9 / 19.5;

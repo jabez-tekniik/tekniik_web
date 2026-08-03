@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
+import TitleManager from './components/TitleManager.jsx'
 import Preloader from './components/Preloader.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
@@ -60,6 +61,7 @@ export default function App() {
         onToggleTheme={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
       />
       <ScrollToTop />
+      <TitleManager />
       <main id="main">
         <div key={location.pathname} className="route">
           <Routes location={location}>

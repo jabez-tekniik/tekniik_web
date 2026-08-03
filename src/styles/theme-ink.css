@@ -60,6 +60,16 @@
   --accent-shadow: rgba(114, 204, 214, 0.12);
   --accent-border: rgba(114, 204, 214, 0.18);
 
+  /* —— logo-primary heading highlights (/website-package) ——
+     the logo carries TWO primary blues: navy #202E5D (dark) and teal
+     #72CCD6 (light). lift = the LIGHT primary (teal) for the hero price
+     accent, deep = the dark primary for light-canvas accents, band = the
+     light primary on navy bands. On this dark canvas the dark navy is
+     invisible, so lift/deep both resolve to the teal. */
+  --primary-heading-lift: var(--accent);
+  --primary-heading-deep: var(--accent);
+  --primary-heading-band: var(--accent-on-band);
+
   --success: #34d399;
   --danger: #f87171;
 
@@ -98,6 +108,9 @@
   --band-hairline: rgba(255, 255, 255, 0.12);
   --band-hairline-strong: rgba(255, 255, 255, 0.2);
   --accent-on-band: #72ccd6;
+  /* teal band — the light logo primary as a full section background
+     (/website-package How-it-works); identical in both modes */
+  --band-teal: #72ccd6;
 
   /* —— terminal syntax (teal-graded, on raised navy-black) —— */
   --code-bg: #0d1322;
@@ -184,6 +197,16 @@
   --accent-shadow: rgba(14, 124, 140, 0.16);
   --accent-border: rgba(14, 124, 140, 0.22);
 
+  /* —— logo-primary heading highlights (/website-package) ——
+     the logo carries TWO primary blues: navy #202E5D (dark) and teal
+     #72CCD6 (light). lift = the LIGHT primary for the hero price accent
+     (via --accent, this canvas's contrast-safe teal-ink), deep = the
+     dark primary for white-canvas accents, band = the light primary at
+     full #72CCD6 on navy bands. */
+  --primary-heading-lift: var(--accent);
+  --primary-heading-deep: var(--navy);
+  --primary-heading-band: var(--accent-on-band);
+
   --success: #0e9f6e;
   --danger: #dc2626;
 
@@ -222,6 +245,9 @@
   --band-hairline: rgba(255, 255, 255, 0.12);
   --band-hairline-strong: rgba(255, 255, 255, 0.2);
   --accent-on-band: #72ccd6;
+  /* teal band — the light logo primary as a full section background
+     (/website-package How-it-works); identical in both modes */
+  --band-teal: #72ccd6;
 
   /* —— terminal syntax (terminal stays dark on the light canvas) —— */
   --code-bg: #0d1322;

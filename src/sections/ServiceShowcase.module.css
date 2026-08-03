@@ -5,9 +5,6 @@
 
 .section {
   position: relative;
-  /* the vignette grid read cramped against its neighbours — extra air above
-     and below on top of the global section rhythm (user, 2026-08-03) */
-  padding-block: calc(var(--section) + clamp(32px, 5vw, 72px));
 }
 
 /* —— header —— */
@@ -133,6 +130,10 @@
   margin-top: auto;
   border-top: 1px solid var(--border);
   background: var(--surface);
+  /* air above and below the scene — the vignettes read cramped pressed
+     against the copy ledger and card edge (user, 2026-08-03). The blueprint
+     grid ::before still covers the full stage, so the scene floats on it. */
+  padding-block: clamp(14px, 1.8vw, 26px);
 }
 
 /* blueprint grid, faded at the edges */

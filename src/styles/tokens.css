@@ -212,6 +212,14 @@
   --band-hairline: rgba(255, 255, 255, 0.1);
   --band-hairline-strong: rgba(255, 255, 255, 0.16);
   --accent-on-band: #8b8bff; /* lighter indigo for legibility on near-black */
+  --band-teal: #72ccd6; /* teal band (/website-package How-it-works) */
+
+  /* —— logo-primary heading highlights (/website-package) — the logo's
+     two primary blues (navy dark, teal light); base-theme fallback, the
+     ink themes override per mode —— */
+  --primary-heading-lift: var(--accent);
+  --primary-heading-deep: #202e5d;
+  --primary-heading-band: var(--accent-on-band);
 
   /* —— elevation (used sparingly, hover only) —— */
   --shadow-card-hover: 0 12px 40px rgba(10, 15, 28, 0.06),

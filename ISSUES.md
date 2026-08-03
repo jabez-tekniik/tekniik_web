@@ -67,13 +67,15 @@ site has neither a consent banner nor any analytics integration yet. When
 analytics is added, the banner must land with it (accept/reject non-essential,
 per the legal spec).
 
-### No per-page `<title>`/meta description anywhere on the site (medium, SEO)
-The SPA has no head management — every route shows the static `index.html`
-title. The services spec ships an SEO table (unique meta title + description
-per services page), and the same applies site-wide (Home/About/Contact/cases).
-Deliberately NOT bolted onto the 4 new service detail pages alone (2026-07-17)
-so it lands once, consistently: add a tiny `useDocumentTitle`/head hook (or
-react-helmet-style module) covering ALL routes in one pass.
+### Per-page `<title>` — DONE 2026-08-03; meta descriptions still missing (low, SEO)
+`src/components/TitleManager.jsx` (mounted in App.jsx) now sets
+`document.title` per route from a pathname map: home keeps the index.html
+default, every other route renders `Page | Tekniik`, unmapped paths get
+`Page Not Found | Tekniik`. All valid dynamic slugs (/services/:slug,
+/case/:slug) are enumerated in the map — add new routes there. REMAINING:
+per-page meta descriptions (the services spec ships an SEO table with unique
+descriptions) — client-side JS can set them, but for real SEO value they
+want prerendering/SSR; revisit if organic search matters.
 
 ### `/img/services/*.webp` no longer used by ANY page (low)
 The 2026-07-14 vignette revamp replaced the homepage ServiceShowcase image

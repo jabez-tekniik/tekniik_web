@@ -66,15 +66,26 @@ export default function Footer() {
           <div key={col.label}>
             <div className={styles.colHead}>{col.label}</div>
             <ul className={styles.colLinks}>
-              {col.links.map((l) => (
-                <li key={l.label}>
-                  {l.to.startsWith('/') ? (
-                    <Link to={l.to}>{l.label}</Link>
-                  ) : (
-                    <a href={l.to}>{l.label}</a>
-                  )}
-                </li>
-              ))}
+              {col.links.map((l) => {
+                // links flagged newTab open in a fresh tab (the Business
+                // Starter Pack page is a standalone pitch page)
+                const ext = l.newTab
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {}
+                return (
+                  <li key={l.label}>
+                    {l.to.startsWith('/') ? (
+                      <Link to={l.to} {...ext}>
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.to} {...ext}>
+                        {l.label}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
         ))}
