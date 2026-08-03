@@ -45,7 +45,7 @@
 }
 
 .statementAccent {
-  color: var(--accent);
+  color: var(--accent-heading);
 }
 
 /* —— paragraphs: left-aligned editorial column —— */

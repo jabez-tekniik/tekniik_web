@@ -1,7 +1,7 @@
 import CaseStudy from './CaseStudy.jsx'
 import { CASE_AUTOSCREEN } from '../data/content.js'
 
-/* ScreenFix — live dispatch platform, so the hero runs the AppScene
+/* SafeGlass SA — live dispatch platform, so the hero runs the AppScene
    dashboard vignette (the closest visual metaphor for on-demand job
    tracking). Copy verbatim from CASE_AUTOSCREEN. */
 export default function CaseAutoScreen() {

@@ -8,9 +8,9 @@ import { PORTFOLIO } from '../data/content.js'
 import styles from './Work.module.css'
 
 /* Portfolio — /work (Deep Ink). Hero meta bar + "Our work." poster, the
-   CareGrid featured navy card (the "hero of the portfolio"), then the
-   remaining seven projects on a 2-col grid mirroring the homepage work-card
-   idiom (numbered, region pin chip, tag pills, result foot, hover draw).
+   Bright Care Services featured navy card (the "hero of the portfolio"),
+   then the remaining six projects on a 2-col grid (numbered, region pin
+   chip, tag pills, result foot, hover draw).
    Copy comes verbatim from PORTFOLIO in content.js (locked spec). */
 
 function LocationGlyph({ className }) {
@@ -27,7 +27,7 @@ function LocationGlyph({ className }) {
   )
 }
 
-/* CareGrid — full-width navy anchor card. Non-interactive on purpose: its
+/* Bright Care Services — full-width navy anchor card. Non-interactive on purpose: its
    case study has no routed page yet ("when available" per spec), so the
    card carries no CTA rather than a dead link. */
 function FeaturedCard({ item }) {

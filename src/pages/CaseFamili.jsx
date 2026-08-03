@@ -1,7 +1,7 @@
 import CaseStudy from './CaseStudy.jsx'
 import { CASE_FAMILI } from '../data/content.js'
 
-/* StoryNest — family-archive platform whose headline features live on
+/* Heritage Tree — family-archive platform whose headline features live on
    devices (voice-to-text story capture, photo scanning, pinch-to-zoom tree
    navigation), so the hero runs the MobileScene tablet + phone vignette;
    the AppScene metrics dashboard misreads a heritage archive. Copy

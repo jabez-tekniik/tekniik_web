@@ -1,17 +1,15 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import Tag from '../components/Tag.jsx'
 import { IconArrow } from '../components/Icon.jsx'
 import { PORTFOLIO } from '../data/content.js'
+import useReveal from '../hooks/useReveal.js'
 import styles from './Portfolio.module.css'
 
-/* Bento cell spans by data, not position (user: cards with no case study
-   run smaller): CareGrid is the 2x2 navy anchor, routed case studies get
-   wide tiles, everything else tucks in as a compact square. Items render
-   featured → routed → rest so the numbering follows the visual order the
-   dense grid produces. */
-const cellFor = (item) =>
-  item.featured ? 'cellBig' : item.route ? 'cellWide' : 'cellSmall'
+/* Case-study links hidden for now (user, 2026-08-03) — flip to true to
+   restore the "View case study" CTAs and the row/panel routing. */
+const SHOW_CASE_LINKS = false
 
 function LocationGlyph({ className }) {
   return (
@@ -27,67 +25,100 @@ function LocationGlyph({ className }) {
   )
 }
 
-/* One work card. Tags are ordered [industry, type, country]; the country
-   reads as a region chip up top, the first two as pills below. Featured
-   (CareGrid) is a permanent navy card spanning two columns with its
-   description; routed items (GlowBook, ScreenFix) carry a case-study CTA.
-   Hover lift + accent draw are pure CSS, pointer-fine only. */
-function Card({ item, index, compact }) {
-  const interactive = !!item.route
+/* One ledger row. On the desktop split it is just the oversized name line
+   (num / node dot / title / region) and hovering or focusing it previews
+   the project in the dossier panel; on touch and narrow viewports the
+   .rowBody (desc, tags, result, CTA) is always shown inline instead.
+   Routed projects render as Links to their case study. */
+function Row({ item, index, active, onActivate }) {
+  const interactive = SHOW_CASE_LINKS && !!item.route
   const num = String(index + 1).padStart(2, '0')
   const region = item.tags[item.tags.length - 1]
-  // small tiles carry a single pill (the project type) so tags never wrap
-  const pills = compact ? item.tags.slice(1, -1) : item.tags.slice(0, -1)
+  const pills = item.tags.slice(0, -1)
 
-  const className = `${styles.card} ${item.featured ? styles.featured : ''} ${
-    interactive ? styles.interactive : ''
-  }`
+  const className = [
+    styles.row,
+    active ? styles.rowActive : '',
+    interactive ? styles.rowLink : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   const inner = (
     <>
-      <span className={styles.accentLine} aria-hidden="true" />
-
-      <div className={styles.cardTop}>
-        <span className={styles.num}>{num}</span>
-        <span className={styles.region}>
+      <div className={styles.rowHead}>
+        <span className={styles.rowNum}>{num}</span>
+        <span className={styles.rowDot} aria-hidden="true" />
+        <h3 className={styles.rowTitle}>{item.title}</h3>
+        {interactive && <IconArrow className={styles.rowArrow} />}
+        <span className={styles.rowRegion}>
           <LocationGlyph className={styles.regionIcon} />
           {region}
         </span>
       </div>
 
-      <h3 className={styles.title}>{item.title}</h3>
-
-      {item.featured && <p className={styles.desc}>{item.desc}</p>}
-
-      <div className={styles.tags}>
-        {pills.map((t) => (
-          <Tag key={t}>{t}</Tag>
-        ))}
-      </div>
-
-      <div className={styles.foot}>
-        <span className={styles.result}>{item.result}</span>
-        {interactive && (
-          <span className={styles.cta}>
-            View case study
-            <IconArrow className={styles.ctaIcon} />
-          </span>
-        )}
+      <div className={styles.rowBody}>
+        <p className={styles.rowDesc}>{item.desc}</p>
+        <div className={styles.rowTags}>
+          {pills.map((t) => (
+            <Tag key={t}>{t}</Tag>
+          ))}
+        </div>
+        <div className={styles.rowFoot}>
+          <span className={styles.rowResult}>{item.result}</span>
+          {interactive && (
+            <span className={styles.rowCta}>
+              View case study
+              <IconArrow className={styles.ctaIcon} />
+            </span>
+          )}
+        </div>
       </div>
     </>
   )
 
   if (interactive) {
     return (
-      <Link to={item.route} className={className}>
+      <Link
+        to={item.route}
+        className={className}
+        onMouseEnter={onActivate}
+        onFocus={onActivate}
+        aria-current={active ? 'true' : undefined}
+      >
         {inner}
       </Link>
     )
   }
-  return <article className={className}>{inner}</article>
+  return (
+    <article
+      className={className}
+      tabIndex={0}
+      onMouseEnter={onActivate}
+      onFocus={onActivate}
+      aria-current={active ? 'true' : undefined}
+    >
+      {inner}
+    </article>
+  )
 }
 
+/* Portfolio — "The work ledger". The homepage OUR WORK section is an
+   editorial project index: hairline ledger of oversized project names on
+   the left, a sticky navy dossier panel on the right previewing whichever
+   row is hovered/focused (keyed remount replays its entrance). The panel
+   column deliberately uses useReveal directly (opacity-only fade) —
+   wrapping it in <Reveal> would leave a translateY(0) transform on an
+   ancestor and break position: sticky. */
 export default function Portfolio() {
+  const items = PORTFOLIO.items
+  const [active, setActive] = useState(0)
+  const [panelRef, panelSeen] = useReveal()
+
+  const current = items[active]
+  const num = String(active + 1).padStart(2, '0')
+  const total = String(items.length).padStart(2, '0')
+
   return (
     <section id="work" className={`section ${styles.section}`}>
       <div className="container">
@@ -103,20 +134,60 @@ export default function Portfolio() {
           <p className={styles.sub}>{PORTFOLIO.sub}</p>
         </Reveal>
 
-        <div className={styles.grid}>
-          {[
-            ...PORTFOLIO.items.filter((p) => p.featured),
-            ...PORTFOLIO.items.filter((p) => !p.featured && p.route),
-            ...PORTFOLIO.items.filter((p) => !p.featured && !p.route),
-          ].map((item, i) => (
-            <Reveal
-              key={item.slug}
-              delay={Math.min(i, 5) * 50}
-              className={`${styles.cardWrap} ${styles[cellFor(item)]}`}
-            >
-              <Card item={item} index={i} compact={!item.featured && !item.route} />
-            </Reveal>
-          ))}
+        <div className={styles.ledger}>
+          <div className={styles.index}>
+            {items.map((item, i) => (
+              <Reveal key={item.slug} delay={Math.min(i, 6) * 60} className={styles.rowWrap}>
+                <Row
+                  item={item}
+                  index={i}
+                  active={i === active}
+                  onActivate={() => setActive(i)}
+                />
+              </Reveal>
+            ))}
+          </div>
+
+          <div
+            ref={panelRef}
+            className={`${styles.panelCol} ${panelSeen ? styles.panelColIn : ''}`}
+          >
+            <div className={styles.panel} key={current.slug}>
+              <span className={styles.panelRail} aria-hidden="true" />
+              <span className={styles.panelGhost} aria-hidden="true">
+                {num}
+              </span>
+
+              <div className={styles.panelTop}>
+                <span className={styles.panelIndex}>
+                  {num} / {total}
+                </span>
+                <span className={styles.panelRegion}>
+                  <LocationGlyph className={styles.panelRegionIcon} />
+                  {current.tags[current.tags.length - 1]}
+                </span>
+              </div>
+
+              <h3 className={styles.panelTitle}>{current.title}</h3>
+              <p className={styles.panelDesc}>{current.desc}</p>
+
+              <div className={styles.panelTags}>
+                {current.tags.slice(0, -1).map((t) => (
+                  <Tag key={t}>{t}</Tag>
+                ))}
+              </div>
+
+              <div className={styles.panelFoot}>
+                <span className={styles.panelResult}>{current.result}</span>
+                {SHOW_CASE_LINKS && current.route && (
+                  <Link to={current.route} className={styles.panelCta}>
+                    View case study
+                    <IconArrow className={styles.ctaIcon} />
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

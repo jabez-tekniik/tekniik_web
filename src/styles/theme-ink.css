@@ -48,6 +48,8 @@
 
   /* —— accent: teal signal (logo secondary) — the ONLY color —— */
   --accent: #72ccd6;
+  /* highlighted heading words stay teal on the dark canvas */
+  --accent-heading: #72ccd6;
   --accent-deep: #4fa9b5;
   --accent-2: #72ccd6;
   --accent-3: #4fa9b5;
@@ -169,6 +171,9 @@
 
   /* —— accent: teal-ink (darkened for light-canvas contrast) —— */
   --accent: #0e7c8c;
+  /* highlighted heading words go brand navy on the white canvas
+     (user request 2026-08-03); band sections keep --accent-on-band */
+  --accent-heading: var(--navy);
   --accent-deep: #0a616e;
   --accent-2: #0e7c8c;
   --accent-3: #0a616e;

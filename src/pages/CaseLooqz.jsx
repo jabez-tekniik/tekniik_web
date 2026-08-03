@@ -1,7 +1,7 @@
 import CaseStudy from './CaseStudy.jsx'
 import { CASE_LOOQZ } from '../data/content.js'
 
-/* GlowBook — mobile-first booking marketplace, so the hero runs the
+/* Glow & Co — mobile-first booking marketplace, so the hero runs the
    MobileScene vignette (same discipline pairing as /services/mobile-apps,
    which cross-links here). Copy verbatim from CASE_LOOQZ. */
 export default function CaseLooqz() {

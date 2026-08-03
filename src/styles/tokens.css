@@ -137,6 +137,9 @@
 
   --accent: #5b5bff;
   --accent-deep: #4338ca;
+  /* highlighted words inside display headings (falls back to --accent;
+     the ink themes override it per canvas) */
+  --accent-heading: var(--accent);
   --accent-soft: rgba(91, 91, 255, 0.08);
   --accent-tint: rgba(91, 91, 255, 0.04);
   --accent-ring: rgba(91, 91, 255, 0.32);

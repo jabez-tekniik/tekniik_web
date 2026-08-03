@@ -4,7 +4,8 @@
 export const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
-  { label: 'Our Work', to: '/work' },
+  // Our Work hidden from the nav for now (user, 2026-08-03) — uncomment to restore
+  // { label: 'Our Work', to: '/work' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ]
@@ -164,17 +165,17 @@ export const PORTFOLIO = {
   items: [
     {
       slug: 'tcc',
-      title: 'CareGrid',
+      title: 'Bright Care Services',
       tags: ['Healthcare', 'Web Platform', 'UK'],
-      desc: 'We developed a comprehensive all-in-one management platform for CareGrid, a leader in the healthcare industry. The application streamlines operations for both clients and staff, supporting efficient management and seamless service delivery across the organisation.',
+      desc: 'We developed a comprehensive all-in-one management platform for Bright Care Services, a leader in the healthcare industry. The application streamlines operations for both clients and staff, supporting efficient management and seamless service delivery across the organisation.',
       result: 'Serving 1,000+ clients with streamlined operations',
       featured: true,
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'looqz',
-      title: 'GlowBook',
-      tags: ['Beauty & Wellness', 'Booking Platform', 'UK'],
+      title: 'Glow & Co',
+      tags: ['Beauty & Wellness', 'Booking Platform', 'Mobile App', 'UK'],
       desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings seamlessly online.',
       result: 'End-to-end booking with real-time availability',
       route: '/case/looqz',
@@ -182,7 +183,7 @@ export const PORTFOLIO = {
     },
     {
       slug: 'escape',
-      title: 'ClearPath',
+      title: 'Resolve Debt Services',
       tags: ['Financial Services', 'Web Application', 'South Africa'],
       desc: 'An end-to-end platform linking users with experienced South African attorneys for debt review removal, helping hundreds achieve financial freedom through a seamless online process.',
       result: 'Hundreds of customers helped to financial freedom',
@@ -190,8 +191,8 @@ export const PORTFOLIO = {
     },
     {
       slug: 'famili',
-      title: 'StoryNest',
-      tags: ['Family & Lifestyle', 'Cloud Platform', 'South Africa'],
+      title: 'Heritage Tree',
+      tags: ['Family & Lifestyle', 'Cloud Platform', 'Mobile App', 'South Africa'],
       desc: "A cloud-based family story preservation platform where South African families can capture, organise, and share their most precious memories and stories for future generations.",
       result: 'Every family has a story worth preserving',
       route: '/case/famili',
@@ -199,16 +200,16 @@ export const PORTFOLIO = {
     },
     {
       slug: 'autoscreen',
-      title: 'ScreenFix',
-      tags: ['Automotive', 'Service Website', 'South Africa'],
-      desc: "A professional service website for ScreenFix, South Africa's auto glass repair and replacement specialists. Built for fast quote requests and seamless customer booking.",
+      title: 'SafeGlass SA',
+      tags: ['Automotive', 'Service Website', 'Mobile App', 'South Africa'],
+      desc: "A professional service website for SafeGlass SA, the country's auto glass repair and replacement specialists. Built for fast quote requests and seamless customer booking.",
       result: 'Streamlined customer booking and quote requests',
       route: '/case/autoscreen',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'cape',
-      title: 'StoneCraft',
+      title: 'Cape Stone & Surface',
       tags: ['Manufacturing', 'E-commerce Website', 'South Africa'],
       desc: 'A customer-centric website for premium granite worktops in Cape Town, featuring seamless product browsing, viewing, and quote requests that have driven numerous customer enquiries.',
       result: 'Significant increase in online customer enquiries',
@@ -216,18 +217,10 @@ export const PORTFOLIO = {
     },
     {
       slug: 'refurnish',
-      title: 'ReNest',
-      tags: ['Retail & Warehouse', 'Web + POS App', 'UK'],
-      desc: 'A new website and POS application for ReNest in Manchester to digitise warehouse operations, facilitate online sale of refurbished products, and enhance in-store sales management.',
+      title: 'Doncaster Refurnish',
+      tags: ['Retail & Warehouse', 'Driver + Shopping App', 'Web + POS System', 'UK'],
+      desc: 'A new website and POS application for Doncaster Refurnish to digitise warehouse operations, facilitate online sale of refurbished products, and enhance in-store sales management.',
       result: 'Digitised warehouse operations and online sales',
-      stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
-    },
-    {
-      slug: 'southern',
-      title: 'BoxWorks',
-      tags: ['Packaging Industry', 'Product Website', 'UK'],
-      desc: "A product catalogue website presenting BoxWorks's diverse range of packaging clearly, with categorised products to enhance browsing and easy enquiry forms for efficient customer communication.",
-      result: 'Enhanced product discovery and customer enquiries',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
   ],
@@ -242,22 +235,22 @@ export const TESTIMONIALS = [
   {
     text: 'They took the time to understand how care actually works before writing a single line of code. The platform now runs our entire operation, and the team is still with us today.',
     name: 'Sarah Whitmore',
-    role: 'Operations Director, CareGrid',
+    role: 'Operations Director, Bright Care Services',
   },
   {
     text: 'From the first call it felt like they were part of our team. Bookings that used to take phone calls now happen in seconds, and our salons noticed the difference immediately.',
     name: 'Hannah Whitfield',
-    role: 'Founder, GlowBook',
+    role: 'Founder, Glow & Co',
   },
   {
     text: 'Fast, precise, and no surprises. They shipped exactly what was scoped, in the week they said they would. Quote requests have more than doubled since the site went live.',
     name: 'Johan van der Merwe',
-    role: 'Managing Director, ScreenFix',
+    role: 'Managing Director, SafeGlass SA',
   },
   {
     text: 'We are craftsmen, not technologists, and they respected that. They translated what we do into a website that finally sells it properly. Enquiries have never been stronger.',
     name: 'Pieter Botha',
-    role: 'Owner, StoneCraft',
+    role: 'Owner, Cape Stone & Surface',
   },
 ]
 
@@ -446,7 +439,7 @@ export const SERVICE_PAGES = {
     sceneKey: 'web',
     caseStudy: {
       kicker: 'Case study',
-      title: 'ScreenFix',
+      title: 'SafeGlass SA',
       desc: "A professional service website for South Africa's auto glass repair specialists, built for fast quote requests and seamless customer booking.",
       result: 'Streamlined customer booking and quote requests',
       to: '/case/autoscreen',
@@ -474,7 +467,7 @@ export const SERVICE_PAGES = {
     sceneKey: 'mobile',
     caseStudy: {
       kicker: 'Case study',
-      title: 'GlowBook',
+      title: 'Glow & Co',
       desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings online.',
       result: 'End-to-end booking with real-time availability',
       to: '/case/looqz',
@@ -594,7 +587,7 @@ export const CONTACT_PAGE = {
 /* CASE: LOOQZ */
 export const CASE_LOOQZ = {
   eyebrow: 'CASE STUDY',
-  title: 'GlowBook',
+  title: 'Glow & Co',
   sub: 'The modern marketplace for beauty and self-care. Find and book verified beauty & wellness professionals near you.',
   stats: [
     { value: '2,100+', label: 'Verified professionals' },
@@ -607,7 +600,7 @@ export const CASE_LOOQZ = {
     'For salon owners and independent beauty professionals, the problem is equally frustrating. Missed calls mean missed bookings. Manual scheduling leads to double-bookings and no-shows. And without a discoverable online presence, talented professionals struggle to attract new clients beyond their immediate circle.',
   ],
   builtIntro:
-    'We designed and built GlowBook as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories (Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa) with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
+    'We designed and built Glow & Co as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories (Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa) with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
   customerHeading: 'For customers:',
   customer: [
     'Location-aware search with filters for service type, price, availability, and ratings',
@@ -631,7 +624,7 @@ export const CASE_LOOQZ = {
     { n: '03', title: 'Show up and glow', desc: 'Arrive, relax, enjoy. Share your experience to help the community.' },
   ],
   result: [
-    'GlowBook launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews, a strong signal that the product genuinely works for both sides of the marketplace.',
+    'Glow & Co launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews, a strong signal that the product genuinely works for both sides of the marketplace.',
     'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+), with verified salons across major UK cities maintaining consistently high ratings.',
   ],
   resultIntro: 'As one verified client put it:',
@@ -651,7 +644,7 @@ export const CASE_LOOQZ = {
 /* CASE: AUTOSCREEN */
 export const CASE_AUTOSCREEN = {
   eyebrow: 'CASE STUDY',
-  title: 'ScreenFix',
+  title: 'SafeGlass SA',
   sub: 'Auto glass repair and replacement, dispatched to you on demand. A platform connecting vehicle owners with verified fitters across South Africa.',
   stats: [
     { value: '15,000+', label: 'Jobs completed' },
@@ -661,10 +654,10 @@ export const CASE_AUTOSCREEN = {
   ],
   challenge: [
     'When your windscreen cracks, you need it fixed fast. But the traditional auto glass experience in South Africa is fragmented. Customers call around for quotes, struggle to verify quality, and have no visibility into when a fitter will actually arrive. Pricing is opaque, and there’s no guarantee the glass meets safety standards.',
-    'ScreenFix needed more than a website. They needed a service platform: an on-demand dispatch system that works like Uber for auto glass, connecting vehicle owners with nearby verified fitters in real time.',
+    'SafeGlass SA needed more than a website. They needed a service platform: an on-demand dispatch system that works like Uber for auto glass, connecting vehicle owners with nearby verified fitters in real time.',
   ],
   builtIntro:
-    'We designed and built ScreenFix as a full-service marketplace platform with on-demand dispatch, live job tracking, and an instant quoting engine:',
+    'We designed and built SafeGlass SA as a full-service marketplace platform with on-demand dispatch, live job tracking, and an instant quoting engine:',
   coreHeading: 'Core platform:',
   core: [
     'Instant quote tool: select vehicle make, model, and year to get pricing in minutes',
@@ -690,8 +683,8 @@ export const CASE_AUTOSCREEN = {
     { n: '04', title: 'Get it done', desc: 'Service at your location. Pay when satisfied.' },
   ],
   result: [
-    'ScreenFix has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ suburbs across Johannesburg, Cape Town, Durban, Pretoria, and Gqeberha, with same-day service available in high-demand areas.',
-    'The on-demand dispatch model transformed ScreenFix from a traditional service business into a technology-driven marketplace, giving them a structural advantage over competitors still operating on phone calls and manual coordination.',
+    'SafeGlass SA has completed over 15,000 jobs through its platform with a 4.8-star average rating and 98% customer satisfaction. The network now includes 500+ verified fitters covering 100+ suburbs across Johannesburg, Cape Town, Durban, Pretoria, and Gqeberha, with same-day service available in high-demand areas.',
+    'The on-demand dispatch model transformed SafeGlass SA from a traditional service business into a technology-driven marketplace, giving them a structural advantage over competitors still operating on phone calls and manual coordination.',
   ],
   resultIntro: 'What customers say:',
   quotes: [
@@ -713,10 +706,10 @@ export const CASE_AUTOSCREEN = {
   },
 }
 
-/* CASE: FAMILI (StoryNest) */
+/* CASE: FAMILI (Heritage Tree) */
 export const CASE_FAMILI = {
   eyebrow: 'CASE STUDY',
-  title: 'StoryNest',
+  title: 'Heritage Tree',
   sub: 'The living archive where every family holds a universe of untold stories. A platform for preserving lineage, heritage, and the stories that connect generations.',
   stats: [
     { value: '12,400+', label: 'People documented' },
@@ -726,10 +719,10 @@ export const CASE_FAMILI = {
   ],
   challenge: [
     "Across Africa and its diaspora, oral histories spanning centuries are at risk of being lost. Family stories of migrations, traditions, hardship, and triumph exist only in the memories of elders. Genealogy platforms built for Western audiences don't account for the depth and complexity of African family structures, clan systems, or oral tradition.",
-    'StoryNest needed to be something entirely different: a living archive that honours the way African families actually remember, through stories, not just names and dates. A platform where families can document lineages spanning 18 generations, connect across clan boundaries, and preserve the narratives that give meaning to heritage.',
+    'Heritage Tree needed to be something entirely different: a living archive that honours the way African families actually remember, through stories, not just names and dates. A platform where families can document lineages spanning 18 generations, connect across clan boundaries, and preserve the narratives that give meaning to heritage.',
   ],
   builtIntro:
-    'We designed and built StoryNest as a warm, editorial-quality platform that treats family history with the reverence it deserves. Part museum, part literary magazine, part genealogy tool.',
+    'We designed and built Heritage Tree as a warm, editorial-quality platform that treats family history with the reverence it deserves. Part museum, part literary magazine, part genealogy tool.',
   archiveHeading: 'The living archive:',
   archive: [
     'Public and private family trees: explore documented lineages or build your own privately',
@@ -757,7 +750,7 @@ export const CASE_FAMILI = {
     { n: '03', title: 'Link your roots', desc: 'Link it to your private family space, verified by family owners for authenticity.' },
   ],
   result: [
-    'StoryNest has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo), alongside hundreds of everyday families building their own archives.',
+    'Heritage Tree has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo), alongside hundreds of everyday families building their own archives.',
     'The largest public tree (Mahlangu) has 202 documented members. Cross-family collaboration is active: three Dlamini branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
     'The platform\'s editorial quality (warm typography, archive-inspired design, and long-form storytelling) sets it apart from every other genealogy tool on the market. As the footer states: "Built to last generations."',
   ],
@@ -765,7 +758,7 @@ export const CASE_FAMILI = {
   quotes: [
     {
       text: 'Every generation that passes without recording its stories is a library lost forever.',
-      who: 'The StoryNest founding principle',
+      who: 'The Heritage Tree founding principle',
     },
   ],
   tags: ['Living Archive', 'Family Trees', 'Collaborative Research', 'Mobile App', 'Voice-to-Text', 'Heritage Bridges'],
@@ -794,7 +787,8 @@ export const FOOTER = {
       links: [
         { label: 'Home', to: '/' },
         { label: 'Services', to: '/services' },
-        { label: 'Our Work', to: '/work' },
+        // Our Work hidden from the footer for now (user, 2026-08-03) — uncomment to restore
+        // { label: 'Our Work', to: '/work' },
         { label: 'Support', to: '/support' },
         { label: 'About', to: '/about' },
         { label: 'Contact', to: '/contact' },

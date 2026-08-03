@@ -443,7 +443,7 @@
 }
 
 .bH1Accent {
-  color: var(--accent);
+  color: var(--accent-heading);
 }
 
 .bSub {

@@ -1,5 +1,5 @@
 /* Work — the portfolio index at /work (Deep Ink).
-   Hero meta bar + poster headline, the CareGrid featured navy card
+   Hero meta bar + poster headline, the Bright Care Services featured navy card
    ("hero of the portfolio"), a 2-col grid of the remaining seven projects
    mirroring the homepage work-card idiom, then FinalCta.
    Tokens only — both ink modes adapt. Transform/opacity motion only;
@@ -94,7 +94,7 @@
 }
 
 .hAccent {
-  color: var(--accent);
+  color: var(--accent-heading);
 }
 
 .sub {
@@ -113,7 +113,7 @@
   padding-bottom: clamp(72px, 9vw, 130px);
 }
 
-/* ——— CareGrid — full-width navy anchor card ——— */
+/* ——— Bright Care Services — full-width navy anchor card ——— */
 
 .featuredWrap {
   display: flex;

@@ -5,6 +5,9 @@
 
 .section {
   position: relative;
+  /* the vignette grid read cramped against its neighbours — extra air above
+     and below on top of the global section rhythm (user, 2026-08-03) */
+  padding-block: calc(var(--section) + clamp(32px, 5vw, 72px));
 }
 
 /* —— header —— */
@@ -62,7 +65,7 @@
 
 .headingAccent {
   display: inline;
-  color: var(--accent);
+  color: var(--accent-heading);
 }
 
 .sub {
