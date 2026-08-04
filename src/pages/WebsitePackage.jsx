@@ -82,7 +82,7 @@ function buildPage(m) {
          the umbrella brand can't be "Business Starter Pack" any more —
          Starter is one of the three tiers. The eyebrow carries the tier
          names as meta after the separator dot; the route is unchanged. */
-      eyebrow: 'Business Website Packages',
+      eyebrow: 'Business Website Plans',
       eyebrowMeta: 'Starter · Growth · Professional',
       /* one sentence with a verb in front and the price inside it (user
          2026-08-04 framing, then tightened by the user to this wording) —
@@ -101,7 +101,7 @@ function buildPage(m) {
       /* spec deviation (user 2026-08-03, rewritten same day): leads with the
          outcome hooks ("online presence", "drive more sales") instead of the
          feature list; "fixed price" is banned wording on this page */
-      sub: 'Your entire online presence, built to drive more sales. A professionally designed website with domain, hosting and email, all handled for you. Three packages, one all-inclusive price each. No surprises.',
+      sub: 'Your entire online presence, built to drive more sales. A professionally designed website with domain, hosting and email, all handled for you. Three plans, one all-inclusive price each. No surprises.',
       cta: 'Get Started',
       price: m.from,
       /* competitive anchor — what a comparable 5-page build typically costs
@@ -126,14 +126,14 @@ function buildPage(m) {
        the ONLY inventory of what you get — the explorer below argues the
        case instead of repeating it. */
     packages: {
-      eyebrow: '/ Packages',
+      eyebrow: '/ Plans',
       /* the tier tags are a ladder of ambition (getting online → standing
          out → competing seriously), so the heading names that ladder
          instead of counting the packages (user 2026-08-04: the earlier
          "Three packages. One clear price each." was flat) */
       heading: 'Choose your ambition. We handle the rest.',
       headingAccent: 'We handle the rest.',
-      note: 'Every package includes the website, domain, hosting, business email and post-launch support. Nothing hidden, nothing billed later.',
+      note: 'Every plan includes the website, domain, hosting, business email and post-launch support. Nothing hidden, nothing billed later.',
       /* the chart's top-left corner cell */
       chartLabel: "What's included",
       chartMeta: 'Compare line by line',
@@ -349,7 +349,7 @@ function buildPage(m) {
           title: 'We design and build it',
           /* generic (2026-08-04): revision rounds differ per package, so the
              step doesn't quote a number */
-          body: 'We create your website, set up your domain, hosting and email. You review it, and we refine it through the revision rounds in your package.',
+          body: 'We create your website, set up your domain, hosting and email. You review it, and we refine it through the revision rounds in your plan.',
         },
         {
           title: 'You go live',
@@ -365,16 +365,16 @@ function buildPage(m) {
         /* tier-aware answers (2026-08-04) — the chart carries the numbers,
            these answer the questions three packages create */
         {
-          q: 'Which package is right for me?',
+          q: 'Which plan is right for me?',
           a: "Starter gets you a professional presence quickly. Growth is the one most businesses choose: a custom design built to bring in enquiries. Professional is for booking systems, e-commerce and written content. Tell us your goal and we'll recommend one honestly.",
         },
         {
           q: 'Do I need to provide content?',
-          a: "We'll guide you on what's needed. If you have text and photos ready, great. If not, we can help you put it together, and the Professional package includes written content for your key pages.",
+          a: "We'll guide you on what's needed. If you have text and photos ready, great. If not, we can help you put it together, and the Professional plan includes written content for your key pages.",
         },
         {
           q: 'Can I add more pages later?',
-          a: 'Absolutely. Packages cover five to fifteen pages, and we can add more at any time for an additional cost.',
+          a: 'Absolutely. Plans cover five to fifteen pages, and we can add more at any time for an additional cost.',
         },
         {
           q: 'What happens after the first year?',
@@ -390,7 +390,7 @@ function buildPage(m) {
         },
         {
           q: 'How long does it take?',
-          a: 'Typically 2-3 weeks from receiving your brief to going live. Larger packages take a little longer, and we agree the dates with you up front.',
+          a: 'Typically 2-3 weeks from receiving your brief to going live. Larger plans take a little longer, and we agree the dates with you up front.',
         },
       ],
     },
@@ -711,7 +711,7 @@ function TierChart({ tiers, matrix, label, meta, footNote }) {
   return (
     <div className={styles.chartWrap}>
       <table className={styles.chart}>
-        <caption className={styles.srOnly}>What each package includes</caption>
+        <caption className={styles.srOnly}>What each plan includes</caption>
         <colgroup>
           <col className={styles.colFeature} />
           {tiers.map((t) => (

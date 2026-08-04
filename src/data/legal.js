@@ -106,7 +106,7 @@ export const LEGAL_PAGES = {
                  not track any of your info or save it") and kept exact:
                  the country code IS kept, but only in the visitor's own
                  browser for the session, never on our side. */
-              '**country.is**: currency detection. When you open our website package page, your IP address is sent to api.country.is so that prices can be shown in the right currency (pounds in the UK, US dollars elsewhere). We do not receive, store or track your IP address, no cookie is set for this, and the only thing kept is a two-letter country code held in your own browser for the rest of your visit. More: https://country.is',
+              '**country.is**: currency detection. When you open our website plans page, your IP address is sent to api.country.is so that prices can be shown in the right currency (pounds in the UK, US dollars elsewhere). We do not receive, store or track your IP address, no cookie is set for this, and the only thing kept is a two-letter country code held in your own browser for the rest of your visit. More: https://country.is',
             ],
           },
         ],

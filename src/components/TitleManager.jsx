@@ -8,7 +8,7 @@ import moneyFor from '../config/pricing.js'
    All valid dynamic routes (/services/:slug, /case/:slug) are enumerated
    here, so an unmapped path is exactly the NotFound case.
 
-   /website-package carries a PRICE, so its title is built from the
+   /website-plans carries a PRICE, so its title is built from the
    detected currency instead of sitting in the map (user 2026-08-04:
    the title follows the visitor's location like the rest of the page).
    This subscribes to the currency store but never calls
@@ -46,7 +46,7 @@ export default function TitleManager() {
       document.title = HOME_TITLE
       return
     }
-    const page = key === '/website-package' ? moneyFor(currency).title : TITLES[key]
+    const page = key === '/website-plans' ? moneyFor(currency).title : TITLES[key]
     document.title = page ? `${page} | Tekniik` : 'Page Not Found | Tekniik'
   }, [pathname, currency])
 

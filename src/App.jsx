@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
 import TitleManager from './components/TitleManager.jsx'
 import Preloader from './components/Preloader.jsx'
@@ -56,7 +56,7 @@ export default function App() {
     <>
       {/* the ads landing page paints straight away — no boot overlay on
           traffic we paid for (user 2026-08-04) */}
-      <Preloader skip={location.pathname.replace(/\/+$/, '') === '/website-package'} />
+      <Preloader skip={location.pathname.replace(/\/+$/, '') === '/website-plans'} />
       <a className="skip-link" href="#main">Skip to content</a>
       <Nav
         themeMode={mode}
@@ -77,7 +77,11 @@ export default function App() {
             <Route path="/case/famili" element={<CaseFamili />} />
             <Route path="/work" element={<Work />} />
             <Route path="/support" element={<Support />} />
-            <Route path="/website-package" element={<WebsitePackage />} />
+            <Route path="/website-plans" element={<WebsitePackage />} />
+            {/* the page lived at /website-package until 2026-08-05 and that
+                URL is already out in ads and in prospects' inboxes — keep it
+                pointing at the page rather than the 404 */}
+            <Route path="/website-package" element={<Navigate to="/website-plans" replace />} />
             <Route path="/privacy-policy" element={<LegalPage page="privacy-policy" />} />
             <Route path="/terms-of-service" element={<LegalPage page="terms-of-service" />} />
             <Route path="/cookie-policy" element={<LegalPage page="cookie-policy" />} />

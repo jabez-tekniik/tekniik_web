@@ -328,7 +328,7 @@ export default function HeroPackageSite({ price = '$799', tld = '.com' }) {
         <div className={styles.foot} aria-hidden="true">
           <span className={styles.footTag}>
             <i className={styles.footDot} />
-            Every package
+            Every plan
           </span>
           <div className={styles.ticker}>
             <div className={styles.tickerTrack}>
@@ -360,7 +360,7 @@ export default function HeroPackageSite({ price = '$799', tld = '.com' }) {
       >
         <span className={styles.stampLabel}>All-inclusive</span>
         <span className={styles.stampValue}>{price}</span>
-        <span className={styles.stampFoot}>Starter pack</span>
+        <span className={styles.stampFoot}>Starter plan</span>
       </div>
     </div>
   )

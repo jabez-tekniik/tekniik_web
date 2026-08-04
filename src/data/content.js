@@ -808,7 +808,7 @@ export const FOOTER = {
         // the commercial pages, not at the end of the column.
         // newTab: the standalone pitch page opens in its own tab (user
         // 2026-08-03)
-        { label: 'Website Packages', to: '/website-package', newTab: true },
+        { label: 'Website Plans', to: '/website-plans', newTab: true },
         // Our Work hidden from the footer for now (user, 2026-08-03) — uncomment to restore
         // { label: 'Our Work', to: '/work' },
         { label: 'Support', to: '/support' },

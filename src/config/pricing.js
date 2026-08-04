@@ -71,14 +71,14 @@ function build(code) {
     growth: format(cur, cur.tiers[1]),
     professional: format(cur, cur.tiers[2]),
     from: `From ${starter}`,
-    packagesFrom: `Packages from ${starter}.`,
+    packagesFrom: `Plans from ${starter}.`,
     agencyWas: `${format(cur, cur.agency)}+`,
     /* the symbol leads the range once, the way a price range is written:
        "£80-120/year" */
     renewal: `${format(cur, cur.renewal[0])}-${group(cur.renewal[1])}/year`,
     /* browser tab title (user 2026-08-04: the title follows the
        detected currency too) */
-    title: `Business Website Packages · From ${starter}`,
+    title: `Business Website Plans · From ${starter}`,
     /* the domain ending the hero vignette shows in its address bar. A
        .co.uk under a dollar price is the same mistake as the chart's
        ".co.uk domain" row, so sterling keeps the UK ending and everyone
