@@ -1,13 +1,24 @@
-/* HeroPackageSite — Website Package hero visual ("your site going live").
-   The build-board family: hairline ink frame, soft accent wash, diffusion
-   shadow, slow ambient float. The JSX phase clock reveals the mock site's
-   layers (nav → copy/media → tiles → https → live); this file animates the
-   swaps, the padlock ignition, the foot's labelled deliverables marquee,
-   and the floating £599 stamp. Color from theme tokens; transform/opacity
-   only (+ cheap color/shadow paints on small chips). */
+/* HeroPackageSite — Website Package hero visual (a browser previewing
+   four sample small-business sites).
+
+   REBUILT 2026-08-04 alongside the JSX. What changed here: a TAB STRIP
+   above the chrome (the sample switcher, drawn as browser tabs), layer
+   entrances moved from `.on`-gated transitions to short keyframes that
+   run on mount and on every switch (the card is never an empty frame —
+   that was the complaint), per-sample `tone` variables for the media
+   panel, and STAMP SIZE CLASSES so a long price ("SEK 7,499", "₹68,999")
+   shrinks and reserves more chrome instead of covering the status chip.
+
+   Interaction states are highlight-only — no translate or scale on
+   hover/press (this page's no-movement rule). Color from theme tokens;
+   motion is transform/opacity only. */
 
 .wrap {
   position: relative;
+  /* the card sizes its own internals: the tab labels shorten by CARD
+     width, not viewport width (the hero column narrows long before the
+     window does) */
+  container-type: inline-size;
 }
 
 .frame {
@@ -24,14 +35,105 @@
   animation: wpsFloat 8s ease-in-out infinite;
 }
 
+/* the card carries real buttons now, so the ambient float stops while
+   anyone is pointing at it or tabbing through it — a control you are
+   about to click should not be drifting under the cursor (2026-08-04) */
+.wrap:hover .frame,
+.wrap:focus-within .frame,
+.wrap:hover .stamp,
+.wrap:focus-within .stamp {
+  animation-play-state: paused;
+}
+
+/* —— tab strip: the sample switcher ————————————————
+   real buttons drawn as browser tabs. The right padding is the corner
+   the floating price stamp overlaps (see the size classes at the end);
+   tabs never run under it. */
+.tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  padding: 7px 6px 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 0 1 auto;
+  margin: 0;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 9px 9px 0 0;
+  background: transparent;
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    color 220ms var(--ease-out),
+    background-color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--text-dim);
+  background: color-mix(in srgb, var(--bg-raise) 60%, transparent);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* the active tab joins the page below it */
+.tabOn,
+.tabOn:hover {
+  color: var(--text);
+  background: var(--bg-raise);
+  border-color: var(--border-soft);
+}
+
+.tabDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--border);
+  transition: background-color 220ms var(--ease-out);
+}
+
+.tabOn .tabDot {
+  background: var(--accent);
+}
+
+/* The tab reads the SECTOR, not the business name (2026-08-04, measured:
+   four full names truncate to "OAKFIELD JO / HARBOUR LAN" at every real
+   card width). The sector is also the more useful label — a visitor is
+   scanning for a business like theirs, and the name is right below in
+   the site's own nav. */
+.tabLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* —— browser chrome ————————————————————————— */
-/* right padding reserves the corner the floating £599 stamp overlaps, so
-   the status chip always stays visible left of it */
 .head {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 112px 12px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -48,6 +150,7 @@
   background: var(--border);
 }
 
+/* fresh mount per sample — the address swap reads as a page load */
 .addr {
   display: inline-flex;
   align-items: center;
@@ -63,6 +166,7 @@
   color: var(--text-dim);
   white-space: nowrap;
   overflow: hidden;
+  animation: wpsStateIn 260ms var(--ease-out) both;
 }
 
 .lock {
@@ -133,7 +237,11 @@
   animation: wpsPing 2.4s var(--ease-out, ease-out) infinite;
 }
 
-/* —— the mock site ————————————————————————— */
+/* —— the sample site ————————————————————————
+   the canvas is keyed by sample in the JSX, so these entrances replay on
+   every switch. They start at 6px and opacity 0 and land inside 240ms:
+   short enough that the card never reads as blank, long enough to feel
+   like a page painting in. */
 .canvas {
   flex: 1;
   padding: clamp(16px, 2vw, 24px) clamp(16px, 2.2vw, 26px);
@@ -142,29 +250,31 @@
   gap: clamp(12px, 1.6vw, 18px);
 }
 
-/* every layer hides below its phase and rises in when the clock reaches it */
 .sNav,
 .sCopy,
 .sMedia,
-.sTiles {
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 480ms var(--ease-out),
-    transform 480ms var(--ease-out);
+.sTile {
+  animation: wpsLayerIn 240ms var(--ease-out) both;
 }
 
-.sNav.on,
-.sCopy.on,
-.sMedia.on,
-.sTiles.on {
-  opacity: 1;
-  transform: translateY(0);
+.sCopy {
+  animation-delay: 60ms;
 }
 
-/* the media panel trails its copy by a beat */
 .sMedia {
-  transition-delay: 140ms;
+  animation-delay: 100ms;
+}
+
+.sTile {
+  animation-delay: 150ms;
+}
+
+.sTile:nth-child(2) {
+  animation-delay: 205ms;
+}
+
+.sTile:nth-child(3) {
+  animation-delay: 260ms;
 }
 
 .sNav {
@@ -179,17 +289,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
   font-family: var(--f-display-bold);
   font-size: 0.72rem;
   letter-spacing: -0.01em;
   color: var(--text);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sBrandDot {
   width: 6px;
   height: 6px;
   border-radius: 2px;
+  flex-shrink: 0;
   background: var(--accent);
 }
 
@@ -200,6 +314,7 @@
   font-family: var(--f-body);
   font-size: 0.6rem;
   color: var(--text-dim);
+  white-space: nowrap;
 }
 
 .sCta {
@@ -254,27 +369,30 @@
   background: var(--accent);
   border-radius: 999px;
   padding: 5px 12px;
+  white-space: nowrap;
 }
 
-/* media panel — a product-ish still (gradient + orb + caption chip) */
+/* media panel — a product-ish still (gradient + orb + caption chip).
+   Each sample re-composes it through the tone variables below, so four
+   businesses do not all show the same picture. */
 .sMedia {
   position: relative;
   aspect-ratio: 4 / 3;
   border-radius: 10px;
   border: 1px solid var(--border-soft);
   background:
-    radial-gradient(circle at 30% 25%, rgba(114, 204, 214, 0.35), transparent 55%),
-    linear-gradient(150deg, var(--accent-soft), var(--surface-2, var(--surface)));
+    radial-gradient(circle at var(--wps-wash-x, 30%) 25%, rgba(114, 204, 214, 0.35), transparent 55%),
+    linear-gradient(var(--wps-angle, 150deg), var(--accent-soft), var(--surface-2, var(--surface)));
   overflow: hidden;
 }
 
 .sOrb {
   position: absolute;
-  right: 12%;
-  bottom: 14%;
-  width: 34%;
+  right: var(--wps-orb-x, 12%);
+  bottom: var(--wps-orb-y, 14%);
+  width: var(--wps-orb-s, 34%);
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: var(--wps-orb-r, 50%);
   background: radial-gradient(circle at 32% 30%, var(--accent), var(--navy) 78%);
   opacity: 0.85;
 }
@@ -283,6 +401,7 @@
   position: absolute;
   left: 8px;
   bottom: 8px;
+  max-width: calc(100% - 16px);
   font-family: var(--f-mono);
   font-size: 0.52rem;
   letter-spacing: 0.08em;
@@ -292,6 +411,37 @@
   border: 1px solid var(--border-soft);
   border-radius: 999px;
   padding: 3px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* one composition per sample (same palette — the brand's two primaries
+   only; what changes is the arrangement) */
+.tone1 {
+  --wps-angle: 118deg;
+  --wps-wash-x: 62%;
+  --wps-orb-x: 30%;
+  --wps-orb-y: 20%;
+  --wps-orb-s: 28%;
+  --wps-orb-r: 34%;
+}
+
+.tone2 {
+  --wps-angle: 205deg;
+  --wps-wash-x: 22%;
+  --wps-orb-x: 8%;
+  --wps-orb-y: 32%;
+  --wps-orb-s: 40%;
+}
+
+.tone3 {
+  --wps-angle: 168deg;
+  --wps-wash-x: 45%;
+  --wps-orb-x: 22%;
+  --wps-orb-y: 8%;
+  --wps-orb-s: 30%;
+  --wps-orb-r: 42%;
 }
 
 .sTiles {
@@ -300,34 +450,16 @@
   gap: 10px;
 }
 
-/* tiles stagger via transition-delay on the shared .on swap */
 .sTile {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
   padding: 9px 11px;
   border: 1px solid var(--border-soft);
   border-top: 2px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity 420ms var(--ease-out),
-    transform 420ms var(--ease-out);
-}
-
-.sTiles.on .sTile {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.sTiles.on .sTile:nth-child(2) {
-  transition-delay: 110ms;
-}
-
-.sTiles.on .sTile:nth-child(3) {
-  transition-delay: 220ms;
 }
 
 .sTileName {
@@ -335,6 +467,9 @@
   font-size: 0.66rem;
   letter-spacing: -0.01em;
   color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sTileSub {
@@ -343,6 +478,9 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* —— foot: the deliverables ticker ————————————————
@@ -467,6 +605,7 @@
   font-size: 1.9rem;
   line-height: 1;
   letter-spacing: -0.02em;
+  white-space: nowrap;
   color: var(--on-band);
 }
 
@@ -479,6 +618,35 @@
   color: var(--on-band-dim);
 }
 
+/* —— stamp size classes ————————————————————————
+   the stamp is as wide as the visitor's currency makes it. Each class
+   reserves the corner the stamp occupies in BOTH chrome rows and, past
+   six characters, steps the figure down so the card keeps its
+   proportions. Set from JS by price length (user 2026-08-04: ₹68,999
+   covered the "Live" pill). */
+.szSm .tabs,
+.szSm .head {
+  padding-right: 120px;
+}
+
+.szMd .tabs,
+.szMd .head {
+  padding-right: 142px;
+}
+
+.szLg .tabs,
+.szLg .head {
+  padding-right: 158px;
+}
+
+.szMd .stampValue {
+  font-size: 1.58rem;
+}
+
+.szLg .stampValue {
+  font-size: 1.32rem;
+}
+
 /* —— keyframes ———————————————————————————— */
 @keyframes wpsFloat {
   0%,
@@ -487,6 +655,17 @@
   }
   50% {
     transform: translateY(-6px);
+  }
+}
+
+@keyframes wpsLayerIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -529,8 +708,29 @@
   }
 }
 
-/* —— tight cards ————————————————————————— */
-@media (max-width: 480px) {
+/* —— narrow CARD (container query, not viewport) ——————— */
+@container (max-width: 460px) {
+  /* the four sectors have to stay READABLE on a phone: the tab's dot and
+     the chrome's window dots go, which is exactly the room the labels
+     and the address bar need (measured — with them in, the tabs
+     truncated to "JOI… / C… / PLUM…") */
+  .tab {
+    padding: 7px 7px;
+    font-size: 0.5rem;
+    letter-spacing: 0.05em;
+    gap: 0;
+  }
+
+  .tabDot,
+  .dots {
+    display: none;
+  }
+
+  .head {
+    gap: 8px;
+    padding-left: 12px;
+  }
+
   .sLinks {
     display: none;
   }
@@ -539,24 +739,69 @@
     gap: 8px;
   }
 
-  /* the "One price" tag can't shrink (nowrap) — drop it so the ticker
-     gets the narrow card's full width */
+  /* the "Every package" tag can't shrink (nowrap) — drop it so the
+     ticker gets the narrow card's full width */
   .footTag {
     display: none;
   }
 
-  .head {
-    padding-right: 88px;
-  }
-
+  /* the stamp drops its label line and its figure so the switcher keeps
+     enough width for four readable sectors */
   .stamp {
     top: -14px;
     right: -6px;
-    padding: 9px 14px 10px;
+    gap: 1px;
+    padding: 8px 11px 9px;
   }
 
-  .stampValue {
-    font-size: 1.5rem;
+  .stampLabel {
+    display: none;
+  }
+
+  .stampValue,
+  .szMd .stampValue,
+  .szLg .stampValue {
+    font-size: 1.05rem;
+  }
+
+  .szSm .tabs,
+  .szSm .head,
+  .szMd .tabs,
+  .szMd .head,
+  .szLg .tabs,
+  .szLg .head {
+    padding-right: 104px;
+  }
+}
+
+/* —— the smallest cards ————————————————————
+   below this there is not room for both the switcher and the stamp, and
+   the switcher is the one doing work: the price is already in the
+   headline directly above the card and in the value strip below it,
+   whereas the four sample sites exist nowhere else on the page. */
+/* the padlock still carries the secure signal; the scheme text is what
+   pushes the domain out of its own bar on a phone (measured at 390) */
+@container (max-width: 340px) {
+  .https {
+    display: none;
+  }
+}
+
+@container (max-width: 320px) {
+  .stamp {
+    display: none;
+  }
+
+  .szSm .tabs,
+  .szMd .tabs,
+  .szLg .tabs {
+    padding-right: 6px;
+  }
+
+  .szSm .head,
+  .szMd .head,
+  .szLg .head {
+    padding-right: 12px;
   }
 }
 
@@ -567,18 +812,20 @@
   .tickerTrack,
   .statusDot::after,
   .status,
-  .statusLive {
-    animation: none;
-  }
-
+  .statusLive,
+  .addr,
   .sNav,
   .sCopy,
   .sMedia,
-  .sTiles,
-  .sTile,
+  .sTile {
+    animation: none;
+  }
+
   .lock,
   .https,
-  .stamp {
+  .stamp,
+  .tab,
+  .tabDot {
     transition: none;
   }
 }

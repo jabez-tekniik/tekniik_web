@@ -28,14 +28,23 @@ const VIEWBOX = '200 458 208 165'
    rises through the glyphs tracking real load progress (fonts + window
    load), with an electron riding the teal path. Fires
    signalPreloaderDone() once the overlay has fully faded, which is what
-   releases the hero typewriter. */
-export default function Preloader() {
+   releases the hero typewriter.
+
+   `skip` (2026-08-04) turns the whole thing off for one route:
+   /website-package is a PAID-ADS landing page, so a content-free brand
+   wait of up to ~4.5s (trace-in + the READY_TIMEOUT ceiling + the fade)
+   is spent bounce risk on traffic we paid for. The brand site still gets
+   the full boot. */
+export default function Preloader({ skip = false }) {
   const reduced = useReducedMotion()
   const [gone, setGone] = useState(false)
   const rootRef = useRef(null)
 
   useLayoutEffect(() => {
-    if (reduced) {
+    /* `skip` takes the same path as reduced motion: no overlay, and the
+       done-signal fires at once so anything gated on it (the home hero
+       typewriter) never waits on a preloader that isn't coming */
+    if (skip || reduced) {
       signalPreloaderDone()
       return undefined
     }
@@ -170,9 +179,9 @@ export default function Preloader() {
       utils.remove(el.querySelectorAll('*'))
       utils.remove(el)
     }
-  }, [reduced])
+  }, [skip, reduced])
 
-  if (reduced || gone) return null
+  if (skip || reduced || gone) return null
 
   return (
     <div

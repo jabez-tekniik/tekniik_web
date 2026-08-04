@@ -100,6 +100,13 @@ export const LEGAL_PAGES = {
               "**Google Analytics 4**: website traffic analysis. Google may process data on servers outside the UK/EEA. Google's privacy policy: https://policies.google.com/privacy",
               '**Google Search Console**: search performance monitoring (no personal data collected from visitors)',
               '**Firebase**: contact form submission processing',
+              /* added 2026-08-04 when /website-package started detecting
+                 the visitor's currency. Worded to the user's brief ("we
+                 get your IP to show the prices in your currency, we do
+                 not track any of your info or save it") and kept exact:
+                 the country code IS kept, but only in the visitor's own
+                 browser for the session, never on our side. */
+              '**country.is**: currency detection. When you open our website package page, your IP address is sent to api.country.is so that prices can be shown in the right currency (pounds in the UK, US dollars elsewhere). We do not receive, store or track your IP address, no cookie is set for this, and the only thing kept is a two-letter country code held in your own browser for the rest of your visit. More: https://country.is',
             ],
           },
         ],

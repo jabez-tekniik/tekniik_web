@@ -54,7 +54,9 @@ export default function App() {
 
   return (
     <>
-      <Preloader />
+      {/* the ads landing page paints straight away — no boot overlay on
+          traffic we paid for (user 2026-08-04) */}
+      <Preloader skip={location.pathname.replace(/\/+$/, '') === '/website-package'} />
       <a className="skip-link" href="#main">Skip to content</a>
       <Nav
         themeMode={mode}

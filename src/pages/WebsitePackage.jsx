@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
 import Button from '../components/Button.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
@@ -6,6 +6,8 @@ import FadeIn from '../motion/ink/FadeIn.jsx'
 import HeroPackageSite from '../components/HeroPackageSite.jsx'
 import useReducedMotion from '../hooks/useReducedMotion.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
+import useCurrency from '../hooks/useCurrency.js'
+import moneyFor from '../config/pricing.js'
 import { useScrollProgressInk } from '../motion/ink/index.js'
 import {
   IconWeb,
@@ -34,328 +36,381 @@ import styles from './WebsitePackage.module.css'
    deviations (hero price comparison, "all-inclusive" rephrase, the
    outcome-hook sub).
 
-   THREE PACKAGES (user 2026-08-04): the page sells Starter £599 /
-   Growth £1,199 / Professional £2,499 from the spec's Pricing Tiers
-   section, rendered as a COMPARISON CHART. Every other section is
-   written GENERICALLY about the service (no single-tier numbers) —
-   the chart is the only place tier-specific figures live. "+ VAT" is
-   gone from every surface on this page (user 2026-08-04).
+   THREE PACKAGES (user 2026-08-04): the page sells Starter / Growth /
+   Professional from the spec's Pricing Tiers section, rendered as a
+   COMPARISON CHART. Every other section is written GENERICALLY about the
+   service (no single-tier numbers) — the chart is the only place
+   tier-specific figures live. "+ VAT" is gone from every surface on this
+   page (user 2026-08-04).
+
+   PRICES ARE PER-VISITOR (user 2026-08-04, spec §"Currency &
+   Geo-Detection"): the visitor's own currency where we price in one,
+   GBP everywhere else. `config/currency.js` decides which currency,
+   `config/pricing.js` decides the numbers, and every figure on the page
+   comes from that one money object via `buildPage(m)` — never hardcode a
+   price in the copy or in a child component, or one surface will
+   disagree with the rest. The browser tab title follows the same money
+   object through `TitleManager`.
 
    Signature devices: hero = HeroPackageSite (the site-going-live
    vignette) + the price-comparison value strip with the turnaround
    pill; Packages = the TIER CHART (real <table> on desktop, stacked
-   tier cards ≤900px); What's Included = the PACKAGE EXPLORER, a tabbed
-   navy dossier whose animated mini-scene swaps per inclusion group
-   (auto-advances while in view until the user picks a tab); Who this is
+   tier cards ≤900px); Why it matters = the PACKAGE EXPLORER, a tabbed
+   navy dossier whose animated mini-scene swaps per group (auto-advances
+   while in view until the user picks a tab); Who this is
    for = full-width ledger rows with ghost numerals + hover ignition;
    the navy process band with a hint of teal, glass step cards +
    igniting step chips; full-width two-column FAQ cards with smooth
    grid-rows open/close; FinalCta crescendo with the lighter-navy tint
    variant. */
 
-const PAGE = {
-  hero: {
-    /* product name (2026-08-04): the page now sells THREE packages, so
-       the umbrella brand can't be "Business Starter Pack" any more —
-       Starter is one of the three tiers. The eyebrow carries the tier
-       names as meta after the separator dot; the route is unchanged. */
-    eyebrow: 'Business Website Packages',
-    eyebrowMeta: 'Starter · Growth · Professional',
-    /* one sentence with a verb in front and the price inside it (user
-       2026-08-04 framing, then tightened by the user to this wording) —
-       it states what we do instead of describing the product. Highlights:
-       the PRICE takes the light primary (teal), "websites" the dark
-       primary (navy) — swapped round from the original pairing so the
-       loudest treatment lands on the figure. Keep it SHORT: the shared
-       hero type size holds three lines in this column, no more. */
-    headline: {
-      pre: 'We build business ',
-      navy: 'websites',
-      mid: ' from ',
-      price: '£599',
-      post: '.',
+/* —— the copy, resolved against one currency's money object ————
+   `m` comes from `config/pricing.js` (moneyFor) and holds every
+   currency-dependent string the page can show: the three tier prices,
+   the hero's "From X", the agency anchor, the renewal range, the
+   "Prices shown in X" note and the browser tab title. Nothing here
+   composes a figure of its own — if a new price is needed, it goes in
+   pricing.js and arrives on `m`.
+
+   "+ VAT" stays OFF in every currency — the spec asks for it on GBP,
+   but the user stripped VAT from every surface of this page on
+   2026-08-04 and that call outranks the spec here. */
+function buildPage(m) {
+  return {
+    hero: {
+      /* product name (2026-08-04): the page now sells THREE packages, so
+         the umbrella brand can't be "Business Starter Pack" any more —
+         Starter is one of the three tiers. The eyebrow carries the tier
+         names as meta after the separator dot; the route is unchanged. */
+      eyebrow: 'Business Website Packages',
+      eyebrowMeta: 'Starter · Growth · Professional',
+      /* one sentence with a verb in front and the price inside it (user
+         2026-08-04 framing, then tightened by the user to this wording) —
+         it states what we do instead of describing the product. Highlights:
+         the PRICE takes the light primary (teal), "websites" the dark
+         primary (navy) — swapped round from the original pairing so the
+         loudest treatment lands on the figure. Keep it SHORT: the shared
+         hero type size holds three lines in this column, no more. */
+      headline: {
+        pre: 'We build business ',
+        navy: 'websites',
+        mid: ' from ',
+        price: m.starter,
+        post: '.',
+      },
+      /* spec deviation (user 2026-08-03, rewritten same day): leads with the
+         outcome hooks ("online presence", "drive more sales") instead of the
+         feature list; "fixed price" is banned wording on this page */
+      sub: 'Your entire online presence, built to drive more sales. A professionally designed website with domain, hosting and email, all handled for you. Three packages, one all-inclusive price each. No surprises.',
+      cta: 'Get Started',
+      price: m.from,
+      /* competitive anchor — what a comparable 5-page build typically costs
+         from an agency (2026 market guides: £2,500-£5,000+, $3,000-$10,000+);
+         the figure itself is per-currency and comes from pricing.js.
+         The label names the 5-page site explicitly so the anchor stays
+         like-for-like against Starter, not against our own top tier. */
+      compare: {
+        /* labels stay SHORT — longer ones wrap the turnaround pill onto a
+           second row and the strip loses its single-line rhythm */
+        wasLabel: 'Agency quote, 5 pages',
+        was: m.agencyWas,
+        nowLabel: 'We start at',
+        now: m.starter,
+        turnaround: 'Live in 2-3 weeks',
+      },
     },
-    /* spec deviation (user 2026-08-03, rewritten same day): leads with the
-       outcome hooks ("online presence", "drive more sales") instead of the
-       feature list; "fixed price" is banned wording on this page */
-    sub: 'Your entire online presence, built to drive more sales. A professionally designed website with domain, hosting and email, all handled for you. Three packages, one all-inclusive price each. No surprises.',
-    cta: 'Get Started',
-    price: 'From £599',
-    /* competitive anchor — what a comparable 5-page build typically costs
-       from a UK agency (2026 market guides put agencies at £2,500-£5,000+).
-       The label names the 5-page site explicitly so the anchor stays
-       like-for-like against Starter, not against our own top tier. */
-    compare: {
-      /* labels stay SHORT — longer ones wrap the turnaround pill onto a
-         second row and the strip loses its single-line rhythm */
-      wasLabel: 'Agency quote, 5 pages',
-      was: '£2,500+',
-      nowLabel: 'We start at',
-      now: '£599',
-      turnaround: 'Live in 2-3 weeks',
+    /* —— the three packages (spec §02 Pricing Tiers) ——————
+       Rendered as a chart: rows are compared line by line, so every value
+       is either true (included), false (not in this tier) or a string.
+       The row order inside each group runs shared items first. This is
+       the ONLY inventory of what you get — the explorer below argues the
+       case instead of repeating it. */
+    packages: {
+      eyebrow: '/ Packages',
+      /* the tier tags are a ladder of ambition (getting online → standing
+         out → competing seriously), so the heading names that ladder
+         instead of counting the packages (user 2026-08-04: the earlier
+         "Three packages. One clear price each." was flat) */
+      heading: 'Choose your ambition. We handle the rest.',
+      headingAccent: 'We handle the rest.',
+      note: 'Every package includes the website, domain, hosting, business email and post-launch support. Nothing hidden, nothing billed later.',
+      /* the chart's top-left corner cell */
+      chartLabel: "What's included",
+      chartMeta: 'Compare line by line',
+      footNote: 'Not sure which one? Tell us your goal and we will recommend one honestly.',
+      tiers: [
+        {
+          name: 'Starter',
+          tag: 'For getting online',
+          price: m.starter,
+          desc: 'A clean, professional website with everything you need to establish your online presence.',
+          cta: 'Get Started',
+        },
+        {
+          name: 'Growth',
+          tag: 'For standing out',
+          price: m.growth,
+          badge: 'Most Popular',
+          desc: 'A custom-designed website built to generate leads and grow your business.',
+          cta: 'Get Started',
+        },
+        {
+          name: 'Professional',
+          tag: 'For competing seriously',
+          price: m.professional,
+          desc: 'A fully bespoke website with advanced functionality and hands-on support.',
+          cta: 'Get Started',
+        },
+      ],
+      matrix: [
+        {
+          group: 'Your website',
+          rows: [
+            { label: 'Professionally designed, mobile-responsive website', v: [true, true, true] },
+            { label: 'Pages included', v: ['Up to 5', 'Up to 10', 'Up to 15'] },
+            {
+              label: 'Design approach',
+              v: ['Proven layout', 'Custom design', 'Fully bespoke'],
+            },
+            { label: 'Contact form', v: [true, true, true] },
+            /* the spec's "Google Maps and social media links" row was cut
+               from the chart (user 2026-08-04) — too small a line to earn
+               a row; the explorer still mentions it */
+            { label: 'Blog or news section', v: [false, true, true] },
+            { label: 'WhatsApp or live chat integration', v: [false, true, true] },
+            {
+              label: 'Booking system or simple e-commerce (up to 20 products)',
+              v: [false, false, true],
+            },
+            { label: 'Revision rounds', v: ['2 rounds', '3 rounds', 'Unlimited'] },
+          ],
+        },
+        {
+          group: 'Your domain & hosting',
+          rows: [
+            {
+              /* the spec's .co.uk wording is a UK promise. Sterling is
+                 shown to the UK only, so it keeps that line; the dollar
+                 list goes to the whole rest of the world (not just the
+                 US), which is why the alternative is TLD-neutral rather
+                 than ".com" (2026-08-04) */
+              label: m.code === 'GBP' ? 'One .co.uk or .uk domain for 1 year' : 'One domain name for 1 year',
+              v: [true, true, true],
+            },
+            { label: 'Managed website hosting for 1 year', v: [true, true, true] },
+            { label: 'Free SSL certificate', v: [true, true, true] },
+            { label: 'Daily or scheduled backups', v: [true, true, true] },
+            { label: 'Speed optimisation', v: [false, true, true] },
+          ],
+        },
+        {
+          group: 'Your email',
+          rows: [
+            { label: 'Business email inboxes', v: ['5 inboxes', '10 inboxes', '10 inboxes'] },
+            { label: 'Storage per mailbox', v: ['10GB', '10GB', '10GB'] },
+          ],
+        },
+        {
+          group: 'Your visibility',
+          rows: [
+            { label: 'On-page SEO', v: ['Basic', 'Advanced', 'Advanced'] },
+            { label: 'Keyword research and meta optimisation', v: [false, true, true] },
+            { label: 'Google Analytics and Search Console setup', v: [true, true, true] },
+            { label: 'Social media integration', v: [false, true, true] },
+            { label: 'Google Business Profile setup', v: [false, false, true] },
+            { label: 'Performance reporting', v: [false, false, 'First 3 months'] },
+          ],
+        },
+        {
+          group: 'Your peace of mind',
+          rows: [
+            {
+              label: 'Post-launch technical support',
+              /* 60 / 90 / 120 (user 2026-08-04) — a deliberate deviation from
+                 the spec's 30 / 60 / 90; every support window moved up one
+                 step, so Starter now starts where Growth used to */
+              v: ['60 days', '90 days', '120 days'],
+            },
+            { label: 'Content guidance (we help structure your copy)', v: [false, true, true] },
+            { label: 'Content writing for key pages', v: [false, false, 'Up to 5 pages'] },
+            { label: 'CMS training session (30 minutes)', v: [false, false, true] },
+            { label: 'Priority support', v: [false, false, true] },
+          ],
+        },
+      ],
     },
-  },
-  /* —— the three packages (spec §02 Pricing Tiers) ——————
-     Rendered as a chart: rows are compared line by line, so every value
-     is either true (included), false (not in this tier) or a string.
-     Groups match the explorer's five inclusion groups exactly, and the
-     row order inside each group runs shared items first. */
-  packages: {
-    eyebrow: '/ Packages',
-    /* the tier tags are a ladder of ambition (getting online → standing
-       out → competing seriously), so the heading names that ladder
-       instead of counting the packages (user 2026-08-04: the earlier
-       "Three packages. One clear price each." was flat) */
-    heading: 'Choose your ambition. We handle the rest.',
-    headingAccent: 'We handle the rest.',
-    note: 'Every package includes the website, domain, hosting, business email and post-launch support. Nothing hidden, nothing billed later.',
-    /* the chart's top-left corner cell */
-    chartLabel: "What's included",
-    chartMeta: 'Compare line by line',
-    footNote: 'Not sure which one? Tell us your goal and we will recommend one honestly.',
-    tiers: [
-      {
-        name: 'Starter',
-        tag: 'For getting online',
-        price: '£599',
-        desc: 'A clean, professional website with everything you need to establish your online presence.',
-        cta: 'Get Started',
-      },
-      {
-        name: 'Growth',
-        tag: 'For standing out',
-        price: '£1,199',
-        badge: 'Most Popular',
-        desc: 'A custom-designed website built to generate leads and grow your business.',
-        cta: 'Get Started',
-      },
-      {
-        name: 'Professional',
-        tag: 'For competing seriously',
-        price: '£2,499',
-        desc: 'A fully bespoke website with advanced functionality and hands-on support.',
-        cta: 'Get Started',
-      },
-    ],
-    matrix: [
-      {
-        group: 'Your website',
-        rows: [
-          { label: 'Professionally designed, mobile-responsive website', v: [true, true, true] },
-          { label: 'Pages included', v: ['Up to 5', 'Up to 10', 'Up to 15'] },
-          {
-            label: 'Design approach',
-            v: ['Proven layout', 'Custom design', 'Fully bespoke'],
-          },
-          { label: 'Contact form', v: [true, true, true] },
-          /* the spec's "Google Maps and social media links" row was cut
-             from the chart (user 2026-08-04) — too small a line to earn
-             a row; the explorer still mentions it */
-          { label: 'Blog or news section', v: [false, true, true] },
-          { label: 'WhatsApp or live chat integration', v: [false, true, true] },
-          {
-            label: 'Booking system or simple e-commerce (up to 20 products)',
-            v: [false, false, true],
-          },
-          { label: 'Revision rounds', v: ['2 rounds', '3 rounds', 'Unlimited'] },
-        ],
-      },
-      {
-        group: 'Your domain & hosting',
-        rows: [
-          { label: 'One .co.uk or .uk domain for 1 year', v: [true, true, true] },
-          { label: 'Managed website hosting for 1 year', v: [true, true, true] },
-          { label: 'Free SSL certificate', v: [true, true, true] },
-          { label: 'Daily or scheduled backups', v: [true, true, true] },
-          { label: 'Speed optimisation', v: [false, true, true] },
-        ],
-      },
-      {
-        group: 'Your email',
-        rows: [
-          { label: 'Business email inboxes', v: ['5 inboxes', '10 inboxes', '10 inboxes'] },
-          { label: 'Storage per mailbox', v: ['10GB', '10GB', '10GB'] },
-        ],
-      },
-      {
-        group: 'Your visibility',
-        rows: [
-          { label: 'On-page SEO', v: ['Basic', 'Advanced', 'Advanced'] },
-          { label: 'Keyword research and meta optimisation', v: [false, true, true] },
-          { label: 'Google Analytics and Search Console setup', v: [true, true, true] },
-          { label: 'Social media integration', v: [false, true, true] },
-          { label: 'Google Business Profile setup', v: [false, false, true] },
-          { label: 'Performance reporting', v: [false, false, 'First 3 months'] },
-        ],
-      },
-      {
-        group: 'Your peace of mind',
-        rows: [
-          {
-            label: 'Post-launch technical support',
-            v: ['30 days', '60 days', '90 days'],
-          },
-          { label: 'Content guidance (we help structure your copy)', v: [false, true, true] },
-          { label: 'Content writing for key pages', v: [false, false, 'Up to 5 pages'] },
-          { label: 'CMS training session (30 minutes)', v: [false, false, true] },
-          { label: 'Priority support', v: [false, false, true] },
-        ],
-      },
-    ],
-  },
-  /* the explorer is now GENERIC (user 2026-08-04): it explains the five
-     things every package delivers, with no tier-specific numbers — the
-     chart above owns those. Keep these five group headings identical to
-     the chart's groups; the two sections read as one system. */
-  included: {
-    eyebrow: "/ What's included",
-    /* two lines, and the PRICE is part of the sentence (user 2026-08-04:
-       "Everything you in every package, starts from 599, frame like
-       this") — it used to sit in a separate FROM £599 block beside the
-       button, which said the same thing twice as loudly. The accent tail
-       is forced onto its own line by .inclHead .hlDeep { display: block }. */
-    heading: 'Everything you need in every package. Starts from £599.',
-    /* heading accents (all sections): the last phrase highlights in the
-       primary-navy family per canvas — see --primary-heading-* tokens */
-    headingAccent: 'Starts from £599.',
-    /* section CTAs (user 2026-08-03): every section except the FAQ has a
-       button routing to /contact, sitting IN LINE with the section title
-       (not below the content); label fitted to the section. */
-    cta: 'Get Started',
-    groups: [
-      {
-        heading: 'Your website',
-        items: [
-          'Professionally designed and mobile-responsive on every screen',
-          'The pages your business needs, from five to fifteen',
-          'Contact form, Google Maps and social media links',
-          'Revision rounds included on every package',
-        ],
-      },
-      {
-        heading: 'Your domain & hosting',
-        items: [
-          'Your own .co.uk or .uk domain, registered for you',
-          'Managed website hosting for a full year',
-          'Free SSL certificate (the padlock in the browser)',
-          'Daily or scheduled backups',
-        ],
-      },
-      {
-        heading: 'Your email',
-        items: [
-          'Business inboxes on your own domain (you@yourbusiness.co.uk)',
-          '10GB storage per mailbox',
-          'Set up and working on launch day',
-        ],
-      },
-      {
-        heading: 'Your visibility',
-        items: [
-          'On-page SEO so customers can find you on Google',
-          'Google Analytics and Search Console connected',
-          'Social, messaging and Google Business Profile integrations',
-        ],
-      },
-      {
-        heading: 'Your peace of mind',
-        items: [
-          'Technical support after launch on every package',
-          'One clear price agreed up front, nothing billed later',
-          'One team looking after the site, domain, email and hosting',
-        ],
-      },
-    ],
-  },
-  audience: {
-    eyebrow: '/ Who this is for',
-    /* explicit two-line break (user 2026-08-03: "that need to get" opens
-       line two) — greedy wrapping can't yield a shorter first line, so
-       the heading ships as lines, not one string */
-    heading: {
-      line1: 'Perfect for businesses',
-      line2: 'that need to get ',
-      accent: 'online, fast.',
+    /* The explorer shares NOTHING with the chart (user 2026-08-04, twice:
+       first the inclusions were re-listed, then the same five group
+       headings were reused with new lines — "the list also should change,
+       same content should not be there"). It is now the argument, not the
+       inventory: THREE groups on why a website earns its keep at all, then
+       TWO on why we are the ones to build it. Nothing here names a
+       deliverable the chart already lists, and no line quotes a tier
+       figure. Tab order drives WHY_ICONS / SCENES, so those two arrays
+       must be reordered with these groups, never GROUP_ICONS (that one
+       belongs to the chart). */
+    included: {
+      eyebrow: '/ Why it matters',
+      /* the accent tail is forced onto its own line by
+         .inclHead .hlDeep { display: block }: line 1 is the case for a
+         website, line 2 the case for us, which is exactly the two halves
+         the tabs below split into */
+      heading: 'Why a website pays for itself. And why we are the ones to build it.',
+      /* heading accents (all sections): the last phrase highlights in the
+         primary-navy family per canvas — see --primary-heading-* tokens */
+      headingAccent: 'And why we are the ones to build it.',
+      /* section CTAs (user 2026-08-03): every section except the FAQ has a
+         button routing to /contact, sitting IN LINE with the section title
+         (not below the content); label fitted to the section. */
+      cta: 'Get Started',
+      groups: [
+        /* THREE items per group, each kept to roughly one panel line: the
+           panel holds a constant height across tabs by letting the scene
+           flex, and that only works while every group's check list is about
+           the same height. Four long lines in one group and three in the
+           next reintroduced a ~79px jump on auto-advance at 1280 (measured);
+           keep new lines short and the counts even. */
+        {
+          heading: "You're open when they're looking",
+          note: 'Nights, weekends, always',
+          items: [
+            'Most people look up a business outside its working hours',
+            'Your site answers them while you are on a job or asleep',
+            'It works on the phone in their hand, wherever they are',
+          ],
+        },
+        {
+          heading: 'Customers find you on Google',
+          note: 'The searches you miss today',
+          items: [
+            'People search for what you do, near them, every day',
+            'With no site, those searches go to a competitor instead',
+            'We build the pages to be found, not just to look good',
+          ],
+        },
+        {
+          heading: 'Interest turns into enquiries',
+          note: 'Where the money is',
+          items: [
+            'A visitor who cannot reach you easily is a lost customer',
+            'Every page gives them one obvious way to get in touch',
+            'Enquiries arrive in an inbox on your own business domain',
+          ],
+        },
+        {
+          heading: 'The technical side stays ours',
+          note: 'You run the business',
+          items: [
+            'Domain, hosting, email and security are set up and run by us',
+            'Nothing to renew, update or configure at your end',
+            'One supplier for all of it, instead of four',
+          ],
+        },
+        {
+          heading: 'We are still here after launch',
+          note: 'Not a build and vanish',
+          items: [
+            'Technical support runs on for months after you go live',
+            'You speak to the people who built it, not a ticket queue',
+            'Changes later are a conversation, not a fresh project',
+          ],
+        },
+      ],
     },
-    cta: "Let's Talk",
-    items: [
-      'Local businesses launching their first website',
-      'Businesses replacing an outdated or broken site',
-      'Freelancers and sole traders who need a professional presence',
-      'Anyone who wants to stop losing customers to competitors who have a website',
-    ],
-  },
-  steps: {
-    eyebrow: '/ How it works',
-    heading: "Three steps. That's it.",
-    headingAccent: "That's it.",
-    cta: 'Start Now',
-    items: [
-      {
-        title: 'Tell us about your business',
-        body: 'Fill in a short brief. What you do, who your customers are, and what you want your website to say.',
+    audience: {
+      eyebrow: '/ Who this is for',
+      /* explicit two-line break (user 2026-08-03: "that need to get" opens
+         line two) — greedy wrapping can't yield a shorter first line, so
+         the heading ships as lines, not one string */
+      heading: {
+        line1: 'Perfect for businesses',
+        line2: 'that need to get ',
+        accent: 'online, fast.',
       },
-      {
-        title: 'We design and build it',
-        /* generic (2026-08-04): revision rounds differ per package, so the
-           step doesn't quote a number */
-        body: 'We create your website, set up your domain, hosting and email. You review it, and we refine it through the revision rounds in your package.',
-      },
-      {
-        title: 'You go live',
-        body: "We launch your site, connect your analytics, and hand everything over. You're online.",
-      },
-    ],
-  },
-  faq: {
-    eyebrow: '/ Common questions',
-    heading: "Questions? We've got answers.",
-    headingAccent: 'answers.',
-    items: [
-      /* tier-aware answers (2026-08-04) — the chart carries the numbers,
-         these answer the questions three packages create */
-      {
-        q: 'Which package is right for me?',
-        a: "Starter gets you a professional presence quickly. Growth is the one most businesses choose: a custom design built to bring in enquiries. Professional is for booking systems, e-commerce and written content. Tell us your goal and we'll recommend one honestly.",
-      },
-      {
-        q: 'Do I need to provide content?',
-        a: "We'll guide you on what's needed. If you have text and photos ready, great. If not, we can help you put it together, and the Professional package includes written content for your key pages.",
-      },
-      {
-        q: 'Can I add more pages later?',
-        a: 'Absolutely. Packages cover five to fifteen pages, and we can add more at any time for an additional cost.',
-      },
-      {
-        q: 'What happens after the first year?',
-        a: "Domain renewal and hosting continue at standard rates (typically £80-120/year). We'll remind you before anything renews.",
-      },
-      {
-        q: 'Can I update the website myself?',
-        a: 'Yes. We build on platforms that let you make simple text and image updates yourself.',
-      },
-      {
-        q: 'What if I need something more complex?',
-        a: "If you need custom functionality, a booking system, e-commerce, or a web application, we do that too. We'll recommend the right solution for your needs.",
-      },
-      {
-        q: 'How long does it take?',
-        a: 'Typically 2-3 weeks from receiving your brief to going live. Larger packages take a little longer, and we agree the dates with you up front.',
-      },
-    ],
-  },
-  cta: {
-    heading: 'Ready to get your business online?',
-    headingAccent: 'online?',
-    sub: 'Packages from £599. No hidden costs. No ongoing commitments.',
-    cta: 'Get Started',
-    emailNote: 'Have questions? Email us at',
-    email: 'hello@tekniik.ai',
-  },
+      cta: "Let's Talk",
+      items: [
+        'Local businesses launching their first website',
+        'Businesses replacing an outdated or broken site',
+        'Freelancers and sole traders who need a professional presence',
+        'Anyone who wants to stop losing customers to competitors who have a website',
+      ],
+    },
+    steps: {
+      eyebrow: '/ How it works',
+      heading: "Three steps. That's it.",
+      headingAccent: "That's it.",
+      cta: 'Start Now',
+      items: [
+        {
+          title: 'Tell us about your business',
+          body: 'Fill in a short brief. What you do, who your customers are, and what you want your website to say.',
+        },
+        {
+          title: 'We design and build it',
+          /* generic (2026-08-04): revision rounds differ per package, so the
+             step doesn't quote a number */
+          body: 'We create your website, set up your domain, hosting and email. You review it, and we refine it through the revision rounds in your package.',
+        },
+        {
+          title: 'You go live',
+          body: "We launch your site, connect your analytics, and hand everything over. You're online.",
+        },
+      ],
+    },
+    faq: {
+      eyebrow: '/ Common questions',
+      heading: "Questions? We've got answers.",
+      headingAccent: 'answers.',
+      items: [
+        /* tier-aware answers (2026-08-04) — the chart carries the numbers,
+           these answer the questions three packages create */
+        {
+          q: 'Which package is right for me?',
+          a: "Starter gets you a professional presence quickly. Growth is the one most businesses choose: a custom design built to bring in enquiries. Professional is for booking systems, e-commerce and written content. Tell us your goal and we'll recommend one honestly.",
+        },
+        {
+          q: 'Do I need to provide content?',
+          a: "We'll guide you on what's needed. If you have text and photos ready, great. If not, we can help you put it together, and the Professional package includes written content for your key pages.",
+        },
+        {
+          q: 'Can I add more pages later?',
+          a: 'Absolutely. Packages cover five to fifteen pages, and we can add more at any time for an additional cost.',
+        },
+        {
+          q: 'What happens after the first year?',
+          a: `Domain renewal and hosting continue at standard rates (typically ${m.renewal}). We'll remind you before anything renews.`,
+        },
+        {
+          q: 'Can I update the website myself?',
+          a: 'Yes. We build on platforms that let you make simple text and image updates yourself.',
+        },
+        {
+          q: 'What if I need something more complex?',
+          a: "If you need custom functionality, a booking system, e-commerce, or a web application, we do that too. We'll recommend the right solution for your needs.",
+        },
+        {
+          q: 'How long does it take?',
+          a: 'Typically 2-3 weeks from receiving your brief to going live. Larger packages take a little longer, and we agree the dates with you up front.',
+        },
+      ],
+    },
+    cta: {
+      heading: 'Ready to get your business online?',
+      headingAccent: 'online?',
+      sub: `${m.packagesFrom} No hidden costs. No ongoing commitments.`,
+      cta: 'Get Started',
+      emailNote: 'Have questions? Email us at',
+      email: 'hello@tekniik.ai',
+    },
+  }
 }
 
-/* one glyph per inclusion group / audience cell / process step, data order */
+/* CHART groups, data order (website / domain & hosting / email /
+   visibility / peace of mind) — used by both chart renders */
 const GROUP_ICONS = [IconWeb, IconServer, IconMail, IconSearch, IconShieldCheck]
+/* EXPLORER tabs, data order — a different argument in a different order,
+   so it gets its own glyph list. Keep it in step with SCENES below. */
+const WHY_ICONS = [IconWeb, IconSearch, IconMail, IconServer, IconShieldCheck]
 const AUDIENCE_ICONS = [IconStore, IconRefresh, IconBriefcase, IconTrendUp]
 /* mono situation tags on the audience ledger rows, data order */
 const AUDIENCE_TAGS = ['First website', 'Rebuild', 'Going solo', 'Catching up']
@@ -574,8 +629,8 @@ function CareScene() {
           <div className={styles.vgDaysHead}>
             <span>Day 1</span>
             {/* the longest support window we offer — generic across the
-                three packages (30 / 60 / 90 days) */}
-            <span>Day 90</span>
+                three packages (60 / 90 / 120 days) */}
+            <span>Day 120</span>
           </div>
           <div className={styles.vgDaysRail}>
             <i />
@@ -587,7 +642,11 @@ function CareScene() {
   )
 }
 
-const SCENES = [SiteScene, HostScene, MailScene, SeoScene, CareScene]
+/* one mini-scene per EXPLORER tab, same order as WHY_ICONS: open all
+   hours (the site itself) · found on Google (search) · enquiries (inbox)
+   · the technical side (servers, padlock, backups) · after launch (the
+   support shield) */
+const SCENES = [SiteScene, SeoScene, MailScene, HostScene, CareScene]
 
 /* —— Package chart ————————————————————————————
    The three tiers compared line by line. Desktop renders a REAL <table>
@@ -820,7 +879,15 @@ function TierCards({ tiers, matrix }) {
 }
 
 export default function WebsitePackage() {
-  const { hero, packages, included, audience, steps, faq, cta } = PAGE
+  /* the visitor's own currency where we price in one, GBP otherwise.
+     Resolved from the device time zone before first paint, then
+     confirmed by one IP lookup — so the copy is rebuilt at most once,
+     and only if the two disagree. */
+  const currency = useCurrency()
+  const money = moneyFor(currency)
+  const page = useMemo(() => buildPage(money), [money])
+
+  const { hero, packages, included, audience, steps, faq, cta } = page
   const total = steps.items.length
   const reduced = useReducedMotion()
   const compactChart = useMediaQuery(CHART_COMPACT)
@@ -882,7 +949,7 @@ export default function WebsitePackage() {
   })
 
   const activeGroup = included.groups[active]
-  const ActiveIcon = GROUP_ICONS[active]
+  const ActiveIcon = WHY_ICONS[active]
   const ActiveScene = SCENES[active]
 
   /* heading accent splits — deep primary on light canvases, light
@@ -950,7 +1017,7 @@ export default function WebsitePackage() {
             </div>
 
             <Reveal className={styles.heroVisual} delay={160}>
-              <HeroPackageSite />
+              <HeroPackageSite price={money.starter} tld={money.tld} />
             </Reveal>
           </div>
         </div>
@@ -964,6 +1031,11 @@ export default function WebsitePackage() {
           <Reveal className={styles.secHead}>
             <span className={styles.secIndex}>01</span>
             <span className={styles.secEyebrow}>{packages.eyebrow}</span>
+            {/* the spec asks that a localised price says so; this sits on
+                the section that holds all three of them, and there is
+                deliberately NO currency switch (user 2026-08-04, spec:
+                "keep it automatic") */}
+            <span className={styles.curNote}>{money.note}</span>
           </Reveal>
 
           <Reveal className={styles.headRow} delay={80}>
@@ -990,7 +1062,7 @@ export default function WebsitePackage() {
         </div>
       </section>
 
-      {/* —— 03 · What's included — the package explorer ——————— */}
+      {/* —— 03 · Why it matters — the package explorer ————————— */}
       <section className={`${styles.section} ${styles.sectionTint}`}>
         <div className="container">
           <Reveal className={styles.secHead}>
@@ -1014,12 +1086,12 @@ export default function WebsitePackage() {
             <div ref={exploreRef} className={styles.explorer}>
               <div
                 role="tablist"
-                aria-label="What's included in the package"
+                aria-label="Why a website matters, and why us"
                 className={styles.selRows}
                 onKeyDown={onTabKey}
               >
                 {included.groups.map((group, i) => {
-                  const GIcon = GROUP_ICONS[i]
+                  const GIcon = WHY_ICONS[i]
                   const isActive = active === i
                   return (
                     <button
@@ -1038,9 +1110,7 @@ export default function WebsitePackage() {
                       </span>
                       <span className={styles.selText}>
                         <span className={styles.selHeading}>{group.heading}</span>
-                        <span className={styles.selMeta}>
-                          {String(group.items.length).padStart(2, '0')} included
-                        </span>
+                        <span className={styles.selMeta}>{group.note}</span>
                       </span>
                       <IconArrow className={styles.selArrow} width="15" height="15" aria-hidden="true" />
                     </button>
