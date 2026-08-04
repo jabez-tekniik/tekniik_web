@@ -395,6 +395,22 @@
   z-index: 1; /* paints over the ghost numeral backdrop */
 }
 
+/* the highlighted payoff in each discipline title — the two brand primaries
+   alternate down the sheet (01 teal, 02 navy, 03 teal); the AI discipline
+   rides the navy band, where only the band teal is legible. Both slots
+   collapse to teal in ink-dark, where navy has no contrast. */
+.titleAccentTeal {
+  color: var(--accent-heading-teal);
+}
+
+.titleAccentNavy {
+  color: var(--accent-heading);
+}
+
+.titleAccentBand {
+  color: var(--accent-on-band);
+}
+
 .lede {
   font-family: var(--f-body);
   font-size: clamp(1.02rem, 1.25vw, 1.12rem);

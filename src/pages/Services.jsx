@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button.jsx'
 import Reveal from '../components/Reveal.jsx'
+import AccentText from '../components/AccentText.jsx'
 import MiniCta from '../components/MiniCta.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
 import FadeIn from '../motion/ink/FadeIn.jsx'
@@ -142,7 +143,22 @@ function Discipline({ svc, i }) {
             <span className={styles.ghost} aria-hidden="true">
               0{i + 1}
             </span>
-            <FadeIn text={svc.title} as="h2" className={styles.discTitle} />
+            {/* accent alternates teal → navy → teal down the sheet; the AI
+                discipline sits on the navy band, where only the band teal
+                is legible (see the heading-accent rule in CLAUDE.md) */}
+            <FadeIn as="h2" className={styles.discTitle}>
+              <AccentText
+                text={svc.title}
+                accent={svc.titleAccent}
+                className={
+                  dark
+                    ? styles.titleAccentBand
+                    : i % 2 === 0
+                      ? styles.titleAccentTeal
+                      : styles.titleAccentNavy
+                }
+              />
+            </FadeIn>
             <Reveal delay={100}>
               <p className={styles.lede}>{svc.lede}</p>
             </Reveal>

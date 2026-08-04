@@ -324,6 +324,9 @@ export const SERVICES_PAGE = {
     {
       key: 'websites',
       title: 'Websites that earn their keep.',
+      /* the payoff phrase, not blindly the tail — see the heading-accent
+         rule in CLAUDE.md; colors alternate teal/navy down the build sheet */
+      titleAccent: 'earn their keep.',
       lede: 'Your website is your most important salesperson. We build sites that look exceptional and perform even better.',
       bullets: [
         'Custom design, no templates',
@@ -338,6 +341,7 @@ export const SERVICES_PAGE = {
     {
       key: 'apps',
       title: 'Software that replaces chaos with clarity.',
+      titleAccent: 'clarity.',
       lede: "If your team runs on spreadsheets and email chains, there's a better way.",
       bullets: [
         'Portals, dashboards, internal tools',
@@ -352,6 +356,7 @@ export const SERVICES_PAGE = {
     {
       key: 'mobile',
       title: 'Mobile apps people actually keep.',
+      titleAccent: 'actually keep.',
       lede: 'Designed around real user behaviour. Intuitive, fast, genuinely useful.',
       bullets: [
         'iOS, Android, or cross-platform',
@@ -366,6 +371,7 @@ export const SERVICES_PAGE = {
     {
       key: 'ai',
       title: 'AI that actually solves problems.',
+      titleAccent: 'solves problems.',
       lede: 'We focus on practical AI that saves real time and money. No buzzwords.',
       bullets: [
         'Document processing and data extraction',
@@ -505,6 +511,9 @@ export const ABOUT_PAGE = {
   story: {
     eyebrow: 'OUR STORY',
     heading: 'Why Tekniik exists.',
+    /* mid-sentence accent — the brand name is the word that carries the
+       heading, so the split runs through AccentText, not the tail idiom */
+    headingAccent: 'Tekniik',
     paragraphs: [
       "We've spent years inside agencies, and we've seen the same problems. Talented people stuck in bloated processes. Clients treated like tickets. Projects sold by people who'd never build them.",
       "Tekniik exists because we believe it can be better. We keep our team small and senior on purpose. There's no gap between promise and delivery, because the same people do both.",
@@ -514,6 +523,7 @@ export const ABOUT_PAGE = {
   process: {
     eyebrow: 'PROCESS',
     heading: 'Designed around clarity.',
+    headingAccent: 'clarity.',
     sub: "Here's exactly what happens. No mysteries.",
     steps: [
       { n: '1', title: 'Listen', body: 'A 30-minute conversation about your business: what works, what doesn’t, what you’re trying to achieve.', win: 'You get: an honest assessment of whether we can help.' },
@@ -526,6 +536,7 @@ export const ABOUT_PAGE = {
   principles: {
     eyebrow: 'PRINCIPLES',
     heading: 'What we believe.',
+    headingAccent: 'believe.',
     items: [
       { title: 'Honesty first.', desc: "If your idea needs rethinking, we'll say so. Even if it means a smaller project." },
       { title: 'Clarity over cleverness.', desc: 'Every decision communicated in language you understand.' },

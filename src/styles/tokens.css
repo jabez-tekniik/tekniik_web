@@ -138,8 +138,11 @@
   --accent: #5b5bff;
   --accent-deep: #4338ca;
   /* highlighted words inside display headings (falls back to --accent;
-     the ink themes override it per canvas) */
+     the ink themes override it per canvas). The two slots alternate down a
+     page: -teal is always the teal primary, -heading is the navy primary on
+     light canvases (and collapses to teal on the dark one). */
   --accent-heading: var(--accent);
+  --accent-heading-teal: var(--accent);
   --accent-soft: rgba(91, 91, 255, 0.08);
   --accent-tint: rgba(91, 91, 255, 0.04);
   --accent-ring: rgba(91, 91, 255, 0.32);

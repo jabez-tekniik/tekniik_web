@@ -1,8 +1,9 @@
 /* About — "The team sheet" (Deep Ink).
-   Hero poster + documentary photo in an ink frame + signals ledger, then
-   story (light) → process (brand-navy band, scroll-lit rails) → principles
-   (light 2×2) → FinalCta. Tokens only — both ink modes adapt.
-   Transform/opacity motion only; rails fill via the scroll hook. */
+   Hero poster + build-board vignette + signals ledger, then story (light)
+   → principles (2×2 belief cards, no rails) → process (brand-navy band,
+   scroll-lit rails) → FinalCta. Tokens only — both ink modes adapt.
+   Transform/opacity motion only; rails fill via the scroll hook.
+   Heading accents alternate teal → navy → band teal down the page. */
 
 /* ————————————————————————————— hero ————————————————————————————— */
 
@@ -210,6 +211,12 @@
   max-width: 12ch;
 }
 
+/* "Why *Tekniik* exists." — the TEAL slot in the page's alternation
+   (hero navy → story teal → principles navy → process band teal) */
+.storyAccent {
+  color: var(--accent-heading-teal);
+}
+
 .storyBody {
   display: flex;
   flex-direction: column;
@@ -310,6 +317,11 @@
   letter-spacing: -0.025em;
   color: var(--text);
   margin: 0;
+}
+
+/* on the navy band only the light primary is legible */
+.processAccent {
+  color: var(--accent-on-band);
 }
 
 .processSub {
@@ -462,57 +474,86 @@
   margin: 0;
 }
 
+/* "What we *believe*." — the NAVY slot, between the teal story heading
+   above and the teal process heading on the band below */
+.prAccent {
+  color: var(--accent-heading);
+}
+
 .prGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 4vw, 56px);
+  gap: clamp(18px, 2.2vw, 28px);
 }
 
+/* Belief cards. These were a 2×2 of 2px top rails that filled teal on
+   hover — the same device as the Process rails one section down, which read
+   as one repeated pattern (user, 2026-08-04). Now raised surfaces with a
+   glyph tile: no rails on this section at all. */
 .principle {
   position: relative;
-  border-top: 2px solid var(--border-strong);
-  padding-top: clamp(16px, 2vw, 24px);
-  transition: transform 320ms var(--ease-out);
+  background: var(--bg-raise);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-2xl);
+  padding: clamp(24px, 3vw, 36px);
+  transition:
+    transform 320ms var(--ease-out),
+    border-color 320ms var(--ease),
+    box-shadow 320ms var(--ease);
 }
 
-/* hover: the top hairline fills teal left→right like a progress bar
-   (user request — replaces the old whole-border color snap) */
-.principle::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 420ms var(--ease-out);
+/* glyph tile — rounded square, deliberately not the circular chips the
+   Contact/HeroBuildBoard ledgers use */
+.prIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  margin-bottom: clamp(18px, 2.2vw, 26px);
+  transition:
+    background 320ms var(--ease),
+    border-color 320ms var(--ease),
+    color 320ms var(--ease),
+    box-shadow 320ms var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .principle:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    border-color: var(--accent-border);
+    box-shadow: var(--shadow-card-hover);
   }
 
-  .principle:hover::before {
-    transform: scaleX(1);
+  .principle:hover .prIcon {
+    background: var(--accent);
+    border-color: transparent;
+    color: var(--bg-raise);
+    box-shadow: 0 0 22px var(--accent-bloom);
   }
 }
 
+/* corner stamp — a quiet index, not another ghost numeral (the Process
+   steps own that device) */
 .prNum {
-  display: block;
+  position: absolute;
+  top: clamp(24px, 3vw, 36px);
+  right: clamp(24px, 3vw, 36px);
   font-family: var(--f-mono);
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--accent);
-  margin-bottom: 14px;
+  color: var(--text-faint);
 }
 
 .prTitle {
   font-family: var(--f-display-black);
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  line-height: 1.12;
   letter-spacing: -0.02em;
   color: var(--text);
   margin: 0 0 10px;
@@ -594,7 +635,7 @@
 @media (prefers-reduced-motion: reduce) {
   .railNode,
   .principle,
-  .principle::before {
+  .prIcon {
     transition: none;
   }
   .railNode {

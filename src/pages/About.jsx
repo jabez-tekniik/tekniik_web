@@ -1,10 +1,17 @@
 import Reveal from '../components/Reveal.jsx'
 import Button from '../components/Button.jsx'
+import AccentText from '../components/AccentText.jsx'
 import FinalCta from '../sections/FinalCta.jsx'
 import FadeIn from '../motion/ink/FadeIn.jsx'
 import HeroBuildBoard from '../components/HeroBuildBoard.jsx'
 import { useScrollProgressInk } from '../motion/ink/index.js'
-import { StarredText } from '../components/Icon.jsx'
+import {
+  StarredText,
+  IconShieldCheck,
+  IconCompass,
+  IconCode,
+  IconTeam,
+} from '../components/Icon.jsx'
 import { ABOUT_PAGE } from '../data/content.js'
 import styles from './About.module.css'
 
@@ -26,6 +33,11 @@ const SIGNALS = [
   { num: '98%', label: 'Client retention' },
   { num: '4.9★', label: 'Average client rating' },
 ]
+
+/* One glyph per principle, in copy order — the belief cards replaced the
+   old 2px top rails (user: too close to the Process rails right below).
+   IconHandshake stays out: it turns to mush at this size. */
+const PRINCIPLE_ICONS = [IconShieldCheck, IconCompass, IconCode, IconTeam]
 
 export default function About() {
   const [line1, line2] = ABOUT_PAGE.heading
@@ -104,7 +116,15 @@ export default function About() {
                 <span className={styles.index}>01</span>
                 <span className={styles.metaEyebrow}>{story.eyebrow}</span>
               </div>
-              <h2 className={styles.storyHeading}>{story.heading}</h2>
+              {/* accents alternate down the page: hero navy → story TEAL →
+                  principles navy → process band teal (CLAUDE.md rule) */}
+              <h2 className={styles.storyHeading}>
+                <AccentText
+                  text={story.heading}
+                  accent={story.headingAccent}
+                  className={styles.storyAccent}
+                />
+              </h2>
               {/* the proof: heading asks why we exist, CTA points at the
                   work that answers it (user: below the left-side heading) */}
               <div className={styles.storyCta}>
@@ -148,19 +168,35 @@ export default function About() {
               <span className={styles.index}>02</span>
               <span className={styles.metaEyebrow}>{principles.eyebrow}</span>
             </div>
-            <h2 className={styles.prHeading}>{principles.heading}</h2>
+            <h2 className={styles.prHeading}>
+              <AccentText
+                text={principles.heading}
+                accent={principles.headingAccent}
+                className={styles.prAccent}
+              />
+            </h2>
           </Reveal>
 
+          {/* belief cards — raised surfaces with a glyph tile, deliberately
+              NOT another top-rail grid (the Process band directly below runs
+              the scroll-drawn rails; two rail sections back to back read as
+              one repeated device) */}
           <div className={styles.prGrid}>
-            {principles.items.map((p, i) => (
-              <Reveal key={p.title} delay={i * 80} className={styles.principle}>
-                <span className={styles.prNum}>
-                  0{i + 1} / 0{principles.items.length}
-                </span>
-                <h3 className={styles.prTitle}>{p.title}</h3>
-                <p className={styles.prDesc}>{p.desc}</p>
-              </Reveal>
-            ))}
+            {principles.items.map((p, i) => {
+              const Glyph = PRINCIPLE_ICONS[i]
+              return (
+                <Reveal key={p.title} delay={i * 80} className={styles.principle}>
+                  <span className={styles.prIcon} aria-hidden="true">
+                    <Glyph width="22" height="22" />
+                  </span>
+                  <span className={styles.prNum} aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  <h3 className={styles.prTitle}>{p.title}</h3>
+                  <p className={styles.prDesc}>{p.desc}</p>
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -174,7 +210,13 @@ export default function About() {
                 <span className={styles.index}>03</span>
                 <span className={styles.metaEyebrow}>{process.eyebrow}</span>
               </div>
-              <h2 className={styles.processHeading}>{process.heading}</h2>
+              <h2 className={styles.processHeading}>
+                <AccentText
+                  text={process.heading}
+                  accent={process.headingAccent}
+                  className={styles.processAccent}
+                />
+              </h2>
             </div>
             <p className={styles.processSub}>{process.sub}</p>
           </Reveal>
