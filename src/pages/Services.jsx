@@ -26,7 +26,7 @@ const META = {
     detail: '/services/web-platforms',
   },
   apps: {
-    label: 'Web Applications',
+    label: 'Softwares',
     badge: 'Web platform',
     Scene: AppScene,
     detail: '/services/custom-software',

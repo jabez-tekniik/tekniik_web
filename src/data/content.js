@@ -319,7 +319,7 @@ export const AI_ACCELERATED = {
 export const SERVICES_PAGE = {
   eyebrow: 'SERVICES',
   heading: ['We build the technology', 'your business runs on.'],
-  sub: 'Websites, web applications, mobile apps, and AI-powered systems, designed for reliability and built for growth.',
+  sub: 'Websites, mobile apps, softwares, and AI-powered systems, designed for reliability and built for growth.',
   items: [
     {
       key: 'websites',
