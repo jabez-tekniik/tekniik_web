@@ -23,10 +23,22 @@
         timeout, rate limit) silently keeps the stage-1 answer. The
         result is cached in sessionStorage so a reload doesn't re-ask.
 
-   Anything unrecognised resolves to USD, which is also what a crawler
-   sees. `?cur=gbp` / `?cur=usd` forces a currency and skips stage 2 -
-   that is how the ad campaigns can be explicit, and how you check a
-   currency by hand.
+   Anything unrecognised resolves to USD. `?cur=gbp` / `?cur=usd` forces
+   a currency and skips stage 2 - that is how the ad campaigns can be
+   explicit, and how you check a currency by hand.
+
+   CRAWLERS GET STERLING (stage 0, user 2026-08-13). Googlebot crawls from
+   US IPs on a UTC clock, so both stages above used to hand it dollars and
+   the page was indexed as "From $799" - wrong shop window for a business
+   whose primary market is the UK. A recognised crawler or link unfurler
+   now resolves to GBP before either stage runs, and skips the IP lookup
+   entirely. Note what this does and does not do: the crawler is shown
+   exactly what a UK visitor is shown, on the same URL, with the price in
+   the rendered DOM matching the price in the title and meta description.
+   Nothing is hidden from anyone. If you would rather carry no
+   user-agent branch at all, the alternatives are separate per-currency
+   URLs with hreflang, or pinning only the <head> metadata to GBP for
+   every visitor - both are noted in ISSUES.md.
 
    This is a module-level store rather than component state so the whole
    page (the chart, the hero vignette's price stamp and the browser tab
@@ -57,6 +69,65 @@ const GBP_ZONES = new Set([
   'GB',
   'GB-Eire',
 ])
+
+/* The currency a crawler is shown: the primary market's (user 2026-08-13). */
+const CRAWLER_CURRENCY = 'GBP'
+
+/* Matched as WHOLE TOKENS against the user agent, never as a bare /bot/i:
+   that substring lives inside real consumer user agents (CUBOT phones,
+   Abot, Wibot browsers) and would hand sterling to a shopper in Berlin.
+   Search engines first, then the AI crawlers, then the link unfurlers
+   that render a card in a chat app - a £ price in a WhatsApp preview is
+   right for the same reason it is right in a search result. */
+const CRAWLERS = [
+  'googlebot',
+  'google-inspectiontool',
+  'googleother',
+  'storebot-google',
+  'adsbot-google',
+  'mediapartners-google',
+  'bingbot',
+  'bingpreview',
+  'applebot',
+  'duckduckbot',
+  'yandexbot',
+  'baiduspider',
+  'petalbot',
+  'sogou',
+  'slurp',
+  'ahrefsbot',
+  'semrushbot',
+  'mj12bot',
+  'dotbot',
+  'screaming frog',
+  'gptbot',
+  'oai-searchbot',
+  'chatgpt-user',
+  'claudebot',
+  'claude-web',
+  'anthropic-ai',
+  'perplexitybot',
+  'amazonbot',
+  'bytespider',
+  'facebookexternalhit',
+  'facebookcatalog',
+  'twitterbot',
+  'linkedinbot',
+  'slackbot',
+  'discordbot',
+  'telegrambot',
+  'whatsapp',
+  'redditbot',
+  'pinterest',
+  'embedly',
+  'skypeuripreview',
+]
+
+export function isCrawler(ua) {
+  if (!ua) return false
+  const lower = String(ua).toLowerCase()
+  return CRAWLERS.some((name) => lower.includes(name))
+}
 
 export function currencyForCountry(code) {
   return GBP_COUNTRIES.has(String(code).toUpperCase()) ? 'GBP' : DEFAULT_CURRENCY
@@ -95,10 +166,20 @@ function cachedCountry() {
 
 const forced = typeof window === 'undefined' ? null : forcedCurrency()
 const cached = typeof window === 'undefined' ? null : cachedCountry()
+/* stage 0. `?cur=` still outranks it, so a crawler currency stays
+   checkable by hand from any machine. */
+const crawler = typeof navigator === 'undefined' ? false : isCrawler(navigator.userAgent)
 
-let current = forced || (cached ? currencyForCountry(cached) : currencyFromDevice())
-/* forced and cached answers are final; only a fresh visit asks the network */
-let settled = Boolean(forced || cached)
+function initial() {
+  if (forced) return forced
+  if (crawler) return CRAWLER_CURRENCY
+  return cached ? currencyForCountry(cached) : currencyFromDevice()
+}
+
+let current = initial()
+/* forced, crawler and cached answers are final; only a fresh visit from a
+   real browser asks the network */
+let settled = Boolean(forced || crawler || cached)
 
 const listeners = new Set()
 

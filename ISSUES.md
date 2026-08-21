@@ -67,15 +67,58 @@ site has neither a consent banner nor any analytics integration yet. When
 analytics is added, the banner must land with it (accept/reject non-essential,
 per the legal spec).
 
-### Per-page `<title>` — DONE 2026-08-03; meta descriptions still missing (low, SEO)
-`src/components/TitleManager.jsx` (mounted in App.jsx) now sets
-`document.title` per route from a pathname map: home keeps the index.html
-default, every other route renders `Page | Tekniik`, unmapped paths get
-`Page Not Found | Tekniik`. All valid dynamic slugs (/services/:slug,
-/case/:slug) are enumerated in the map — add new routes there. REMAINING:
-per-page meta descriptions (the services spec ships an SEO table with unique
-descriptions) — client-side JS can set them, but for real SEO value they
-want prerendering/SSR; revisit if organic search matters.
+### Per-page metadata — DONE 2026-08-13; prerendering is the remaining ceiling (low, SEO)
+Titles landed 2026-08-03; descriptions, canonicals, og/twitter, robots, JSON-LD,
+robots.txt and a generated sitemap landed 2026-08-13 (see the SEO section in
+CLAUDE.md). `src/config/seo.js` is the single source of truth and
+`TitleManager.jsx` writes the tags per route; verified live at /services/ai-systems,
+/website-plans, an unknown path (noindex) and an in-app SPA navigation.
+
+REMAINING, and it is a real limit rather than a bug: the site is client-rendered,
+so those per-route tags only exist after JS runs. Googlebot renders and reads them;
+non-rendering unfurlers (some chat apps, some smaller crawlers) see index.html's
+home values on every route. The fix is prerendering the 18 routes at build time
+(e.g. `vite-plugin-prerender`/`puppeteer` step writing static HTML per route) or
+moving to SSR. Worth doing if organic search or link previews become a channel that
+matters; nothing else in the SEO setup has to change when it happens.
+
+### Crawlers are priced in GBP — DONE 2026-08-13, but know what it is (low, SEO)
+`/website-plans` used to index as "From $799": Googlebot crawls from US IPs on a
+UTC clock, so both detection stages handed it dollars. `src/config/currency.js`
+now runs a stage 0 — a recognised crawler or link unfurler resolves to GBP and
+skips the `country.is` lookup — so the indexed title, meta description and
+on-page prices all read sterling, the primary market's price. Verified across 7
+crawler user agents and 4 real-browser ones, including the CUBOT/Abot substring
+traps that a naive `/bot/i` would have mispriced.
+
+It is a user-agent branch, which is worth naming plainly: the crawler is shown
+exactly what a UK visitor is shown, on the same URL, with the rendered price
+matching the head, so nothing is concealed and nothing is inconsistent. Keep it
+that way — this branch may only ever decide currency.
+
+BOTH BRANCH-FREE ALTERNATIVES WERE CONSIDERED AND REJECTED 2026-08-13, so nobody
+has to redo the analysis:
+- **Per-currency URLs with hreflang** (what Google documents for locale variants)
+  only works if the URL decides the currency rather than the visitor. That makes
+  `/website-plans` the dollar page for everyone, so a UK visitor arriving from an
+  ad, a link or by typing the URL sees $799 — which breaks the page's core rule
+  (user, twice: UK sees sterling, everyone else dollars). Restoring that needs an
+  automatic geo-redirect, which is the thing Google advises against on locale
+  variants, and it splits a brand-new page's signals across two URLs.
+- **Pinning the head to GBP for every visitor** is strictly worse than the branch:
+  US visitors would read a £ tab title above $ prices.
+
+The branch's one real cost is a US searcher meeting a £599 snippet and landing on
+$799. That is accepted: the UK is the primary market, the price is the CTR hook,
+and Google rewrites a large share of snippets anyway. The GBP meta description
+(the indexed one) names the UK market and the .co.uk domain for the same reason;
+the USD variant stays neutral.
+
+Also still open, and both worth more than the item above once traffic starts:
+- Google Search Console is not set up. Verify the domain, submit
+  `https://tekniik.ai/sitemap.xml`, and check Coverage after the first crawl.
+- No analytics. GA4 is specced (and named in the privacy policy) but not installed,
+  and its consent banner has to land with it — see the cookie-consent item above.
 
 ### `/img/services/*.webp` no longer used by ANY page (low)
 The 2026-07-14 vignette revamp replaced the homepage ServiceShowcase image

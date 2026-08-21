@@ -12,9 +12,11 @@
    market prices set by hand, not one list converted into the other, so
    there is no exchange rate here to drift, no FX request on a page that
    must price in the first paint, and no headline that twitches between
-   visits. USD is the DEFAULT: an unrecognised country, a blocked geo
-   lookup and a crawler all land on dollars, so that is the currency the
-   page is indexed in.
+   visits. USD is the DEFAULT: an unrecognised country and a blocked geo
+   lookup both land on dollars. CRAWLERS ARE THE EXCEPTION - they resolve
+   to GBP (stage 0 in `currency.js`, user 2026-08-13), so the page is
+   indexed at the primary market's price rather than at the price
+   Googlebot's US IP would otherwise have picked.
 
    (This replaced a 19-currency model on 2026-08-04. Per-country pricing
    meant hardcoded rates going stale in currencies we do not actually
@@ -79,6 +81,21 @@ function build(code) {
     /* browser tab title (user 2026-08-04: the title follows the
        detected currency too) */
     title: `Business Website Plans · From ${starter}`,
+    /* meta description for <head> — it quotes the price, so it follows
+       the detected currency exactly like the title does. No "+ VAT"
+       anywhere on this page (user 2026-08-04). Read by config/seo.js.
+
+       The STERLING variant names the UK market and the .co.uk domain,
+       the dollar one stays neutral (2026-08-13). This is the description
+       that gets INDEXED — crawlers resolve to GBP — so it is the one a
+       UK searcher reads in the results, and market words earn their
+       place there. The dollar variant is what a US visitor sees in their
+       own tab, where a UK reference would be wrong. Market served, never
+       "based in": the geography rule still holds. */
+    description:
+      code === 'GBP'
+        ? `Professionally designed business websites for UK companies from ${starter}. A .co.uk domain, hosting, business email and SEO included in one all-inclusive price.`
+        : `Professionally designed business websites from ${starter}. Domain, hosting, business email and SEO included in one all-inclusive price.`,
     /* the domain ending the hero vignette shows in its address bar. A
        .co.uk under a dollar price is the same mistake as the chart's
        ".co.uk domain" row, so sterling keeps the UK ending and everyone
