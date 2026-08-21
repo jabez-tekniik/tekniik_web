@@ -1,0 +1,13 @@
+# Tekniik AI Studio — https://tekniik.ai
+# Everything is public and crawlable. The sitemap is generated at build
+# time by scripts/generateSitemap.js from src/config/seo.js.
+#
+# /website-package is deliberately NOT disallowed: it redirects to
+# /website-plans, and a blocked URL is a URL whose redirect and canonical
+# Google never gets to read. Let it be crawled so the old ad link's value
+# lands on the page that replaced it.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://tekniik.ai/sitemap.xml
