@@ -26,14 +26,17 @@ function LocationGlyph({ className }) {
 }
 
 /* One ledger row. On the desktop split it is just the oversized name line
-   (num / node dot / title / region) and hovering or focusing it previews
+   (num / node dot / title) and hovering or focusing it previews
    the project in the dossier panel; on touch and narrow viewports the
    .rowBody (desc, tags, result, CTA) is always shown inline instead.
    Routed projects render as Links to their case study. */
 function Row({ item, index, active, onActivate }) {
   const interactive = SHOW_CASE_LINKS && !!item.route
   const num = String(index + 1).padStart(2, '0')
-  const region = item.tags[item.tags.length - 1]
+  /* Country label removed from the ledger rows (user, 2026-08-21) — the
+     dossier panel on the right still shows it, as does /work. Restore by
+     reinstating a .rowRegion span in .rowHead (its CSS is still in place).
+     The country is item.tags[item.tags.length - 1]. */
   const pills = item.tags.slice(0, -1)
 
   const className = [
@@ -51,10 +54,6 @@ function Row({ item, index, active, onActivate }) {
         <span className={styles.rowDot} aria-hidden="true" />
         <h3 className={styles.rowTitle}>{item.title}</h3>
         {interactive && <IconArrow className={styles.rowArrow} />}
-        <span className={styles.rowRegion}>
-          <LocationGlyph className={styles.regionIcon} />
-          {region}
-        </span>
       </div>
 
       <div className={styles.rowBody}>

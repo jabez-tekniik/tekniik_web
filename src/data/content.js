@@ -175,8 +175,8 @@ export const PORTFOLIO = {
     {
       slug: 'looqz',
       title: 'Glow & Co',
-      tags: ['Beauty & Wellness', 'Booking Platform', 'Mobile App', 'United Kingdom'],
-      desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings seamlessly online.',
+      tags: ['Beauty & Wellness', 'Booking Platform', 'Mobile App', 'Sweden'],
+      desc: 'A full-featured beauty and salon booking platform enabling customers across Sweden to discover services, book appointments, and manage bookings seamlessly online.',
       result: 'End-to-end booking with real-time availability',
       route: '/case/looqz',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -184,16 +184,16 @@ export const PORTFOLIO = {
     {
       slug: 'escape',
       title: 'Resolve Debt Services',
-      tags: ['Financial Services', 'Web Application', 'South Africa'],
-      desc: 'An end-to-end platform linking users with experienced South African attorneys for debt review removal, helping hundreds achieve financial freedom through a seamless online process.',
+      tags: ['Financial Services', 'Web Application', 'Nigeria'],
+      desc: 'An end-to-end platform linking users with experienced Nigerian attorneys for debt review removal, helping hundreds achieve financial freedom through a seamless online process.',
       result: 'Hundreds of customers helped to financial freedom',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
     },
     {
       slug: 'famili',
       title: 'Heritage Tree',
-      tags: ['Family & Lifestyle', 'Cloud Platform', 'Mobile App', 'South Africa'],
-      desc: "A cloud-based family story preservation platform where South African families can capture, organise, and share their most precious memories and stories for future generations.",
+      tags: ['Family & Lifestyle', 'Cloud Platform', 'Mobile App', 'Zimbabwe'],
+      desc: "A cloud-based family story preservation platform where Zimbabwean families can capture, organise, and share their most precious memories and stories for future generations.",
       result: 'Every family has a story worth preserving',
       route: '/case/famili',
       stack: ['React', 'Node.js', 'Express', 'MongoDB', 'React Native', 'AWS', 'Firebase'],
@@ -474,7 +474,7 @@ export const SERVICE_PAGES = {
     caseStudy: {
       kicker: 'Case study',
       title: 'Glow & Co',
-      desc: 'A full-featured beauty and salon booking platform enabling customers across the UK to discover services, book appointments, and manage bookings online.',
+      desc: 'A full-featured beauty and salon booking platform enabling customers across Sweden to discover services, book appointments, and manage bookings online.',
       result: 'End-to-end booking with real-time availability',
       to: '/case/looqz',
     },
@@ -607,11 +607,11 @@ export const CASE_LOOQZ = {
     { value: '8', label: 'Service categories' },
   ],
   challenge: [
-    "The UK beauty and wellness industry is fragmented. Customers searching for hair salons, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly, especially outside business hours.",
+    "The Swedish beauty and wellness industry is fragmented. Customers searching for hair salons, nail salons, barbers, or spa treatments rely on word of mouth, social media scrolling, and phone calls to book appointments. There's no easy way to compare services, check live availability, read verified reviews, or book instantly, especially outside business hours.",
     'For salon owners and independent beauty professionals, the problem is equally frustrating. Missed calls mean missed bookings. Manual scheduling leads to double-bookings and no-shows. And without a discoverable online presence, talented professionals struggle to attract new clients beyond their immediate circle.',
   ],
   builtIntro:
-    'We designed and built Glow & Co as a two-sided marketplace connecting beauty consumers with verified professionals across the UK. The platform covers eight service categories (Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa) with city-level curation across London, Manchester, Birmingham, Leeds, and Glasgow.',
+    'We designed and built Glow & Co as a two-sided marketplace connecting beauty consumers with verified professionals across Sweden. The platform covers eight service categories (Hair, Nails, Massage, Lashes, Brows, Facials, Barbering, and Spa) with city-level curation across Stockholm, Gothenburg, Malmö, Uppsala, and Västerås.',
   customerHeading: 'For customers:',
   customer: [
     'Location-aware search with filters for service type, price, availability, and ratings',
@@ -636,12 +636,12 @@ export const CASE_LOOQZ = {
   ],
   result: [
     'Glow & Co launched as a fully operational beauty marketplace with over 2,100 verified professionals and 10,000+ happy clients. The platform maintains a 4.9 average rating across 2,500+ reviews, a strong signal that the product genuinely works for both sides of the marketplace.',
-    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+), with verified salons across major UK cities maintaining consistently high ratings.',
+    'Category coverage spans Hairdressers (2,400+), Barbers (1,800+), Beauty (1,500+), Nails (1,200+), Massage (960+), Makeup (780+), Lashes (640+), and Spa (520+), with verified salons across major Swedish cities maintaining consistently high ratings.',
   ],
   resultIntro: 'As one verified client put it:',
   quote: {
     text: 'Lovely gel manicure by Amelia. Lasted a full two weeks with no chipping. Will be back for acrylics next time.',
-    who: 'Sophie Bennett, London',
+    who: 'Elin Bergström, Stockholm',
   },
   tags: ['Marketplace', 'Real-time Booking', 'Verified Profiles', 'Mobile App', 'City Pages', 'Pro Dashboard'],
   finalCta: {
@@ -738,7 +738,7 @@ export const CASE_FAMILI = {
   archive: [
     'Public and private family trees: explore documented lineages or build your own privately',
     'Powerful search by surname, clan, region, or era with "popular searches" and discovery',
-    'Featured lineages gallery showcasing historically significant families (Sisulu, House of Moshoeshoe, House of Dlamini, House of Dalindyebo)',
+    'Featured lineages gallery showcasing historically significant families (Khumalo, House of Mutapa, House of Rozvi, House of Mangwende)',
     'Long-form editorial stories with era stamps: "The woman who walked 300km to save her family" (Khumalo, c. 1913)',
   ],
   bridgesHeading: 'Family bridges, a unique feature:',
@@ -761,8 +761,8 @@ export const CASE_FAMILI = {
     { n: '03', title: 'Link your roots', desc: 'Link it to your private family space, verified by family owners for authenticity.' },
   ],
   result: [
-    'Heritage Tree has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Sisulu family, Basotho Royal House (House of Moshoeshoe), Swazi Royal House (House of Dlamini), and the abaThembu (House of Dalindyebo), alongside hundreds of everyday families building their own archives.',
-    'The largest public tree (Mahlangu) has 202 documented members. Cross-family collaboration is active: three Dlamini branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
+    'Heritage Tree has documented over 12,400 people across 340+ family trees, with the deepest lineages spanning 18 generations. The platform hosts royal and historical houses including the Ndebele Royal House (House of Khumalo), the Mutapa dynasty (Munhumutapa), the Rozvi Empire (House of Changamire), and the Mangwende chieftaincy, alongside hundreds of everyday families building their own archives.',
+    'The largest public tree (Ncube) has 202 documented members. Cross-family collaboration is active: three Khumalo branches across two countries are currently working together to reconstruct the 1838 displacement timeline.',
     'The platform\'s editorial quality (warm typography, archive-inspired design, and long-form storytelling) sets it apart from every other genealogy tool on the market. As the footer states: "Built to last generations."',
   ],
   resultIntro: 'The conviction behind it all:',
